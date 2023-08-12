@@ -15,10 +15,13 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('admin.dashboard');
-})->name("home");
-Route::get('auth/login', function () {
+})->name("home")->middleware("authenticate");
+Route::get('/home', function () {
+    return view('admin.dashboard');
+})->name("home")->middleware("authenticate");
+Route::get('login', function () {
     return view('auth.login');
-});
+})->name("login");
 
 
 Route::group(["prefix" => "admin"],function (){
