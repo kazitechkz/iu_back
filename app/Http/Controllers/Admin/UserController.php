@@ -14,6 +14,7 @@ class UserController extends Controller
     public function index()
     {
         $users = User::orderBy("created_at")->paginate(30);
+        return view("admin.user.index",compact("users"));
     }
 
     /**
@@ -21,7 +22,8 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        return view("admin.user.create");
+
     }
 
     /**

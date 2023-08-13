@@ -45,4 +45,25 @@ class User extends Authenticatable
     ];
 
 
+    public static array $ListAttributes = [
+      [
+          "label"=>"ID",
+          "name"=>"id",
+          "type"=>"number"
+      ],
+        [
+            "label"=>"Email",
+            "name"=>"email",
+            "type"=>"text"
+        ],
+        [
+            "label"=>"Password",
+            "name"=>"password",
+            "type"=>"text"
+        ],
+
+
+    ];
+
+
 }

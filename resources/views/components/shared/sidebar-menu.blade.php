@@ -1,6 +1,6 @@
 <li class="nav-item">
     <a class="nav-link" data-toggle="collapse" href="#{{$elementId}}" aria-expanded="false" aria-controls="ui-basic">
-        <i class="{{$icon}}"></i>
+        <i class="{{$icon}} mr-2"></i>
         <span class="menu-title">
             {{$name}}
         </span>

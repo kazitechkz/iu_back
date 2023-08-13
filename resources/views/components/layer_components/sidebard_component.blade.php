@@ -8,19 +8,14 @@
         </x-shared.main-sidebar-menu>
 
         <x-shared.sidebar-menu
-            icon="fas fa-home"
+            icon="fas fa-users"
             elementId="user-id"
             name="{{__('sidebar.user')}}"
         >
 
             <x-shared.sub-sidebar-menu
-                link="home"
+                link="user.index"
                 name="{{__('sidebar.home')}}"/>
-            @can('user index')
-            <x-shared.sub-sidebar-menu
-                link="home"
-                name="{{__('sidebar.home')}}"/>
-            @endcan
         </x-shared.sidebar-menu>
 
 

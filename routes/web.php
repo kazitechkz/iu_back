@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use \App\Http\Controllers\Admin\UserController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -26,7 +26,7 @@ Route::get('login', function () {
 
 Route::group(["prefix" => "admin"],function (){
 
-
+    Route::resource("user",UserController::class);
 
 
 });
