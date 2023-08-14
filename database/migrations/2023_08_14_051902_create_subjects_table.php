@@ -15,9 +15,13 @@ return new class extends Migration
             $table->id();
             $table->string('title_kk');
             $table->string('title_ru');
-            $table->string('title_en');
-            $table->foreignId('file_id')->nullable()->references('id')->on('files');
+            $table->boolean('enable')->default(true);
+            $table->boolean('is_compulsory')->default(false);
+            $table->integer('max_questions_quantity');
+            $table->integer('questions_step')->default(5);
+            $table->foreignId('image_url')->nullable()->references('id')->on('files');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
