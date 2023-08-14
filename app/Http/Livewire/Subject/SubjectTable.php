@@ -5,6 +5,7 @@ namespace App\Http\Livewire\Subject;
 use App\Exports\SubjectExports;
 use App\Models\Subject;
 use Maatwebsite\Excel\Facades\Excel;
+use Rappasoft\LaravelLivewireTables\Exceptions\DataTableConfigurationException;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Columns\BooleanColumn;
@@ -13,6 +14,10 @@ use Rappasoft\LaravelLivewireTables\Views\Columns\ImageColumn;
 class SubjectTable extends DataTableComponent
 {
     protected $model = Subject::class;
+
+    /**
+     * @throws DataTableConfigurationException
+     */
     public function configure(): void
     {
         $this->setPrimaryKey('id');
@@ -34,7 +39,7 @@ class SubjectTable extends DataTableComponent
         ];
     }
 
-    public function exportSelected()
+    public function exportSelected(): \Symfony\Component\HttpFoundation\BinaryFileResponse
     {
         $subjects = $this->getSelected();
         $this->clearSelected();

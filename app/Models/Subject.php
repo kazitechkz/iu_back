@@ -19,6 +19,17 @@ class Subject extends Model
         'image_url'
     ];
 
+    public static function initialData($request)
+    {
+        $data = $request->all();
+        if ($request['is_compulsory']) {
+            $data['is_compulsory'] = 1;
+        } else {
+            $data['is_compulsory'] = 0;
+        }
+        return $data;
+    }
+
     public function image(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(File::class, 'image_url', 'id');

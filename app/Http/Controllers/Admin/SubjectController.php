@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\SubjectCreateRequest;
-use App\Models\File;
+use App\Http\Requests\Subject\SubjectCreateRequest;
+use App\Http\Requests\Subject\SubjectEditRequest;
 use App\Models\Subject;
 use Illuminate\Http\Request;
 
@@ -31,10 +31,7 @@ class SubjectController extends Controller
      */
     public function store(SubjectCreateRequest $request)
     {
-        $data = $request->all();
-        if ($request['is_compulsory']) {
-            $data['is_compulsory'] = 1;
-        }
+        $data = Subject::initialData($request);
         Subject::add($data);
         return redirect(route('subject.index'));
     }
@@ -52,15 +49,19 @@ class SubjectController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $subject = Subject::findOrFail($id);
+        return view('admin.subject.edit', compact('subject'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(SubjectEditRequest $request, string $id)
     {
-        //
+        $data = Subject::initialData($request);
+        $subject = Subject::findOrFail($id);
+        $subject->edit($data);
+        return redirect(route('subject.index'));
     }
 
     /**

@@ -6,9 +6,24 @@
         x-on:livewire-upload-error="isUploading = false"
         x-on:livewire-upload-progress="progress = $event.detail.progress"
     >
-        @if ($file)
+        @if (!$isUploaded)
             <div
-                style='width: 250px; height: 250px; background: url("{{$file->temporaryUrl()}}") no-repeat center; background-size: contain'></div>
+                style='
+                    width: 250px;
+                    height: 250px;
+                    background: url("{{$path}}") no-repeat center;
+                    background-size: contain
+                '></div>
+        @else
+            @if($file)
+                <div
+                    style='
+                    width: 250px;
+                    height: 250px;
+                    background: url("{{$file->temporaryUrl()}}") no-repeat center;
+                    background-size: contain
+                '></div>
+            @endif
         @endif
         <!-- File Input -->
         <input class="form-control my-3" type="file" wire:model="file" accept="image/*">

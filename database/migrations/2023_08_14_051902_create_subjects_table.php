@@ -19,7 +19,7 @@ return new class extends Migration
             $table->boolean('is_compulsory')->default(false);
             $table->integer('max_questions_quantity');
             $table->integer('questions_step')->default(5);
-            $table->foreignId('image_url')->nullable()->references('id')->on('files');
+            $table->foreignId('image_url')->nullable()->references('id')->on('files')->onDelete('set null');
             $table->timestamps();
             $table->softDeletes();
         });

@@ -2,7 +2,7 @@
 
 namespace App\Http\Livewire\Subject;
 
-use App\Http\Requests\SubjectCreateRequest;
+use App\Http\Requests\Subject\SubjectCreateRequest;
 use Livewire\Component;
 
 class SubjectCreate extends Component
@@ -22,6 +22,6 @@ class SubjectCreate extends Component
     }
     public function render()
     {
-        return view('livewire.subjects.create');
+        return view('livewire.subject.create');
     }
 }
