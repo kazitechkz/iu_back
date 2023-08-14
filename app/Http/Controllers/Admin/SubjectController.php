@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SubjectCreateRequest;
+use App\Models\File;
 use App\Models\Subject;
 use Illuminate\Http\Request;
 

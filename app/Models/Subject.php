@@ -18,4 +18,9 @@ class Subject extends Model
         'max_questions_quantity',
         'image_url'
     ];
+
+    public function image(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(File::class, 'image_url', 'id');
+    }
 }
