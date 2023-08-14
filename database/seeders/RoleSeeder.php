@@ -18,19 +18,19 @@ class RoleSeeder extends Seeder
         if(DB::table("roles")->count() == 0){
             DB::table("roles")->insert([
                 "name"=>AppConstants::ADMIN_NAME,
-                "guard_name"=>AppConstants::ADMIN_NAME,
+                "guard_name"=>"web",
             ]);
             DB::table("roles")->insert([
                 "name"=>AppConstants::METHOD_NAME,
-                "guard_name"=>AppConstants::METHOD_NAME,
+                "guard_name"=>"web",
             ]);
             DB::table("roles")->insert([
                 "name"=>AppConstants::TEACHER_NAME,
-                "guard_name"=>AppConstants::TEACHER_NAME,
+                "guard_name"=>"web",
             ]);
             DB::table("roles")->insert([
                 "name"=>AppConstants::STUDENT_NAME,
-                "guard_name"=>AppConstants::STUDENT_NAME,
+                "guard_name"=>"web",
             ]);
             Log::info("Created roles");
         }

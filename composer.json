@@ -13,6 +13,7 @@
         "laravel/sanctum": "^3.2",
         "laravel/tinker": "^2.8",
         "livewire/livewire": "^2.12",
+        "maatwebsite/excel": "^3.1",
         "okipa/laravel-table": "^5.3",
         "rappasoft/laravel-livewire-tables": "^2.15",
         "spatie/laravel-image-optimizer": "^1.7",

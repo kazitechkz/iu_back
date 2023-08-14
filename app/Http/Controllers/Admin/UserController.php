@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\UserCreateRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
@@ -14,8 +15,16 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::orderBy("created_at")->paginate(30);
-        return view("admin.user.index",compact("users"));
+        if(auth()->user()->can('user show') ){
+            $users = User::orderBy("created_at")->paginate(30);
+            return view("admin.user.index",compact("users"));
+        }
+        else{
+            return redirect()->back();
+        }
+
+
+
     }
 
     /**
@@ -23,9 +32,9 @@ class UserController extends Controller
      */
     public function create()
     {
-        $roles = \Spatie\Permission\Models\Role::all()->toArray();
-        return view("admin.user.create",compact("roles"));
-
+        if(auth()->user()->can("user create")) {
+            return view("admin.user.create");
+        }
     }
 
     /**
@@ -33,7 +42,17 @@ class UserController extends Controller
      */
     public function store(UserCreateRequest $request)
     {
-        $input = $request->except("_token","_method");
+        if(auth()->user()->can("user create")){
+            $input = $request->except("_token","_method");
+            $input["password"] = bcrypt($request->get("password"));
+            $user = User::add($input);
+
+            $role = Role::findByName($input["role"]);
+            if($role){
+                $user->assignRole($input["role"]);
+            }
+            return redirect()->back();
+        }
 
     }
 
@@ -50,7 +69,14 @@ class UserController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $user = User::find($id);
+        if($user){
+            return view("admin.user.edit",compact("user"));
+        }
+        else{
+            return redirect()->back();
+        }
+
     }
 
     /**

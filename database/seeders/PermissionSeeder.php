@@ -19,7 +19,7 @@ class PermissionSeeder extends Seeder
             foreach (AppConstants::ADMIN_PERMISSIONS as $PERMISSION){
                 DB::table("permissions")->insert([
                     "name"=>$PERMISSION,
-                    "guard_name"=>$PERMISSION,
+                    "guard_name"=>"web",
                 ]);
             }
             Log::info("Created permissions");

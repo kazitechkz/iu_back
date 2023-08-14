@@ -25,7 +25,7 @@ Route::get('login', function () {
 })->name("login");
 
 
-Route::group(["prefix" => "admin"],function (){
+Route::group(["prefix" => "admin","middleware" => "auth"],function (){
 
     Route::resource("user",UserController::class);
     Route::resource('subject', SubjectController::class);
