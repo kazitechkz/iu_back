@@ -9,10 +9,19 @@
 
         <x-shared.main-sidebar-menu
             link="user.index"
-            icon="fas fa-users"
+            icon="fas fa-solid fa-building-shield"
             name="{{__('sidebar.user')}}"
         />
-
+        <x-shared.main-sidebar-menu
+            link="role.index"
+            icon="fas fa-headset"
+            name="{{__('sidebar.role')}}"
+        />
+        <x-shared.main-sidebar-menu
+            link="permission.index"
+            icon="fas fa-hand"
+            name="{{__('sidebar.permission')}}"
+        />
         <x-shared.main-sidebar-menu
             link="subject.index"
             icon="fas fa-book"

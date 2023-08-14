@@ -3,6 +3,8 @@
 use App\Http\Controllers\Admin\SubjectController;
 use Illuminate\Support\Facades\Route;
 use \App\Http\Controllers\Admin\UserController;
+use \App\Http\Controllers\Admin\RoleController;
+use \App\Http\Controllers\Admin\PermissionController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -25,9 +27,11 @@ Route::get('login', function () {
 })->name("login");
 
 
-Route::group(["prefix" => "admin","middleware" => "auth"],function (){
+Route::group(["prefix" => "dashboard","middleware" => "auth"],function (){
 
     Route::resource("user",UserController::class);
+    Route::resource("role",RoleController::class);
+    Route::resource("permission",PermissionController::class);
     Route::resource('subject', SubjectController::class);
 
 });

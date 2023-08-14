@@ -130,7 +130,12 @@ return [
     | these features or you can even remove all of these if you need to.
     |
     */
-
+    'pipelines' => [
+        'login' => [
+            Laravel\Fortify\Actions\AttemptToAuthenticate::class,
+            Laravel\Fortify\Actions\PrepareAuthenticatedSession::class,
+        ]
+    ],
     'features' => [
         Features::registration(),
         Features::resetPasswords(),

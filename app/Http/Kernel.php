@@ -4,6 +4,7 @@ namespace App\Http;
 
 use App\Http\Middleware\AuthMiddleware;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
+use Illuminate\Session\Middleware\AuthenticateSession;
 use LaravelAt\ImageSanitize\ImageSanitizeMiddleware;
 use Spatie\LaravelImageOptimizer\Middlewares\OptimizeImages;
 
@@ -33,12 +34,14 @@ class Kernel extends HttpKernel
      */
     protected $middlewareGroups = [
         'web' => [
+
             \App\Http\Middleware\EncryptCookies::class,
             \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
             \Illuminate\Session\Middleware\StartSession::class,
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            AuthenticateSession::class
         ],
 
         'api' => [

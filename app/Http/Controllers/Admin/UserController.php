@@ -7,6 +7,7 @@ use App\Http\Requests\UserCreateRequest;
 use App\Http\Requests\UserEditRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
@@ -17,8 +18,7 @@ class UserController extends Controller
     public function index()
     {
         if(auth()->user()->can('user show') ){
-            $users = User::orderBy("created_at")->paginate(30);
-            return view("admin.user.index",compact("users"));
+            return view("admin.user.index");
         }
         else{
             return redirect()->back();
@@ -70,6 +70,8 @@ class UserController extends Controller
      */
     public function edit(string $id)
     {
+
+
         if(auth()->user()->can("user edit")){
             $user = User::find($id);
             if($user){
@@ -86,19 +88,25 @@ class UserController extends Controller
      */
     public function update(UserEditRequest $request, string $id)
     {
+
         if(auth()->user()->can("user edit")){
             $user = User::find($id);
-            $excepted = ["_token","_method","user_id"];
-
             if($user){
                 if(!$request->get("password")){
-                    $input = $request->except(array_push($excepted,"password"));
+                    $input = $request->except("_token","_method","user_id","password");
                 }
                 else{
-                    $input = $request->all();
+                    $input = $request->except("_token","_method","user_id");
                     $input["password"] = bcrypt($input["password"]);
                 }
+                if(!$user->hasRole($request->get("role"))){
+                    foreach ($user->getRoleNames() as $roleName){
+                        $user->removeRole($roleName);
+                    }
+                    $user->assignRole($request->get("role"));
+                }
                 $user->edit($input);
+                return redirect()->back();
             }
             else{
                 return redirect()->back();

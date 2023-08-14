@@ -68,23 +68,20 @@
     </div>
     {{--    User Phone--}}
     {{--    User Role--}}
-    <p>
-        @if(count($user->getRoleNames()))
-            @foreach($user->getRoleNames() as $roleName)
-                {{$roleName}}
-            @endforeach
-        @endif
-    </p>
+
     <div class="form-group">
-        <x-select
-            label="Role*"
-            placeholder="Choose role"
-            :options="$roles"
-            :option-label="'name'"
-            :option-value="'name'"
-            wire:model="role"
-            name="role"
-        />
+            <label for="role_id">Role</label>
+            <select name="role" class="form-control focus:outline-none shadow-sm text-dark" id="role_id" wire:model="role">
+                @if(count($roles) > 0)
+                    @foreach($roles as $role)
+                        <option
+                            value="{{$role["name"]}}"
+                            >
+                            {{$role["name"]}} {{$user->hasRole($role["name"]) == true ? "*" :""}}
+                        </option>
+                    @endforeach
+                @endif
+            </select>
     </div>
     {{--    User Role--}}
 </x-form-component.form-component>
