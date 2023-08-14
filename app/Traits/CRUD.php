@@ -5,7 +5,7 @@ namespace App\Traits;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
-trait FileUpload
+trait CRUD
 {
     public static function boot(): void
     {
