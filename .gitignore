@@ -17,7 +17,7 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
-./public/livewire-tmp
-./composer.lock
-./package-lock.json
-./public/uploads
+/public/livewire-tmp
+composer.lock
+package-lock.json
+/public/uploads
