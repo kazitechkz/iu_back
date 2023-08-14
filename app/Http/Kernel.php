@@ -4,6 +4,8 @@ namespace App\Http;
 
 use App\Http\Middleware\AuthMiddleware;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
+use LaravelAt\ImageSanitize\ImageSanitizeMiddleware;
+use Spatie\LaravelImageOptimizer\Middlewares\OptimizeImages;
 
 class Kernel extends HttpKernel
 {
@@ -65,6 +67,8 @@ class Kernel extends HttpKernel
         'signed' => \App\Http\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
-        "authenticate"=>AuthMiddleware::class
+        "authenticate" => AuthMiddleware::class,
+        'image-sanitize' => ImageSanitizeMiddleware::class,
+        'optimizeImages' => OptimizeImages::class
     ];
 }

@@ -4,6 +4,7 @@ return [
 
 
     'home' => 'Home',
-    'user' => 'User',
+    'user' => 'Users',
+    'subject' => 'Subjects'
 
 ];

@@ -15,7 +15,7 @@ class ContentNavbar extends Component
     public string $title;
     public string $subtitle;
     public array $breadcrumbs;
-    public function __construct(string $title,string $subtitle, array $breadcrumbs)
+    public function __construct(string $title,string $subtitle, array $breadcrumbs = [])
     {
         $this->title = $title;
         $this->subtitle = $subtitle;

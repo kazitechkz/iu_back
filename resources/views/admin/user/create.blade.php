@@ -4,9 +4,8 @@
         :title="'Создать нового пользователя'"
         :subtitle="'Блок создания нового пользователя'"
         :breadcrumbs="['Управление пользователями','Создать нового пользователя']"
-    >
+    />
 
-    </x-layer-components.content-navbar>
     <div class="col-lg-12 grid-margin stretch-card">
         <div class="card">
             <div class="card-body">

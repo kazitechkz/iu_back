@@ -18,7 +18,11 @@
                 name="{{__('sidebar.home')}}"/>
         </x-shared.sidebar-menu>
 
-
+        <x-shared.main-sidebar-menu
+            link="subject.index"
+            icon="fas fa-book"
+            name="{{__('sidebar.subject')}}"
+        />
 
 
     </ul>

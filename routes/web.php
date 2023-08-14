@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\SubjectController;
 use Illuminate\Support\Facades\Route;
 use \App\Http\Controllers\Admin\UserController;
 /*
@@ -27,6 +28,6 @@ Route::get('login', function () {
 Route::group(["prefix" => "admin"],function (){
 
     Route::resource("user",UserController::class);
-
+    Route::resource('subject', SubjectController::class);
 
 });

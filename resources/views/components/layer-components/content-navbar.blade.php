@@ -1,4 +1,4 @@
-<div class="container py-2">
+<div class="grid-margin stretch-card col-lg-12 py-2">
     <div class="card">
         <div class="card-body">
             <div class="row">
@@ -16,16 +16,16 @@
                         </div>
                     </div>
                 </div>
+                @if(count($breadcrumbs)>0)
                 <div class="col-md-12">
                     <div class="d-flex">
                         <i class="mdi mdi-home text-muted hover-cursor"></i>
-                        @if(count($breadcrumbs)>0)
                             @foreach($breadcrumbs as $breadcrumb)
                                 <p class="text-primary mb-0 hover-cursor">/{{$breadcrumb}}</p>
                             @endforeach
-                        @endif
                     </div>
                 </div>
+                @endif
             </div>
         </div>
     </div>
