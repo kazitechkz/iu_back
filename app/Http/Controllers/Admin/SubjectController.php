@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\SubjectCreateRequest;
+use App\Models\Subject;
 use Illuminate\Http\Request;
 
 class SubjectController extends Controller
@@ -26,9 +28,14 @@ class SubjectController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(SubjectCreateRequest $request)
     {
-        //
+        $data = $request->all();
+        if ($request['is_compulsory']) {
+            $data['is_compulsory'] = 1;
+        }
+        Subject::add($data);
+        return redirect(route('subject.index'));
     }
 
     /**

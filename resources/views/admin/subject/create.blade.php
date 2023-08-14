@@ -8,8 +8,16 @@
     <div class="col-lg-12 grid-margin stretch-card">
         <div class="card">
             <div class="card-body">
-                <h1 class="text-red-500 text-sm">Создать предмет</h1>
-                <livewire:file-upload/>
+                <form action="{{route('subject.store')}}" method="post">
+                    @csrf
+                    <livewire:subject.subject-create />
+                    <livewire:image-upload />
+
+                    <div class="my-3">
+                        <x-button type="submit" primary label="Сохранить" />
+                    </div>
+                </form>
+
             </div>
         </div>
     </div>
