@@ -1,9 +1,16 @@
 <x-form-component.form-component
-    :method="'post'"
-    :route="'user.store'"
+    :method="'put'"
+    :route="'user.update'"
+    :parameters="['user'=>$user]"
     :element-id="'user-create'"
 >
-
+    <div class="form-group">
+        <x-input class="my-2"
+                 type="hidden"
+                 wire:model="user_id"
+                 value="{{$user->id}}"
+        />
+    </div>
     {{--    User Name--}}
     <div class="form-group">
         <x-input class="my-2"
@@ -61,6 +68,13 @@
     </div>
     {{--    User Phone--}}
     {{--    User Role--}}
+    <p>
+        @if(count($user->getRoleNames()))
+            @foreach($user->getRoleNames() as $roleName)
+                {{$roleName}}
+            @endforeach
+        @endif
+    </p>
     <div class="form-group">
         <x-select
             label="Role*"
@@ -70,7 +84,6 @@
             :option-value="'name'"
             wire:model="role"
             name="role"
-            `
         />
     </div>
     {{--    User Role--}}

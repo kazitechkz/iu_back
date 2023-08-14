@@ -19,14 +19,17 @@ class UserEditRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array|string>
      */
-    public function rules($id): array
+    public function rules($id = 0): array
     {
+        if($id == 0){
+            $id = $this->get("user_id");
+        }
         return [
             "name"=>"required|max:255",
-            "username"=>"required|unique:users",
-            "email"=>"required|email|unique:users,email,|" . $id . "|max:255",
-            "phone"=>"required|unique:users,phone,|". $id ."|max:255",
-            "password"=>"required|min:4|max:255"
+            "username"=>"required|unique:users,username," . $id . "|max:255",
+            "email"=>"required|email|unique:users,email," . $id . "|max:255",
+            "phone"=>"required|unique:users,phone,". $id ."|max:255",
+            "password"=>"nullable|confirmed|min:4|max:255"
         ];
     }
 }

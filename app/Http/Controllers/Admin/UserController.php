@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserCreateRequest;
+use App\Http\Requests\UserEditRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
@@ -69,22 +70,40 @@ class UserController extends Controller
      */
     public function edit(string $id)
     {
-        $user = User::find($id);
-        if($user){
-            return view("admin.user.edit",compact("user"));
+        if(auth()->user()->can("user edit")){
+            $user = User::find($id);
+            if($user){
+                return view("admin.user.edit",compact("user"));
+            }
+            else{
+                return redirect()->back();
+            }
         }
-        else{
-            return redirect()->back();
-        }
-
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UserEditRequest $request, string $id)
     {
-        //
+        if(auth()->user()->can("user edit")){
+            $user = User::find($id);
+            $excepted = ["_token","_method","user_id"];
+
+            if($user){
+                if(!$request->get("password")){
+                    $input = $request->except(array_push($excepted,"password"));
+                }
+                else{
+                    $input = $request->all();
+                    $input["password"] = bcrypt($input["password"]);
+                }
+                $user->edit($input);
+            }
+            else{
+                return redirect()->back();
+            }
+        }
     }
 
     /**

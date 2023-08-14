@@ -21,11 +21,8 @@ class Create extends Component
     }
 
     public function updated($propertyName)
-
     {
-
         $this->validateOnly($propertyName);
-
     }
     public function mount()
 

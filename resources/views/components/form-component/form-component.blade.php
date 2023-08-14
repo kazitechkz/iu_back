@@ -1,6 +1,6 @@
 <form
-    method="{{$method}}"
-    action="{{route($route)}}"
+    method="{{$method != "get" ? "post" : "get"}}"
+    action="{{route($route,$parameters)}}"
     enctype="{{$enctype}}"
     id="{{$elementId}}"
 >

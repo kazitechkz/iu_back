@@ -12,22 +12,24 @@ class FormComponent extends Component
      * Create a new component instance.
      */
     public string $method;
-    public string $route;
+    public $route;
+    public $parameters;
     public string $enctype;
     public string $elementId;
 
     public function __construct( string $method,
      string $route,
      string $elementId,
-     string $enctype = ""
+     string $enctype = "",
+    $parameters = []
     )
     {
         $this->method = $method;
         $this->route = $route;
         $this->enctype = $enctype;
         $this->elementId = $elementId;
+        $this->parameters = $parameters;
     }
-
     /**
      * Get the view / contents that represent the component.
      */

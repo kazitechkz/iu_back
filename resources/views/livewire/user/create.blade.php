@@ -3,6 +3,7 @@
     :route="'user.store'"
     :element-id="'user-create'"
 >
+
     {{--    User Name--}}
     <div class="form-group">
         <x-input class="my-2"
@@ -69,7 +70,6 @@
             :option-value="'name'"
             wire:model="role"
             name="role"
-`
         />
     </div>
     {{--    User Role--}}

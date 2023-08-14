@@ -30,7 +30,7 @@ class UserCreateRequest extends FormRequest
     {
         return [
             "name"=>"required|max:255",
-            "username"=>"required|unique:users",
+            "username"=>"required|unique:users,username",
             "email"=>"required|email|unique:users|max:255",
             "phone"=>"required|unique:users|max:255",
             "password"=>"required|min:4|max:255"
