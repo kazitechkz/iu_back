@@ -22,7 +22,8 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view("admin.user.create");
+        $roles = \Spatie\Permission\Models\Role::all()->toArray();
+        return view("admin.user.create",compact("roles"));
 
     }
 
@@ -31,7 +32,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        dd($request->all());
     }
 
     /**
