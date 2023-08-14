@@ -10,7 +10,7 @@ class Phone extends Component
     public string  $label = "Phone";
     public string  $hint = "Please inter your phone";
     public string  $name = "phone";
-    public string  $mask = "['+7(7##)###-##-##']";
+    public string  $mask = "['+77#########']";
     public string  $icon = "phone";
     public function render()
     {

@@ -1,6 +1,12 @@
 @extends('layouts.default')
 @section('content')
+    <x-layer-components.content-navbar
+        :title="'Создать нового пользователя'"
+        :subtitle="'Блок создания нового пользователя'"
+        :breadcrumbs="['Управление пользователями','Создать нового пользователя']"
+    >
 
+    </x-layer-components.content-navbar>
     <div class="col-lg-12 grid-margin stretch-card">
         <div class="card">
             <div class="card-body">
@@ -18,7 +24,6 @@
                                  icon="user"
                                  hint="Фамилия имя отчество"
                         />
-                        <x-errors :only="'name'" />
                     </div>
                     {{--    User Name--}}
                     {{--    NickName--}}
@@ -30,7 +35,6 @@
                                  icon="user"
                                  hint="Уникальный логин"
                         />
-                        <x-errors :only="'username'" />
                     </div>
                     {{--    NickName--}}
                     {{--    User Email--}}
@@ -44,7 +48,6 @@
                             icon="mail"
                             hint="Укажите действующую почту"
                         />
-                        <x-errors :only="'email'" />
                     </div>
                     {{--    User Email--}}
                     {{--    User Password--}}
@@ -55,13 +58,11 @@
                             icon="lock-closed"
                             hint="Пароль должен иметь более 5 знаков, содержать спец символы"
                             value="" />
-                        <x-errors :only="'password'" />
                     </div>
                     {{--    User Password--}}
                     {{--    User Role--}}
                     <div class="form-group">
                         <livewire:phone />
-                        <x-errors :only="'phone'" />
                     </div>
                     {{--    User Role--}}
                     {{--    User Role--}}
@@ -74,7 +75,6 @@
                             :label="'Role*'"
                             :options="$roles"/>
                     </div>
-                    <x-errors :only="'role'" />
                     {{--    User Role--}}
                 </x-form-component.form-component>
             </div>
