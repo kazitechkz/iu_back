@@ -25,6 +25,7 @@ class SubjectTable extends DataTableComponent
         $this->setPerPage(20);
         $this->setBulkActions([
             'exportSelected' => 'Export',
+            'deleteSelected' => 'Удалить'
         ]);
         $this->setPrimaryKey('id')
             ->setTableRowUrl(function($row) {
@@ -36,7 +37,23 @@ class SubjectTable extends DataTableComponent
     {
         return [
             'exportSelected' => 'Export',
+            'deleteSelected' => 'Удалить'
         ];
+    }
+
+    public function deleteSelected()
+    {
+        $subjects = $this->getSelected();
+        foreach ($subjects as $key => $value) {
+            $sub = Subject::find($value);
+//            if ($sub) {
+//                $sub->enable = 0;
+//                $sub->save();
+//                $sub->delete();
+//            }
+            $sub?->delete();
+        }
+        $this->clearSelected();
     }
 
     public function exportSelected(): \Symfony\Component\HttpFoundation\BinaryFileResponse
@@ -53,6 +70,8 @@ class SubjectTable extends DataTableComponent
             Column::make("Наименование", "title_ru")->searchable()
                 ->sortable(),
             BooleanColumn::make("Обязательный компонент", "is_compulsory")
+                ->sortable(),
+            Column::make("Мах кол-во вопросов", "max_questions_quantity")
                 ->sortable(),
             Column::make('Картинка', 'image.url')->format(function ($value){
                 return '<img src="'.$value.'" class="w-50" />';

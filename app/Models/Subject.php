@@ -5,10 +5,11 @@ namespace App\Models;
 use App\Traits\CRUD;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Subject extends Model
 {
-    use HasFactory, CRUD;
+    use HasFactory, CRUD, SoftDeletes;
 
     protected $fillable = [
         'title_kk',
