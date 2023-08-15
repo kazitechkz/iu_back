@@ -14,7 +14,7 @@
         />
         <x-shared.main-sidebar-menu
             link="role.index"
-            icon="fas fa-headset"
+            icon="fas fa-person-military-pointing"
             name="{{__('sidebar.role')}}"
         />
         <x-shared.main-sidebar-menu

@@ -3,6 +3,7 @@
     :route="'role.store'"
     :element-id="'role-create'"
 >
+
     {{--    Role Name--}}
     <div class="form-group">
         <x-input class="my-2"
@@ -25,6 +26,24 @@
         />
     </div>
     {{--    Role Guard --}}
+
+    {{-- Role Permission --}}
+    <p class="h-3 mb-3 font-weight-bold">
+        Permission:
+    </p>
+    <div class="form-group">
+        @foreach($permissions as $permission)
+            <x-checkbox
+                value="{{$permission->name}}"
+                id="{{$permission->name}}"
+                name="permissions[]"
+                multiple="multiple"
+                selected
+                label="{{$permission->name}}"
+            />
+        @endforeach
+    </div>
+    {{-- Role Permission --}}
 
 
 
