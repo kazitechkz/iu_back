@@ -22,8 +22,9 @@ class RoleCreateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "name"=>"required|max:255",
-            "guard_name"=>"required|max:255|in:web,api"
+            "name"=>"required|unique:roles,name|max:255",
+            "guard_name"=>"required|max:255|in:web,api",
+            "permissions"=>"required|array|min:1"
         ];
     }
 }

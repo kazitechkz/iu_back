@@ -22,7 +22,7 @@ class PermissionCreateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "name"=>"required|max:255",
+            "name"=>"required|unique:permissions,name|max:255",
             "guard_name"=>"required|max:255|in:web,api"
         ];
     }

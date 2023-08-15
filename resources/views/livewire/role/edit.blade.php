@@ -26,7 +26,25 @@
         />
     </div>
     {{--    Role Guard --}}
+    {{-- Role Permission --}}
+    <p class="h-3 mb-3 font-weight-bold">
+        Permission:
+    </p>
+    <div class="form-group">
+        @foreach($permissions as $permission)
+            <x-checkbox
+                wire:change="changePermission('{{ $permission->name }}')"
+                value="{{$permission->name}}"
+                id="{{$permission->name}}"
+                wire:model="permissionGroup"
+                name="permissions[]"
+                multiple="multiple"
 
+                label="{{$permission->name}}"
+            />
+        @endforeach
+    </div>
+    {{-- Role Permission --}}
 
 
 </x-form-component.form-component>

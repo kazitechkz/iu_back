@@ -32,7 +32,12 @@ class RoleController extends Controller
      */
     public function store(RoleCreateRequest $request)
     {
-        Role::add($request->all());
+        $role = Role::add($request->all());
+        if($role){
+            foreach ($request->get("permissions") as $permission){
+                $role->givePermissionTo($permission);
+            }
+        }
         return redirect()->back();
     }
 
