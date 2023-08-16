@@ -36,7 +36,7 @@
             link="single-subject-tests.index"
             icon="fas fa-edit"
             name="{{__('sidebar.single_subject_tests')}}"
-        />
+        ></x-shared.main-sidebar-menu>
 
 
     </ul>
