@@ -6,7 +6,7 @@ use App\Http\Requests\SingleSubjectTest\CreateRequest;
 use App\Models\Subject;
 use Livewire\Component;
 
-class Create extends Component
+class Edit extends Component
 {
     public $subjects;
     public $subject_id;
@@ -14,6 +14,15 @@ class Create extends Component
     public $contextual_questions_quantity;
     public $multi_answer_questions_quantity;
     public $allotted_time;
+    public function mount($item)
+    {
+        $this->subject_id = $item->subject_id;
+        $this->single_answer_questions_quantity = $item->single_answer_questions_quantity;
+        $this->contextual_questions_quantity = $item->contextual_questions_quantity;
+        $this->multi_answer_questions_quantity = $item->multi_answer_questions_quantity;
+        $this->allotted_time = $item->allotted_time;
+        $this->subjects = Subject::all();
+    }
 
     protected function rules(): array
     {
@@ -24,16 +33,13 @@ class Create extends Component
     {
         return (new CreateRequest())->attributes();
     }
-    public function mount()
-    {
-        $this->subjects = Subject::all();
-    }
+
     public function updated($propertyName)
     {
         $this->validateOnly($propertyName);
     }
     public function render()
     {
-        return view('livewire.single-subject-test.create');
+        return view('livewire.single-subject-test.edit');
     }
 }

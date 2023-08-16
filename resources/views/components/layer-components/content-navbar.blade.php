@@ -7,7 +7,9 @@
                         <div class="d-flex align-items-end flex-wrap">
                             <div class="me-md-3 me-xl-5">
                                 <h2>{{$title}}</h2>
-                                <p class="mb-md-0">{{$subtitle}}</p>
+                                @if($subtitle != '')
+                                    <p class="mb-md-0">{{$subtitle}}</p>
+                                @endif
                             </div>
 
                         </div>

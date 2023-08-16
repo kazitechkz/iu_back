@@ -6,6 +6,7 @@
 
 namespace App\Models;
 
+use App\Traits\CRUD;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -30,7 +31,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class SingleSubjectTest extends Model
 {
-	use SoftDeletes;
+	use SoftDeletes, CRUD;
 	protected $table = 'single_subject_tests';
 
 	protected $casts = [
