@@ -6,7 +6,6 @@
         name="{{__('sidebar.home')}}"
         >
         </x-shared.main-sidebar-menu>
-
         <x-shared.main-sidebar-menu
             link="user.index"
             icon="fas fa-solid fa-building-shield"
@@ -36,12 +35,17 @@
             link="single-tests.index"
             icon="fas fa-edit"
             name="{{__('sidebar.single_subject_tests')}}"
-        ></x-shared.main-sidebar-menu>
+        />
         <x-shared.main-sidebar-menu
             link="plan.index"
             icon="fas fa-credit-card"
             name="{{__('sidebar.plan')}}"
-        ></x-shared.main-sidebar-menu>
+        />
+        <x-shared.main-sidebar-menu
+            link="categories.index"
+            icon="fas fa-list"
+            name="{{__('sidebar.categories')}}"
+        />
 
 
     </ul>

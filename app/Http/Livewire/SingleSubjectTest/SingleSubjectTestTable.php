@@ -46,11 +46,6 @@ class SingleSubjectTestTable extends DataTableComponent
         $subjects = $this->getSelected();
         foreach ($subjects as $key => $value) {
             $sub = SingleSubjectTest::find($value);
-//            if ($sub) {
-//                $sub->enable = 0;
-//                $sub->save();
-//                $sub->delete();
-//            }
             $sub?->delete();
         }
         $this->clearSelected();
