@@ -4,7 +4,5 @@
 <wireui:scripts />
 
 <style>
-
     [x-cloak] { display: none !important; }
-
 </style>

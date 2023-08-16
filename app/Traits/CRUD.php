@@ -57,6 +57,13 @@ trait CRUD
         $this->save();
     }
 
+    public static function show($id){
+        $model = self::find($id);
+        if($model){
+            return $model;
+        }
+    }
+
     public function remove(): void
     {
         $this->delete();

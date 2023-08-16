@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use \App\Http\Controllers\Admin\UserController as AdminUserController;
 use \App\Http\Controllers\Admin\RoleController as AdminRoleController;
 use \App\Http\Controllers\Admin\PermissionController as AdminPermissionController;
+use App\Http\Controllers\Admin\LocaleController as AdminLocaleController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -32,6 +33,7 @@ Route::group(["prefix" => "dashboard","middleware" => "auth"],function (){
 
     Route::resource("user",AdminUserController::class);
     Route::resource("role",AdminRoleController::class);
+    Route::resource("locale",AdminLocaleController::class);
     Route::resource("permission",AdminPermissionController::class);
     Route::resource('subject', AdminSubjectController::class);
     Route::resource('single-subject-tests', AdminSingleSubjectTestController::class);

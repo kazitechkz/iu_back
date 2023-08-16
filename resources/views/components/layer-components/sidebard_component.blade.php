@@ -23,6 +23,11 @@
             name="{{__('sidebar.permission')}}"
         />
         <x-shared.main-sidebar-menu
+            link="locale.index"
+            icon="fas fa-language"
+            name="{{__('sidebar.locale')}}"
+        />
+        <x-shared.main-sidebar-menu
             link="subject.index"
             icon="fas fa-book"
             name="{{__('sidebar.subject')}}"
