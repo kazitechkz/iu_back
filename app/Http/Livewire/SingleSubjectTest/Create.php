@@ -1,23 +1,18 @@
 <?php
 
-namespace App\Http\Livewire\Subject;
+namespace App\Http\Livewire\SingleSubjectTest;
 
 use App\Exports\SubjectExports;
 use App\Models\Subject;
 use Maatwebsite\Excel\Facades\Excel;
-use Rappasoft\LaravelLivewireTables\Exceptions\DataTableConfigurationException;
-use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
-use Rappasoft\LaravelLivewireTables\Views\Columns\BooleanColumn;
-use Rappasoft\LaravelLivewireTables\Views\Columns\ImageColumn;
+use Rappasoft\LaravelLivewireTables\Views\Column;
+use App\Models\SingleSubjectTest;
 
-class SubjectTable extends DataTableComponent
+class Create extends DataTableComponent
 {
-    protected $model = Subject::class;
+    protected $model = SingleSubjectTest::class;
 
-    /**
-     * @throws DataTableConfigurationException
-     */
     public function configure(): void
     {
         $this->setPrimaryKey('id');
@@ -29,7 +24,7 @@ class SubjectTable extends DataTableComponent
         ]);
         $this->setPrimaryKey('id')
             ->setTableRowUrl(function($row) {
-                return route('subject.edit', $row);
+                return route('single-subject-tests.edit', $row);
             });
     }
 
@@ -67,27 +62,20 @@ class SubjectTable extends DataTableComponent
         return [
             Column::make("Id", "id")
                 ->sortable(),
-            Column::make("Наименование", "title_ru")->searchable()
+            Column::make("Предмет", "subject.title_ru")->searchable()
                 ->sortable(),
-            BooleanColumn::make("Обязательный компонент", "is_compulsory")
+            Column::make("Кол-во вопросов с 1 ответом", "single_answer_questions_quantity")
                 ->sortable(),
-            Column::make("Мах кол-во вопросов", "max_questions_quantity")
+            Column::make("Кол-во контекстных вопросов", "contextual_questions_quantity")
                 ->sortable(),
-            Column::make('Картинка', 'image.url')->format(function ($value){
-                return '<img src="'.$value.'" class="w-50" />';
-            })->html(),
+            Column::make("Кол-во вопросов с несколькими ответами", "multi_answer_questions_quantity")
+                ->sortable(),
+            Column::make("Отведенное время (мин)", "allotted_time")
+                ->sortable(),
 //            Column::make("Created at", "created_at")
 //                ->sortable(),
 //            Column::make("Updated at", "updated_at")
 //                ->sortable(),
-        ];
-    }
-
-    protected function results(): array
-    {
-        return [
-            // The table results configuration.
-            // As results are optional on tables, you may delete this method if you do not use it.
         ];
     }
 }

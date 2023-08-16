@@ -2,10 +2,10 @@
 
 namespace App\Exports;
 
-use App\Models\Subject;
+use App\Models\SingleSubjectTest;
 use Maatwebsite\Excel\Concerns\FromCollection;
 
-class SubjectExports implements FromCollection
+class SingleSubjectExports implements FromCollection
 {
     public $items;
 
@@ -13,12 +13,11 @@ class SubjectExports implements FromCollection
     {
         $this->items = $items;
     }
-
     /**
     * @return \Illuminate\Support\Collection
     */
-    public function collection()
+    public function collection(): \Illuminate\Support\Collection
     {
-        return Subject::whereIn('id', $this->items)->get();
+        return SingleSubjectTest::whereIn('id', $this->items)->get();
     }
 }

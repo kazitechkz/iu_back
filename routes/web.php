@@ -1,10 +1,11 @@
 <?php
 
-use App\Http\Controllers\Admin\SubjectController;
+use App\Http\Controllers\Admin\SingleSubjectTestController as AdminSingleSubjectTestController;
+use App\Http\Controllers\Admin\SubjectController as AdminSubjectController;
 use Illuminate\Support\Facades\Route;
-use \App\Http\Controllers\Admin\UserController;
-use \App\Http\Controllers\Admin\RoleController;
-use \App\Http\Controllers\Admin\PermissionController;
+use \App\Http\Controllers\Admin\UserController as AdminUserController;
+use \App\Http\Controllers\Admin\RoleController as AdminRoleController;
+use \App\Http\Controllers\Admin\PermissionController as AdminPermissionController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -29,9 +30,10 @@ Route::get('login', function () {
 
 Route::group(["prefix" => "dashboard","middleware" => "auth"],function (){
 
-    Route::resource("user",UserController::class);
-    Route::resource("role",RoleController::class);
-    Route::resource("permission",PermissionController::class);
-    Route::resource('subject', SubjectController::class);
+    Route::resource("user",AdminUserController::class);
+    Route::resource("role",AdminRoleController::class);
+    Route::resource("permission",AdminPermissionController::class);
+    Route::resource('subject', AdminSubjectController::class);
+    Route::resource('single-subject-tests', AdminSingleSubjectTestController::class);
 
 });
