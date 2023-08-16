@@ -8,7 +8,7 @@
     <div class="col-lg-12 grid-margin stretch-card">
         <div class="card">
             <div class="card-body">
-
+                <livewire:plan.create></livewire:plan.create>
             </div>
         </div>
     </div>
