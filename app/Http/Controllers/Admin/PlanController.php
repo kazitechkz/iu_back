@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use Bpuig\Subby\Models\Plan;
 use Illuminate\Http\Request;
 
 class PlanController extends Controller
@@ -20,7 +21,7 @@ class PlanController extends Controller
      */
     public function create()
     {
-        //
+        return view("admin.plan.create");
     }
 
     /**
@@ -28,7 +29,7 @@ class PlanController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Plan::all();
     }
 
     /**

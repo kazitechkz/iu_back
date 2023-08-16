@@ -37,6 +37,11 @@
             icon="fas fa-edit"
             name="{{__('sidebar.single_subject_tests')}}"
         ></x-shared.main-sidebar-menu>
+        <x-shared.main-sidebar-menu
+            link="plan.index"
+            icon="fas fa-credit-card"
+            name="{{__('sidebar.plan')}}"
+        ></x-shared.main-sidebar-menu>
 
 
     </ul>
