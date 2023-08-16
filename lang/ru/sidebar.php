@@ -8,6 +8,7 @@ return [
     'subject' => 'Предметы',
     'role' => 'Роли',
     'permission' => 'Права',
-    'single_subject_tests' => 'Тесты по предметам'
+    'single_subject_tests' => 'Тесты по предметам',
+    'categories' => 'Категории'
 
 ];

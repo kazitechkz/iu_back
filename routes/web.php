@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Admin\SingleSubjectTestController as AdminSingleSubjectTestController;
 use App\Http\Controllers\Admin\SubjectController as AdminSubjectController;
 use Illuminate\Support\Facades\Route;
@@ -39,4 +40,5 @@ Route::group(["prefix" => "dashboard","middleware" => "auth"],function (){
     Route::resource('subject', AdminSubjectController::class)->except(['show', 'destroy']);
     Route::resource('single-tests', AdminSingleSubjectTestController::class)->except(['create', 'show', 'destroy']);
     Route::resource("plan",AdminPlanController::class);
+    Route::resource('categories', AdminCategoryController::class)->except(['show', 'destroy']);
 });

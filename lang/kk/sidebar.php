@@ -8,6 +8,7 @@ return [
     'subject' => 'Пәндер',
     'role' => 'Рөльдер',
     'permission' => 'Рұқсат',
-    'single_subject_tests' => 'Пәндер бойынша тест'
+    'single_subject_tests' => 'Пәндер бойынша тест',
+    'categories' => 'Категориялар'
 
 ];

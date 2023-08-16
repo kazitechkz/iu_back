@@ -1,0 +1,37 @@
+<?php
+
+namespace App\Http\Livewire\Category;
+
+use App\Http\Requests\CategoryRequest;
+use App\Models\Subject;
+use Livewire\Component;
+
+class Create extends Component
+{
+    public $subjects;
+    public $subject_id;
+    public $title_kk;
+    public $title_ru;
+
+    protected function rules(): array
+    {
+        return (new CategoryRequest())->rules();
+    }
+
+    protected function validationAttributes (): array
+    {
+        return (new CategoryRequest())->attributes();
+    }
+    public function mount()
+    {
+        $this->subjects = Subject::all();
+    }
+    public function updated($propertyName)
+    {
+        $this->validateOnly($propertyName);
+    }
+    public function render()
+    {
+        return view('livewire.category.create');
+    }
+}
