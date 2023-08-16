@@ -63,6 +63,7 @@ class LocaleTable extends DataTableComponent
                 ->sortable(),
             Column::make("Code", "code")
                 ->searchable()
+
                 ->sortable(),
             Column::make("IsActive", "isActive")->format(function ($value){
                 return $value ? "<p class='text-green-500'>Активен</p>" : "<p class='text-red-500'>Не активен</p>";
