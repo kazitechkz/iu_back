@@ -19,5 +19,7 @@ yarn-error.log
 /.vscode
 /public/livewire-tmp
 /composer.lock
+./composer.lock
+composer.lock
 /package-lock.json
 /public/uploads

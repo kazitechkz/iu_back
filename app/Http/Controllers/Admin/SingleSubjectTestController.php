@@ -31,7 +31,7 @@ class SingleSubjectTestController extends Controller
     public function store(CreateRequest $request)
     {
         SingleSubjectTest::add($request->all());
-        return redirect(route('single-subject-tests.index'));
+        return redirect(route('single-tests.index'));
     }
 
     /**

@@ -36,6 +36,6 @@ Route::group(["prefix" => "dashboard","middleware" => "auth"],function (){
     Route::resource("locale",AdminLocaleController::class);
     Route::resource("permission",AdminPermissionController::class);
     Route::resource('subject', AdminSubjectController::class)->except(['show', 'destroy']);
-    Route::resource('single-subject-tests', AdminSingleSubjectTestController::class)->except(['create', 'show', 'destroy']);
+    Route::resource('single-tests', AdminSingleSubjectTestController::class)->except(['create', 'show', 'destroy']);
 
 });

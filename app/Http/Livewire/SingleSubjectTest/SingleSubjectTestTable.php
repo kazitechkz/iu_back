@@ -29,7 +29,7 @@ class SingleSubjectTestTable extends DataTableComponent
         ]);
         $this->setPrimaryKey('id')
             ->setTableRowUrl(function($row) {
-                return route('single-subject-tests.edit', $row);
+                return route('single-tests.edit', $row);
             });
     }
 

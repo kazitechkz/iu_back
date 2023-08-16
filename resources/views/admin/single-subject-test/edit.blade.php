@@ -6,7 +6,7 @@
     <div class="col-lg-12 grid-margin stretch-card">
         <div class="card">
             <div class="card-body">
-                <form action="{{route('single-subject-tests.update', $singleSubjectTest->id)}}" method="post">
+                <form action="{{route('single-tests.update', $singleSubjectTest->id)}}" method="post">
                     @method('PUT')
                     @csrf
                     <livewire:single-subject-test.edit :item="$singleSubjectTest" />

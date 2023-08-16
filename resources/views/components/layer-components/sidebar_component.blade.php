@@ -33,7 +33,7 @@
             name="{{__('sidebar.subject')}}"
         />
         <x-shared.main-sidebar-menu
-            link="single-subject-tests.index"
+            link="single-tests.index"
             icon="fas fa-edit"
             name="{{__('sidebar.single_subject_tests')}}"
         ></x-shared.main-sidebar-menu>
