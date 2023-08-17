@@ -21,6 +21,8 @@
         "rappasoft/laravel-livewire-tables": "^2.15",
         "spatie/laravel-image-optimizer": "^1.7",
         "spatie/laravel-permission": "^5.10",
+        "spatie/laravel-query-builder": "^5.2",
+        "spatie/laravel-searchable": "^1.11",
         "wireui/wireui": "^1.17",
         "yoeunes/toastr": "^2.3"
     },

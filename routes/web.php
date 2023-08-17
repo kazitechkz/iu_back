@@ -10,6 +10,7 @@ use \App\Http\Controllers\Admin\PermissionController as AdminPermissionControlle
 use App\Http\Controllers\Admin\LocaleController as AdminLocaleController;
 use App\Http\Controllers\Admin\PlanController as AdminPlanController;
 use App\Http\Controllers\Admin\PlanCombinationController as AdminPlanCombinationController;
+use App\Http\Controllers\Admin\SubscriptionController as AdminSubscriptionController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -43,6 +44,6 @@ Route::group(["prefix" => "dashboard","middleware" => "auth"],function (){
     Route::resource("plan",AdminPlanController::class);
     Route::resource('categories', AdminCategoryController::class)->except(['show', 'destroy']);
     Route::resource("plan-combination",AdminPlanCombinationController::class);
-
+    Route::resource("subscription",AdminSubscriptionController::class);
 
 });

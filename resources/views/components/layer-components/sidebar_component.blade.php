@@ -47,6 +47,11 @@
             name="{{__('sidebar.plan-combination')}}"
         />
         <x-shared.main-sidebar-menu
+            link="subscription.index"
+            icon="fas fa-handshake"
+            name="{{__('sidebar.subscription')}}"
+        />
+        <x-shared.main-sidebar-menu
             link="categories.index"
             icon="fas fa-list"
             name="{{__('sidebar.categories')}}"

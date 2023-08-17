@@ -10,12 +10,15 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
+use Spatie\Searchable\Searchable;
+use Spatie\Searchable\SearchResult;
 
-class User extends Authenticatable
+class User extends Authenticatable implements Searchable
 {
     use HasApiTokens, HasFactory, Notifiable, HasRoles;
     use CRUD;
     use HasSubscriptions;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -50,25 +53,13 @@ class User extends Authenticatable
     ];
 
 
-    public static array $ListAttributes = [
-      [
-          "label"=>"ID",
-          "name"=>"id",
-          "type"=>"number"
-      ],
-        [
-            "label"=>"Email",
-            "name"=>"email",
-            "type"=>"text"
-        ],
-        [
-            "label"=>"Password",
-            "name"=>"password",
-            "type"=>"text"
-        ],
-
-
-    ];
-
-
+    public function getSearchResult(): SearchResult
+    {
+        $url = route('user.edit', $this->id);
+        return new SearchResult(
+            $this,
+            $this->username,
+            $url
+        );
+    }
 }
