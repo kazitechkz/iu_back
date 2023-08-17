@@ -2,6 +2,8 @@
 
 namespace App\Http\Livewire\Plan;
 
+use App\Http\Requests\RoleCreateRequest;
+use Bpuig\Subby\Models\Plan;
 use Livewire\Component;
 
 class Create extends Component
@@ -19,6 +21,36 @@ class Create extends Component
     public $grace_period;
     public $grace_interval;
 
+    public $invoice_period;
+
+    public $invoice_interval;
+    public $tier;
+
+    public function mount(){
+        $this->tag = old("tag")??"";
+        $this->name = old("name")??"";
+        $this->description = old("description")??"";
+        $this->is_active = old("is_active")??true;
+        $this->price = old("price")??0;
+         $this->signup_fee = old("signup_fee")??0;
+        $this->currency = old("currency")??"KZT";
+        $this->trial_period = old("price")??0;
+        $this->trial_interval = old("trial_interval")??"";
+        $this->trial_mode = old("trial_mode")??"";
+        $this->grace_period = old("grace_period")??0;
+        $this->grace_interval = old("grace_interval")??0;
+        $this->invoice_period = old("invoice_period")??0;
+        $this->invoice_interval = old("invoice_interval")??0;
+        $this->tier = old("name")??"";
+    }
+    protected function rules(){
+        $rules = (new Plan())->getRules();
+        return $rules;
+    }
+    public function updated($propertyName)
+    {
+        $this->validateOnly($propertyName);
+    }
     public function render()
     {
         return view('livewire.plan.create');

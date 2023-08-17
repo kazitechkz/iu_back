@@ -9,6 +9,8 @@ return [
     'role' => 'Рөльдер',
     'permission' => 'Рұқсат',
     'single_subject_tests' => 'Пәндер бойынша тест',
-    'categories' => 'Категориялар'
-
+    'categories' => 'Категориялар',
+    "locale"=>"Локальдар",
+    'plan' => 'Жазулы жоспары',
+    'plan-combination' => 'Локализация жоспары'
 ];

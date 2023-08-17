@@ -9,6 +9,8 @@ return [
     'role' => 'Роли',
     'permission' => 'Права',
     'single_subject_tests' => 'Тесты по предметам',
-    'categories' => 'Категории'
-
+    'categories' => 'Категории',
+    "locale"=>"Язык",
+    'plan' => 'План подписки',
+    'plan-combination' => 'Локализация плана'
 ];

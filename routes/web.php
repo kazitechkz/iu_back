@@ -9,6 +9,7 @@ use \App\Http\Controllers\Admin\RoleController as AdminRoleController;
 use \App\Http\Controllers\Admin\PermissionController as AdminPermissionController;
 use App\Http\Controllers\Admin\LocaleController as AdminLocaleController;
 use App\Http\Controllers\Admin\PlanController as AdminPlanController;
+use App\Http\Controllers\Admin\PlanCombinationController as AdminPlanCombinationController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -41,4 +42,7 @@ Route::group(["prefix" => "dashboard","middleware" => "auth"],function (){
     Route::resource('single-tests', AdminSingleSubjectTestController::class)->except(['create', 'show', 'destroy']);
     Route::resource("plan",AdminPlanController::class);
     Route::resource('categories', AdminCategoryController::class)->except(['show', 'destroy']);
+    Route::resource("plan-combination",AdminPlanCombinationController::class);
+
+
 });

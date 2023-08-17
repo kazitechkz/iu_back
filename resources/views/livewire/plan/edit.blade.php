@@ -1,7 +1,8 @@
 <x-form-component.form-component
-    :method="'post'"
-    :route="'plan.store'"
-    :element-id="'plan-create'"
+    :method="'put'"
+    :route="'plan.update'"
+    :parameters="['plan'=>$plan]"
+    :element-id="'plan-edit'"
 >
 
     {{--    Tag --}}
