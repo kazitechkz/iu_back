@@ -71,7 +71,10 @@ class SubscriptionController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        if($subscription = PlanSubscription::find($id)){
+            return view("admin.subscription.edit",compact("subscription"));
+        }
+        return redirect()->back();
     }
 
     /**
@@ -79,7 +82,7 @@ class SubscriptionController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        return redirect()->back();
     }
 
     /**

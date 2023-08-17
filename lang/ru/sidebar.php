@@ -12,5 +12,6 @@ return [
     'categories' => 'Категории',
     "locale"=>"Язык",
     'plan' => 'План подписки',
-    'plan-combination' => 'Локализация плана'
+    'plan-combination' => 'Локализация плана',
+    "subscription"=>"Подписки"
 ];

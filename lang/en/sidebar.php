@@ -12,5 +12,6 @@ return [
     'categories' => 'Categories',
     "locale"=>"Locale",
     'plan' => 'Subscribe Plan',
-    'plan-combination' => 'Plan Localization'
+    'plan-combination' => 'Plan Localization',
+    "subscription"=>"Subscription"
 ];

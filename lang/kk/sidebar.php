@@ -12,5 +12,6 @@ return [
     'categories' => 'Категориялар',
     "locale"=>"Локальдар",
     'plan' => 'Жазулы жоспары',
-    'plan-combination' => 'Локализация жоспары'
+    'plan-combination' => 'Локализация жоспары',
+    "subscription"=>"Подписки"
 ];
