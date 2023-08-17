@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Plan\PlanCreateRequest;
 use Bpuig\Subby\Models\Plan;
 use Illuminate\Http\Request;
 
@@ -27,9 +28,12 @@ class PlanController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(PlanCreateRequest $request)
     {
-        Plan::all();
+        $input = $request->all();
+        $input["is_active"] = $request->boolean("is_active");
+       Plan::create($input);
+       return redirect()->back();
     }
 
     /**
@@ -45,7 +49,11 @@ class PlanController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $plan = Plan::find($id);
+        if($plan){
+            return view("admin.plan.edit",compact("plan"));
+        }
+        return redirect()->route("plan.index");
     }
 
     /**
@@ -53,7 +61,13 @@ class PlanController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $plan = Plan::find($id);
+        if($plan){
+            $input = $request->all();
+            $input["is_active"] = $request->boolean("is_active");
+            $plan->update($input);
+        }
+        return redirect()->route("plan.index");
     }
 
     /**

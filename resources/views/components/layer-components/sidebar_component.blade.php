@@ -42,6 +42,11 @@
             name="{{__('sidebar.plan')}}"
         />
         <x-shared.main-sidebar-menu
+            link="plan-combination.index"
+            icon="fas fa-credit-card"
+            name="{{__('sidebar.plan-combination')}}"
+        />
+        <x-shared.main-sidebar-menu
             link="categories.index"
             icon="fas fa-list"
             name="{{__('sidebar.categories')}}"
