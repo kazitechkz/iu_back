@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Subject\SubjectCreateRequest;
 use App\Http\Requests\Subject\SubjectEditRequest;
+use App\Models\File;
 use App\Models\Subject;
 use Illuminate\Http\Request;
 
@@ -15,6 +16,9 @@ class SubjectController extends Controller
      */
     public function index()
     {
+//        dd(File::getFileFromAWS('subjects/onw.png'));
+//        $test = Subject::with('image')->find(17);
+//        dd($test);
         return view('admin.subject.index');
     }
 

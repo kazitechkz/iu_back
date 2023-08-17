@@ -20,6 +20,7 @@ return new class extends Migration
             $table->integer('max_questions_quantity');
             $table->integer('questions_step')->default(5);
             $table->foreignId('image_url')->nullable()->references('id')->on('files')->onDelete('set null');
+//            $table->string('image_url')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

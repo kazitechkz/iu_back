@@ -2,7 +2,9 @@
 
 namespace App\Http\Livewire\Subject;
 
+use App\AppConstants\AppConstants;
 use App\Exports\SubjectExports;
+use App\Models\File;
 use App\Models\Subject;
 use Maatwebsite\Excel\Facades\Excel;
 use Rappasoft\LaravelLivewireTables\Exceptions\DataTableConfigurationException;
@@ -41,7 +43,7 @@ class SubjectTable extends DataTableComponent
         ];
     }
 
-    public function deleteSelected()
+    public function deleteSelected(): void
     {
         $subjects = $this->getSelected();
         foreach ($subjects as $key => $value) {
@@ -73,9 +75,10 @@ class SubjectTable extends DataTableComponent
                 ->sortable(),
             Column::make("Мах кол-во вопросов", "max_questions_quantity")
                 ->sortable(),
-            Column::make('Картинка', 'image.url')->format(function ($value){
-                return '<img src="'.$value.'" class="w-50" />';
-            })->html(),
+            Column::make('Image', 'image.url')
+                ->format(fn($val) => '<img class="w-50" src="'.File::getFileFromAWS($val).'" />')
+                ->html()
+
 //            Column::make("Created at", "created_at")
 //                ->sortable(),
 //            Column::make("Updated at", "updated_at")

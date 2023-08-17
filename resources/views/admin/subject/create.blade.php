@@ -11,8 +11,7 @@
                 <form action="{{route('subject.store')}}" method="post">
                     @csrf
                     <livewire:subject.subject-create />
-                    <livewire:image-upload />
-
+                    <livewire:image-upload :folder-name="'subjects'"/>
                     <div class="my-3">
                         <x-button type="submit" primary label="Сохранить" />
                     </div>

@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\File;
+use Aws\Laravel\AwsFacade;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
@@ -12,23 +13,25 @@ class ImageUpload extends Component
     public $file;
     public $image_url;
     public $path = '';
+    public $folderName;
     public $isUploaded = false;
 
     /**
-     * @param $id $if edit send parameter id
+     * @param int $id $if edit send parameter id
+     * @param string $folderName $set folderName
      * @return void
      */
-    public function mount(int $id = 0): void
+    public function mount(int $id = 0, string $folderName = 'uploads'): void
     {
+        $this->folderName = $folderName;
         if ($id != 0)
         {
-            $this->image_url = $id;
-            $filePath = File::find($id);
-            if ($filePath)
-            {
-                $this->path = $filePath->url;
-            }
-
+//            $this->image_url = $id;
+//            $filePath = File::find($id);
+//            if ($filePath)
+//            {
+//                $this->path = $filePath->url;
+//            }
         }
     }
 
@@ -40,12 +43,12 @@ class ImageUpload extends Component
         $this->validateOnly($propertyName);
     }
 
-    public function updatedFile()
+    public function updatedFile(): void
     {
-        if ($this->image_url) {
-            File::deleteFile($this->image_url);
-        }
-        $this->image_url = File::uploadFile($this->file, 'subjects');
+//        if ($this->image_url) {
+//            File::deleteFile($this->image_url);
+//        }
+        $this->image_url = File::uploadFileAWS($this->file, $this->folderName);
         $this->isUploaded = true;
     }
     public function render()

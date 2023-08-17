@@ -6,6 +6,7 @@ use App\Traits\CRUD;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use function Laravel\Prompts\select;
 
 class Subject extends Model
 {
@@ -35,4 +36,5 @@ class Subject extends Model
     {
         return $this->belongsTo(File::class, 'image_url', 'id');
     }
+
 }
