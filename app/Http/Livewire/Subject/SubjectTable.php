@@ -48,11 +48,9 @@ class SubjectTable extends DataTableComponent
         $subjects = $this->getSelected();
         foreach ($subjects as $key => $value) {
             $sub = Subject::find($value);
-//            if ($sub) {
-//                $sub->enable = 0;
-//                $sub->save();
-//                $sub->delete();
-//            }
+            if ($sub) {
+                File::deleteFileFromAWS($sub->image_url);
+            }
             $sub?->delete();
         }
         $this->clearSelected();

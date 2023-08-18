@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\AppConstants\AppConstants;
+use App\Helpers\AWS;
 use Aws\Credentials\Credentials;
 use Aws\S3\S3Client;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -54,23 +55,29 @@ class File extends Model
 
     public static function getFileFromAWS($filePath): ?string
     {
-        $awsAccessKeyId = env('AWS_ACCESS_KEY_ID');
-        $awsSecretKey = env('AWS_SECRET_ACCESS_KEY');
-        $bucketName = env('AWS_BUCKET');
-        $credentials = new Credentials($awsAccessKeyId, $awsSecretKey);
+        $s3 = AWS::getS3();
+        if ($filePath && $filePath != '') {
+            return $s3->createPresignedRequest(
+                $s3->getCommand('GetObject', [
+                    'Bucket' => env('AWS_BUCKET'),
+                    'Key' => $filePath,
+                ]),
+                '+10 hour'
+            )->getUri();
+        } else {
+            return '';
+        }
+    }
 
-        $s3 = new S3Client([
-            'version' => 'latest',
-            'region' => 'ap-south-1', // Замените на ваш регион
-            'credentials' => $credentials,
-        ]);
-
-        return $s3->createPresignedRequest(
-            $s3->getCommand('GetObject', [
-                'Bucket' => $bucketName,
-                'Key' => $filePath,
-            ]),
-            '+10 hour'
-        )->getUri();
+    public static function deleteFileFromAWS($fileId): void
+    {
+        $s3 = AWS::getS3();
+        if ($fileId) {
+            $path = File::find($fileId);
+            $s3->deleteObject([
+                'Bucket' => env('AWS_BUCKET'),
+                'Key' => $path->url,
+            ]);
+        }
     }
 }

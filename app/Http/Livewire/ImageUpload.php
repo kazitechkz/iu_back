@@ -26,12 +26,12 @@ class ImageUpload extends Component
         $this->folderName = $folderName;
         if ($id != 0)
         {
-//            $this->image_url = $id;
-//            $filePath = File::find($id);
-//            if ($filePath)
-//            {
-//                $this->path = $filePath->url;
-//            }
+            $this->image_url = $id;
+            $filePath = File::find($id);
+            if ($filePath)
+            {
+                $this->path = File::getFileFromAWS($filePath->url);
+            }
         }
     }
 
@@ -45,9 +45,9 @@ class ImageUpload extends Component
 
     public function updatedFile(): void
     {
-//        if ($this->image_url) {
-//            File::deleteFile($this->image_url);
-//        }
+        if ($this->image_url) {
+            File::deleteFileFromAWS($this->image_url);
+        }
         $this->image_url = File::uploadFileAWS($this->file, $this->folderName);
         $this->isUploaded = true;
     }
