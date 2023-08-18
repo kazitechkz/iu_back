@@ -16,4 +16,5 @@ return [
     "subscription"=>"Subscription",
     "promocode"=>"Promocode",
     "news"=>"News",
+    "faq"=>"FAQ"
 ];

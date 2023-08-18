@@ -16,4 +16,5 @@ return [
     "subscription"=>"Подписки",
     "promocode"=>"Промокод",
     "news"=>"Жаналыктар",
+    "faq"=>"FAQ"
 ];

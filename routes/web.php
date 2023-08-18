@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\PlanCombinationController as AdminPlanCombination
 use App\Http\Controllers\Admin\SubscriptionController as AdminSubscriptionController;
 use App\Http\Controllers\Admin\PromocodeController as AdminPromocodeController;
 use App\Http\Controllers\Admin\NewsController as AdminNewsController;
+use App\Http\Controllers\Admin\FaqController as AdminFaqController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -36,7 +37,6 @@ Route::get('login', function () {
 
 
 Route::group(["prefix" => "dashboard","middleware" => "auth"],function (){
-
     Route::resource("user",AdminUserController::class);
     Route::resource("role",AdminRoleController::class);
     Route::resource("locale",AdminLocaleController::class);
@@ -49,5 +49,5 @@ Route::group(["prefix" => "dashboard","middleware" => "auth"],function (){
     Route::resource("subscription",AdminSubscriptionController::class);
     Route::resource("promocode",AdminPromocodeController::class);
     Route::resource("news",AdminNewsController::class);
-
+    Route::resource("faq",AdminFaqController::class);
 });

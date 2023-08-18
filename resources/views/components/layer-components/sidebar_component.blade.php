@@ -66,6 +66,10 @@
             icon="fas fa-newspaper"
             name="{{__('sidebar.news')}}"
         />
-
+        <x-shared.main-sidebar-menu
+            link="faq.index"
+            icon="fas fa-question"
+            name="{{__('sidebar.faq')}}"
+        />
     </ul>
 </nav>
