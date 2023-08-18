@@ -14,5 +14,7 @@ return [
     'plan' => 'Жазулы жоспары',
     'plan-combination' => 'Локализация жоспары',
     "subscription" => "Жазылымдар",
-    'questions' => 'Сұрақтар'
+    'questions' => 'Сұрақтар',
+    "promocode" => "Промокод",
+    "news" => "Жаналыктар",
 ];

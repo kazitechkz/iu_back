@@ -12,6 +12,8 @@ use App\Http\Controllers\Admin\LocaleController as AdminLocaleController;
 use App\Http\Controllers\Admin\PlanController as AdminPlanController;
 use App\Http\Controllers\Admin\PlanCombinationController as AdminPlanCombinationController;
 use App\Http\Controllers\Admin\SubscriptionController as AdminSubscriptionController;
+use App\Http\Controllers\Admin\PromocodeController as AdminPromocodeController;
+use App\Http\Controllers\Admin\NewsController as AdminNewsController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -46,6 +48,8 @@ Route::group(["prefix" => "dashboard","middleware" => "auth"],function (){
     Route::resource('categories', AdminCategoryController::class)->except(['show', 'destroy']);
     Route::resource("plan-combination",AdminPlanCombinationController::class);
     Route::resource("subscription",AdminSubscriptionController::class);
+    Route::resource("promocode",AdminPromocodeController::class);
+    Route::resource("news",AdminNewsController::class);
     Route::resource("questions",AdminQuestionController::class);
     Route::post('questions-ckeditor-upload', [AdminQuestionController::class, 'uploadFromCkeditor'])->name('questions-ckeditor-upload');
 

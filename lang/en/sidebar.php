@@ -1,8 +1,6 @@
 <?php
 
 return [
-
-
     'home' => 'Home',
     'user' => 'Users',
     'subject' => 'Subjects',
@@ -13,6 +11,8 @@ return [
     "locale" => "Locale",
     'plan' => 'Subscribe Plan',
     'plan-combination' => 'Plan Localization',
+    "promocode" => "Promocode",
+    "news" => "News",
     "subscription" => "Subscription",
     'questions' => 'Questions'
 ];

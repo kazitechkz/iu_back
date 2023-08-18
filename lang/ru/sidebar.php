@@ -1,8 +1,6 @@
 <?php
 
 return [
-
-
     'home' => 'Главная',
     'user' => 'Пользователи',
     'subject' => 'Предметы',
@@ -13,6 +11,8 @@ return [
     "locale" => "Язык",
     'plan' => 'План подписки',
     'plan-combination' => 'Локализация плана',
+    "promocode" => "Промокод",
+    "news" => "Новости",
     "subscription" => "Подписки",
     'questions' => 'Вопросы'
 ];
