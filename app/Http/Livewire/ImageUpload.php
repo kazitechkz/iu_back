@@ -15,15 +15,16 @@ class ImageUpload extends Component
     public $path = '';
     public $folderName;
     public $isUploaded = false;
-
+    public string $output_name;
     /**
      * @param int $id $if edit send parameter id
      * @param string $folderName $set folderName
      * @return void
      */
-    public function mount(int $id = 0, string $folderName = 'uploads'): void
+    public function mount(int $id = 0, string $folderName = 'uploads',string $output_name="image_url"): void
     {
         $this->folderName = $folderName;
+        $this->output_name = $output_name;
         if ($id != 0)
         {
             $this->image_url = $id;

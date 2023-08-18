@@ -29,7 +29,7 @@
         <input class="form-control my-3" type="file" wire:model="file" accept="image/*">
         @error('file') <span class="error">{{ $message }}</span> @enderror
 
-         <input type="hidden" wire:model="image_url" name="image_url">
+         <input type="hidden" wire:model="image_url" name="{{$output_name}}">
         <!-- Progress Bar -->
         <div x-show="isUploading">
             <progress max="100" x-bind:value="progress"></progress>

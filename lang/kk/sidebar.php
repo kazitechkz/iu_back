@@ -13,5 +13,7 @@ return [
     "locale"=>"Локальдар",
     'plan' => 'Жазулы жоспары',
     'plan-combination' => 'Локализация жоспары',
-    "subscription"=>"Подписки"
+    "subscription"=>"Подписки",
+    "promocode"=>"Промокод",
+    "news"=>"Жаналыктар",
 ];

@@ -52,11 +52,20 @@
             name="{{__('sidebar.subscription')}}"
         />
         <x-shared.main-sidebar-menu
+            link="promocode.index"
+            icon="fas fa-tag"
+            name="{{__('sidebar.promocode')}}"
+        />
+        <x-shared.main-sidebar-menu
             link="categories.index"
             icon="fas fa-list"
             name="{{__('sidebar.categories')}}"
         />
-
+        <x-shared.main-sidebar-menu
+            link="news.index"
+            icon="fas fa-newspaper"
+            name="{{__('sidebar.news')}}"
+        />
 
     </ul>
 </nav>

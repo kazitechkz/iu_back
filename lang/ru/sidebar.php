@@ -13,5 +13,7 @@ return [
     "locale"=>"Язык",
     'plan' => 'План подписки',
     'plan-combination' => 'Локализация плана',
-    "subscription"=>"Подписки"
+    "subscription"=>"Подписки",
+    "promocode"=>"Промокод",
+    "news"=>"Новости",
 ];

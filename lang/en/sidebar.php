@@ -13,5 +13,7 @@ return [
     "locale"=>"Locale",
     'plan' => 'Subscribe Plan',
     'plan-combination' => 'Plan Localization',
-    "subscription"=>"Subscription"
+    "subscription"=>"Subscription",
+    "promocode"=>"Promocode",
+    "news"=>"News",
 ];
