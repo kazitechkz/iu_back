@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
+use App\Http\Controllers\Admin\QuestionController as AdminQuestionController;
 use App\Http\Controllers\Admin\SingleSubjectTestController as AdminSingleSubjectTestController;
 use App\Http\Controllers\Admin\SubjectController as AdminSubjectController;
 use Illuminate\Support\Facades\Route;
@@ -45,5 +46,7 @@ Route::group(["prefix" => "dashboard","middleware" => "auth"],function (){
     Route::resource('categories', AdminCategoryController::class)->except(['show', 'destroy']);
     Route::resource("plan-combination",AdminPlanCombinationController::class);
     Route::resource("subscription",AdminSubscriptionController::class);
+    Route::resource("questions",AdminQuestionController::class);
+    Route::post('questions-ckeditor-upload', [AdminQuestionController::class, 'uploadFromCkeditor'])->name('questions-ckeditor-upload');
 
 });

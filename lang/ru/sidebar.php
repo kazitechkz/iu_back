@@ -10,8 +10,9 @@ return [
     'permission' => 'Права',
     'single_subject_tests' => 'Тесты по предметам',
     'categories' => 'Категории',
-    "locale"=>"Язык",
+    "locale" => "Язык",
     'plan' => 'План подписки',
     'plan-combination' => 'Локализация плана',
-    "subscription"=>"Подписки"
+    "subscription" => "Подписки",
+    'questions' => 'Вопросы'
 ];

@@ -43,16 +43,26 @@ class File extends Model
         }
     }
 
-    public static function uploadFileAWS($file, $folder)
+    /**
+     * @param $file $request->get('file')
+     * @param $folder $folderName
+     * @return int|mixed
+     */
+    public static function uploadFileAWS($file, $folder): mixed
     {
         $model = new static();
-        $filename = Str::random(10) . '.' . $file->getClientOriginalExtension();
-        $path = $file->storeAs($folder, $filename, 's3');
+        $extension = $file->getClientOriginalExtension();
+        $fileName = Str::random(5).'_'.time().'.'.$extension;
+        $path = $file->storeAs($folder, $fileName, 's3');
         $model->url = $path;
         $model->save();
         return $model->id;
     }
 
+    /**
+     * @param $filePath $filePath from FILE
+     * @return string|null
+     */
     public static function getFileFromAWS($filePath): ?string
     {
         $s3 = AWS::getS3();
@@ -69,6 +79,10 @@ class File extends Model
         }
     }
 
+    /**
+     * @param $fileId $fileID
+     * @return void
+     */
     public static function deleteFileFromAWS($fileId): void
     {
         $s3 = AWS::getS3();

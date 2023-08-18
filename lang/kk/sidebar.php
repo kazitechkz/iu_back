@@ -10,8 +10,9 @@ return [
     'permission' => 'Рұқсат',
     'single_subject_tests' => 'Пәндер бойынша тест',
     'categories' => 'Категориялар',
-    "locale"=>"Локальдар",
+    "locale" => "Тіл",
     'plan' => 'Жазулы жоспары',
     'plan-combination' => 'Локализация жоспары',
-    "subscription"=>"Подписки"
+    "subscription" => "Жазылымдар",
+    'questions' => 'Сұрақтар'
 ];

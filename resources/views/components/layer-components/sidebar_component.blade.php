@@ -56,6 +56,11 @@
             icon="fas fa-list"
             name="{{__('sidebar.categories')}}"
         />
+        <x-shared.main-sidebar-menu
+            link="questions.index"
+            icon="fas fa-question"
+            name="{{__('sidebar.questions')}}"
+        />
 
 
     </ul>

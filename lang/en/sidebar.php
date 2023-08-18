@@ -10,8 +10,9 @@ return [
     'permission' => 'Permissions',
     'single_subject_tests' => 'Single Subject Tests',
     'categories' => 'Categories',
-    "locale"=>"Locale",
+    "locale" => "Locale",
     'plan' => 'Subscribe Plan',
     'plan-combination' => 'Plan Localization',
-    "subscription"=>"Subscription"
+    "subscription" => "Subscription",
+    'questions' => 'Questions'
 ];
