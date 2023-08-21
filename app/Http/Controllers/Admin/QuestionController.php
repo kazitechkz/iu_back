@@ -16,7 +16,7 @@ class QuestionController extends Controller
             $path = File::find($fileID);
             $CKEditorFuncNum = $request->input('CKEditorFuncNum');
             $url = File::getFileFromAWS($path->url);
-            $msg = 'Image uploaded successfully';
+            $msg = 'Картинка успешно загружена!';
             $response = "<script>window.parent.CKEDITOR.tools.callFunction($CKEditorFuncNum, '$url', '$msg')</script>";
 
             @header('Content-type: text/html; charset=utf-8');

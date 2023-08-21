@@ -12,8 +12,11 @@
                 <form action="{{route('questions.store')}}" method="post">
                     @csrf
                     <livewire:question.create />
-                    <textarea name="text"></textarea>
-
+                    <div class="md:flex lg:flex justify-between my-3">
+                        <x-ckeditor :input-name="'text'" :title="'Текст вопроса'"/>
+                        <div class="px-2"></div>
+                        <x-ckeditor :input-name="'context'" :title="'Контекст'"/>
+                    </div>
                     <div class="my-3">
                         <x-button type="submit" primary label="Сохранить" />
                     </div>
@@ -26,11 +29,5 @@
 
 @endsection
 @push('js')
-    <script src="https://cdn.ckeditor.com/4.12.1/standard/ckeditor.js"></script>
-    <script type="text/javascript">
-        CKEDITOR.replace('text', {
-            filebrowserUploadUrl: "{{route('questions-ckeditor-upload', ['_token' => csrf_token() ])}}",
-            filebrowserUploadMethod: 'form'
-        });
-    </script>
+
 @endpush
