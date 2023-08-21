@@ -14,5 +14,6 @@ return [
     "promocode" => "Промокод",
     "news" => "Новости",
     "subscription" => "Подписки",
-    'questions' => 'Вопросы'
+    'questions' => 'Вопросы',
+    "faq"=>"FAQ"
 ];

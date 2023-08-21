@@ -37,6 +37,11 @@
             name="{{__('sidebar.single_subject_tests')}}"
         />
         <x-shared.main-sidebar-menu
+            link="wallet.index"
+            icon="fas fa-wallet"
+            name="{{__('sidebar.wallet')}}"
+        />
+        <x-shared.main-sidebar-menu
             link="plan.index"
             icon="fas fa-credit-card"
             name="{{__('sidebar.plan')}}"
@@ -71,7 +76,10 @@
             icon="fas fa-question"
             name="{{__('sidebar.questions')}}"
         />
-
-
+        <x-shared.main-sidebar-menu
+            link="faq.index"
+            icon="fas fa-question"
+            name="{{__('sidebar.faq')}}"
+        />
     </ul>
 </nav>
