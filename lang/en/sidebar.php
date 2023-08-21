@@ -15,5 +15,8 @@ return [
     "news" => "News",
     "subscription" => "Subscription",
     'questions' => 'Questions',
-    "faq" => "FAQ"
+    "faq" => "FAQ",
+    "wallet"=>"Wallet",
+    "group"=>"Group of questions",
+    "appeal_type"=>"Appeal question types"
 ];

@@ -72,9 +72,20 @@
             name="{{__('sidebar.news')}}"
         />
         <x-shared.main-sidebar-menu
+            link="group.index"
+            icon="fas fa-layer-group"
+            name="{{__('sidebar.group')}}"
+        />
+
+        <x-shared.main-sidebar-menu
             link="questions.index"
             icon="fas fa-question"
             name="{{__('sidebar.questions')}}"
+        />
+        <x-shared.main-sidebar-menu
+            link="appeal-type.index"
+            icon="fas fa-question"
+            name="{{__('sidebar.appeal_type')}}"
         />
         <x-shared.main-sidebar-menu
             link="faq.index"

@@ -15,5 +15,8 @@ return [
     "news" => "Новости",
     "subscription" => "Подписки",
     'questions' => 'Вопросы',
-    "faq"=>"FAQ"
+    "faq"=>"FAQ",
+    "wallet"=>"Кошелек",
+    "group"=>"Группа вопросов",
+    "appeal_type"=>"Типы аппеляционных вопросов"
 ];
