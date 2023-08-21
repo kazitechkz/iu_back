@@ -17,11 +17,16 @@ class FormComponent extends Component
     public string $enctype;
     public string $elementId;
 
+    public bool $isSend = true;
+    public bool $isClear = true;
+
     public function __construct( string $method,
      string $route,
      string $elementId,
      string $enctype = "",
-    $parameters = []
+    $parameters = [],
+    bool $isSend = true,
+    bool $isClear = true,
     )
     {
         $this->method = $method;
@@ -29,6 +34,8 @@ class FormComponent extends Component
         $this->enctype = $enctype;
         $this->elementId = $elementId;
         $this->parameters = $parameters;
+        $this->isSend = $isSend;
+        $this->isClear = $isClear;
     }
     /**
      * Get the view / contents that represent the component.

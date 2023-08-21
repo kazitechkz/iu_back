@@ -15,7 +15,9 @@ use App\Http\Controllers\Admin\SubscriptionController as AdminSubscriptionContro
 use App\Http\Controllers\Admin\PromocodeController as AdminPromocodeController;
 use App\Http\Controllers\Admin\NewsController as AdminNewsController;
 use App\Http\Controllers\Admin\FaqController as AdminFaqController;
-use App\Http\Controllers\Admin\WalletController as WalletController;
+use App\Http\Controllers\Admin\WalletController as AdminWalletController;
+use App\Http\Controllers\Admin\GroupController as AdminGroupController;
+use App\Http\Controllers\Admin\AppealTypeController as AdminAppealTypeController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -51,9 +53,10 @@ Route::group(["prefix" => "dashboard","middleware" => "auth"],function (){
     Route::resource("subscription",AdminSubscriptionController::class);
     Route::resource("promocode",AdminPromocodeController::class);
     Route::resource("news",AdminNewsController::class);
-    Route::resource("wallet",WalletController::class);
+    Route::resource("wallet",AdminWalletController::class);
     Route::resource("faq",AdminFaqController::class);
     Route::resource("questions",AdminQuestionController::class);
     Route::post('questions-ckeditor-upload', [AdminQuestionController::class, 'uploadFromCkeditor'])->name('questions-ckeditor-upload');
-
+    Route::resource("group",AdminGroupController::class);
+    Route::resource("appeal-type",AdminAppealTypeController::class);
 });
