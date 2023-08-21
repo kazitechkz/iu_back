@@ -24,6 +24,7 @@
         "league/flysystem-aws-s3-v3": "3.0",
         "livewire/livewire": "^2.12",
         "maatwebsite/excel": "^3.1",
+        "multicaret/laravel-acquaintances": "^3.5",
         "okipa/laravel-table": "^5.3",
         "rappasoft/laravel-livewire-tables": "^2.15",
         "spatie/laravel-image-optimizer": "^1.7",

@@ -9,6 +9,7 @@ namespace App\Models;
 use App\Traits\CRUD;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -67,7 +68,7 @@ class News extends Model
 	{
 		return $this->belongsTo(File::class, 'poster');
 	}
-    public function image()
+    public function image():BelongsTo
     {
         return $this->belongsTo(File::class, 'image_url');
     }

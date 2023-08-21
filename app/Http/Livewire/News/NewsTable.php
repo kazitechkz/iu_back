@@ -4,6 +4,7 @@ namespace App\Http\Livewire\News;
 
 use App\Exports\NewsExport;
 use App\Exports\PromocodeExport;
+use App\Models\File;
 use Maatwebsite\Excel\Facades\Excel;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
@@ -62,10 +63,12 @@ class NewsTable extends DataTableComponent
                 ->sortable(),
             Column::make("Subtitle", "subtitle")
                 ->sortable(),
-            Column::make("Image url", "image_url")
-                ->sortable(),
-            Column::make("Poster", "poster")
-                ->sortable(),
+            Column::make("Image url", "image.url")
+                ->format(fn($val) => '<img class="w-50" src="'.File::getFileFromAWS($val).'" />')
+                ->html(),
+            Column::make("Poster", "poster.url")
+                ->format(fn($val) => '<img class="w-50" src="'.File::getFileFromAWS($val).'" />')
+                ->html(),
             BooleanColumn::make("Is active", "is_active")
                 ->sortable(),
             BooleanColumn::make("Is important", "is_important")
