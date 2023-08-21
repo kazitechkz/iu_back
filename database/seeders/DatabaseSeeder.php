@@ -20,7 +20,8 @@ class DatabaseSeeder extends Seeder
                 UserSeeder::class,
                 UserRoleSeeder::class,
                 SubjectSeeder::class,
-                QuestionTypeSeeder::class
+                QuestionTypeSeeder::class,
+                LocaleSeeder::class
             ]
         );
     }

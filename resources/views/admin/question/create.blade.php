@@ -12,11 +12,7 @@
                 <form action="{{route('questions.store')}}" method="post">
                     @csrf
                     <livewire:question.create />
-                    <div class="md:flex lg:flex justify-between my-3">
-                        <x-ckeditor :input-name="'text'" :title="'Текст вопроса'"/>
-                        <div class="px-2"></div>
-                        <x-ckeditor :input-name="'context'" :title="'Контекст'"/>
-                    </div>
+
                     <div class="my-3">
                         <x-button type="submit" primary label="Сохранить" />
                     </div>

@@ -26,16 +26,16 @@ return new class extends Migration
             $table->char('correct_answers');
             $table->text('prompt')->nullable(true);
             $table->string('prompt_image')->nullable(true);
-            $table->unsignedBigInteger('locale_id')->nullable(true);
             $table->text('explanation')->nullable(true);
             $table->string('explanation_image')->nullable(true);
-            $table->unsignedBigInteger('subject_id')->nullable(true);
-            $table->unsignedBigInteger('type_id');
             $table->timestamps();
             $table->softDeletes();
-            $table->foreign('subject_id')->references('id')->on('subjects')->onDelete('cascade');
-            $table->foreign('locale_id')->references('id')->on('locales')->onDelete('cascade');
-            $table->foreign('type_id')->references('id')->on('question_types')->onDelete('cascade');
+
+            $table->foreignId('subject_id')->references('id')->on('subjects')->onDelete('cascade');
+            $table->foreignId('locale_id')->references('id')->on('locales')->onDelete('cascade');
+            $table->foreignId('type_id')->references('id')->on('question_types')->onDelete('cascade');
+            $table->foreignId('category_id')->references('id')->on('categories')->onDelete('cascade');
+            $table->foreignId('group_id')->references('id')->on('groups')->onDelete('cascade');
         });
     }
 

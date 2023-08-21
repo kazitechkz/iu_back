@@ -44,16 +44,7 @@ class QuestionController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->all();
-        $data['answer_a'] = 'aa';
-        $data['answer_b'] = 'bb';
-        $data['answer_c'] = 'cc';
-        $data['answer_d'] = 'dd';
-        $data['answer_e'] = 'ee';
-        $data['answer_f'] = 'ff';
-        $data['answer_g'] = 'gg';
-        $data['answer_h'] = 'hh';
-        $data['correct_answers'] = 'a';
+        dd($request->all());
         Question::add($data);
         return redirect()->back();
     }
