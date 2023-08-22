@@ -19,6 +19,7 @@ use App\Http\Controllers\Admin\WalletController as AdminWalletController;
 use App\Http\Controllers\Admin\GroupController as AdminGroupController;
 use App\Http\Controllers\Admin\AppealTypeController as AdminAppealTypeController;
 use App\Http\Controllers\Admin\AppealController as AdminAppealController;
+use App\Http\Controllers\Admin\PageController as AdminPageController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -61,4 +62,5 @@ Route::group(["prefix" => "dashboard","middleware" => "auth"],function (){
     Route::resource("group",AdminGroupController::class);
     Route::resource("appeal-type",AdminAppealTypeController::class);
     Route::resource("appeal",AdminAppealController::class);
+    Route::resource("page",AdminPageController::class);
 });

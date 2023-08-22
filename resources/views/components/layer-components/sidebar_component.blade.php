@@ -76,6 +76,11 @@
             icon="fas fa-layer-group"
             name="{{__('sidebar.group')}}"
         />
+        <x-shared.main-sidebar-menu
+            link="page.index"
+            icon="fas fa-file-lines"
+            name="{{__('sidebar.page')}}"
+        />
 
         <x-shared.main-sidebar-menu
             link="questions.index"

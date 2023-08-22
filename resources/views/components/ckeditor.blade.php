@@ -5,8 +5,6 @@
 
 
 @push('js')
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
-    <script src="https://cdn.ckeditor.com/4.12.1/standard/ckeditor.js"></script>
     <script type="text/javascript">
         CKEDITOR.replace("ckeditor-id-{{$inputName}}", {
             filebrowserUploadUrl: "{{route('questions-ckeditor-upload', ['_token' => csrf_token() ])}}",
