@@ -67,13 +67,17 @@ class File extends Model
     {
         $s3 = AWS::getS3();
         if ($filePath && $filePath != '') {
-            return $s3->createPresignedRequest(
-                $s3->getCommand('GetObject', [
-                    'Bucket' => env('AWS_BUCKET'),
-                    'Key' => $filePath,
-                ]),
-                '+10 hour'
-            )->getUri();
+            return $s3->getObjectUrl(
+                env('AWS_BUCKET'),
+                $filePath
+            );
+//            return $s3->createPresignedRequest(
+//                $s3->getCommand('GetObject', [
+//                    'Bucket' => env('AWS_BUCKET'),
+//                    'Key' => $filePath,
+//                ]),
+//                '+10 hour'
+//            )->getUri();
         } else {
             return '';
         }

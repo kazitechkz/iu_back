@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Helpers\MathFormulaHelper;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Question\CreateRequest;
 use App\Models\File;
 use App\Models\Question;
 use Illuminate\Http\Request;
+use League\CommonMark\Util\RegexHelper;
 
 class QuestionController extends Controller
 {
@@ -28,7 +31,7 @@ class QuestionController extends Controller
      */
     public function index()
     {
-        //
+        return view('admin.question.index');
     }
 
     /**
@@ -42,9 +45,9 @@ class QuestionController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CreateRequest $request)
     {
-        dd($request->all());
+        $data = MathFormulaHelper::replace($request);
         Question::add($data);
         return redirect()->back();
     }

@@ -22,7 +22,20 @@ class CreateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'subject_id' => 'required|exists:subjects,id',
+            'category_id' => 'required|exists:categories,id',
+            'type_id' => 'required|exists:question_types,id',
+            'locale_id' => 'required|exists:locales,id',
+            'group_id' => 'sometimes|exists:groups,id',
+            'text' => 'required',
+            'answer_a' => 'required',
+            'answer_b' => 'required',
+            'answer_c' => 'required',
+            'answer_d' => 'required',
+            'answer_e' => 'required',
+            'correct_answers' => 'required',
+            'prompt' => 'sometimes|min:1',
+            'explanation' => 'sometimes|min:1'
         ];
     }
 }

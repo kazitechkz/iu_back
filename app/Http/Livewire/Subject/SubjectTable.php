@@ -73,6 +73,9 @@ class SubjectTable extends DataTableComponent
                 ->sortable(),
             Column::make("Мах кол-во вопросов", "max_questions_quantity")
                 ->sortable(),
+//            Column::make('Image', 'image.url')
+//                ->format(fn($val) => '<img class="w-50" src="https://iunion.s3.ap-south-1.amazonaws.com/subjects/onw.png" />')
+//                ->html()
             Column::make('Image', 'image.url')
                 ->format(fn($val) => '<img class="w-50" src="'.File::getFileFromAWS($val).'" />')
                 ->html()
