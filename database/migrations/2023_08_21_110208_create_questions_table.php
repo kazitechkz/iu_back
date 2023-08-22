@@ -25,17 +25,14 @@ return new class extends Migration
             $table->text('answer_h')->nullable(true);
             $table->char('correct_answers');
             $table->text('prompt')->nullable(true);
-            $table->string('prompt_image')->nullable(true);
             $table->text('explanation')->nullable(true);
-            $table->string('explanation_image')->nullable(true);
             $table->timestamps();
             $table->softDeletes();
-
             $table->foreignId('subject_id')->references('id')->on('subjects')->onDelete('cascade');
             $table->foreignId('locale_id')->references('id')->on('locales')->onDelete('cascade');
             $table->foreignId('type_id')->references('id')->on('question_types')->onDelete('cascade');
-            $table->foreignId('category_id')->references('id')->on('categories')->onDelete('cascade');
-            $table->foreignId('group_id')->references('id')->on('groups')->onDelete('cascade');
+            $table->foreignId('category_id')->nullable()->references('id')->on('categories')->onDelete('set null');
+            $table->foreignId('group_id')->nullable()->references('id')->on('groups')->onDelete('set null');
         });
     }
 
