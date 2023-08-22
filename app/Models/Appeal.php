@@ -6,13 +6,14 @@
 
 namespace App\Models;
 
+use App\Traits\CRUD;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class Appeal
- * 
+ *
  * @property int $id
  * @property int|null $user_id
  * @property int|null $type_id
@@ -22,7 +23,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string|null $deleted_at
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * 
+ *
  * @property Question|null $question
  * @property AppealType|null $appeal_type
  * @property User|null $user
@@ -32,6 +33,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Appeal extends Model
 {
 	use SoftDeletes;
+    use CRUD;
 	protected $table = 'appeals';
 
 	protected $casts = [

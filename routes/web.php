@@ -18,6 +18,7 @@ use App\Http\Controllers\Admin\FaqController as AdminFaqController;
 use App\Http\Controllers\Admin\WalletController as AdminWalletController;
 use App\Http\Controllers\Admin\GroupController as AdminGroupController;
 use App\Http\Controllers\Admin\AppealTypeController as AdminAppealTypeController;
+use App\Http\Controllers\Admin\AppealController as AdminAppealController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -59,4 +60,5 @@ Route::group(["prefix" => "dashboard","middleware" => "auth"],function (){
     Route::post('questions-ckeditor-upload', [AdminQuestionController::class, 'uploadFromCkeditor'])->name('questions-ckeditor-upload');
     Route::resource("group",AdminGroupController::class);
     Route::resource("appeal-type",AdminAppealTypeController::class);
+    Route::resource("appeal",AdminAppealController::class);
 });

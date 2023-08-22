@@ -11,6 +11,8 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Searchable\Searchable;
+use Spatie\Searchable\SearchResult;
 
 /**
  * Class Question
@@ -44,7 +46,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *
  * @package App\Models
  */
-class Question extends Model
+class Question extends Model implements Searchable
 {
 	use SoftDeletes, CRUD;
 	protected $table = 'questions';
@@ -92,4 +94,14 @@ class Question extends Model
     {
 		return $this->belongsTo(QuestionType::class, 'type_id');
 	}
+
+    public function getSearchResult(): SearchResult
+    {
+
+        return new SearchResult(
+            $this,
+            $this->id,
+            $this->text
+        );
+    }
 }

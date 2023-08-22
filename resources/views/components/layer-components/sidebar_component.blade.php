@@ -83,6 +83,11 @@
             name="{{__('sidebar.questions')}}"
         />
         <x-shared.main-sidebar-menu
+            link="appeal.index"
+            icon="fas fa-question"
+            name="{{__('sidebar.appeal')}}"
+        />
+        <x-shared.main-sidebar-menu
             link="appeal-type.index"
             icon="fas fa-question"
             name="{{__('sidebar.appeal_type')}}"
