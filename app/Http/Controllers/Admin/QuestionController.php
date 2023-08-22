@@ -49,7 +49,7 @@ class QuestionController extends Controller
     {
         $data = MathFormulaHelper::replace($request);
         Question::add($data);
-        return redirect()->back();
+        return redirect(route('questions.index'));
     }
 
     /**
@@ -65,15 +65,19 @@ class QuestionController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $question = Question::findOrFail($id);
+        return view('admin.question.edit', compact('question'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(CreateRequest $request, string $id)
     {
-        //
+        $question = Question::findOrFail($id);
+        $data = MathFormulaHelper::replace($request);
+        $question->edit($data);
+        return redirect(route('questions.index'));
     }
 
     /**

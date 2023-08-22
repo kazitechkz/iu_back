@@ -73,7 +73,9 @@ class Question extends Model
 		'explanation',
 		'explanation_image',
 		'subject_id',
-		'type_id'
+		'type_id',
+        'group_id',
+        'category_id'
 	];
 
 	public function locale(): BelongsTo

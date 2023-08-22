@@ -10,16 +10,18 @@ class Ckeditor extends Component
 {
     public string $inputName;
     public string $title;
+    public string|null $description;
 
     /**
      * Create a new component instance.
      * @param $inputName
      * @param $title $title for label
      */
-    public function __construct($inputName, $title)
+    public function __construct($inputName, $title, $description = null)
     {
         $this->inputName = $inputName;
         $this->title = $title;
+        $this->description = $description;
     }
 
     /**
