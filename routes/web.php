@@ -62,6 +62,7 @@ Route::group(["prefix" => "dashboard","middleware" => "auth"],function (){
     Route::resource("faq",AdminFaqController::class);
     Route::resource("questions",AdminQuestionController::class);
     Route::post('questions-ckeditor-upload', [AdminQuestionController::class, 'uploadFromCkeditor'])->name('questions-ckeditor-upload');
+    Route::get('change-category-in-subject/{id}', [AdminQuestionController::class, 'changeCategoryInSubject'])->name('change-category-in-subject');
     Route::resource("group",AdminGroupController::class);
     Route::resource("appeal-type",AdminAppealTypeController::class);
     Route::resource("appeal",AdminAppealController::class);

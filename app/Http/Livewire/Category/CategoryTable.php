@@ -50,9 +50,9 @@ class CategoryTable extends DataTableComponent
         return [
             Column::make("Id", "id")
                 ->sortable(),
-            Column::make("Предмет", "subject.title_ru")
-                ->sortable()->searchable(),
             Column::make("Наименование", "title_ru")
+                ->sortable()->searchable(),
+            Column::make("Предмет", "subject.title_ru")
                 ->sortable()->searchable(),
             Column::make("Создано", "created_at")
                 ->sortable(),
