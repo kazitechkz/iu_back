@@ -85,6 +85,16 @@ class Question extends Model implements Searchable
 		return $this->belongsTo(Locale::class);
 	}
 
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(Category::class);
+    }
+
+    public function group(): BelongsTo
+    {
+        return $this->belongsTo(Group::class);
+    }
+
 	public function subject(): BelongsTo
     {
 		return $this->belongsTo(Subject::class);

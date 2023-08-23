@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Question\CreateRequest;
 use App\Models\File;
 use App\Models\Question;
+use App\Models\Subject;
 use Illuminate\Http\Request;
 use League\CommonMark\Util\RegexHelper;
 
@@ -25,6 +26,15 @@ class QuestionController extends Controller
             @header('Content-type: text/html; charset=utf-8');
             echo $response;
         }
+    }
+
+    public function changeCategoryInSubject($id)
+    {
+        $questions = Question::with('category', 'subject')
+            ->where('subject_id', $id)
+            ->paginate(20);
+        $subjects = Subject::all();
+        return view('admin.question.change-category', compact( 'questions', 'subjects'));
     }
     /**
      * Display a listing of the resource.
@@ -85,6 +95,6 @@ class QuestionController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        dd($id);
     }
 }

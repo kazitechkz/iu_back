@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Question;
 
 use App\Exports\SubjectExports;
 use App\Helpers\StrHelper;
+use App\Models\Category;
 use App\Models\File;
 use App\Models\Subject;
 use Illuminate\Support\Str;
@@ -33,6 +34,11 @@ class QuestionTable extends DataTableComponent
             ->setTableRowUrl(function($row) {
                 return route('questions.edit', $row);
             });
+        $this->setConfigurableAreas([
+            'toolbar-right-start' => [
+                'livewire.question.dropdown-table'
+            ]
+        ]);
     }
 
     public function bulkActions(): array
@@ -65,14 +71,18 @@ class QuestionTable extends DataTableComponent
         return [
             Column::make("Id", "id")
                 ->sortable(),
+            Column::make('Категория', 'category.title_ru')
+                ->format(fn($val) => StrHelper::getSubStr($val, 30))
+                ->html()
+                ->searchable(),
             Column::make('Вопрос', 'text')
                 ->format(fn($val) => StrHelper::getSubStr($val, 30))
                 ->html()
                 ->searchable(),
-            Column::make('Контекст', 'context')
-                ->format(fn($val) => StrHelper::getSubStr($val, 30))
-                ->html()
-                ->searchable(),
+//            Column::make('Контекст', 'context')
+//                ->format(fn($val) => StrHelper::getSubStr($val, 30))
+//                ->html()
+//                ->searchable(),
             Column::make("Язык", "locale.title")
                 ->sortable(),
             Column::make("Предмет", "subject.title_ru")
