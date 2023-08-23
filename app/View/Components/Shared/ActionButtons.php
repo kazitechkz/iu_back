@@ -23,6 +23,7 @@ class ActionButtons extends Component
         $this->showLink = $showLink;
         $this->editLink = $editLink;
         $this->deleteLink = $deleteLink;
+
     }
 
     /**

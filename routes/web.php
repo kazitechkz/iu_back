@@ -1,25 +1,28 @@
 <?php
 
+use App\Http\Controllers\Admin\AppealController as AdminAppealController;
+use App\Http\Controllers\Admin\AppealTypeController as AdminAppealTypeController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
+use App\Http\Controllers\Admin\FaqController as AdminFaqController;
+use App\Http\Controllers\Admin\ForumController as AdminForumController;
+use App\Http\Controllers\Admin\GroupController as AdminGroupController;
+use App\Http\Controllers\Admin\LocaleController as AdminLocaleController;
+use App\Http\Controllers\Admin\NewsController as AdminNewsController;
+use App\Http\Controllers\Admin\PageController as AdminPageController;
+use App\Http\Controllers\Admin\PermissionController as AdminPermissionController;
+use App\Http\Controllers\Admin\PlanCombinationController as AdminPlanCombinationController;
+use App\Http\Controllers\Admin\PlanController as AdminPlanController;
+use App\Http\Controllers\Admin\PromocodeController as AdminPromocodeController;
 use App\Http\Controllers\Admin\QuestionController as AdminQuestionController;
+use App\Http\Controllers\Admin\RoleController as AdminRoleController;
 use App\Http\Controllers\Admin\SingleSubjectTestController as AdminSingleSubjectTestController;
 use App\Http\Controllers\Admin\SubjectController as AdminSubjectController;
-use Illuminate\Support\Facades\Route;
-use \App\Http\Controllers\Admin\UserController as AdminUserController;
-use \App\Http\Controllers\Admin\RoleController as AdminRoleController;
-use \App\Http\Controllers\Admin\PermissionController as AdminPermissionController;
-use App\Http\Controllers\Admin\LocaleController as AdminLocaleController;
-use App\Http\Controllers\Admin\PlanController as AdminPlanController;
-use App\Http\Controllers\Admin\PlanCombinationController as AdminPlanCombinationController;
 use App\Http\Controllers\Admin\SubscriptionController as AdminSubscriptionController;
-use App\Http\Controllers\Admin\PromocodeController as AdminPromocodeController;
-use App\Http\Controllers\Admin\NewsController as AdminNewsController;
-use App\Http\Controllers\Admin\FaqController as AdminFaqController;
+use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Admin\WalletController as AdminWalletController;
-use App\Http\Controllers\Admin\GroupController as AdminGroupController;
-use App\Http\Controllers\Admin\AppealTypeController as AdminAppealTypeController;
-use App\Http\Controllers\Admin\AppealController as AdminAppealController;
-use App\Http\Controllers\Admin\PageController as AdminPageController;
+use App\Http\Controllers\Admin\DiscussController as AdminDiscussController;
+use Illuminate\Support\Facades\Route;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -63,4 +66,6 @@ Route::group(["prefix" => "dashboard","middleware" => "auth"],function (){
     Route::resource("appeal-type",AdminAppealTypeController::class);
     Route::resource("appeal",AdminAppealController::class);
     Route::resource("page",AdminPageController::class);
+    Route::resource("forum",AdminForumController::class);
+    Route::resource("discuss",AdminDiscussController::class);
 });

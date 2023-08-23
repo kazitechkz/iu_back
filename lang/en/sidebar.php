@@ -18,5 +18,8 @@ return [
     "faq" => "FAQ",
     "wallet"=>"Wallet",
     "group"=>"Group of questions",
-    "appeal_type"=>"Appeal question types"
+    "appeal_type"=>"Appeal question types",
+    "page"=>"Page",
+    "appeal"=>"Appeal",
+    "forum"=>"Forum"
 ];

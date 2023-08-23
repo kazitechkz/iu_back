@@ -98,6 +98,11 @@
             name="{{__('sidebar.appeal_type')}}"
         />
         <x-shared.main-sidebar-menu
+            link="forum.index"
+            icon="fas fa-comment"
+            name="{{__('sidebar.forum')}}"
+        />
+        <x-shared.main-sidebar-menu
             link="faq.index"
             icon="fas fa-question"
             name="{{__('sidebar.faq')}}"
