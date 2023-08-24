@@ -13,19 +13,19 @@ return new class extends Migration
     {
         Schema::create('questions', function (Blueprint $table) {
             $table->bigIncrements("id");
-            $table->text('context')->nullable(true);
+            $table->text('context')->nullable();
             $table->text('text');
             $table->text('answer_a');
             $table->text('answer_b');
             $table->text('answer_c');
             $table->text('answer_d');
-            $table->text('answer_e');
-            $table->text('answer_f')->nullable(true);
-            $table->text('answer_g')->nullable(true);
-            $table->text('answer_h')->nullable(true);
+            $table->text('answer_e')->nullable();
+            $table->text('answer_f')->nullable();
+            $table->text('answer_g')->nullable();
+            $table->text('answer_h')->nullable();
             $table->char('correct_answers');
-            $table->text('prompt')->nullable(true);
-            $table->text('explanation')->nullable(true);
+            $table->text('prompt')->nullable();
+            $table->text('explanation')->nullable();
             $table->timestamps();
             $table->softDeletes();
             $table->foreignId('subject_id')->references('id')->on('subjects')->onDelete('cascade');
@@ -33,6 +33,7 @@ return new class extends Migration
             $table->foreignId('type_id')->references('id')->on('question_types')->onDelete('cascade');
             $table->foreignId('category_id')->nullable()->references('id')->on('categories')->onDelete('set null');
             $table->foreignId('group_id')->nullable()->references('id')->on('groups')->onDelete('set null');
+            $table->foreignId('context_id')->nullable()->references('id')->on('subject_contexts')->onDelete('set null');
         });
     }
 

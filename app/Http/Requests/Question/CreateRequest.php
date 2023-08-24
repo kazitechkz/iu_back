@@ -32,7 +32,6 @@ class CreateRequest extends FormRequest
             'answer_b' => 'required',
             'answer_c' => 'required',
             'answer_d' => 'required',
-            'answer_e' => 'required',
             'correct_answers' => 'required',
             'prompt' => 'sometimes|min:1',
             'explanation' => 'sometimes|min:1'
