@@ -21,5 +21,9 @@ return [
     "appeal_type"=>"Appeal question types",
     "page"=>"Page",
     "appeal"=>"Appeal",
-    "forum"=>"Forum"
+    "forum"=>"Forum",
+    'finance' => 'Finance',
+    'support' => 'Support',
+    'content' => 'Content',
+    'tests' => 'Tests'
 ];

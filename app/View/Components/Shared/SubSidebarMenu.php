@@ -13,10 +13,12 @@ class SubSidebarMenu extends Component
      */
     public string $link;
     public string $name;
-    public function __construct(string $link, string $name)
+    public string $icon;
+    public function __construct(string $link, string $name, string $icon)
     {
         $this->name = $name;
         $this->link = $link;
+        $this->icon = $icon;
     }
 
     /**
