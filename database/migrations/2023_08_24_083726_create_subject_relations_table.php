@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('subject_relations', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements("id");
             $table->foreignId('subject_id')->references('id')->on('subjects')->onDelete('cascade');
             $table->foreignId('relation_id')->references('id')->on('subjects')->onDelete('cascade');
             $table->timestamps();
