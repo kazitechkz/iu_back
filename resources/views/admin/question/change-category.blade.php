@@ -85,8 +85,12 @@
                                     <td>
                                         <livewire:question.change-category :question="$question"/>
                                     </td>
-                                    <td>{!! \App\Helpers\StrHelper::getSubStr($question->text, 70) !!}</td>
-                                    <td>Correct Answer</td>
+                                    <td>{!! \App\Helpers\StrHelper::getSubStr($question->text, 100) !!}</td>
+                                    <td>
+                                        @foreach(json_decode($question->correct_answers) as $ans)
+                                            {{$loop->iteration}}. {{\App\Helpers\StrHelper::getCorrectAnswers($question, $ans)}} <br>
+                                        @endforeach
+                                    </td>
                                     <td>
                                         <x-shared.action-buttons
                                             :edit-link="route('questions.edit', $question->id)"

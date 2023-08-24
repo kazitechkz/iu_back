@@ -39,7 +39,7 @@ class SubjectSeeder extends Seeder
         DB::table('single_subject_tests')->insert([
             'subject_id' => 2,
             'single_answer_questions_quantity' => 10,
-            'contextual_questions_quantity' => 5,
+            'contextual_questions_quantity' => 10,
             'multi_answer_questions_quantity' => 0,
         ]);
 

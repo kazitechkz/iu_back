@@ -58,7 +58,7 @@ class SingleSubjectTestController extends Controller
     {
         $item = SingleSubjectTest::findOrFail($id);
         $item->edit($request->all());
-        return redirect(route('single-subject-tests.index'));
+        return redirect(route('single-tests.index'));
     }
 
     /**

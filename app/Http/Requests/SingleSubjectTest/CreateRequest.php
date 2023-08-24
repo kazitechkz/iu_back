@@ -22,9 +22,9 @@ class CreateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'single_answer_questions_quantity' => 'required|numeric|min:0|not_in:0',
-            'contextual_questions_quantity' => 'required|numeric|min:0|not_in:0',
-            'multi_answer_questions_quantity' => 'required|numeric|min:0|not_in:0',
+            'single_answer_questions_quantity' => 'sometimes|numeric|min:0',
+            'contextual_questions_quantity' => 'sometimes|numeric|min:0',
+            'multi_answer_questions_quantity' => 'sometimes|numeric|min:0',
             'allotted_time' => 'required|numeric|min:0|not_in:0',
             'subject_id' => 'required|exists:subjects,id'
         ];
