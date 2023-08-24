@@ -16,7 +16,7 @@ class LocaleSeeder extends Seeder
         Locale::create([
            'code' => 'kk',
            'title' => 'Қазақ тілі',
-           'isActive' => 0
+           'isActive' => 1
         ]);
         Locale::create([
             'code' => 'ru',
