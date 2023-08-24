@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('subtournament_participants', function (Blueprint $table) {
+        Schema::create('sub_tournament_participants', function (Blueprint $table) {
             $table->bigIncrements("id");
             $table->foreignId("user_id")->references("id")->on("users")->cascadeOnDelete();
             $table->foreignId("sub_tournament_id")->references("id")->on("sub_tournaments")->cascadeOnDelete();

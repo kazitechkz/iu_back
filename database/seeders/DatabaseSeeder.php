@@ -19,11 +19,14 @@ class DatabaseSeeder extends Seeder
                 RolePermissionSeeder::class,
                 UserSeeder::class,
                 UserRoleSeeder::class,
+                PlanSeeder::class,
                 SubjectSeeder::class,
                 SubjectRelationSeeder::class,
                 QuestionTypeSeeder::class,
                 LocaleSeeder::class,
-                GroupSeeder::class
+                GroupSeeder::class,
+                AttemptTypeSeeder::class,
+                TournamentStepSeeder::class,
             ]
         );
     }
