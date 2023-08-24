@@ -32,7 +32,7 @@ class SubjectSeeder extends Seeder
             'title_ru' => 'История Казахстана',
             'title_kk' => 'Қазақстан тарихы',
             'is_compulsory' => true,
-            'max_questions_quantity' => 15,
+            'max_questions_quantity' => 20,
             'questions_step' => 5,
         ]);
 
@@ -47,14 +47,14 @@ class SubjectSeeder extends Seeder
             'title_ru' => 'Грамотность чтения',
             'title_kk' => 'Оқу сауаттылығы',
             'is_compulsory' => true,
-            'max_questions_quantity' => 20,
-            'questions_step' => 2,
+            'max_questions_quantity' => 15,
+            'questions_step' => 5,
         ]);
 
         DB::table('single_subject_tests')->insert([
             'subject_id' => 3,
             'single_answer_questions_quantity' => 0,
-            'contextual_questions_quantity' => 20,
+            'contextual_questions_quantity' => 15,
             'multi_answer_questions_quantity' => 0,
         ]);
 
@@ -224,6 +224,20 @@ class SubjectSeeder extends Seeder
             'single_answer_questions_quantity' => 20,
             'contextual_questions_quantity' => 5,
             'multi_answer_questions_quantity' => 10,
+        ]);
+
+        DB::table('subjects')->insert([
+            'title_ru' => 'Информатика',
+            'title_kk' => 'Информатика',
+            'max_questions_quantity' => 35,
+            'questions_step' => 5,
+        ]);
+
+        DB::table('single_subject_tests')->insert([
+            'subject_id' => 16,
+            'single_answer_questions_quantity' => 20,
+            'contextual_questions_quantity' => 5,
+            'multi_answer_questions_quantity' => 10
         ]);
     }
 }
