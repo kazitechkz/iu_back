@@ -22,6 +22,7 @@ use App\Http\Controllers\Admin\SubscriptionController as AdminSubscriptionContro
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Admin\WalletController as AdminWalletController;
 use App\Http\Controllers\Admin\DiscussController as AdminDiscussController;
+use App\Http\Controllers\Admin\TournamentController as AdminTournamentController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -70,4 +71,8 @@ Route::group(["prefix" => "dashboard","middleware" => "auth"],function (){
     Route::resource("page",AdminPageController::class);
     Route::resource("forum",AdminForumController::class);
     Route::resource("discuss",AdminDiscussController::class);
+    Route::resource("tournament",AdminTournamentController::class);
+
+
+
 });

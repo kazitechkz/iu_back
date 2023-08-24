@@ -47,5 +47,8 @@
             <x-shared.sub-sidebar-menu :icon="'fas fa-file-lines'" :link="'page.index'" :name="__('sidebar.page')"/>
         </x-shared.sidebar-menu>
 
+        <x-shared.sidebar-menu :element-id="'tournament'" :name="__('sidebar.tournament')" :icon="'fas fa-trophy'">
+            <x-shared.sub-sidebar-menu :icon="'fas fa-trophy'" :link="'tournament.index'" :name="__('sidebar.tournament')"/>
+        </x-shared.sidebar-menu>
     </ul>
 </nav>
