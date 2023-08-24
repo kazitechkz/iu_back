@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
                 UserSeeder::class,
                 UserRoleSeeder::class,
                 SubjectSeeder::class,
+                SubjectRelationSeeder::class,
                 QuestionTypeSeeder::class,
                 LocaleSeeder::class,
                 GroupSeeder::class
