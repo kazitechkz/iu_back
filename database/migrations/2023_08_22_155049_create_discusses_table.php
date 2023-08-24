@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('discusses', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements("id");
             $table->text("text");
             $table->foreignId("user_id")
                 ->nullable()

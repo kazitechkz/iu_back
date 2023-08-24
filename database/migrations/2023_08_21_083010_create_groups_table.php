@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('groups', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements("id");
             $table->string("title_ru",255);
             $table->string("title_kk",255);
             $table->string("title_en",255);

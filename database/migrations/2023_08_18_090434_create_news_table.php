@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('news', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements("id");
             $table->string("title",255)->index();
             $table->string("subtitle",255)->index();
             $table->foreignId('image_url')->nullable()->references('id')->on('files')->onDelete('set null');

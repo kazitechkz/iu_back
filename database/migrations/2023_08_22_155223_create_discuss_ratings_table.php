@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('discuss_rating', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements("id");
             $table->integer("rating")->nullable();
             $table->foreignId("user_id")
                 ->nullable()

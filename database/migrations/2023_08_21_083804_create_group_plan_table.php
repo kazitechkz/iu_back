@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('group_plan', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements("id");
             $table->foreignId("group_id")->references("id")->on("groups")->cascadeOnDelete();
             $table->unsignedInteger('plan_id');
             $table->foreign('plan_id')->references('id')->on(config('subby.tables.plans'))

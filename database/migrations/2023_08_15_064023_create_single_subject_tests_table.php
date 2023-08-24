@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('single_subject_tests', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements("id");
             $table->unsignedBigInteger('subject_id');
             $table->integer('single_answer_questions_quantity')->nullable(true);
             $table->integer('contextual_questions_quantity')->nullable(true);

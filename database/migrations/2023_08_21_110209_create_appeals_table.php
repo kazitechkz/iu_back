@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('appeals', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements("id");
             $table->foreignId("user_id")->nullable()
                 ->references("id")->on("users")->nullOnDelete();
             $table->foreignId("type_id")->nullable()
