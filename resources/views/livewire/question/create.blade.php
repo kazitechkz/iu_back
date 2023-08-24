@@ -77,19 +77,19 @@
             <x-input wire:model="answer_d" label="Ответ D ($$ @@)" placeholder="d"/>
         </div>
     </div>
-    <div class="md:flex my-3 justify-between">
+    <div class="md:flex my-3 justify-start">
         <div class="w-full pr-2">
             <x-input wire:model="answer_e" label="Ответ E ($$ @@)" placeholder="e"/>
         </div>
         <div class="w-full pr-2">
             <x-input wire:model="answer_f" label="Ответ F ($$ @@)" placeholder="f"/>
         </div>
-        <div class="w-full pr-2">
-            <x-input wire:model="answer_g" label="Ответ G ($$ @@)" placeholder="g"/>
-        </div>
-        <div class="w-full">
-            <x-input wire:model="answer_h" label="Ответ H ($$ @@)" placeholder="h"/>
-        </div>
+{{--        <div class="w-full pr-2">--}}
+{{--            <x-input wire:model="answer_g" label="Ответ G ($$ @@)" placeholder="g"/>--}}
+{{--        </div>--}}
+{{--        <div class="w-full">--}}
+{{--            <x-input wire:model="answer_h" label="Ответ H ($$ @@)" placeholder="h"/>--}}
+{{--        </div>--}}
     </div>
     <div class="my-3">
         <x-select
