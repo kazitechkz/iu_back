@@ -24,6 +24,11 @@ use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Admin\WalletController as AdminWalletController;
 use App\Http\Controllers\Admin\DiscussController as AdminDiscussController;
 use App\Http\Controllers\Admin\TournamentController as AdminTournamentController;
+use App\Http\Controllers\Admin\SubTournamentController as AdminSubTournamentController;
+use App\Http\Controllers\Admin\SubTournamentParticipantController as AdminSubTournamentParticipantController;
+use App\Http\Controllers\Admin\SubTournamentWinnerController as AdminSubTournamentWinnerController;
+use App\Http\Controllers\Admin\SubTournamentResultController as AdminSubTournamentResultController;
+use App\Http\Controllers\Admin\SubTournamentRivalController as AdminSubTournamentRivalController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -74,6 +79,11 @@ Route::group(["prefix" => "dashboard","middleware" => "auth"],function (){
     Route::resource("forum",AdminForumController::class);
     Route::resource("discuss",AdminDiscussController::class);
     Route::resource("tournament",AdminTournamentController::class);
+    Route::resource("sub-tournament",AdminSubTournamentController::class);
+    Route::resource("sub-tournament-participant",AdminSubTournamentParticipantController::class);
+    Route::resource("sub-tournament-winner",AdminSubTournamentWinnerController::class);
+    Route::resource("sub-tournament-result",AdminSubTournamentResultController::class);
+    Route::resource("sub-tournament-rival",AdminSubTournamentRivalController::class);
 
 
 

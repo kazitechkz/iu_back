@@ -27,5 +27,10 @@ return [
     'content' => 'Content',
     'tests' => 'Tests',
     "tournament"=>"Tournament",
-    'context' => 'Context'
+    'context' => 'Context',
+    "sub-tournament"=>"Sub-Tournament",
+    "sub-tournament-participant"=>"Sub-Tournament Participants",
+    "sub-tournament-winner"=>"Sub-Tournament Winner",
+    "sub-tournament-rivals"=>"Sub-Tournament Rivals",
+    "sub-tournament-result"=>"Sub-Tournament Result",
 ];

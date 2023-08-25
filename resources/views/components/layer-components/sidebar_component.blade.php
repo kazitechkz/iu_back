@@ -50,6 +50,11 @@
 
         <x-shared.sidebar-menu :element-id="'tournament'" :name="__('sidebar.tournament')" :icon="'fas fa-trophy'">
             <x-shared.sub-sidebar-menu :icon="'fas fa-trophy'" :link="'tournament.index'" :name="__('sidebar.tournament')"/>
+            <x-shared.sub-sidebar-menu :icon="'fas fa-trophy'" :link="'sub-tournament.index'" :name="__('sidebar.sub-tournament')"/>
+            <x-shared.sub-sidebar-menu :icon="'fas fa-users'" :link="'sub-tournament-participant.index'" :name="__('sidebar.sub-tournament-participant')"/>
+            <x-shared.sub-sidebar-menu :icon="'fas fa-award'" :link="'sub-tournament-winner.index'" :name="__('sidebar.sub-tournament-winner')"/>
+            <x-shared.sub-sidebar-menu :icon="'fas fa-square-poll-vertical'" :link="'sub-tournament-result.index'" :name="__('sidebar.sub-tournament-result')"/>
+            <x-shared.sub-sidebar-menu :icon="'mdi mdi-sword'" :link="'sub-tournament-rival.index'" :name="__('sidebar.sub-tournament-rivals')"/>
         </x-shared.sidebar-menu>
     </ul>
 </nav>

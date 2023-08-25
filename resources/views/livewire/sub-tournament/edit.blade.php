@@ -1,7 +1,8 @@
 <x-form-component.form-component
-    :method="'post'"
-    :route="'sub-tournament.store'"
-    :element-id="'sub-tournament-create'"
+    :method="'put'"
+    :route="'sub-tournament.update'"
+    :parameters="['sub_tournament'=>$subTournament]"
+    :element-id="'sub-tournament-update'"
 >
     {{--    Tournament  --}}
     <div class="form-group">
