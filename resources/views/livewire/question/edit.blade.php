@@ -59,8 +59,25 @@
 
     <div wire:ignore class="md:flex lg:flex justify-between my-3">
         <x-ckeditor :description="$text" :input-name="'text'" :title="'Текст вопроса ($$ @@)'"/>
-        <div class="px-2"></div>
-        <x-ckeditor :description="$context" :input-name="'context'" :title="'Контекст ($$ @@)'"/>
+    </div>
+
+    <div class="w-full">
+        <x-select
+            label="Контектсты"
+            wire:model="context_id"
+            placeholder="Выбрать контекст"
+            :options="$contexts"
+            option-label="title"
+            option-description="context"
+            option-value="id"
+            {{--            class="hover:bg-primary-500"--}}
+        />
+    </div>
+
+    <div class="md:flex lg:flex justify-between my-3">
+        <div wire:ignore class="w-full">
+            <x-ckeditor :description="$context" :input-name="'context'" :title="'Контекст ($$ @@)'"/>
+        </div>
     </div>
 
     <div class="md:flex my-3 justify-between">
