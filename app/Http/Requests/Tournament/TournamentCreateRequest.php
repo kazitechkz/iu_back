@@ -37,6 +37,7 @@ class TournamentCreateRequest extends FormRequest
             "status"=>"required",
             "start_at"=>"required",
             "end_at"=>"required",
+            "locale_id"=>"required|array"
         ];
     }
 }

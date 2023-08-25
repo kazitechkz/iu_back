@@ -1,11 +1,11 @@
 @extends('layouts.default')
 @section('content')
     <x-layer-components.content-navbar
-        :title="'Список Турнирова'"
+        :title="'Список Турниров'"
         :subtitle="'Управление Турнирами'"
         :breadcrumbs="['Управление Турнирами']"
     >
-        <a href="{{route("tournament.create")}}" class="btn btn-primary mt-2 mt-xl-0">Добавить турниры</a>
+        <a href="{{route("tournament.create")}}" class="btn btn-primary mt-2 mt-xl-0">Добавить турнир</a>
 
     </x-layer-components.content-navbar>
     <div class="col-lg-12 grid-margin stretch-card">
@@ -15,7 +15,6 @@
             </div>
         </div>
     </div>
-
 
 @endsection
 

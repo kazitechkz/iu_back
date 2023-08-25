@@ -4,8 +4,10 @@ namespace App\Http\Livewire\Tournament;
 
 use App\Http\Requests\Tournament\TournamentCreateRequest;
 use App\Http\Requests\Tournament\TournamentUpdateRequest;
+use App\Models\Locale;
 use App\Models\Subject;
 use App\Models\Tournament;
+use App\Models\TournamentLocale;
 use Livewire\Component;
 
 class Edit extends Component
@@ -33,6 +35,8 @@ class Edit extends Component
 
     public function mount(Tournament $tournament){
         $this->tournament = $tournament;
+        $this->locales = Locale::where(["isActive" => true])->get();
+        $this->locale_id = $this->tournament->locales()->pluck("locales.id");
         $this->subjects = Subject::all();
         $this->subject_id = $this->tournament->subject_id;
         $this->title_ru = $this->tournament->title_ru;
@@ -54,6 +58,17 @@ class Edit extends Component
         $rules = (new TournamentUpdateRequest())->rules();
         return $rules;
     }
+
+    public function changeLocale($locale_id){
+        $data = ["tournament_id"=>$this->tournament->id,"locale_id"=>$locale_id];
+        if($tournament_locale = TournamentLocale::firstWhere($data)){
+            $tournament_locale->forceDelete();
+        }
+        else{
+            TournamentLocale::add($data);
+        }
+    }
+
     public function updated($propertyName)
     {
         $this->validateOnly($propertyName);

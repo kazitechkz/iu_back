@@ -134,6 +134,25 @@
     <label class="h-5">Poster*</label>
     <livewire:image-upload :output_name="'poster'" :folder-name="'news'"/>
     {{-- Poster --}}
+    {{--    Locale --}}
+    <div class="form-group">
+        <p class="h-3 mb-3 font-weight-bold">
+            Available Locale:
+        </p>
+        <div class="form-group">
+            @foreach($locales as $locale)
+                <x-checkbox
+                    value="{{$locale->id}}"
+                    id="{{$locale->title}}"
+                    name="locale_id[]"
+                    multiple="multiple"
+                    selected
+                    label="{{$locale->title}}"
+                />
+            @endforeach
+        </div>
+    </div>
+    {{--    Locale --}}
     {{--    Status --}}
     <div class="form-group">
         <x-select

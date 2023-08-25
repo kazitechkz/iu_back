@@ -25,5 +25,6 @@ return [
     'finance' => 'Finance',
     'support' => 'Support',
     'content' => 'Content',
-    'tests' => 'Tests'
+    'tests' => 'Tests',
+    "tournament"=>"Tournament"
 ];

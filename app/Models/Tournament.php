@@ -95,7 +95,7 @@ class Tournament extends Model
 	public function locales()
 	{
 		return $this->belongsToMany(Locale::class, 'tournament_locales')
-					->withPivot('id', 'deleted_at')
+                        ->withPivot('id', 'deleted_at')
 					->withTimestamps();
 	}
 }

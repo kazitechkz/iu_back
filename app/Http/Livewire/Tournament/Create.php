@@ -29,10 +29,11 @@ class Create extends Component
     public $subjects;
     public $locales;
     public int|null $subject_id;
-
+    public $locale_id = [];
 
     public function mount(){
         $this->subjects = Subject::all();
+        $this->locales = Locale::where(["isActive" => true])->get();
         $this->title_ru = old("title_ru") ?? "";
         $this->title_kk = old("title_kk") ?? "";
         $this->title_en = old("title_en") ?? "";

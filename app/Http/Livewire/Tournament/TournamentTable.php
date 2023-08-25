@@ -2,9 +2,12 @@
 
 namespace App\Http\Livewire\Tournament;
 
+use App\Models\File;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Models\Tournament;
+use Rappasoft\LaravelLivewireTables\Views\Columns\ButtonGroupColumn;
+use Rappasoft\LaravelLivewireTables\Views\Columns\LinkColumn;
 
 class TournamentTable extends DataTableComponent
 {
@@ -26,7 +29,7 @@ class TournamentTable extends DataTableComponent
         return [
             Column::make("Id", "id")
                 ->sortable(),
-            Column::make("Subject id", "subject_id")
+            Column::make("Subject id", "subject.title_ru")
                 ->sortable(),
             Column::make("Title ru", "title_ru")
                 ->sortable(),
@@ -50,8 +53,9 @@ class TournamentTable extends DataTableComponent
                 ->sortable(),
             Column::make("Currency", "currency")
                 ->sortable(),
-            Column::make("Poster", "poster")
-                ->sortable(),
+            Column::make("Poster", "file.url")
+                ->format(fn($val) => '<img class="w-50" src="'.File::getFileFromAWS($val).'" />')
+                ->html(),
             Column::make("Status", "status")
                 ->sortable(),
             Column::make("Start at", "start_at")
@@ -62,6 +66,31 @@ class TournamentTable extends DataTableComponent
                 ->sortable(),
             Column::make("Updated at", "updated_at")
                 ->sortable(),
+            ButtonGroupColumn::make('Actions')
+                ->attributes(function($row) {
+                    return [
+                        'class' => 'space-x-2 flex',
+                    ];
+                })
+                ->buttons([
+                    LinkColumn::make('View') // make() has no effect in this case but needs to be set anyway
+                    ->title(fn($row) => '')
+                        ->location(fn($row) => route('tournament.show', $row))
+                        ->attributes(function($row) {
+                            return [
+                                'class' => 'fas fa-eye btn btn-primary btn-rounded btn-icon flex align-center justify-center items-center',
+                            ];
+                        }),
+                    LinkColumn::make('Edit')
+                        ->title(fn($row) => "")
+                        ->location(fn($row) => route('tournament.edit', $row))
+                        ->attributes(function($row) {
+                            return [
+                                'target' => '_blank',
+                                'class' => 'fas fa-pencil btn btn-danger btn-rounded btn-icon flex align-center justify-center items-center',
+                            ];
+                        }),
+                ]),
         ];
     }
 }

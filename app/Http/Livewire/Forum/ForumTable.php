@@ -91,31 +91,8 @@ class ForumTable extends DataTableComponent
             Column::make("Updated at", "updated_at")
                 ->sortable(),
 
-            ButtonGroupColumn::make('Actions')
-                ->attributes(function($row) {
-                    return [
-                        'class' => 'space-x-2 flex',
-                    ];
-                })
-                ->buttons([
-                    LinkColumn::make('View') // make() has no effect in this case but needs to be set anyway
-                    ->title(fn($row) => '')
-                        ->location(fn($row) => route('forum.show', $row))
-                        ->attributes(function($row) {
-                            return [
-                                'class' => 'fas fa-eye btn btn-primary btn-rounded btn-icon flex align-center justify-center items-center',
-                            ];
-                        }),
-                    LinkColumn::make('Edit')
-                        ->title(fn($row) => "")
-                        ->location(fn($row) => route('forum.edit', $row))
-                        ->attributes(function($row) {
-                            return [
-                                'target' => '_blank',
-                                'class' => 'fas fa-pencil btn btn-danger btn-rounded btn-icon flex align-center justify-center items-center',
-                            ];
-                        }),
-                ]),
+
+
         ];
     }
 }

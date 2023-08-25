@@ -7,6 +7,7 @@ use App\Http\Requests\Tournament\TournamentCreateRequest;
 use App\Http\Requests\Tournament\TournamentUpdateRequest;
 use App\Models\News;
 use App\Models\Tournament;
+use App\Models\TournamentLocale;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -36,7 +37,10 @@ class TournamentController extends Controller
         $input = $request->all();
         $input["start_at"] = Carbon::parse($input["start_at"]);
         $input["end_at"] = Carbon::parse($input["end_at"]);
-        Tournament::add($input);
+        $tournament = Tournament::add($input);
+        foreach ($request->get("locale_id") as $locale_id){
+            TournamentLocale::add(["tournament_id"=>$tournament->id,"locale_id"=>$locale_id]);
+        }
         return redirect()->route("tournament.index");
     }
 
@@ -45,7 +49,11 @@ class TournamentController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $tournament = Tournament::find($id);
+        if($tournament){
+            return view("admin.tournament.show",compact("tournament"));
+        }
+        return redirect()->route("tournament.index");
     }
 
     /**

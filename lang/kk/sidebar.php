@@ -26,5 +26,6 @@ return [
     'finance' => 'Қаржы',
     'support' => 'Байланыс',
     'content' => 'Контент',
-    'tests' => 'Тесттер'
+    'tests' => 'Тесттер',
+    "tournament"=>"Турнир"
 ];
