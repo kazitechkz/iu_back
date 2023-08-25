@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('subject_contexts', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->foreignId('subject_id')->references('id')->on('subjects')->onDelete('cascade');
+            $table->text('context');
             $table->timestamps();
             $table->softDeletes();
         });

@@ -58,9 +58,25 @@
     </div>
 
     <div wire:ignore class="md:flex lg:flex justify-between my-3">
-        <x-ckeditor :input-name="'text'" :title="'Текст вопроса ($$ @@)'"/>
-        <div class="px-2"></div>
-        <x-ckeditor :input-name="'context'" :title="'Контекст ($$ @@)'"/>
+        <x-ckeditor :description="$this->text" :input-name="'text'" :title="'Текст вопроса ($$ @@)'"/>
+    </div>
+
+    <div class="w-full">
+        <x-select
+            label="Контектсты"
+            wire:model="context_id"
+            placeholder="Выбрать контекст"
+            :options="$contexts"
+            option-label="context"
+            option-value="id"
+            {{--            class="hover:bg-primary-500"--}}
+        />
+    </div>
+
+    <div class="md:flex lg:flex justify-between my-3">
+        <div wire:ignore class="w-full">
+            <x-ckeditor :description="$context" :input-name="'context'" :title="'Контекст ($$ @@)'"/>
+        </div>
     </div>
 
     <div class="md:flex my-3 justify-between">
@@ -100,9 +116,9 @@
         />
     </div>
     <div wire:ignore class="md:flex lg:flex justify-between my-3">
-        <x-ckeditor :input-name="'prompt'" :title="'Подсказка ($$ @@)'"/>
+        <x-ckeditor :description="$this->prompt" :input-name="'prompt'" :title="'Подсказка ($$ @@)'"/>
         <div class="px-2"></div>
-        <x-ckeditor :input-name="'explanation'" :title="'Решение ($$ @@)'"/>
+        <x-ckeditor :description="$this->explanation" :input-name="'explanation'" :title="'Решение ($$ @@)'"/>
     </div>
 
 

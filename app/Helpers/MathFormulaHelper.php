@@ -2,6 +2,7 @@
 
 namespace App\Helpers;
 
+use App\Models\SubjectContext;
 use Illuminate\Http\Request;
 
 class MathFormulaHelper
@@ -11,17 +12,38 @@ class MathFormulaHelper
         $math = new self();
         $data = $request->all();
         $data['text'] = $math->getReplaceStr($data['text']);
+        if (!isset($data['context_id'])) {
+            if (isset($data['context'])) {
+                $context = SubjectContext::create([
+                   'subject_id' => $data['subject_id'],
+                   'context' => $data['context']
+                ]);
+                $data['context_id'] = $context->id;
+            }
+        }
         $data['context'] = $math->getReplaceStr($data['context']);
         $data['answer_a'] = $math->getReplaceStr($data['answer_a']);
         $data['answer_b'] = $math->getReplaceStr($data['answer_b']);
         $data['answer_c'] = $math->getReplaceStr($data['answer_c']);
         $data['answer_d'] = $math->getReplaceStr($data['answer_d']);
-        $data['answer_e'] = $math->getReplaceStr($data['answer_e']);
-        $data['answer_f'] = $math->getReplaceStr($data['answer_f']);
-        $data['answer_g'] = $math->getReplaceStr($data['answer_g']);
-        $data['answer_h'] = $math->getReplaceStr($data['answer_h']);
-        $data['prompt'] = $math->getReplaceStr($data['prompt']);
-        $data['explanation'] = $math->getReplaceStr($data['explanation']);
+        if (isset($data['answer_e'])) {
+            $data['answer_e'] = $math->getReplaceStr($data['answer_e']);
+        }
+        if (isset($data['answer_f'])) {
+            $data['answer_f'] = $math->getReplaceStr($data['answer_f']);
+        }
+        if (isset($data['answer_g'])) {
+            $data['answer_g'] = $math->getReplaceStr($data['answer_g']);
+        }
+        if (isset($data['answer_h'])) {
+            $data['answer_h'] = $math->getReplaceStr($data['answer_h']);
+        }
+        if (isset($data['prompt'])) {
+            $data['prompt'] = $math->getReplaceStr($data['prompt']);
+        }
+        if (isset($data['explanation'])) {
+            $data['explanation'] = $math->getReplaceStr($data['explanation']);
+        }
         return $data;
     }
 

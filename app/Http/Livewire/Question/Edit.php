@@ -8,6 +8,7 @@ use App\Models\Group;
 use App\Models\Locale;
 use App\Models\QuestionType;
 use App\Models\Subject;
+use App\Models\SubjectContext;
 use Livewire\Component;
 
 class Edit extends Component
@@ -35,6 +36,8 @@ class Edit extends Component
     public $correct_answers;
     public $text;
     public $context;
+    public $contexts;
+    public $context_id;
     public $prompt;
     public $explanation;
     public array $listCorrectAnswers = ['a','b','c','d','e','f','g','h'];
@@ -65,15 +68,16 @@ class Edit extends Component
         $this->answer_b = $question->answer_b;
         $this->answer_c = $question->answer_c;
         $this->answer_d = $question->answer_d;
-        $this->answer_e = $question->answer_e;
-        $this->answer_f = $question->answer_f;
-        $this->answer_g = $question->answer_g;
-        $this->answer_h = $question->answer_h;
+        $this->answer_e = $question->answer_e != null ?? $question->answer_e;
+        $this->answer_f = $question->answer_f != null ?? $question->answer_f;
+        $this->answer_g = $question->answer_g != null ?? $question->answer_g;
+        $this->answer_h = $question->answer_h != null ?? $question->answer_h;
         $this->correct_answers = json_decode($question->correct_answers);
         $this->text = $question->text;
-        $this->context = $question->context;
+        $this->contexts = SubjectContext::where('subject_id', $question->subject_id)->get();
         $this->prompt = $question->prompt;
         $this->explanation = $question->explanation;
+        $this->context_id = $question->context_id != null ? $question->context_id : null;
     }
 
     public function selectCategory(): void
@@ -84,7 +88,9 @@ class Edit extends Component
     public function updatedSubjectId(): void
     {
         $this->categories = Category::where('subject_id', $this->subject_id)->get();
+        $this->contexts = SubjectContext::where('subject_id', $this->subject_id)->get();
         $this->category_id = null;
+        $this->context_id = null;
     }
     public function render(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {

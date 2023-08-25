@@ -58,7 +58,7 @@ class Question extends Model implements Searchable
 	];
 
 	protected $fillable = [
-		'context',
+		'context_id',
 		'text',
 		'answer_a',
 		'answer_b',
