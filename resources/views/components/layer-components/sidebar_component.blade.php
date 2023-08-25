@@ -39,6 +39,7 @@
 
         <x-shared.sidebar-menu :element-id="'tests'" :name="__('sidebar.tests')" :icon="'fas fa-wallet'">
             <x-shared.sub-sidebar-menu :icon="'fas fa-layer-group'" :link="'group.index'" :name="__('sidebar.group')"/>
+            <x-shared.sub-sidebar-menu :icon="'mdi mdi-language-python'" :link="'subject-contexts.index'" :name="__('sidebar.context')"/>
             <x-shared.sub-sidebar-menu :icon="'mdi mdi-vector-point'" :link="'questions.index'" :name="__('sidebar.questions')"/>
         </x-shared.sidebar-menu>
 

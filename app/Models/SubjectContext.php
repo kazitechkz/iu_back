@@ -7,6 +7,7 @@
 namespace App\Models;
 
 use App\Helpers\StrHelper;
+use App\Traits\CRUD;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
@@ -29,7 +30,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class SubjectContext extends Model
 {
-	use SoftDeletes;
+	use SoftDeletes, CRUD;
 	protected $table = 'subject_contexts';
 
 	protected $casts = [

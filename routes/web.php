@@ -16,6 +16,7 @@ use App\Http\Controllers\Admin\PromocodeController as AdminPromocodeController;
 use App\Http\Controllers\Admin\QuestionController as AdminQuestionController;
 use App\Http\Controllers\Admin\RoleController as AdminRoleController;
 use App\Http\Controllers\Admin\SingleSubjectTestController as AdminSingleSubjectTestController;
+use App\Http\Controllers\Admin\SubjectContextController as AdminSubjectContextController;
 use App\Http\Controllers\Admin\SubjectController as AdminSubjectController;
 use App\Http\Controllers\Admin\SubjectRelationController as AdminSubjectRelationController;
 use App\Http\Controllers\Admin\SubscriptionController as AdminSubscriptionController;
@@ -53,6 +54,7 @@ Route::group(["prefix" => "dashboard","middleware" => "auth"],function (){
     Route::resource("locale",AdminLocaleController::class);
     Route::resource("permission",AdminPermissionController::class);
     Route::resource('subject', AdminSubjectController::class)->except(['show', 'destroy']);
+    Route::resource('subject-contexts', AdminSubjectContextController::class)->except(['show', 'destroy']);
     Route::resource('single-tests', AdminSingleSubjectTestController::class)->except(['create', 'show', 'destroy']);
     Route::resource("plan",AdminPlanController::class);
     Route::resource('categories', AdminCategoryController::class)->except(['show', 'destroy']);

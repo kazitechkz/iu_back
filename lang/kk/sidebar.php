@@ -27,5 +27,6 @@ return [
     'support' => 'Байланыс',
     'content' => 'Контент',
     'tests' => 'Тесттер',
-    "tournament"=>"Турнир"
+    "tournament"=>"Турнир",
+    'context' => 'Контекст'
 ];

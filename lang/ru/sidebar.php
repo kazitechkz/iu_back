@@ -26,5 +26,6 @@ return [
     'support' => 'Поддержка',
     'content' => 'Контент',
     'tests' => 'Тесты',
-    "tournament"=>"Турнир"
+    "tournament"=>"Турнир",
+    'context' => 'Группа контекстов'
 ];

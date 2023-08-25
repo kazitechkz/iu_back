@@ -26,5 +26,6 @@ return [
     'support' => 'Support',
     'content' => 'Content',
     'tests' => 'Tests',
-    "tournament"=>"Tournament"
+    "tournament"=>"Tournament",
+    'context' => 'Context'
 ];
