@@ -27,5 +27,10 @@ return [
     'support' => 'Байланыс',
     'content' => 'Контент',
     'tests' => 'Тесттер',
-    "tournament"=>"Турнир"
+    "tournament"=>"Турнир",
+    "sub-tournament"=>"Субтурнир",
+    "sub-tournament-participant"=>"Участники субтурнира",
+    "sub-tournament-winner"=>"Победители субтурнира",
+    "sub-tournament-rivals"=>"Противники в субтурнире",
+    "sub-tournament-result"=>"Результаты субтурнира",
 ];

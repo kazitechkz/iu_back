@@ -26,5 +26,10 @@ return [
     'support' => 'Поддержка',
     'content' => 'Контент',
     'tests' => 'Тесты',
-    "tournament"=>"Турнир"
+    "tournament"=>"Турнир",
+    "sub-tournament"=>"Субтурнир",
+    "sub-tournament-participant"=>"Участники субтурнира",
+    "sub-tournament-winner"=>"Победители субтурнира",
+    "sub-tournament-rivals"=>"Противники в субтурнире",
+    "sub-tournament-result"=>"Результаты субтурнира",
 ];

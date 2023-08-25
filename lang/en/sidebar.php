@@ -26,5 +26,10 @@ return [
     'support' => 'Support',
     'content' => 'Content',
     'tests' => 'Tests',
-    "tournament"=>"Tournament"
+    "tournament"=>"Tournament",
+    "sub-tournament"=>"Sub-Tournament",
+    "sub-tournament-participant"=>"Sub-Tournament Participants",
+    "sub-tournament-winner"=>"Sub-Tournament Winner",
+    "sub-tournament-rivals"=>"Sub-Tournament Rivals",
+    "sub-tournament-result"=>"Sub-Tournament Result",
 ];
