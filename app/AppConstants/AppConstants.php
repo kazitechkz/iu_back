@@ -42,8 +42,6 @@ class AppConstants
         'subject-contexts update',
         'subject-contexts delete',
 
-    public const tags = ["basic","standart","pro","premium"];
-
         //single-tests
         'single-tests create',
         'single-tests update',
@@ -68,4 +66,6 @@ class AppConstants
         'group update',
         'group delete',
     ];
+
+    public const tags = ["basic","standart","pro","premium"];
 }
