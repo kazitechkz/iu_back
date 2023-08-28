@@ -17,11 +17,18 @@ class UserSeeder extends Seeder
     {
         if(User::count() == 0){
             DB::table("users")->insert([
-                "name"=>"Админов Админ",
-                "username"=>"admin",
-                "email"=>"admin@gmail.com",
-                "password"=>bcrypt("admin123"),
-                "phone"=>"+77777777777"
+                "name" => "Админов Админ",
+                "username" => "admin",
+                "email" => "admin@gmail.com",
+                "password" => bcrypt("admin123"),
+                "phone" => "+77777777777"
+            ]);
+            DB::table("users")->insert([
+                "name" => "Батырбек",
+                "username" => "batyr",
+                "email" => "batyr@gmail.com",
+                "password" => bcrypt("admin123"),
+                "phone" => "+777111111111"
             ]);
         }
     }

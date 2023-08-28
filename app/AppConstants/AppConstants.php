@@ -12,15 +12,15 @@ class AppConstants
 
     public const ADMIN_PERMISSIONS = [
         //Users
-      "user create",
-      "user edit",
-      "user show",
-      "user delete",
+        "user create",
+        "user edit",
+        "user show",
+        "user delete",
         //Roles
-      "role create",
-      "role update",
-      "role delete",
-      "role show",
+        "role create",
+        "role update",
+        "role delete",
+        "role show",
         //Permission
         "permission create",
         "permission update",
@@ -29,9 +29,43 @@ class AppConstants
         //Role To Permission
         "role_permission"
     ];
+    public const METHOD_PERMISSIONS = [
+        //Subjects
+        'subject create',
+        'subject show',
+        'subject update',
+        'subject delete',
+
+        //subject-contexts
+        'subject-contexts create',
+        'subject-contexts show',
+        'subject-contexts update',
+        'subject-contexts delete',
 
     public const tags = ["basic","standart","pro","premium"];
 
+        //single-tests
+        'single-tests create',
+        'single-tests update',
+        'single-tests show',
+        'single-tests delete',
 
+        //categories
+        'categories create',
+        'categories update',
+        'categories show',
+        'categories delete',
 
+        //questions
+        'questions create',
+        'questions update',
+        'questions show',
+        'questions delete',
+
+        //group
+        'group create',
+        'group show',
+        'group update',
+        'group delete',
+    ];
 }
