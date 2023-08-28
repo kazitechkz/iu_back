@@ -60,10 +60,7 @@ class SubscriptionTable extends DataTableComponent
         return [
             Column::make("Id", "id")
                 ->sortable(),
-            Column::make("subscriber_id") ->format(
-                fn($value, $row, Column $column) => '<strong>'.$row->subscriber->subscriber->name . "(".$row->subscriber->subscriber->email.")".'</strong>'
-            )
-                ->html()->searchable(),
+            Column::make('Subscriber', 'subscriber_id'),
             Column::make("Name","name")->searchable(),
             Column::make("Description","description")->searchable(),
             Column::make("Price","price")->sortable(),

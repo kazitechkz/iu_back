@@ -4,7 +4,8 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\API\SubjectController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\Api\NewsController as ApiNewsController;
+use App\Http\Controllers\Api\LocaleController as ApiLocaleController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -20,7 +21,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 Route::group(['middleware' => 'auth:sanctum'], function() {
+    Route::get('subjects', [SubjectController::class, '']);
+    Route::get("important-news",[ApiNewsController::class,"importantNews"]);
+    Route::get("news",[ApiNewsController::class,"news"]);
     Route::get('subjects', [SubjectController::class, 'index']);
+    Route::get('locales', [ApiLocaleController::class, 'index']);
 });
 Route::post('/auth/login', [AuthController::class, 'loginUser']);
 Route::post("/auth/register",[AuthController::class,"register"]);
