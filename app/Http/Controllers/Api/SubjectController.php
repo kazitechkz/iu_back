@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Subject;
@@ -11,9 +11,9 @@ class SubjectController extends Controller
 {
     public function index()
     {
-        $subjects = Subject::all();
+        $subjects = Subject::with('image', 'category')->get();
         return response()->json(new ResponseJSON(
-            status: true, message: 'test', data: $subjects
+            status: true, data: $subjects
         ),200);
     }
 }

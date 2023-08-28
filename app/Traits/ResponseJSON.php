@@ -9,7 +9,7 @@ class ResponseJSON
     public $errors;
     public $data;
 
-    public function __construct($status, $message, $errors = null, $data = null)
+    public function __construct($status, $message = null, $errors = null, $data = null)
     {
         $this->status = $status;
         $this->message = $message;
