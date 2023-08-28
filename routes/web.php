@@ -46,6 +46,7 @@ Route::get('/', function () {
     return view('admin.dashboard');
 })->name("home")->middleware("authenticate");
 Route::get('/home', function () {
+    dd(\Illuminate\Support\Facades\Auth::user()->getAllPermissions());
     return view('admin.dashboard');
 })->name("home")->middleware("authenticate");
 Route::get('login', function () {

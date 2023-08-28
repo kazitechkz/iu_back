@@ -30,6 +30,8 @@ class AppConstants
         "role_permission"
     ];
 
+    public const tags = ["basic","standart","pro","premium"];
+
 
 
 }
