@@ -7,6 +7,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\NewsController as ApiNewsController;
 use App\Http\Controllers\Api\LocaleController as ApiLocaleController;
+use App\Http\Controllers\Api\FaqController as ApiFaqController;
+use App\Http\Controllers\Api\ForumController as ApiForumController;
+use App\Http\Controllers\Api\PlanController as ApiPlanController;
+use App\Http\Controllers\Api\AppealTypeController as ApiAppealTypeController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -27,6 +31,10 @@ Route::group(['middleware' => 'auth:sanctum'], function() {
     Route::get('subjects', [SubjectController::class, 'index']);
     Route::post('get-single-subject-test', [QuestionController::class, 'getSingleSubjectTest']);
     Route::get('locales', [ApiLocaleController::class, 'index']);
+    Route::get('faq', [ApiFaqController::class, 'index']);
+    Route::get('forum', [ApiForumController::class, 'index']);
+    Route::get("plan",[ApiPlanController::class,"index"]);
+    Route::get("appeal-types",[ApiAppealTypeController::class,"index"]);
 });
 Route::post('/auth/login', [AuthController::class, 'loginUser']);
 Route::post("/auth/register",[AuthController::class,"register"]);

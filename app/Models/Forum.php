@@ -62,4 +62,8 @@ class Forum extends Model
 	{
 		return $this->hasMany(Discuss::class);
 	}
+    public function discuss_rating()
+    {
+        return $this->hasMany(DiscussRating::class);
+    }
 }

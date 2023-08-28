@@ -24,6 +24,11 @@ return new class extends Migration
                 ->references("id")
                 ->on("discusses")
                 ->cascadeOnDelete();
+            $table->foreignId("forum_id")
+                ->nullable()
+                ->references("id")
+                ->on("forum")
+                ->cascadeOnDelete();
             $table->softDeletes();
             $table->timestamps();
         });

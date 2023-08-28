@@ -36,19 +36,26 @@ class DiscussRating extends Model
 	protected $casts = [
 		'rating' => 'int',
 		'user_id' => 'int',
-		'discuss_id' => 'int'
+		'discuss_id' => 'int',
+        'forum_id'=>'int'
 	];
 
 	protected $fillable = [
 		'rating',
 		'user_id',
-		'discuss_id'
+		'discuss_id',
+        "forum_id"
 	];
 
 	public function discuss()
 	{
 		return $this->belongsTo(Discuss::class);
 	}
+
+    public function forum()
+    {
+        return $this->belongsTo(Forum::class);
+    }
 
 	public function user()
 	{
