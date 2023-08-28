@@ -15,6 +15,22 @@ class PlanSeeder extends Seeder
     {
         //hour,day,week,month
         Plan::create([
+            'tag'=>"free",
+            'name'=>"Free Plan",
+            'description'=>"Free Plan",
+            'is_active'=>true,
+            'price'=>0,
+            'signup_fee'=>0,
+            'currency'=>"KZT",
+            'trial_period'=>0,
+            'trial_interval'=>"hour",
+            'trial_mode'=>"outside",
+            'grace_period'=>0,
+            'grace_interval'=>"hour",
+            'invoice_period'=>12,
+            'invoice_interval'=>"month",
+        ]);
+        Plan::create([
             'tag'=>"basic",
             'name'=>"Basic Plan",
             'description'=>"Basic Plan for 1 month",
