@@ -1,7 +1,8 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
-use App\Http\Controllers\API\SubjectController;
+use App\Http\Controllers\Api\SubjectController;
+use App\Http\Controllers\Api\QuestionController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\NewsController as ApiNewsController;
@@ -24,6 +25,7 @@ Route::group(['middleware' => 'auth:sanctum'], function() {
     Route::get("important-news",[ApiNewsController::class,"importantNews"]);
     Route::get("news",[ApiNewsController::class,"news"]);
     Route::get('subjects', [SubjectController::class, 'index']);
+    Route::post('get-single-subject-test', [QuestionController::class, 'getSingleSubjectTest']);
     Route::get('locales', [ApiLocaleController::class, 'index']);
 });
 Route::post('/auth/login', [AuthController::class, 'loginUser']);

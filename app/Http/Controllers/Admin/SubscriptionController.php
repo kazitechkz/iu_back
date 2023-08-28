@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Subscription\SubcscriptionCreateRequest;
+use App\Models\GroupPlan;
+use App\Models\Question;
 use App\Models\User;
 use Bpuig\Subby\Models\Plan;
 use Bpuig\Subby\Models\PlanSubscription;
@@ -16,6 +18,11 @@ class SubscriptionController extends Controller
      */
     public function index()
     {
+//        $user = User::find(3);
+//        $planId = $user->activeSubscriptions()->pluck('id', 'plan_id');
+//        $group = GroupPlan::whereIn("plan_id",$planId)->pluck("group_id","group_id");
+//        $questions = Question::where(['subject_id' => 1, 'locale_id' => 1])->whereIn("group_id",$group)->get();
+//        dd($questions);
         return view("admin.subscription.index");
     }
 
