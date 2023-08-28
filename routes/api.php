@@ -21,7 +21,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 Route::group(['middleware' => 'auth:sanctum'], function() {
-    Route::get('subjects', [SubjectController::class, '']);
     Route::get("important-news",[ApiNewsController::class,"importantNews"]);
     Route::get("news",[ApiNewsController::class,"news"]);
     Route::get('subjects', [SubjectController::class, 'index']);
