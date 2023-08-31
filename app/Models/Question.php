@@ -11,6 +11,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Reliese\Coders\Model\Relations\HasOne;
 use Spatie\Searchable\Searchable;
 use Spatie\Searchable\SearchResult;
 
@@ -104,6 +105,11 @@ class Question extends Model implements Searchable
     {
 		return $this->belongsTo(QuestionType::class, 'type_id');
 	}
+
+    public function context():BelongsTo{
+        return $this->belongsTo(SubjectContext::class, "context_id");
+
+    }
 
     public function getSearchResult(): SearchResult
     {

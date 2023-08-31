@@ -37,6 +37,10 @@ class QuestionService
         return $questions;
     }
 
+    public function get_custom_subject_question($question_qty,$subject_id){
+
+    }
+
 
     protected function get_questions($compulsory_subjects,$questions,$groups,$locale_id){
         foreach ($compulsory_subjects as $compulsory_subject){
@@ -44,7 +48,6 @@ class QuestionService
             $questions[$compulsory_subject->id] = [];
             if(($single_q_count = $single_subject_test->single_answer_questions_quantity) > 0){
                 $questions_one = Question::whereIn("group_id",[3])->where(["subject_id" => $compulsory_subject->id,"type_id" => self::SINGLE_QUESTION_ID,"locale_id" => $locale_id])->inRandomOrder()->take($single_q_count)->get()->toArray();
-
                 array_push($questions[$compulsory_subject->id],...$questions_one);
             }
             if(($contextual_q_count = $single_subject_test->contextual_questions_quantity) > 0){
@@ -52,6 +55,8 @@ class QuestionService
                 array_push($questions[$compulsory_subject->id],...$question_context);
             }
             if(($multiple_q_count = $single_subject_test->multi_answer_questions_quantity) > 0){
+                $random_context = Question::whereIn("group_id",[3])->where(["subject_id" => $compulsory_subject->id,"type_id" => self::MULTI_QUESTION_ID,"locale_id" => $locale_id])->inRandomOrder()->take(1)->first();
+                dd(Question::whereIn("group_id",[3])->where(["subject_id" => $compulsory_subject->id,"type_id" => self::MULTI_QUESTION_ID,"locale_id" => $locale_id,"context_id"=>$random_context->context_id])->with("context")->inRandomOrder()->take($multiple_q_count)->get()->toArray());
                 $multiple_question = Question::whereIn("group_id",[3])->where(["subject_id" => $compulsory_subject->id,"type_id" => self::MULTI_QUESTION_ID,"locale_id" => $locale_id])->inRandomOrder()->take($multiple_q_count)->get()->toArray();
                 array_push($questions[$compulsory_subject->id],...$multiple_question);
             }
