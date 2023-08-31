@@ -6,6 +6,7 @@ use App\Models\GroupPlan;
 use App\Models\Question;
 use App\Models\SingleSubjectTest;
 use App\Models\Subject;
+use function Sodium\add;
 
 class QuestionService
 {
@@ -43,15 +44,16 @@ class QuestionService
             $questions[$compulsory_subject->id] = [];
             if(($single_q_count = $single_subject_test->single_answer_questions_quantity) > 0){
                 $questions_one = Question::whereIn("group_id",[3])->where(["subject_id" => $compulsory_subject->id,"type_id" => self::SINGLE_QUESTION_ID,"locale_id" => $locale_id])->inRandomOrder()->take($single_q_count)->get()->toArray();
-                array_push($questions[$compulsory_subject->id],array_values($questions_one));
+
+                array_push($questions[$compulsory_subject->id],...$questions_one);
             }
             if(($contextual_q_count = $single_subject_test->contextual_questions_quantity) > 0){
                 $question_context = Question::whereIn("group_id",[3])->where(["subject_id" => $compulsory_subject->id,"type_id" => self::CONTEXT_QUESTION_ID,"locale_id" => $locale_id])->inRandomOrder()->take($contextual_q_count)->get()->toArray();
-                array_push($questions[$compulsory_subject->id],array_values($question_context));
+                array_push($questions[$compulsory_subject->id],...$question_context);
             }
             if(($multiple_q_count = $single_subject_test->multi_answer_questions_quantity) > 0){
                 $multiple_question = Question::whereIn("group_id",[3])->where(["subject_id" => $compulsory_subject->id,"type_id" => self::MULTI_QUESTION_ID,"locale_id" => $locale_id])->inRandomOrder()->take($multiple_q_count)->get()->toArray();
-                array_push($questions[$compulsory_subject->id],array_values($multiple_question));
+                array_push($questions[$compulsory_subject->id],...$multiple_question);
             }
         }
         return $questions;
