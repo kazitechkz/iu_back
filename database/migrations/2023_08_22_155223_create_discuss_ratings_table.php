@@ -27,7 +27,7 @@ return new class extends Migration
             $table->foreignId("forum_id")
                 ->nullable()
                 ->references("id")
-                ->on("forum")
+                ->on("forums")
                 ->cascadeOnDelete();
             $table->softDeletes();
             $table->timestamps();

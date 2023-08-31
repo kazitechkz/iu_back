@@ -14,7 +14,19 @@ class SubjectContextController extends Controller
      */
     public function index()
     {
-        return view('admin.subject-context.index');
+        try{
+            if(auth()->user()->can("subject-contexts index") ){
+                return view('admin.subject-context.index');
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 
     /**
@@ -22,7 +34,19 @@ class SubjectContextController extends Controller
      */
     public function create()
     {
-        return view('admin.subject-context.create');
+        try{
+            if(auth()->user()->can("subject-contexts create") ){
+                return view('admin.subject-context.create');
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 
     /**
@@ -30,8 +54,21 @@ class SubjectContextController extends Controller
      */
     public function store(Create $request)
     {
-        SubjectContext::add($request->all());
-        return redirect(route('subject-contexts.index'));
+        try{
+            if(auth()->user()->can("subject-contexts create") ){
+                SubjectContext::add($request->all());
+                return redirect(route('subject-contexts.index'));
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
+
     }
 
     /**
@@ -39,7 +76,19 @@ class SubjectContextController extends Controller
      */
     public function show(string $id)
     {
-        //
+        try{
+            if(auth()->user()->can("subject-contexts show") ){
+
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 
     /**
@@ -47,8 +96,21 @@ class SubjectContextController extends Controller
      */
     public function edit(string $id)
     {
-        $ctx = SubjectContext::findOrFail($id);
-        return view('admin.subject-context.edit', compact('ctx'));
+        try{
+            if(auth()->user()->can("subject-contexts edit") ){
+                $ctx = SubjectContext::findOrFail($id);
+                return view('admin.subject-context.edit', compact('ctx'));
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
+
     }
 
     /**
@@ -56,9 +118,22 @@ class SubjectContextController extends Controller
      */
     public function update(Create $request, string $id)
     {
-        $ctx = SubjectContext::findOrFail($id);
-        $ctx->edit($request->all());
-        return redirect(route('subject-contexts.index'));
+        try{
+            if(auth()->user()->can("subject-contexts edit") ){
+                $ctx = SubjectContext::findOrFail($id);
+                $ctx->edit($request->all());
+                return redirect(route('subject-contexts.index'));
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
+
     }
 
     /**
@@ -66,6 +141,18 @@ class SubjectContextController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try{
+            if(auth()->user()->can("subject-contexts edit") ){
+
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 }

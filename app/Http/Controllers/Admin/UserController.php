@@ -17,15 +17,19 @@ class UserController extends Controller
      */
     public function index()
     {
-        if(auth()->user()->can('user show') ){
-            return view("admin.user.index");
+        try{
+            if(auth()->user()->can("user index") ){
+                return view("admin.user.index");
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
         }
-        else{
-            return redirect()->back();
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
         }
-
-
-
     }
 
     /**
@@ -33,9 +37,20 @@ class UserController extends Controller
      */
     public function create()
     {
-        if(auth()->user()->can("user create")) {
-            return view("admin.user.create");
+        try{
+            if(auth()->user()->can("user create")) {
+                return view("admin.user.create");
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
         }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
+
     }
 
     /**
@@ -43,17 +58,27 @@ class UserController extends Controller
      */
     public function store(UserCreateRequest $request)
     {
-        if(auth()->user()->can("user create")){
-            $input = $request->except("_token","_method");
-            $input["password"] = bcrypt($request->get("password"));
-            $user = User::add($input);
-
-            $role = Role::findByName($input["role"]);
-            if($role){
-                $user->assignRole($input["role"]);
+        try{
+            if(auth()->user()->can("user create")){
+                $input = $request->except("_token","_method");
+                $input["password"] = bcrypt($request->get("password"));
+                $user = User::add($input);
+                $role = Role::findByName($input["role"]);
+                if($role){
+                    $user->assignRole($input["role"]);
+                }
+                return redirect()->back();
             }
-            return redirect()->back();
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
         }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
+
 
     }
 
@@ -62,7 +87,19 @@ class UserController extends Controller
      */
     public function show(string $id)
     {
-        //
+        try{
+            if(auth()->user()->can("user show")) {
+
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 
     /**
@@ -71,16 +108,27 @@ class UserController extends Controller
     public function edit(string $id)
     {
 
-
-        if(auth()->user()->can("user edit")){
-            $user = User::find($id);
-            if($user){
-                return view("admin.user.edit",compact("user"));
+        try {
+            if(auth()->user()->can("user edit")){
+                $user = User::find($id);
+                if($user){
+                    return view("admin.user.edit",compact("user"));
+                }
+                else{
+                    return redirect()->back();
+                }
             }
             else{
-                return redirect()->back();
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
             }
+
         }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
+
     }
 
     /**
@@ -88,29 +136,38 @@ class UserController extends Controller
      */
     public function update(UserEditRequest $request, string $id)
     {
-
-        if(auth()->user()->can("user edit")){
-            $user = User::find($id);
-            if($user){
-                if(!$request->get("password")){
-                    $input = $request->except("_token","_method","user_id","password");
+        try{
+            if(auth()->user()->can("user edit")){
+                $user = User::find($id);
+                if($user){
+                    if(!$request->get("password")){
+                        $input = $request->except("_token","_method","user_id","password");
+                    }
+                    else{
+                        $input = $request->except("_token","_method","user_id");
+                        $input["password"] = bcrypt($input["password"]);
+                    }
+                    if(!$user->hasRole($request->get("role"))){
+                        foreach ($user->getRoleNames() as $roleName){
+                            $user->removeRole($roleName);
+                        }
+                        $user->assignRole($request->get("role"));
+                    }
+                    $user->edit($input);
+                    return redirect()->back();
                 }
                 else{
-                    $input = $request->except("_token","_method","user_id");
-                    $input["password"] = bcrypt($input["password"]);
+                    return redirect()->back();
                 }
-                if(!$user->hasRole($request->get("role"))){
-                    foreach ($user->getRoleNames() as $roleName){
-                        $user->removeRole($roleName);
-                    }
-                    $user->assignRole($request->get("role"));
-                }
-                $user->edit($input);
-                return redirect()->back();
             }
             else{
-                return redirect()->back();
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
             }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
         }
     }
 
@@ -119,6 +176,18 @@ class UserController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try{
+            if(auth()->user()->can("user edit")){
+
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 }

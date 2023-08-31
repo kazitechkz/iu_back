@@ -14,7 +14,20 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        return view('admin.category.index');
+        try{
+            if(auth()->user()->can("categories index") ){
+                return view('admin.category.index');
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
+
     }
 
     /**
@@ -22,7 +35,19 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return view('admin.category.create');
+        try{
+            if(auth()->user()->can("categories create") ){
+                return view('admin.category.create');
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 
     /**
@@ -30,8 +55,21 @@ class CategoryController extends Controller
      */
     public function store(CategoryRequest $request)
     {
-        Category::add($request->all());
-        return redirect(route('categories.index'));
+        try{
+            if(auth()->user()->can("categories create") ){
+                Category::add($request->all());
+                return redirect(route('categories.index'));
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
+
     }
 
     /**
@@ -39,7 +77,19 @@ class CategoryController extends Controller
      */
     public function show(string $id)
     {
-        //
+        try{
+            if(auth()->user()->can("categories show") ){
+
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 
     /**
@@ -47,8 +97,21 @@ class CategoryController extends Controller
      */
     public function edit(string $id)
     {
-        $cat = Category::findOrFail($id);
-        return view('admin.category.edit', compact('cat'));
+        try{
+            if(auth()->user()->can("categories edit") ){
+                $cat = Category::findOrFail($id);
+                return view('admin.category.edit', compact('cat'));
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
+
     }
 
     /**
@@ -56,9 +119,22 @@ class CategoryController extends Controller
      */
     public function update(CategoryRequest $request, string $id)
     {
-        $cat = Category::findOrFail($id);
-        $cat->edit($request->all());
-        return redirect(route('categories.index'));
+        try{
+            if(auth()->user()->can("categories edit") ){
+                $cat = Category::findOrFail($id);
+                $cat->edit($request->all());
+                return redirect(route('categories.index'));
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
+
     }
 
     /**
@@ -66,6 +142,18 @@ class CategoryController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try{
+            if(auth()->user()->can("categories edit") ){
+
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 }

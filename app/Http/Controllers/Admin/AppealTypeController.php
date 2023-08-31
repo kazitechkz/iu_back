@@ -15,7 +15,19 @@ class AppealTypeController extends Controller
      */
     public function index()
     {
-        return view("admin.appeal-type.index");
+        try{
+            if(auth()->user()->can("appeal-type index") ){
+                return view("admin.appeal-type.index");
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 
     /**
@@ -23,7 +35,20 @@ class AppealTypeController extends Controller
      */
     public function create()
     {
-        return view("admin.appeal-type.create");
+        try{
+            if(auth()->user()->can("appeal-type create") ){
+                return view("admin.appeal-type.create");
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
+
     }
 
     /**
@@ -31,10 +56,23 @@ class AppealTypeController extends Controller
      */
     public function store(AppealTypeCreateRequest $request)
     {
-        $input = $request->all();
-        $input["isActive"] = $request->boolean("isActive");
-        AppealType::add($input);
-        return redirect()->route("appeal-type.index");
+        try{
+            if(auth()->user()->can("appeal-type create") ){
+                $input = $request->all();
+                $input["isActive"] = $request->boolean("isActive");
+                AppealType::add($input);
+                return redirect()->route("appeal-type.index");
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
+
     }
 
     /**
@@ -42,7 +80,19 @@ class AppealTypeController extends Controller
      */
     public function show(string $id)
     {
-        //
+        try{
+            if(auth()->user()->can("appeal-type show") ){
+
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 
     /**
@@ -50,11 +100,24 @@ class AppealTypeController extends Controller
      */
     public function edit(string $id)
     {
-        $appeal_type = AppealType::find($id);
-        if($appeal_type){
-            return view("admin.appeal-type.edit",compact("appeal_type"));
+        try{
+            if(auth()->user()->can("appeal-type edit") ){
+                $appeal_type = AppealType::find($id);
+                if($appeal_type){
+                    return view("admin.appeal-type.edit",compact("appeal_type"));
+                }
+                return redirect()->route("appeal-type.index");
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
         }
-        return redirect()->route("appeal-type.index");
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
+
     }
 
     /**
@@ -62,13 +125,26 @@ class AppealTypeController extends Controller
      */
     public function update(AppealTypeUpdateRequest $request, string $id)
     {
-        $appeal_type = AppealType::find($id);
-        if($appeal_type){
-            $input = $request->all();
-            $input["isActive"] = $request->boolean("isActive");
-           $appeal_type->edit($input);
+        try{
+            if(auth()->user()->can("appeal-type edit") ){
+                $appeal_type = AppealType::find($id);
+                if($appeal_type){
+                    $input = $request->all();
+                    $input["isActive"] = $request->boolean("isActive");
+                    $appeal_type->edit($input);
+                }
+                return redirect()->route("appeal-type.index");
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
         }
-        return redirect()->route("appeal-type.index");
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
+
     }
 
     /**
@@ -76,6 +152,18 @@ class AppealTypeController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try{
+            if(auth()->user()->can("appeal-type edit") ){
+
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 }

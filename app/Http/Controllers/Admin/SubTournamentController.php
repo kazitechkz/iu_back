@@ -15,8 +15,19 @@ class SubTournamentController extends Controller
      */
     public function index()
     {
-        return view("admin.sub-tournament.index");
-
+        try{
+            if(auth()->user()->can("sub-tournament index") ){
+                return view("admin.sub-tournament.index");
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 
     /**
@@ -24,7 +35,19 @@ class SubTournamentController extends Controller
      */
     public function create()
     {
-        //
+        try{
+            if(auth()->user()->can("sub-tournament create") ){
+
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 
     /**
@@ -32,20 +55,31 @@ class SubTournamentController extends Controller
      */
     public function store(SubTournamentCreateRequest $request)
     {
-        $input = $request->all();
-        $input["question_quantity"] =
-            $request->get("single_question_quantity") +
-            $request->get("multiple_question_quantity") +
-            $request->get("context_question_quantity");
-        $input["max_point"] =
-            $request->get("single_question_quantity") +
-            $request->get("multiple_question_quantity") * 2 +
-            $request->get("context_question_quantity");
-        $input["start_at"] = Carbon::parse($input["start_at"]);
-        $input["end_at"] = Carbon::parse($input["end_at"]);
-        SubTournament::add($input);
-        return redirect()->back();
-
+        try{
+            if(auth()->user()->can("sub-tournament create") ){
+                $input = $request->all();
+                $input["question_quantity"] =
+                    $request->get("single_question_quantity") +
+                    $request->get("multiple_question_quantity") +
+                    $request->get("context_question_quantity");
+                $input["max_point"] =
+                    $request->get("single_question_quantity") +
+                    $request->get("multiple_question_quantity") * 2 +
+                    $request->get("context_question_quantity");
+                $input["start_at"] = Carbon::parse($input["start_at"]);
+                $input["end_at"] = Carbon::parse($input["end_at"]);
+                SubTournament::add($input);
+                return redirect()->back();
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 
     /**
@@ -53,7 +87,19 @@ class SubTournamentController extends Controller
      */
     public function show(string $id)
     {
-        //
+        try{
+            if(auth()->user()->can("sub-tournament show") ){
+
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 
     /**
@@ -61,11 +107,22 @@ class SubTournamentController extends Controller
      */
     public function edit(string $id)
     {
-        if($sub_tournament = SubTournament::find($id)){
-            return view("admin.sub-tournament.edit",compact("sub_tournament"));
+        try{
+            if(auth()->user()->can("sub-tournament edit") ){
+                if($sub_tournament = SubTournament::find($id)){
+                    return view("admin.sub-tournament.edit",compact("sub_tournament"));
+                }
+                return redirect()->route("sub-tournament.index");
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
         }
-        return redirect()->route("sub-tournament.index");
-
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 
     /**
@@ -73,21 +130,34 @@ class SubTournamentController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        if($sub_tournament = SubTournament::find($id)){
-            $input = $request->all();
-            $input["question_quantity"] =
-                $request->get("single_question_quantity") +
-                $request->get("multiple_question_quantity") +
-                $request->get("context_question_quantity");
-            $input["max_point"] =
-                $request->get("single_question_quantity") +
-                $request->get("multiple_question_quantity") * 2 +
-                $request->get("context_question_quantity");
-            $input["start_at"] = Carbon::parse($input["start_at"]);
-            $input["end_at"] = Carbon::parse($input["end_at"]);
-            $sub_tournament->edit($input);
+        try{
+            if(auth()->user()->can("sub-tournament edit") ){
+                if($sub_tournament = SubTournament::find($id)){
+                    $input = $request->all();
+                    $input["question_quantity"] =
+                        $request->get("single_question_quantity") +
+                        $request->get("multiple_question_quantity") +
+                        $request->get("context_question_quantity");
+                    $input["max_point"] =
+                        $request->get("single_question_quantity") +
+                        $request->get("multiple_question_quantity") * 2 +
+                        $request->get("context_question_quantity");
+                    $input["start_at"] = Carbon::parse($input["start_at"]);
+                    $input["end_at"] = Carbon::parse($input["end_at"]);
+                    $sub_tournament->edit($input);
+                }
+                return redirect()->back();
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
         }
-        return redirect()->back();
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
+
     }
 
     /**
@@ -95,6 +165,18 @@ class SubTournamentController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try{
+            if(auth()->user()->can("sub-tournament edit") ){
+
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 }

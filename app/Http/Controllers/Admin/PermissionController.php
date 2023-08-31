@@ -15,7 +15,20 @@ class PermissionController extends Controller
      */
     public function index()
     {
-        return view("admin.permission.index");
+        try{
+            if(auth()->user()->can("permission index") ){
+                return view("admin.permission.index");
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
+
     }
 
     /**
@@ -23,7 +36,20 @@ class PermissionController extends Controller
      */
     public function create()
     {
-        return view("admin.permission.create");
+        try{
+            if(auth()->user()->can("permission create") ){
+                return view("admin.permission.create");
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
+
     }
 
     /**
@@ -31,8 +57,21 @@ class PermissionController extends Controller
      */
     public function store(PermissionCreateRequest $request)
     {
-        Permission::add($request->all());
-        return redirect()->back();
+        try{
+            if(auth()->user()->can("permission create") ){
+                Permission::add($request->all());
+                return redirect()->back();
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
+
     }
 
     /**
@@ -40,7 +79,19 @@ class PermissionController extends Controller
      */
     public function show(string $id)
     {
-        //
+        try{
+            if(auth()->user()->can("permission show") ){
+
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 
     /**
@@ -48,10 +99,24 @@ class PermissionController extends Controller
      */
     public function edit(string $id)
     {
-        $permission = Permission::findById($id);
-        if($permission){
-            return view("admin.permission.edit",compact("permission"));
+        try{
+            if(auth()->user()->can("permission edit") ){
+                $permission = Permission::findById($id);
+                if($permission){
+                    return view("admin.permission.edit",compact("permission"));
+                }
+                return  redirect()->back();
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
         }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
+
     }
 
     /**
@@ -59,11 +124,24 @@ class PermissionController extends Controller
      */
     public function update(PermissionUpdateRequest $request, string $id)
     {
-        $permission = Permission::findById($id);
-        if($permission){
-            $permission->edit($request->all());
+        try{
+            if(auth()->user()->can("permission edit") ){
+                $permission = Permission::findById($id);
+                if($permission){
+                    $permission->edit($request->all());
+                }
+                return redirect()->back();
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
         }
-        return redirect()->back();
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
+
     }
 
     /**
@@ -71,6 +149,18 @@ class PermissionController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try{
+            if(auth()->user()->can("permission edit") ){
+
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 }

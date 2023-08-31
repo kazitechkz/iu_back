@@ -16,7 +16,20 @@ class PlanCombinationController extends Controller
      */
     public function index()
     {
-        return view("admin.plan-combination.index");
+        try{
+            if(auth()->user()->can("plan-combination index") ){
+                return view("admin.plan-combination.index");
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
+
     }
 
     /**
@@ -24,7 +37,20 @@ class PlanCombinationController extends Controller
      */
     public function create()
     {
-        return view("admin.plan-combination.create");
+        try{
+            if(auth()->user()->can("plan-combination create") ){
+                return view("admin.plan-combination.create");
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
+
     }
 
     /**
@@ -32,11 +58,24 @@ class PlanCombinationController extends Controller
      */
     public function store(PlanCombinationCreateRequest $request)
     {
-        $plan = Plan::find($request->get("plan_id"));
-        if($plan){
-            $plan->combinations()->create($request->all());
+        try{
+            if(auth()->user()->can("plan-combination create") ){
+                $plan = Plan::find($request->get("plan_id"));
+                if($plan){
+                    $plan->combinations()->create($request->all());
+                }
+                return redirect()->route("plan-combination.index");
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
         }
-        return redirect()->route("plan-combination.index");
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
+
     }
 
     /**
@@ -44,7 +83,19 @@ class PlanCombinationController extends Controller
      */
     public function show(string $id)
     {
-        //
+        try{
+            if(auth()->user()->can("plan-combination show") ){
+
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 
     /**
@@ -52,11 +103,24 @@ class PlanCombinationController extends Controller
      */
     public function edit(string $id)
     {
-        $plan_combination = PlanCombination::find($id);
-        if($plan_combination){
-            return view("admin.plan-combination.edit",compact("plan_combination"));
+        try{
+            if(auth()->user()->can("plan-combination edit") ){
+                $plan_combination = PlanCombination::find($id);
+                if($plan_combination){
+                    return view("admin.plan-combination.edit",compact("plan_combination"));
+                }
+                return  redirect()->route("plan-combination.index");
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
         }
-        return  redirect()->route("plan-combination.index");
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
+
     }
 
     /**
@@ -64,11 +128,23 @@ class PlanCombinationController extends Controller
      */
     public function update(PlanCombinationUpdateRequest $request, string $id)
     {
-        $plan_combination = PlanCombination::find($id);
-        if($plan_combination){
-           $plan_combination->update($request->all());
+        try{
+            if(auth()->user()->can("plan-combination edit") ){
+                $plan_combination = PlanCombination::find($id);
+                if($plan_combination){
+                    $plan_combination->update($request->all());
+                }
+                return  redirect()->route("plan-combination.index");
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
         }
-        return  redirect()->route("plan-combination.index");
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 
     /**
@@ -76,6 +152,18 @@ class PlanCombinationController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try{
+            if(auth()->user()->can("plan-combination edit") ){
+
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 }

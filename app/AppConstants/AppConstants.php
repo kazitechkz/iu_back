@@ -9,74 +9,6 @@ class AppConstants
     public const METHOD_NAME = "method";
     public const TEACHER_NAME = "teacher";
     public const STUDENT_NAME = "student";
-
-    public const ADMIN_PERMISSIONS = [
-        //Users
-        "user create",
-        "user edit",
-        "user show",
-        "user delete",
-        //Roles
-        "role create",
-        "role update",
-        "role delete",
-        "role show",
-        //Permission
-        "permission create",
-        "permission update",
-        "permission delete",
-        "permission show",
-        //Role To Permission
-        "role_permission"
-    ];
-    public const METHOD_PERMISSIONS = [
-        //Subjects
-        'subject create',
-        'subject show',
-        'subject update',
-        'subject delete',
-
-        //subject-contexts
-        'subject-contexts create',
-        'subject-contexts show',
-        'subject-contexts update',
-        'subject-contexts delete',
-
-        //single-tests
-        'single-tests create',
-        'single-tests update',
-        'single-tests show',
-        'single-tests delete',
-
-        //categories
-        'categories create',
-        'categories update',
-        'categories show',
-        'categories delete',
-
-        //questions
-        'questions create',
-        'questions update',
-        'questions show',
-        'questions delete',
-
-        //group
-        'group create',
-        'group show',
-        'group update',
-        'group delete',
-    ];
-
-    public const tags = ["basic","standart","pro","premium"];
-
-    public const permissions = ["user","role","locale","permission",'subject',
-        'subject-contexts','single-tests',"plan",
-        "categories","plan-combination","subscription","promocode",
-        "news","wallet","faq","questions",'questions-ckeditor-upload',"group",
-        "appeal-type","appeal","page","forum","discuss",
-        "tournament","sub-tournament","sub-tournament-participant","sub-tournament-winner","sub-tournament-result","sub-tournament-rival",
-        ];
-    public  const  permissions_action = ["create","index","edit","show"];
     public const all_permissions = [
         //User
         "user create","user index","user edit","user show",
@@ -126,14 +58,23 @@ class AppConstants
         "tournament create","tournament index","tournament edit","tournament show",
         //SubTournament
         "sub-tournament create","sub-tournament index","sub-tournament edit","sub-tournament show",
-        //Sub Tournament P
-        "sub-tournament-participant create","sub-tournament-participant index","sub-tournament-participant edit","sub-tournament-participant show",
-        //Sub Tournament W
-        "sub-tournament-winner create","sub-tournament-winner index","sub-tournament-winner edit","sub-tournament-winner show",
-        //Sub Tournament Res
-        "sub-tournament-result create","sub-tournament-result index","sub-tournament-result edit","sub-tournament-result show",
-        //Sub Tournament Riv
-        "sub-tournament-rival create","sub-tournament-rival index","sub-tournament-rival edit","sub-tournament-rival show"
     ];
+
+    public const ADMIN_PERMISSIONS = self::all_permissions;
+    public const METHOD_PERMISSIONS = [
+        //Subject
+        "subject create","subject index","subject edit","subject show",
+        //Categories
+        "categories create","categories index","categories edit","categories show",
+        //Question
+        "questions create","questions index","questions edit","questions show",
+        //Subject Contexts
+        "subject-contexts create","subject-contexts index","subject-contexts edit","subject-contexts show",
+
+    ];
+
+    public const tags = ["basic","standart","pro","premium"];
+
+    public  const  permissions_action = ["create","index","edit","show"];
 
 }

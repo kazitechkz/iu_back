@@ -16,21 +16,13 @@ class PermissionSeeder extends Seeder
     public function run(): void
     {
         if(DB::table("permissions")->count() == 0){
-            foreach (AppConstants::ADMIN_PERMISSIONS as $PERMISSION){
+            foreach (AppConstants::all_permissions as $PERMISSION){
                 DB::table("permissions")->insert([
                     "name" => $PERMISSION,
                     "guard_name" => "web",
                 ]);
 
             }
-            foreach (AppConstants::METHOD_PERMISSIONS as $PERMISSION){
-                DB::table("permissions")->insert([
-                    "name" => $PERMISSION,
-                    "guard_name" => "web",
-                ]);
-
-            }
-
             Log::info("Created permissions");
         }
     }

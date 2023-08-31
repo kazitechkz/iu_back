@@ -16,7 +16,19 @@ class PromocodeController extends Controller
      */
     public function index()
     {
-        return view("admin.promocode.index");
+        try{
+            if(auth()->user()->can("promocode index") ){
+                return view("admin.promocode.index");
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 
     /**
@@ -24,7 +36,20 @@ class PromocodeController extends Controller
      */
     public function create()
     {
-        return view("admin.promocode.create");
+        try{
+            if(auth()->user()->can("promocode create") ){
+                return view("admin.promocode.create");
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
+
     }
 
     /**
@@ -32,13 +57,25 @@ class PromocodeController extends Controller
      */
     public function store(PromocodeCreateRequest $request)
     {
+        try{
+            if(auth()->user()->can("promocode create") ){
+                Promocodes::count($request->get("count")) // default: 1
+                ->usages($request->get("usages")) // default: 1
+                ->expiration(Carbon::parse($request->get("expiration_date"))) // default: null
+                ->details(['points' => $request->get("points")]) // default: []
+                ->create();
+                return redirect()->back();
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
 
-        Promocodes::count($request->get("count")) // default: 1
-        ->usages($request->get("usages")) // default: 1
-        ->expiration(Carbon::parse($request->get("expiration_date"))) // default: null
-        ->details(['points' => $request->get("points")]) // default: []
-        ->create();
-        return redirect()->back();
     }
 
     /**
@@ -46,11 +83,23 @@ class PromocodeController extends Controller
      */
     public function show(string $id)
     {
-        $promocode = Promocode::available()->find($id);
-        if($promocode){
+        try{
+            if(auth()->user()->can("promocode edit") ){
+                $promocode = Promocode::available()->find($id);
+                if($promocode){
 
+                }
+                return redirect()->back();
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
         }
-        return redirect()->back();
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 
     /**
@@ -58,7 +107,23 @@ class PromocodeController extends Controller
      */
     public function edit(string $id)
     {
+        try{
+            if(auth()->user()->can("promocode edit") ){
+                $promocode = Promocode::available()->find($id);
+                if($promocode){
 
+                }
+                return redirect()->back();
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 
     /**
@@ -66,7 +131,23 @@ class PromocodeController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        try{
+            if(auth()->user()->can("promocode edit") ){
+                $promocode = Promocode::available()->find($id);
+                if($promocode){
+
+                }
+                return redirect()->back();
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 
     /**
@@ -74,6 +155,22 @@ class PromocodeController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try{
+            if(auth()->user()->can("promocode edit") ){
+                $promocode = Promocode::available()->find($id);
+                if($promocode){
+
+                }
+                return redirect()->back();
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 }

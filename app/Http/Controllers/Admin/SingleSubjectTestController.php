@@ -14,7 +14,19 @@ class SingleSubjectTestController extends Controller
      */
     public function index()
     {
-        return view('admin.single-subject-test.index');
+        try{
+            if(auth()->user()->can("single-tests index") ){
+                return view('admin.single-subject-test.index');
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 
     /**
@@ -22,7 +34,19 @@ class SingleSubjectTestController extends Controller
      */
     public function create()
     {
-        //
+        try{
+            if(auth()->user()->can("single-tests create") ){
+
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 
     /**
@@ -30,8 +54,21 @@ class SingleSubjectTestController extends Controller
      */
     public function store(CreateRequest $request)
     {
-        SingleSubjectTest::add($request->all());
-        return redirect(route('single-tests.index'));
+        try{
+            if(auth()->user()->can("single-tests create") ){
+                SingleSubjectTest::add($request->all());
+                return redirect(route('single-tests.index'));
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
+
     }
 
     /**
@@ -39,7 +76,19 @@ class SingleSubjectTestController extends Controller
      */
     public function show(string $id)
     {
-        //
+        try{
+            if(auth()->user()->can("single-tests show") ){
+
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 
     /**
@@ -47,8 +96,20 @@ class SingleSubjectTestController extends Controller
      */
     public function edit(string $id)
     {
-        $singleSubjectTest = SingleSubjectTest::findOrFail($id);
-        return view('admin.single-subject-test.edit', compact('singleSubjectTest'));
+        try{
+            if(auth()->user()->can("single-tests edit") ){
+                $singleSubjectTest = SingleSubjectTest::findOrFail($id);
+                return view('admin.single-subject-test.edit', compact('singleSubjectTest'));
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 
     /**
@@ -56,9 +117,22 @@ class SingleSubjectTestController extends Controller
      */
     public function update(CreateRequest $request, string $id)
     {
-        $item = SingleSubjectTest::findOrFail($id);
-        $item->edit($request->all());
-        return redirect(route('single-tests.index'));
+        try{
+            if(auth()->user()->can("single-tests edit") ){
+                $item = SingleSubjectTest::findOrFail($id);
+                $item->edit($request->all());
+                return redirect(route('single-tests.index'));
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
+
     }
 
     /**
@@ -66,6 +140,18 @@ class SingleSubjectTestController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try{
+            if(auth()->user()->can("single-tests edit") ){
+
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 }

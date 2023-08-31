@@ -16,10 +16,19 @@ class SubjectController extends Controller
      */
     public function index()
     {
-//        dd(File::getFileFromAWS('subjects/onw.png'));
-//        $test = Subject::with('image')->find(17);
-//        dd($test);
-        return view('admin.subject.index');
+        try{
+            if(auth()->user()->can("subject index") ){
+                return view('admin.subject.index');
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 
     /**
@@ -27,7 +36,20 @@ class SubjectController extends Controller
      */
     public function create()
     {
-        return view('admin.subject.create');
+        try{
+            if(auth()->user()->can("subject create") ){
+                return view('admin.subject.create');
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
+
     }
 
     /**
@@ -35,9 +57,22 @@ class SubjectController extends Controller
      */
     public function store(SubjectCreateRequest $request)
     {
-        $data = Subject::initialData($request);
-        Subject::add($data);
-        return redirect(route('subject.index'));
+        try{
+            if(auth()->user()->can("subject create") ){
+                $data = Subject::initialData($request);
+                Subject::add($data);
+                return redirect(route('subject.index'));
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
+
     }
 
     /**
@@ -45,7 +80,19 @@ class SubjectController extends Controller
      */
     public function show(string $id)
     {
-        //
+        try{
+            if(auth()->user()->can("subject show") ){
+
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 
     /**
@@ -53,8 +100,20 @@ class SubjectController extends Controller
      */
     public function edit(string $id)
     {
-        $subject = Subject::findOrFail($id);
-        return view('admin.subject.edit', compact('subject'));
+        try{
+            if(auth()->user()->can("subject edit") ){
+                $subject = Subject::findOrFail($id);
+                return view('admin.subject.edit', compact('subject'));
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 
     /**
@@ -62,10 +121,22 @@ class SubjectController extends Controller
      */
     public function update(SubjectEditRequest $request, string $id)
     {
-        $data = Subject::initialData($request);
-        $subject = Subject::findOrFail($id);
-        $subject->edit($data);
-        return redirect(route('subject.index'));
+        try{
+            if(auth()->user()->can("subject edit") ){
+                $data = Subject::initialData($request);
+                $subject = Subject::findOrFail($id);
+                $subject->edit($data);
+                return redirect(route('subject.index'));
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 
     /**
@@ -73,6 +144,18 @@ class SubjectController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try{
+            if(auth()->user()->can("subject edit") ){
+
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 }

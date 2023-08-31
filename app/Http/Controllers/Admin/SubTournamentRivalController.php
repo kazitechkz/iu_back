@@ -12,7 +12,19 @@ class SubTournamentRivalController extends Controller
      */
     public function index()
     {
-        return view("admin.sub-tournament-rival.index");
+        try{
+            if(auth()->user()->can("sub-tournament index") ){
+                return view("admin.sub-tournament-rival.index");
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 
     /**
@@ -20,7 +32,19 @@ class SubTournamentRivalController extends Controller
      */
     public function create()
     {
-        //
+        try{
+            if(auth()->user()->can("sub-tournament create") ){
+
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 
     /**
@@ -28,7 +52,19 @@ class SubTournamentRivalController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try{
+            if(auth()->user()->can("sub-tournament create") ){
+
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 
     /**
@@ -36,7 +72,19 @@ class SubTournamentRivalController extends Controller
      */
     public function show(string $id)
     {
-        //
+        try{
+            if(auth()->user()->can("sub-tournament show") ){
+
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 
     /**
@@ -44,7 +92,19 @@ class SubTournamentRivalController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        try{
+            if(auth()->user()->can("sub-tournament edit") ){
+
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 
     /**
@@ -52,7 +112,19 @@ class SubTournamentRivalController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        try{
+            if(auth()->user()->can("sub-tournament edit") ){
+
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 
     /**
@@ -60,6 +132,18 @@ class SubTournamentRivalController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try{
+            if(auth()->user()->can("sub-tournament edit") ){
+
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 }

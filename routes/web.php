@@ -29,6 +29,7 @@ use App\Http\Controllers\Admin\SubTournamentParticipantController as AdminSubTou
 use App\Http\Controllers\Admin\SubTournamentWinnerController as AdminSubTournamentWinnerController;
 use App\Http\Controllers\Admin\SubTournamentResultController as AdminSubTournamentResultController;
 use App\Http\Controllers\Admin\SubTournamentRivalController as AdminSubTournamentRivalController;
+use App\Http\Controllers\Admin\TestController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -51,7 +52,7 @@ Route::get('/home', function () {
 Route::get('login', function () {
     return view('auth.login');
 })->name("login");
-
+Route::get("/test",[TestController::class,"test"]);
 
 Route::group(["prefix" => "dashboard","middleware" => "auth"],function (){
     Route::resource("user",AdminUserController::class);

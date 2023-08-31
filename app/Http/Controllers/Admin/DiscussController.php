@@ -14,7 +14,19 @@ class DiscussController extends Controller
      */
     public function index()
     {
-        //
+        try{
+            if(auth()->user()->can("discuss index") ){
+
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 
     /**
@@ -22,7 +34,19 @@ class DiscussController extends Controller
      */
     public function create()
     {
-        //
+        try{
+            if(auth()->user()->can("discuss create") ){
+
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 
     /**
@@ -30,10 +54,23 @@ class DiscussController extends Controller
      */
     public function store(DiscussCreateRequest $request)
     {
-        $input = $request->all();
-        $input["user_id"] = auth()->id();
-        Discuss::add($input);
-        return redirect()->back();
+        try{
+            if(auth()->user()->can("discuss create") ){
+                $input = $request->all();
+                $input["user_id"] = auth()->id();
+                Discuss::add($input);
+                return redirect()->back();
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
+
     }
 
     /**
@@ -41,7 +78,19 @@ class DiscussController extends Controller
      */
     public function show(string $id)
     {
-        //
+        try{
+            if(auth()->user()->can("discuss show") ){
+
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 
     /**
@@ -49,7 +98,19 @@ class DiscussController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        try{
+            if(auth()->user()->can("discuss edit") ){
+
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 
     /**
@@ -57,7 +118,19 @@ class DiscussController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        try{
+            if(auth()->user()->can("discuss edit") ){
+
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 
     /**
@@ -65,6 +138,18 @@ class DiscussController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try{
+            if(auth()->user()->can("discuss edit") ){
+
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 }

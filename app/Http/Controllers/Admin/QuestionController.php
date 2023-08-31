@@ -41,7 +41,20 @@ class QuestionController extends Controller
      */
     public function index()
     {
-        return view('admin.question.index');
+        try{
+            if(auth()->user()->can("questions index") ){
+                return view('admin.question.index');
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
+
     }
 
     /**
@@ -49,7 +62,19 @@ class QuestionController extends Controller
      */
     public function create()
     {
-        return view('admin.question.create');
+        try{
+            if(auth()->user()->can( "questions create") ){
+                return view('admin.question.create');
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 
     /**
@@ -57,9 +82,22 @@ class QuestionController extends Controller
      */
     public function store(CreateRequest $request)
     {
-        $data = MathFormulaHelper::replace($request);
-        Question::add($data);
-        return redirect(route('questions.index'));
+        try{
+            if(auth()->user()->can("questions create") ){
+                $data = MathFormulaHelper::replace($request);
+                Question::add($data);
+                return redirect(route('questions.index'));
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
+
     }
 
     /**
@@ -67,7 +105,19 @@ class QuestionController extends Controller
      */
     public function show(string $id)
     {
-        //
+        try{
+            if(auth()->user()->can("questions show") ){
+
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 
     /**
@@ -75,8 +125,21 @@ class QuestionController extends Controller
      */
     public function edit(string $id)
     {
-        $question = Question::findOrFail($id);
-        return view('admin.question.edit', compact('question'));
+        try{
+            if(auth()->user()->can("questions edit") ){
+                $question = Question::findOrFail($id);
+                return view('admin.question.edit', compact('question'));
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
+
     }
 
     /**
@@ -84,10 +147,23 @@ class QuestionController extends Controller
      */
     public function update(CreateRequest $request, string $id)
     {
-        $question = Question::findOrFail($id);
-        $data = MathFormulaHelper::replace($request);
-        $question->edit($data);
-        return redirect(route('questions.index'));
+        try{
+            if(auth()->user()->can("questions edit") ){
+                $question = Question::findOrFail($id);
+                $data = MathFormulaHelper::replace($request);
+                $question->edit($data);
+                return redirect(route('questions.index'));
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
+
     }
 
     /**
@@ -95,6 +171,18 @@ class QuestionController extends Controller
      */
     public function destroy(string $id)
     {
-        dd($id);
+        try{
+            if(auth()->user()->can("questions edit") ){
+
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 }

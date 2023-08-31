@@ -15,7 +15,19 @@ class PageController extends Controller
      */
     public function index()
     {
-        return view("admin.page.index");
+        try{
+            if(auth()->user()->can("page index") ){
+                return view("admin.page.index");
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 
     /**
@@ -23,7 +35,20 @@ class PageController extends Controller
      */
     public function create()
     {
-        return view("admin.page.create");
+        try{
+            if(auth()->user()->can("page create") ){
+                return view("admin.page.create");
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
+
     }
 
     /**
@@ -31,10 +56,23 @@ class PageController extends Controller
      */
     public function store(PageCreateRequest $request)
     {
-        $input = $request->all();
-        $input["isActive"] = $request->boolean("isActive");
-        Page::add($input);
-        return redirect()->route("page.index");
+        try{
+            if(auth()->user()->can("page create") ){
+                $input = $request->all();
+                $input["isActive"] = $request->boolean("isActive");
+                Page::add($input);
+                return redirect()->route("page.index");
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
+
     }
 
     /**
@@ -42,7 +80,19 @@ class PageController extends Controller
      */
     public function show(string $id)
     {
-        //
+        try{
+            if(auth()->user()->can("page show") ){
+
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 
     /**
@@ -50,11 +100,24 @@ class PageController extends Controller
      */
     public function edit(string $id)
     {
-        $page = Page::find($id);
-        if($page){
-            return view("admin.page.edit",compact("page"));
+        try{
+            if(auth()->user()->can("page edit") ){
+                $page = Page::find($id);
+                if($page){
+                    return view("admin.page.edit",compact("page"));
+                }
+                return redirect()->route("page.index");
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
         }
-        return redirect()->route("page.index");
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
+
     }
 
     /**
@@ -62,13 +125,26 @@ class PageController extends Controller
      */
     public function update(PageUpdateRequest $request, string $id)
     {
-        $page = Page::find($id);
-        if($page){
-            $input = $request->all();
-            $input["isActive"] = $request->boolean("isActive");
-            $page->edit($input);
+        try{
+            if(auth()->user()->can("page edit") ){
+                $page = Page::find($id);
+                if($page){
+                    $input = $request->all();
+                    $input["isActive"] = $request->boolean("isActive");
+                    $page->edit($input);
+                }
+                return redirect()->route("page.index");
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
         }
-        return redirect()->route("page.index");
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
+
     }
 
     /**
@@ -76,6 +152,18 @@ class PageController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try{
+            if(auth()->user()->can("page edit") ){
+
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 }

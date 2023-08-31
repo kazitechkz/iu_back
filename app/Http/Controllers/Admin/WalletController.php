@@ -12,7 +12,20 @@ class WalletController extends Controller
      */
     public function index()
     {
-        return view("admin.wallet.index");
+        try{
+            if(auth()->user()->can("wallet index") ){
+                return view("admin.wallet.index");
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
+
     }
 
     /**
@@ -20,7 +33,20 @@ class WalletController extends Controller
      */
     public function create()
     {
-        return view("admin.wallet.create");
+        try{
+            if(auth()->user()->can("wallet create") ){
+                return view("admin.wallet.create");
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
+
     }
 
     /**
@@ -28,7 +54,19 @@ class WalletController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try{
+            if(auth()->user()->can("wallet create") ){
+
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 
     /**
@@ -36,7 +74,19 @@ class WalletController extends Controller
      */
     public function show(string $id)
     {
-        //
+        try{
+            if(auth()->user()->can("wallet show") ){
+
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 
     /**
@@ -44,7 +94,19 @@ class WalletController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        try{
+            if(auth()->user()->can("wallet edit") ){
+
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 
     /**
@@ -52,7 +114,19 @@ class WalletController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        try{
+            if(auth()->user()->can("wallet edit") ){
+
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 
     /**
@@ -60,6 +134,18 @@ class WalletController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try{
+            if(auth()->user()->can("wallet edit") ){
+
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 }

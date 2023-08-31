@@ -17,7 +17,20 @@ class NewsController extends Controller
      */
     public function index()
     {
-        return view("admin.news.index");
+        try{
+            if(auth()->user()->can("news index") ){
+                return view("admin.news.index");
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
+
     }
 
     /**
@@ -25,7 +38,20 @@ class NewsController extends Controller
      */
     public function create()
     {
-        return view("admin.news.create");
+        try{
+            if(auth()->user()->can("news create") ){
+                return view("admin.news.create");
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
+
     }
 
     /**
@@ -33,15 +59,25 @@ class NewsController extends Controller
      */
     public function store(NewsCreateRequest $request)
     {
-
-        $input = $request->all();
-        $input["is_active"] = $request->boolean("is_active");
-        $input["is_important"] = $request->boolean("is_important");
-        $input["published_by"] = auth()->id();
-        $input["published_at"] = Carbon::parse($input["published_at"]);
-        News::add($input);
-        return redirect()->route("news.index");
-
+        try{
+            if(auth()->user()->can("news create") ){
+                $input = $request->all();
+                $input["is_active"] = $request->boolean("is_active");
+                $input["is_important"] = $request->boolean("is_important");
+                $input["published_by"] = auth()->id();
+                $input["published_at"] = Carbon::parse($input["published_at"]);
+                News::add($input);
+                return redirect()->route("news.index");
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
      }
 
     /**
@@ -49,7 +85,19 @@ class NewsController extends Controller
      */
     public function show(string $id)
     {
-        //
+        try{
+            if(auth()->user()->can("news show") ){
+
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 
     /**
@@ -57,11 +105,24 @@ class NewsController extends Controller
      */
     public function edit(string $id)
     {
-        $news = News::find($id);
-        if($news){
-          return view("admin.news.edit",compact("news"));
+        try{
+            if(auth()->user()->can("news edit") ){
+                $news = News::find($id);
+                if($news){
+                    return view("admin.news.edit",compact("news"));
+                }
+                return redirect()->route("news.index");
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
         }
-        return redirect()->route("news.index");
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
+
     }
 
     /**
@@ -69,16 +130,29 @@ class NewsController extends Controller
      */
     public function update(NewsUpdateRequest $request, string $id)
     {
-        $news = News::find($id);
-        if($news){
-            $input = $request->all();
-            $input["is_active"] = $request->boolean("is_active");
-            $input["is_important"] = $request->boolean("is_important");
-            $input["published_by"] = auth()->id();
-            $input["published_at"] = Carbon::parse($input["published_at"]);
-            $news->update($input);
+        try{
+            if(auth()->user()->can("news edit") ){
+                $news = News::find($id);
+                if($news){
+                    $input = $request->all();
+                    $input["is_active"] = $request->boolean("is_active");
+                    $input["is_important"] = $request->boolean("is_important");
+                    $input["published_by"] = auth()->id();
+                    $input["published_at"] = Carbon::parse($input["published_at"]);
+                    $news->update($input);
+                }
+                return redirect()->route("news.index");
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
         }
-        return redirect()->route("news.index");
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
+
     }
 
     /**
@@ -86,6 +160,18 @@ class NewsController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try{
+            if(auth()->user()->can("news edit") ){
+
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 }

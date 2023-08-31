@@ -15,7 +15,20 @@ class ForumController extends Controller
      */
     public function index()
     {
-        return view("admin.forum.index");
+        try{
+            if(auth()->user()->can("forum index") ){
+                return view("admin.forum.index");
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
+
     }
 
     /**
@@ -23,7 +36,20 @@ class ForumController extends Controller
      */
     public function create()
     {
-        return view("admin.forum.create");
+        try{
+            if(auth()->user()->can("forum create") ){
+                return view("admin.forum.create");
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
+
     }
 
     /**
@@ -31,10 +57,23 @@ class ForumController extends Controller
      */
     public function store(ForumCreateRequest $request)
     {
-        $input = $request->all();
-        $input["user_id"] = auth()->id();
-        Forum::add($input);
-        return redirect()->route("forum.index");
+        try{
+            if(auth()->user()->can("forum create") ){
+                $input = $request->all();
+                $input["user_id"] = auth()->id();
+                Forum::add($input);
+                return redirect()->route("forum.index");
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
+
     }
 
     /**
@@ -42,11 +81,24 @@ class ForumController extends Controller
      */
     public function show(string $id)
     {
-        $forum = Forum::find($id);
-        if($forum){
-            return view("admin.forum.show",compact("forum"));
+        try{
+            if(auth()->user()->can("forum show") ){
+                $forum = Forum::find($id);
+                if($forum){
+                    return view("admin.forum.show",compact("forum"));
+                }
+                return redirect()->route("forum.index");
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
         }
-        return redirect()->route("forum.index");
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
+
     }
 
     /**
@@ -54,11 +106,24 @@ class ForumController extends Controller
      */
     public function edit(string $id)
     {
-        $forum = Forum::find($id);
-        if($forum){
-            return view("admin.forum.edit",compact("forum"));
+        try{
+            if(auth()->user()->can("forum edit") ){
+                $forum = Forum::find($id);
+                if($forum){
+                    return view("admin.forum.edit",compact("forum"));
+                }
+                return redirect()->route("forum.index");
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
         }
-        return redirect()->route("forum.index");
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
+
     }
 
     /**
@@ -66,13 +131,25 @@ class ForumController extends Controller
      */
     public function update(ForumUpdateRequest $request, string $id)
     {
-        $forum = Forum::find($id);
-        if($forum){
-            $input = $request->all();
-            $input["user_id"] = auth()->id();
-            $forum->edit($input);
+        try{
+            if(auth()->user()->can("forum edit") ){
+                $forum = Forum::find($id);
+                if($forum){
+                    $input = $request->all();
+                    $input["user_id"] = auth()->id();
+                    $forum->edit($input);
+                }
+                return redirect()->route("forum.index");
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
         }
-        return redirect()->route("forum.index");
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 
     /**
@@ -80,6 +157,18 @@ class ForumController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try{
+            if(auth()->user()->can("forum edit") ){
+
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 }

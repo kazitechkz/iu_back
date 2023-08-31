@@ -15,7 +15,20 @@ class AppealController extends Controller
      */
     public function index()
     {
-        return view("admin.appeal.index");
+        try{
+            if(auth()->user()->can("appeal index") ){
+                return view("admin.appeal.index");
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
+
     }
 
     /**
@@ -23,7 +36,20 @@ class AppealController extends Controller
      */
     public function create()
     {
-        return view("admin.appeal.create");
+        try{
+            if(auth()->user()->can("appeal create") ){
+                return view("admin.appeal.create");
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
+
     }
 
     /**
@@ -31,10 +57,22 @@ class AppealController extends Controller
      */
     public function store(AppealCreateRequest $request)
     {
-        $input = $request->all();
-        $input["user_id"] = auth()->user()->id;
-        Appeal::add($input);
-        return redirect()->route("appeal.index");
+        try{
+            if(auth()->user()->can("appeal create") ){
+                $input = $request->all();
+                $input["user_id"] = auth()->user()->id;
+                Appeal::add($input);
+                return redirect()->route("appeal.index");
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 
     /**
@@ -42,7 +80,19 @@ class AppealController extends Controller
      */
     public function show(string $id)
     {
-        //
+        try{
+            if(auth()->user()->can("appeal show") ){
+
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 
     /**
@@ -50,10 +100,23 @@ class AppealController extends Controller
      */
     public function edit(string $id)
     {
-        if($appeal = Appeal::find($id)){
-            return view("admin.appeal.edit",compact("appeal"));
+        try{
+            if(auth()->user()->can("appeal edit") ){
+                if($appeal = Appeal::find($id)){
+                    return view("admin.appeal.edit",compact("appeal"));
+                }
+                return redirect()->route("appeal.index");
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
         }
-        return redirect()->route("appeal.index");
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
+
 
     }
 
@@ -62,12 +125,24 @@ class AppealController extends Controller
      */
     public function update(AppealUpdateRequest $request, string $id)
     {
-        if($appeal = Appeal::find($id)){
-            $input = $request->all();
-            $input["user_id"] = auth()->user()->id;
-            $appeal->edit($input);
+        try{
+            if(auth()->user()->can("appeal edit") ){
+                if($appeal = Appeal::find($id)){
+                    $input = $request->all();
+                    $input["user_id"] = auth()->user()->id;
+                    $appeal->edit($input);
+                }
+                return redirect()->route("appeal.index");
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
         }
-        return redirect()->route("appeal.index");
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 
     /**
@@ -75,6 +150,18 @@ class AppealController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try{
+            if(auth()->user()->can("appeal edit") ){
+
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 }

@@ -14,7 +14,20 @@ class FaqController extends Controller
      */
     public function index()
     {
-        return view("admin.faq.index");
+        try{
+            if(auth()->user()->can("faq index") ){
+                return view("admin.faq.index");
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
+
     }
 
     /**
@@ -22,7 +35,20 @@ class FaqController extends Controller
      */
     public function create()
     {
-        return view("admin.faq.create");
+        try{
+            if(auth()->user()->can("faq create") ){
+                return view("admin.faq.create");
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
+
     }
 
     /**
@@ -30,10 +56,23 @@ class FaqController extends Controller
      */
     public function store(FaqCreateRequest $request)
     {
-        $input = $request->all();
-        $input["is_active"] = $request->boolean("is_active");
-        Faq::add($input);
-        return redirect()->route("faq.index");
+        try{
+            if(auth()->user()->can("faq create") ){
+                $input = $request->all();
+                $input["is_active"] = $request->boolean("is_active");
+                Faq::add($input);
+                return redirect()->route("faq.index");
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
+
     }
 
     /**
@@ -41,7 +80,19 @@ class FaqController extends Controller
      */
     public function show(string $id)
     {
-        //
+        try{
+            if(auth()->user()->can("faq show") ){
+
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 
     /**
@@ -49,11 +100,23 @@ class FaqController extends Controller
      */
     public function edit(string $id)
     {
-        $faq = Faq::find($id);
-        if($faq){
-            return view("admin.faq.edit",compact("faq"));
+        try{
+            if(auth()->user()->can("faq edit") ){
+                $faq = Faq::find($id);
+                if($faq){
+                    return view("admin.faq.edit",compact("faq"));
+                }
+                return redirect()->back("faq.index");
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
         }
-        return redirect()->back("faq.index");
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 
     /**
@@ -61,13 +124,26 @@ class FaqController extends Controller
      */
     public function update(FaqUpdateRequest $request, string $id)
     {
-        $faq = Faq::find($id);
-        if($faq){
-            $input = $request->all();
-            $input["is_active"] = $request->boolean("is_active");
-            $faq->edit($input);
+        try{
+            if(auth()->user()->can("faq edit") ){
+                $faq = Faq::find($id);
+                if($faq){
+                    $input = $request->all();
+                    $input["is_active"] = $request->boolean("is_active");
+                    $faq->edit($input);
+                }
+                return redirect()->route("faq.index");
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
         }
-        return redirect()->route("faq.index");
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
+
     }
 
     /**
@@ -75,6 +151,18 @@ class FaqController extends Controller
      */
     public function destroy(string $id)
     {
+        try{
+            if(auth()->user()->can("faq edit") ){
 
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 }

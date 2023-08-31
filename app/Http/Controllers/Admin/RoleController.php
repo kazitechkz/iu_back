@@ -16,7 +16,20 @@ class RoleController extends Controller
      */
     public function index()
     {
-        return view("admin.role.index");
+        try {
+            if(auth()->user()->can("role index")){
+                return view("admin.role.index");
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
+
     }
 
     /**
@@ -24,7 +37,19 @@ class RoleController extends Controller
      */
     public function create()
     {
-        return view("admin.role.create");
+        try{
+            if(auth()->user()->can("role create")){
+                return view("admin.role.create");
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 
     /**
@@ -32,13 +57,26 @@ class RoleController extends Controller
      */
     public function store(RoleCreateRequest $request)
     {
-        $role = Role::add($request->all());
-        if($role){
-            foreach ($request->get("permissions") as $permission){
-                $role->givePermissionTo($permission);
+        try{
+            if(auth()->user()->can("role create")) {
+                $role = Role::add($request->all());
+                if ($role) {
+                    foreach ($request->get("permissions") as $permission) {
+                        $role->givePermissionTo($permission);
+                    }
+                }
+                return redirect()->back();
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
             }
         }
-        return redirect()->back();
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
+
     }
 
     /**
@@ -46,7 +84,19 @@ class RoleController extends Controller
      */
     public function show(string $id)
     {
-        //
+        try{
+            if(auth()->user()->can("role show")) {
+
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 
     /**
@@ -54,10 +104,23 @@ class RoleController extends Controller
      */
     public function edit(string $id)
     {
-        $role = Role::findById($id);
-        if($role){
-            return view("admin.role.edit",compact("role"));
+        try{
+            if(auth()->user()->can("role edit")) {
+                $role = Role::findById($id);
+                if($role){
+                    return view("admin.role.edit",compact("role"));
+                }
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
         }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
+
     }
 
     /**
@@ -65,11 +128,24 @@ class RoleController extends Controller
      */
     public function update(RoleUpdateRequest $request, string $id)
     {
-        $role = Role::findById($id);
-        if($role){
-            $role->edit($request->all());
+        try{
+            if(auth()->user()->can("role edit")) {
+                $role = Role::findById($id);
+                if($role){
+                    $role->edit($request->all());
+                }
+                return redirect()->back();
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
         }
-        return redirect()->back();
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
+
     }
 
     /**
@@ -77,6 +153,18 @@ class RoleController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try{
+            if(auth()->user()->can("role edit")) {
+
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 }

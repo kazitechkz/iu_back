@@ -17,7 +17,19 @@ class GroupController extends Controller
      */
     public function index()
     {
-        return view("admin.group.index");
+        try{
+            if(auth()->user()->can("group index") ){
+                return view("admin.group.index");
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 
     /**
@@ -25,7 +37,20 @@ class GroupController extends Controller
      */
     public function create()
     {
-        return view("admin.group.create");
+        try{
+            if(auth()->user()->can("group create") ){
+                return view("admin.group.create");
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
+
     }
 
     /**
@@ -33,15 +58,27 @@ class GroupController extends Controller
      */
     public function store(GroupCreateRequest $request)
     {
-        $input = $request->all();
-        $input["isActive"] = $request->boolean("isActive");
-        $group = Group::add($input);
-        if($request->get("planGroups")){
-            foreach ($request->get("planGroups") as $plan){
-                GroupPlan::add(["group_id"=>$group->id,"plan_id"=>$plan]);
+        try{
+            if(auth()->user()->can("group create") ){
+                $input = $request->all();
+                $input["isActive"] = $request->boolean("isActive");
+                $group = Group::add($input);
+                if($request->get("planGroups")){
+                    foreach ($request->get("planGroups") as $plan){
+                        GroupPlan::add(["group_id"=>$group->id,"plan_id"=>$plan]);
+                    }
+                }
+                return redirect()->route("group.index");
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
             }
         }
-        return redirect()->route("group.index");
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 
     /**
@@ -49,7 +86,19 @@ class GroupController extends Controller
      */
     public function show(string $id)
     {
-        //
+        try{
+            if(auth()->user()->can("group show") ){
+
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 
     /**
@@ -57,12 +106,23 @@ class GroupController extends Controller
      */
     public function edit(string $id)
     {
-        if($group = Group::find($id))
-        {
-            return view("admin.group.edit",compact("group"));
+        try{
+            if(auth()->user()->can("group edit") ){
+                if($group = Group::find($id))
+                {
+                    return view("admin.group.edit",compact("group"));
+                }
+                return redirect()->route("group.index");
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
         }
-        return redirect()->route("group.index");
-
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 
     /**
@@ -70,14 +130,24 @@ class GroupController extends Controller
      */
     public function update(GroupUpdateRequest $request, string $id)
     {
-        if($group = Group::find($id)){
-            $input = $request->all();
-            $input["isActive"] = $request->boolean("isActive");
-            $group->edit($input);
+        try{
+            if(auth()->user()->can("group edit") ){
+                if($group = Group::find($id)){
+                    $input = $request->all();
+                    $input["isActive"] = $request->boolean("isActive");
+                    $group->edit($input);
+                }
+                return redirect()->route("group.index");
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
         }
-        return redirect()->route("group.index");
-
-
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 
     /**
@@ -85,6 +155,18 @@ class GroupController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try{
+            if(auth()->user()->can("group edit") ){
+
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 }

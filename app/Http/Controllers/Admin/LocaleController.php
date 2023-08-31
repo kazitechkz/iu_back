@@ -15,7 +15,20 @@ class LocaleController extends Controller
      */
     public function index()
     {
-        return view("admin.locale.index");
+        try{
+            if(auth()->user()->can("locale index")){
+                return view("admin.locale.index");
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
+
     }
 
     /**
@@ -23,7 +36,21 @@ class LocaleController extends Controller
      */
     public function create()
     {
-        return view("admin.locale.create");
+        try{
+            if(auth()->user()->can("locale create")){
+                return view("admin.locale.create");
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
+
+
     }
 
     /**
@@ -31,10 +58,22 @@ class LocaleController extends Controller
      */
     public function store(LocaleCreateRequest $request)
     {
-        $index = $request->all();
-        $index["isActive"] = $request->boolean("isActive");
-        Locale::add($index);
-        return redirect()->back();
+        try{
+            if(auth()->user()->can("locale create")){
+                $index = $request->all();
+                $index["isActive"] = $request->boolean("isActive");
+                Locale::add($index);
+                return redirect()->back();
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 
     /**
@@ -42,7 +81,19 @@ class LocaleController extends Controller
      */
     public function show(string $id)
     {
+        try{
+            if(auth()->user()->can("locale show")){
 
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 
     /**
@@ -50,11 +101,24 @@ class LocaleController extends Controller
      */
     public function edit(string $id)
     {
-        $locale = Locale::show($id);
-        if($locale){
-            return view("admin.locale.edit",compact("locale"));
+        try{
+            if(auth()->user()->can("locale edit")){
+                $locale = Locale::show($id);
+                if($locale){
+                    return view("admin.locale.edit",compact("locale"));
+                }
+                return redirect()->route('locale.index');
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
         }
-        return redirect()->route('locale.index');
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
+
 
     }
 
@@ -63,13 +127,26 @@ class LocaleController extends Controller
      */
     public function update(LocaleUpdateRequest $request, string $id)
     {
-        $index = $request->all();
-        $index["isActive"] = $request->boolean("isActive");
-        $locale = Locale::show($id);
-        if($locale){
-            $locale->edit($index);
+        try{
+            if(auth()->user()->can("locale edit")){
+                $index = $request->all();
+                $index["isActive"] = $request->boolean("isActive");
+                $locale = Locale::show($id);
+                if($locale){
+                    $locale->edit($index);
+                }
+                return redirect()->route('locale.index');
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
         }
-        return redirect()->route('locale.index');
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
+
     }
 
     /**
@@ -77,6 +154,18 @@ class LocaleController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try{
+            if(auth()->user()->can("locale edit")){
+
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 }

@@ -14,7 +14,20 @@ class PlanController extends Controller
      */
     public function index()
     {
-        return view("admin.plan.index");
+        try{
+            if(auth()->user()->can("plan index") ){
+                return view("admin.plan.index");
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
+
     }
 
     /**
@@ -22,7 +35,19 @@ class PlanController extends Controller
      */
     public function create()
     {
-        return view("admin.plan.create");
+        try{
+            if(auth()->user()->can("plan create") ){
+                return view("admin.plan.create");
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 
     /**
@@ -30,10 +55,23 @@ class PlanController extends Controller
      */
     public function store(PlanCreateRequest $request)
     {
-        $input = $request->all();
-        $input["is_active"] = $request->boolean("is_active");
-       Plan::create($input);
-       return redirect()->back();
+        try{
+            if(auth()->user()->can("plan create") ){
+                $input = $request->all();
+                $input["is_active"] = $request->boolean("is_active");
+                Plan::create($input);
+                return redirect()->back();
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
+
     }
 
     /**
@@ -41,7 +79,19 @@ class PlanController extends Controller
      */
     public function show(string $id)
     {
-        //
+        try{
+            if(auth()->user()->can("plan create") ){
+
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 
     /**
@@ -49,11 +99,24 @@ class PlanController extends Controller
      */
     public function edit(string $id)
     {
-        $plan = Plan::find($id);
-        if($plan){
-            return view("admin.plan.edit",compact("plan"));
+        try{
+            if(auth()->user()->can("plan edit") ){
+                $plan = Plan::find($id);
+                if($plan){
+                    return view("admin.plan.edit",compact("plan"));
+                }
+                return redirect()->route("plan.index");
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
         }
-        return redirect()->route("plan.index");
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
+
     }
 
     /**
@@ -61,13 +124,25 @@ class PlanController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $plan = Plan::find($id);
-        if($plan){
-            $input = $request->all();
-            $input["is_active"] = $request->boolean("is_active");
-            $plan->update($input);
+        try{
+            if(auth()->user()->can("plan edit") ){
+                $plan = Plan::find($id);
+                if($plan){
+                    $input = $request->all();
+                    $input["is_active"] = $request->boolean("is_active");
+                    $plan->update($input);
+                }
+                return redirect()->route("plan.index");
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
         }
-        return redirect()->route("plan.index");
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 
     /**
@@ -75,6 +150,18 @@ class PlanController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try{
+            if(auth()->user()->can("plan edit") ){
+
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 }
