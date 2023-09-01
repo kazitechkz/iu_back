@@ -35,7 +35,7 @@ class QuestionController extends Controller
             ->where('subject_id', $id)
             ->paginate(20);
 //        dd($questions[18]);
-        dd(StrHelper::getSubStr($questions[18]['text'], 200));
+//        dd(StrHelper::getSubStr($questions[18]['text'], 200));
         $subjects = Subject::all();
         return view('admin.question.change-category', compact( 'questions', 'subjects'));
     }

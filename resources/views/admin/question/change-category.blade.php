@@ -88,7 +88,7 @@
                                     <td>{!! \App\Helpers\StrHelper::getSubStr($question->text, 150) !!}</td>
                                     <td>
                                         @foreach(explode(',', $question->correct_answers) as $ans)
-                                            {{$loop->iteration}}. {!! \App\Helpers\StrHelper::getCorrectAnswers($question, $ans) !!} <br>
+                                            {{$loop->iteration}}. {!! \App\Helpers\StrHelper::getSubStr(\App\Helpers\StrHelper::getCorrectAnswers($question, $ans), 30) !!} <br>
                                         @endforeach
                                     </td>
                                     <td>

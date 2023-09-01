@@ -29,6 +29,7 @@ use App\Http\Controllers\Admin\SubTournamentWinnerController as AdminSubTourname
 use App\Http\Controllers\Admin\SubTournamentResultController as AdminSubTournamentResultController;
 use App\Http\Controllers\Admin\SubTournamentRivalController as AdminSubTournamentRivalController;
 use App\Http\Controllers\Admin\TestController;
+use App\Http\Controllers\TestController as Testing;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -90,4 +91,4 @@ Route::group(["prefix" => "dashboard","middleware" => "auth"],function (){
 });
 
 
-Route::get('import-db', [TestController::class, 'importDb']);
+Route::get('import-db', [Testing::class, 'importDb']);
