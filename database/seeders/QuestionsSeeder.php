@@ -14,6 +14,8 @@ class QuestionsSeeder extends Seeder
      */
     public function run(): void
     {
+        ini_set("memory_limit", "4096M");
+        ini_set("max_execution_time", 300);
         $file = File::get(storage_path('assets/sql/questions.json'));
         $questions = json_decode($file);
         foreach ($questions as $data) {
@@ -32,10 +34,10 @@ class QuestionsSeeder extends Seeder
                 'correct_answers' => $data->correct_answers,
                 'prompt' => $data->prompt,
                 'explanation' => $data->explanation,
-                'locale_id' => $data->locale_id == 1 ? 2 : 1,
+                'locale_id' => $data->locale_id,
                 'subject_id' => $data->subject_id,
                 'type_id' => $data->type_id,
-                'group_id' => 3,
+                'group_id' => 1,
                 'created_at' => $data->created_at,
                 'updated_at' => $data->updated_at
             ]);
