@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Helpers\MathFormulaHelper;
+use App\Helpers\StrHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Question\CreateRequest;
 use App\Models\File;
@@ -33,6 +34,8 @@ class QuestionController extends Controller
         $questions = Question::with('category', 'subject')
             ->where('subject_id', $id)
             ->paginate(20);
+//        dd($questions[18]);
+        dd(StrHelper::getSubStr($questions[18]['text'], 200));
         $subjects = Subject::all();
         return view('admin.question.change-category', compact( 'questions', 'subjects'));
     }

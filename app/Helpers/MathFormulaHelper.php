@@ -49,7 +49,9 @@ class MathFormulaHelper
 
     public function getReplaceStr($text): array|string
     {
-        $text = str_replace('$$', '<tex>', $text);
-        return str_replace('@@', '</tex>', $text);
+//        $text = str_replace('$$', '<tex>', $text);
+//        return str_replace('@@', '</tex>', $text);
+        $text = str_replace('$$', '<pre>', $text);
+        return str_replace('@@', '</pre>', $text);
     }
 }
