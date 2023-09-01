@@ -3,20 +3,28 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Services\AttemptService;
 use App\Services\QuestionService;
 use Illuminate\Http\Request;
 
 class TestController extends Controller
 {
     private QuestionService $_questionService;
-    public function __construct(QuestionService $questionService)
+    private AttemptService $_attemptService;
+    public function __construct(QuestionService $questionService,AttemptService $attemptService)
     {
         $this->_questionService = $questionService;
+        $this->_attemptService = $attemptService;
     }
 
 
     public function test(){
-        dd($this->_questionService->get_questions_for_unt(4,5,1));
+
+        $questions = $this->_questionService->get_questions_with_subjects([5,6,],1);
+        $points = $this->_questionService->get_questions_max_point($questions);
+        $attempt = $this->_attemptService->create_attempt(type_id: 2,locale_id: 1,max_points:$points,questions: $questions,time: 240 );
+        dd($attempt);
+
     }
 
     public function importDb()

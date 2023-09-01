@@ -93,4 +93,5 @@ class Attempt extends Model
 	{
 		return $this->hasMany(SubTournamentResult::class);
 	}
+
 }
