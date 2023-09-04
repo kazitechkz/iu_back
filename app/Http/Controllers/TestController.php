@@ -8,6 +8,7 @@ use App\User;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Knp\Snappy\Pdf;
 
 class TestController extends Controller
 {
@@ -83,4 +84,6 @@ class TestController extends Controller
             return false;
         }
     }
+
+
 }

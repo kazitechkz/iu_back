@@ -34,4 +34,10 @@ class StrHelper
             return '';
         }
     }
+
+    public static function latexToHTML($str): array|string
+    {
+        $text = str_replace('<pre>', '$$', $str);
+        return str_replace('</pre>', '$$', $text);
+    }
 }

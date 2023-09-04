@@ -31,7 +31,7 @@ class QuestionController extends Controller
 
     public function changeCategoryInSubject($id)
     {
-        $questions = Question::with('category', 'subject')
+        $questions = Question::with('category', 'subject', 'context')
             ->where('subject_id', $id)
             ->paginate(20);
 //        dd($questions[18]);

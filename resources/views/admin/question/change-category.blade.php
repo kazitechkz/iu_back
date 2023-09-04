@@ -1,4 +1,16 @@
 @extends('layouts.default')
+@push('css')
+    <style>
+        .z-5000 {z-index: 5000!important;}
+        #text-img img {
+            width: 300px!important;
+            height: 100%!important;
+            border-radius: inherit!important;
+        }
+        mjx-container {text-align: left!important; display: inline!important;}
+        #answers_math > li {margin: 20px 20px}
+    </style>
+@endpush
 @section('content')
     <div class="col-lg-12 grid-margin stretch-card my-2">
         <div class="w-full mb-4 md:w-auto md:mb-0">
@@ -85,13 +97,15 @@
                                     <td>
                                         <livewire:question.change-category :question="$question"/>
                                     </td>
-                                    <td>{!! \App\Helpers\StrHelper::getSubStr($question->text, 150) !!}</td>
+                                    <td>{{\App\Helpers\StrHelper::getSubStr($question->text, 150)}}</td>
                                     <td>
                                         @foreach(explode(',', $question->correct_answers) as $ans)
-                                            {{$loop->iteration}}. {!! \App\Helpers\StrHelper::getSubStr(\App\Helpers\StrHelper::getCorrectAnswers($question, $ans), 30) !!} <br>
+                                            {{$loop->iteration}}. {{\App\Helpers\StrHelper::getSubStr(\App\Helpers\StrHelper::getCorrectAnswers($question, $ans), 30)}} <br>
                                         @endforeach
                                     </td>
-                                    <td>
+                                    <td class="flex">
+
+                                        <livewire:question.preview-question :question="$question"/>
                                         <x-shared.action-buttons
                                             :edit-link="route('questions.edit', $question->id)"
                                             :delete-link="route('questions.destroy', $question->id)"
@@ -111,4 +125,14 @@
     </div>
 
 @endsection
+@push('js')
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+{{--<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>--}}
+<script type="text/javascript">
+    MathJax.Hub.Config({
+        tex2jax: { inlineMath: [['$$','$$']], displayMath: [['$$$$','$$$$']] }
+    });
+</script>
 
+@endpush
