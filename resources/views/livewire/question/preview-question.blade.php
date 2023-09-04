@@ -33,7 +33,7 @@
                     <li class="{{in_array('g', $correct_answers) ? 'text-green-500' : ''}}"><b>G)</b> {{\App\Helpers\StrHelper::latexToHTML($question->answer_g)}}</li>
                 @endif
                 @if($question->answer_h)
-                    <li class="{{in_array('h', $correct_answers) ? 'text-green-500' : ''}}">H. {{\App\Helpers\StrHelper::latexToHTML($question->answer_h)}}</li>
+                    <li class="{{in_array('h', $correct_answers) ? 'text-green-500' : ''}}"><b>H)</b> {{\App\Helpers\StrHelper::latexToHTML($question->answer_h)}}</li>
                 @endif
             </ul>
             </p>
