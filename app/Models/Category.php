@@ -45,4 +45,9 @@ class Category extends Model
     {
 		return $this->belongsTo(Subject::class);
 	}
+
+    public function subcategories(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(SubCategory::class, 'category_id', 'id');
+    }
 }
