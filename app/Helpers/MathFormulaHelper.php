@@ -11,6 +11,7 @@ class MathFormulaHelper
     {
         $math = new self();
         $data = $request->all();
+        $data['correct_answers'] = implode(',', json_decode($data['correct_answers']));
         $data['text'] = $math->getReplaceStr($data['text']);
         if (!isset($data['context_id'])) {
             if (isset($data['context'])) {

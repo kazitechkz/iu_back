@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Question;
 
+use App\Helpers\StrHelper;
 use App\Http\Requests\Question\CreateRequest;
 use App\Models\Category;
 use App\Models\Group;
@@ -52,7 +53,6 @@ class Edit extends Component
     }
     public function mount($question): void
     {
-//        dd($question->correct_answers);
         $this->question = $question;
         $this->subjects = Subject::all();
         $this->types = QuestionType::all();
@@ -64,19 +64,19 @@ class Edit extends Component
         $this->locale_id = $question->locale_id;
         $this->categories = Category::where('subject_id', $question->subject_id)->get();
         $this->category_id = $question->category_id;
-        $this->answer_a = $question->answer_a;
-        $this->answer_b = $question->answer_b;
-        $this->answer_c = $question->answer_c;
-        $this->answer_d = $question->answer_d;
-        $this->answer_e = $question->answer_e != null ?? $question->answer_e;
-        $this->answer_f = $question->answer_f != null ?? $question->answer_f;
-        $this->answer_g = $question->answer_g != null ?? $question->answer_g;
-        $this->answer_h = $question->answer_h != null ?? $question->answer_h;
-        $this->correct_answers = json_decode($question->correct_answers);
-        $this->text = $question->text;
+        $this->answer_a = StrHelper::convertLatex($question->answer_a);
+        $this->answer_b = StrHelper::convertLatex($question->answer_b);
+        $this->answer_c = StrHelper::convertLatex($question->answer_c);
+        $this->answer_d = StrHelper::convertLatex($question->answer_d);
+        $this->answer_e = $question->answer_e != null ?? StrHelper::convertLatex($question->answer_e);
+        $this->answer_f = $question->answer_f != null ?? StrHelper::convertLatex($question->answer_f);
+        $this->answer_g = $question->answer_g != null ?? StrHelper::convertLatex($question->answer_g);
+        $this->answer_h = $question->answer_h != null ?? StrHelper::convertLatex($question->answer_h);
+        $this->correct_answers = explode(',', $question->correct_answers);
+        $this->text = StrHelper::convertLatex($question->text);
         $this->contexts = SubjectContext::where('subject_id', $question->subject_id)->get();
-        $this->prompt = $question->prompt;
-        $this->explanation = $question->explanation;
+        $this->prompt = StrHelper::convertLatex($question->prompt);
+        $this->explanation = StrHelper::convertLatex($question->explanation);
         $this->context_id = $question->context_id != null ? $question->context_id : null;
     }
 
