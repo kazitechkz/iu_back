@@ -40,4 +40,10 @@ class StrHelper
         $text = str_replace('<pre>', '$$', $str);
         return str_replace('</pre>', '$$', $text);
     }
+
+    public static function convertLatex($str): array|string
+    {
+        $text = str_replace('<pre>', '$$', $str);
+        return str_replace('</pre>', '@@', $text);
+    }
 }

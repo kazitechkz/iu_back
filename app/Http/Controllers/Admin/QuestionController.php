@@ -29,15 +29,25 @@ class QuestionController extends Controller
         }
     }
 
-    public function changeCategoryInSubject($id)
+    public function changeCategoryInSubject($id, $locale_id = 1)
     {
-        $questions = Question::with('category', 'subject', 'context')
-            ->where('subject_id', $id)
-            ->paginate(20);
-//        dd($questions[18]);
-//        dd(StrHelper::getSubStr($questions[18]['text'], 200));
-        $subjects = Subject::all();
-        return view('admin.question.change-category', compact( 'questions', 'subjects'));
+        try{
+            if(auth()->user()->can("questions index") ){
+                $questions = Question::with('category', 'subject', 'context')
+                    ->where(['subject_id' => $id, 'locale_id' => $locale_id])
+                    ->paginate(20);
+                $subjects = Subject::all();
+                return view('admin.question.change-category', compact( 'questions', 'subjects'));
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
     /**
      * Display a listing of the resource.
@@ -155,7 +165,7 @@ class QuestionController extends Controller
                 $question = Question::findOrFail($id);
                 $data = MathFormulaHelper::replace($request);
                 $question->edit($data);
-                return redirect(route('questions.index'));
+                return redirect()->back();
             }
             else{
                 toastr()->warning(__("message.not_allowed"));

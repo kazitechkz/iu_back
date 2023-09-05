@@ -84,7 +84,7 @@
                         x-bind:aria-expanded="open"
                         aria-expanded="true"
                     >
-                        @lang('Изменить категорию')
+                        @lang('Язык')
                         <svg class="w-5 h-5 ml-2 -mr-1" x-description="Heroicon name: chevron-down"
                              xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                             <path fill-rule="evenodd"
@@ -107,12 +107,12 @@
                 >
                     <div class="bg-white rounded-md shadow-xs dark:bg-gray-700 dark:text-white">
                         <div class="py-1" role="menu" aria-orientation="vertical">
-                            @foreach(\App\Models\Subject::all() as $item)
-                                <a href="{{route('change-category-in-subject', ['id' => $item->id])}}"
+                            @foreach(\App\Models\Locale::all() as $item)
+                                <a href="{{route('change-category-in-subject', ['id' => $questions[0]['subject_id'], 'locale_id' => $item->id])}}"
                                    class="flex text-start items-center w-full px-4 py-2 space-x-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900 dark:text-white dark:hover:bg-gray-600"
                                    role="menuitem"
                                 >
-                                    <span>{{$item->title_ru}}</span>
+                                    <span>{{$item->title}}</span>
                                 </a>
                             @endforeach
 
@@ -140,7 +140,7 @@
                             <th scope="col">#</th>
                             <th scope="col">Категория</th>
                             <th scope="col">Вопрос</th>
-                            <th scope="col">Правильный ответ</th>
+{{--                            <th scope="col">Правильный ответ</th>--}}
                             <th scope="col">Действие</th>
                         </tr>
                     </thead>
@@ -151,12 +151,12 @@
                                     <td>
                                         <livewire:question.change-category :question="$question"/>
                                     </td>
-                                    <td>{{\App\Helpers\StrHelper::getSubStr($question->text, 150)}}</td>
-                                    <td>
-                                        @foreach(explode(',', $question->correct_answers) as $ans)
-                                            {{$loop->iteration}}. {{\App\Helpers\StrHelper::getSubStr(\App\Helpers\StrHelper::getCorrectAnswers($question, $ans), 30)}} <br>
-                                        @endforeach
-                                    </td>
+                                    <td>{{\App\Helpers\StrHelper::getSubStr($question->text, 250)}}</td>
+{{--                                    <td>--}}
+{{--                                        @foreach(explode(',', $question->correct_answers) as $ans)--}}
+{{--                                            {{$loop->iteration}}. {{\App\Helpers\StrHelper::getSubStr(\App\Helpers\StrHelper::getCorrectAnswers($question, $ans), 30)}} <br>--}}
+{{--                                        @endforeach--}}
+{{--                                    </td>--}}
                                     <td class="flex">
 
                                         <livewire:question.preview-question :question="$question"/>
