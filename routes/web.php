@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AppealController as AdminAppealController;
 use App\Http\Controllers\Admin\AppealTypeController as AdminAppealTypeController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
+use App\Http\Controllers\Admin\SubCategoryController as AdminSubCategoryController;
 use App\Http\Controllers\Admin\FaqController as AdminFaqController;
 use App\Http\Controllers\Admin\ForumController as AdminForumController;
 use App\Http\Controllers\Admin\GroupController as AdminGroupController;
@@ -66,6 +67,7 @@ Route::group(["prefix" => "dashboard","middleware" => "auth"],function (){
     Route::resource('single-tests', AdminSingleSubjectTestController::class)->except(['create', 'show', 'destroy']);
     Route::resource("plan",AdminPlanController::class);
     Route::resource('categories', AdminCategoryController::class)->except(['show', 'destroy']);
+    Route::resource('sub-categories', AdminSubCategoryController::class)->except(['show', 'destroy']);
     Route::resource("plan-combination",AdminPlanCombinationController::class);
     Route::resource("subscription",AdminSubscriptionController::class);
     Route::resource("promocode",AdminPromocodeController::class);

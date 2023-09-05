@@ -8,6 +8,7 @@ return [
     'permission' => 'Permissions',
     'single_subject_tests' => 'Single Subject Tests',
     'categories' => 'Categories',
+    'subcategories' => 'SubCategories',
     "locale" => "Locale",
     'plan' => 'Subscribe Plan',
     'plan-combination' => 'Plan Localization',

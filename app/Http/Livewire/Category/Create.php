@@ -22,15 +22,15 @@ class Create extends Component
     {
         return (new CategoryRequest())->attributes();
     }
-    public function mount()
+    public function mount(): void
     {
         $this->subjects = Subject::all();
     }
-    public function updated($propertyName)
+    public function updated($propertyName): void
     {
         $this->validateOnly($propertyName);
     }
-    public function render()
+    public function render(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         return view('livewire.category.create');
     }

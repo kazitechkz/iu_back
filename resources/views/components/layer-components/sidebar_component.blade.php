@@ -50,6 +50,12 @@
                     :link="'categories.index'"
                     :name="__('sidebar.categories')"/>
                 @endcan
+                @can("subcategories index")
+                <x-shared.sub-sidebar-menu
+                    :icon="'fas fa-list'"
+                    :link="'sub-categories.index'"
+                    :name="__('sidebar.subcategories')"/>
+                @endcan
                 @can("single-tests index")
                 <x-shared.sub-sidebar-menu
                     :icon="'fas fa-edit'"

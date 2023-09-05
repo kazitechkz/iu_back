@@ -8,6 +8,7 @@ return [
     'permission' => 'Права',
     'single_subject_tests' => 'Тесты по предметам',
     'categories' => 'Категории',
+    'subcategories' => 'Субкатегории',
     "locale" => "Язык",
     'plan' => 'План подписки',
     'plan-combination' => 'Локализация плана',

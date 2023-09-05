@@ -9,6 +9,7 @@ return [
     'permission' => 'Рұқсат',
     'single_subject_tests' => 'Пәндер бойынша тест',
     'categories' => 'Категориялар',
+    'subcategories' => 'СубКатегориялар',
     "locale" => "Тіл",
     'plan' => 'Жазулы жоспары',
     'plan-combination' => 'Локализация жоспары',

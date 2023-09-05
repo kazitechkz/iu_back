@@ -28,6 +28,8 @@ class AppConstants
         "plan create","plan index","plan edit","plan show",
         //Categories
         "categories create","categories index","categories edit","categories show",
+        //SubCategories
+        "subcategories create","subcategories index","subcategories edit","subcategories show",
         //Plan Combination
         "plan-combination create","plan-combination index","plan-combination edit","plan-combination show",
         //Subscription
