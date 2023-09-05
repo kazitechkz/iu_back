@@ -7,6 +7,7 @@ use App\Models\AttemptQuestion;
 use App\Models\Question;
 use App\Services\AnswerService;
 use App\Services\AttemptService;
+use App\Services\PlanService;
 use App\Services\QuestionService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -46,6 +47,11 @@ class TestController extends Controller
 
     public function finishTest(){
         $this->_answerService->finishTest(1);
+    }
+
+    public function subjectTest(){
+        $planService = new PlanService();
+        dd($planService->getSubjects());
     }
 
 

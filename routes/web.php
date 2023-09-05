@@ -56,6 +56,7 @@ Route::get('login', function () {
 Route::get("/test",[TestController::class,"test"]);
 Route::get("/test-answer",[TestController::class,"answerTest"]);
 Route::get("/test-finish",[TestController::class,"finishTest"]);
+Route::get("/test-subjects",[TestController::class,"subjectTest"]);
 
 Route::group(["prefix" => "dashboard","middleware" => "auth"],function (){
     Route::resource("user",AdminUserController::class);
