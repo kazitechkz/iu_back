@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\CommercialGroupPlan;
 use App\Models\Question;
 use App\Models\SubjectContext;
 use Illuminate\Database\Seeder;
@@ -30,7 +31,9 @@ class DatabaseSeeder extends Seeder
                 AttemptTypeSeeder::class,
                 TournamentStepSeeder::class,
                 SubjectContextSeeder::class,
-                QuestionsSeeder::class
+                QuestionsSeeder::class,
+                CommercialGroupSeeder::class,
+                CommercialGroupPlanSeeder::class
             ]
         );
     }
