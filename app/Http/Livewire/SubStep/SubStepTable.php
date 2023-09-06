@@ -6,6 +6,8 @@ use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Models\SubStep;
 use Rappasoft\LaravelLivewireTables\Views\Columns\BooleanColumn;
+use Rappasoft\LaravelLivewireTables\Views\Columns\ButtonGroupColumn;
+use Rappasoft\LaravelLivewireTables\Views\Columns\LinkColumn;
 
 class SubStepTable extends DataTableComponent
 {
@@ -58,8 +60,31 @@ class SubStepTable extends DataTableComponent
                 ->sortable(),
             Column::make("Created at", "created_at")
                 ->sortable(),
-            Column::make("Updated at", "updated_at")
-                ->sortable(),
+            ButtonGroupColumn::make('Actions')
+                ->attributes(function($row) {
+                    return [
+                        'class' => 'space-x-2 flex',
+                    ];
+                })
+                ->buttons([
+                    LinkColumn::make('View') // make() has no effect in this case but needs to be set anyway
+                    ->title(fn($row) => '')
+                        ->location(fn($row) => route('sub-step-test.show', $row))
+                        ->attributes(function($row) {
+                            return [
+                                'class' => 'fas fa-t btn btn-primary btn-rounded btn-icon flex align-center justify-center items-center',
+                            ];
+                        }),
+                    LinkColumn::make('Edit')
+                        ->title(fn($row) => "")
+                        ->location(fn($row) => route('step.edit', $row))
+                        ->attributes(function($row) {
+                            return [
+                                'target' => '_blank',
+                                'class' => 'fas fa-pencil btn btn-danger btn-rounded btn-icon flex align-center justify-center items-center',
+                            ];
+                        }),
+                ]),
         ];
     }
 }

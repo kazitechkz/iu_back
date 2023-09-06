@@ -36,10 +36,17 @@ class SubStepTestCreate extends Component
     {
         $this->validateOnly($propertyName);
     }
-    public function mount(): void
+    public function mount($item = null): void
     {
         $this->subjects = Subject::all();
         $this->locales = Locale::all();
+        if ($item != null) {
+            $this->subject_id = $item->step->subject_id;
+            $this->steps = Step::where('subject_id', $this->subject_id)->get();
+            $this->step_id = $item->step_id;
+            $this->sub_steps = SubStep::where('step_id', $this->step_id)->get();
+            $this->sub_step_id = $item->id;
+        }
         $this->answer_a = old($this->answer_a) ?? null;
         $this->answer_b = old($this->answer_b) ?? null;
         $this->answer_c = old($this->answer_c) ?? null;

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SubStepTest\SubStepTestCreateRequest;
 use App\Models\SubQuestion;
+use App\Models\SubStep;
 use App\Models\SubStepTest;
 use Illuminate\Http\Request;
 
@@ -81,7 +82,8 @@ class SubStepTestController extends Controller
     {
         try{
             if(auth()->user()->can("substeptest index") ){
-
+                $sub_step = SubStep::with('step')->findOrFail($id);
+                return view('admin.sub-step-test.show', compact('sub_step'));
             }
             else{
                 toastr()->warning(__("message.not_allowed"));
