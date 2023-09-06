@@ -78,7 +78,8 @@ class Question extends Model implements Searchable
 		'subject_id',
 		'type_id',
         'group_id',
-        'category_id'
+        'category_id',
+        'sub_category_id'
 	];
 
 	public function locale(): BelongsTo

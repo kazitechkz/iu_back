@@ -2,17 +2,15 @@
 
 namespace App\Http\Livewire\Question;
 
-use App\Exports\SubjectExports;
 use App\Helpers\StrHelper;
-use App\Models\Category;
-use App\Models\File;
+use App\Models\Locale;
 use App\Models\Subject;
-use Illuminate\Support\Str;
-use Maatwebsite\Excel\Facades\Excel;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Exceptions\DataTableConfigurationException;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Models\Question;
+use Rappasoft\LaravelLivewireTables\Views\Filters\MultiSelectFilter;
+use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 
 class QuestionTable extends DataTableComponent
 {
@@ -39,6 +37,22 @@ class QuestionTable extends DataTableComponent
                 'livewire.question.dropdown-table'
             ]
         ]);
+    }
+
+    public function filters(): array
+    {
+        return [
+            SelectFilter::make('Язык')
+                ->options(Subject::pluck('title_ru', 'id')->toArray())
+                ->filter(function ($builder, string $value){
+                    $builder->where(['questions.subject_id' => $value]);
+                }),
+            SelectFilter::make('Язык')
+                ->options(Locale::pluck('title', 'id')->toArray())
+                ->filter(function ($builder, string $value){
+                    $builder->where(['locale_id' => $value]);
+                }),
+        ];
     }
 
     public function bulkActions(): array

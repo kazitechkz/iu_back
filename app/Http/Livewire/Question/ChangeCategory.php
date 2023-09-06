@@ -10,18 +10,24 @@ use Livewire\WithPagination;
 class ChangeCategory extends Component
 {
     public $category_id;
+    public $sub_category_id;
     public $categories;
+    public $subcategories;
     public $question;
     public function mount($question): void
     {
         $this->category_id = $question->category_id;
+        $this->sub_category_id = $question->sub_category_id;
         $this->categories = Category::where('subject_id', $question->subject_id)->get();
         $this->question = Question::findOrFail($question->id);
     }
-    public function updatedCategoryId(): void
+    public function updatedSubCategoryId(): void
     {
-        $this->question->category_id = $this->category_id;
-        $this->question->save();
+        if ($this->sub_category_id != 0) {
+            $this->question->category_id = $this->category_id;
+            $this->question->sub_category_id = $this->sub_category_id;
+            $this->question->save();
+        }
     }
     public function render(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
