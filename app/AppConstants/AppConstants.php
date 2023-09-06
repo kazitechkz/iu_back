@@ -62,6 +62,8 @@ class AppConstants
         "tournament create","tournament index","tournament edit","tournament show",
         //SubTournament
         "sub-tournament create","sub-tournament index","sub-tournament edit","sub-tournament show",
+        //SubStepTest
+        "substeptest create","substeptest index","substeptest edit","substeptest show",
         //Step
         "step create","step index","step edit","step show",
         //Sub Step
@@ -76,6 +78,10 @@ class AppConstants
         "subject create","subject index","subject edit","subject show",
         //Categories
         "categories create","categories index","categories edit","categories show",
+        //SubCategories
+        "subcategories create","subcategories index","subcategories edit","subcategories show",
+        //SubStepTest
+        "substeptest create","substeptest index","substeptest edit","substeptest show",
         //Question
         "questions create","questions index","questions edit","questions show",
         //Subject Contexts

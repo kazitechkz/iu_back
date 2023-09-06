@@ -6,6 +6,7 @@
 
 namespace App\Models;
 
+use App\Traits\CRUD;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
@@ -25,6 +26,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class SubStepTest extends Model
 {
+    use CRUD;
 	protected $table = 'sub_step_tests';
 
 	protected $casts = [

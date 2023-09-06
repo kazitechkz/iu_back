@@ -10,6 +10,7 @@ return [
     'single_subject_tests' => 'Пәндер бойынша тест',
     'categories' => 'Категориялар',
     'subcategories' => 'СубКатегориялар',
+    'substeptest' => 'Контент тесттері',
     "locale" => "Тіл",
     'plan' => 'Жазулы жоспары',
     'plan-combination' => 'Локализация жоспары',

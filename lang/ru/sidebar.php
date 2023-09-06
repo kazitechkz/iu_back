@@ -9,6 +9,7 @@ return [
     'single_subject_tests' => 'Тесты по предметам',
     'categories' => 'Категории',
     'subcategories' => 'Субкатегории',
+    'substeptest' => 'Тесты по контентам',
     "locale" => "Язык",
     'plan' => 'План подписки',
     'plan-combination' => 'Локализация плана',

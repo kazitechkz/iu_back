@@ -6,6 +6,7 @@
 
 namespace App\Models;
 
+use App\Traits\CRUD;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
@@ -29,6 +30,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class SubQuestion extends Model
 {
+    use CRUD;
 	protected $table = 'sub_questions';
 
 	protected $fillable = [
@@ -37,7 +39,8 @@ class SubQuestion extends Model
 		'answer_b',
 		'answer_c',
 		'answer_d',
-		'correct_answer'
+		'correct_answer',
+        'locale_id'
 	];
 
 	public function sub_step_tests(): \Illuminate\Database\Eloquent\Relations\HasMany

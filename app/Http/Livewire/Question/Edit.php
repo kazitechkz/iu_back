@@ -73,10 +73,10 @@ class Edit extends Component
         $this->answer_b = StrHelper::convertLatex($question->answer_b);
         $this->answer_c = StrHelper::convertLatex($question->answer_c);
         $this->answer_d = StrHelper::convertLatex($question->answer_d);
-        $this->answer_e = $question->answer_e != null ?? StrHelper::convertLatex($question->answer_e);
-        $this->answer_f = $question->answer_f != null ?? StrHelper::convertLatex($question->answer_f);
-        $this->answer_g = $question->answer_g != null ?? StrHelper::convertLatex($question->answer_g);
-        $this->answer_h = $question->answer_h != null ?? StrHelper::convertLatex($question->answer_h);
+        $this->answer_e = $question->answer_e != null ? StrHelper::convertLatex($question->answer_e) : null;
+        $this->answer_f = $question->answer_f != null ? StrHelper::convertLatex($question->answer_f) : null;
+        $this->answer_g = $question->answer_g != null ? StrHelper::convertLatex($question->answer_g) : null;
+        $this->answer_h = $question->answer_h != null ? StrHelper::convertLatex($question->answer_h) : null;
         $this->correct_answers = explode(',', $question->correct_answers);
         $this->text = StrHelper::convertLatex($question->text);
         $this->contexts = SubjectContext::where('subject_id', $question->subject_id)->get();

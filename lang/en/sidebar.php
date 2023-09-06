@@ -9,6 +9,7 @@ return [
     'single_subject_tests' => 'Single Subject Tests',
     'categories' => 'Categories',
     'subcategories' => 'SubCategories',
+    'substeptest' => 'SubStepTests',
     "locale" => "Locale",
     'plan' => 'Subscribe Plan',
     'plan-combination' => 'Plan Localization',
