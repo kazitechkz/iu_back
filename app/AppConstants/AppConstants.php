@@ -62,6 +62,12 @@ class AppConstants
         "tournament create","tournament index","tournament edit","tournament show",
         //SubTournament
         "sub-tournament create","sub-tournament index","sub-tournament edit","sub-tournament show",
+        //Step
+        "step create","step index","step edit","step show",
+        //Sub Step
+        "sub-step create","sub-step index","sub-step edit","sub-step show",
+        //Sub Step Content
+        "sub-step-content create","sub-step-content index","sub-step-content edit","sub-step-content show",
     ];
 
     public const ADMIN_PERMISSIONS = self::all_permissions;

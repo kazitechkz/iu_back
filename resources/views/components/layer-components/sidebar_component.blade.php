@@ -170,7 +170,20 @@
             @endcan
 
         </x-shared.sidebar-menu>
-
+        <x-shared.sidebar-menu :element-id="'step-content'" :name="__('sidebar.step')" :icon="'fas fa-stairs'">
+                @can('step index')
+                <x-shared.sub-sidebar-menu
+                    :icon="'fas fa-stairs'"
+                    :link="'step.index'"
+                    :name="__('sidebar.step')"/>
+                @endcan
+                    @can('sub-step index')
+                        <x-shared.sub-sidebar-menu
+                            :icon="'fas fa-shoe-prints'"
+                            :link="'sub-step.index'"
+                            :name="__('sidebar.sub-step')"/>
+                    @endcan
+        </x-shared.sidebar-menu>
         <x-shared.sidebar-menu :element-id="'tournament'" :name="__('sidebar.tournament')" :icon="'fas fa-trophy'">
             @can("tournament index")
             <x-shared.sub-sidebar-menu
