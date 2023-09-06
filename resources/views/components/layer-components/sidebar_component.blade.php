@@ -65,6 +65,12 @@
             </x-shared.sidebar-menu>
 
         <x-shared.sidebar-menu :element-id="'finance'" :name="__('sidebar.finance')" :icon="'mdi mdi-currency-usd'">
+            @can("commercial-group index")
+            <x-shared.sub-sidebar-menu
+                :icon="'fas fa-credit-card'"
+                :link="'commercial-group.index'"
+                :name="__('sidebar.commercial-group')"/>
+            @endcan
             @can("wallet index")
             <x-shared.sub-sidebar-menu
                 :icon="'fas fa-wallet'"

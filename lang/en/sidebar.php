@@ -34,4 +34,5 @@ return [
     "sub-tournament-winner"=>"Sub-Tournament Winner",
     "sub-tournament-rivals"=>"Sub-Tournament Rivals",
     "sub-tournament-result"=>"Sub-Tournament Result",
+    "commercial-group"=>"Commercial Group"
 ];

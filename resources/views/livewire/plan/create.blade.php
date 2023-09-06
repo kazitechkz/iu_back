@@ -47,6 +47,18 @@
         />
     </div>
     {{-- Is Active --}}
+    {{--    Commercial Group --}}
+    <div class="form-group">
+        <x-select
+            label="Commercial Group*"
+            :options="$commercial_groups"
+            option-label="title_ru"
+            option-value="id"
+            wire:model="commercial_group_id"
+            name="commercial_group_id"
+        />
+    </div>
+    {{--    Commercial Group --}}
     {{-- Price --}}
     <div class="form-group">
         <x-inputs.number

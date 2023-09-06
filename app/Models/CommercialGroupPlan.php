@@ -6,18 +6,19 @@
 
 namespace App\Models;
 
+use App\Traits\CRUD;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class CommercialGroupPlan
- * 
+ *
  * @property int $id
  * @property int $plan_id
  * @property int $group_id
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * 
+ *
  * @property CommercialGroup $commercial_group
  * @property Plan $plan
  *
@@ -25,6 +26,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class CommercialGroupPlan extends Model
 {
+    use CRUD;
 	protected $table = 'commercial_group_plan';
 
 	protected $casts = [
