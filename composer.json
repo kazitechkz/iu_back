@@ -28,6 +28,7 @@
         "multicaret/laravel-acquaintances": "^3.5",
         "okipa/laravel-table": "^5.3",
         "rappasoft/laravel-livewire-tables": "^2.15",
+        "sarfraznawaz2005/loading": "^1.4",
         "spatie/laravel-image-optimizer": "^1.7",
         "spatie/laravel-permission": "^5.10",
         "spatie/laravel-query-builder": "^5.2",

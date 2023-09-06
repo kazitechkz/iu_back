@@ -6,6 +6,7 @@ use App\Http\Middleware\AuthMiddleware;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use LaravelAt\ImageSanitize\ImageSanitizeMiddleware;
+use Sarfraznawaz2005\Loading\Http\Middleware\LoadingMiddleware;
 use Spatie\LaravelImageOptimizer\Middlewares\OptimizeImages;
 
 class Kernel extends HttpKernel
@@ -25,6 +26,7 @@ class Kernel extends HttpKernel
         \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
         \App\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
+        LoadingMiddleware::class
     ];
 
     /**
