@@ -6,13 +6,14 @@
 
 namespace App\Models;
 
+use App\Traits\CRUD;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class CommercialGroup
- * 
+ *
  * @property int $id
  * @property string $title_ru
  * @property string $title_kk
@@ -21,13 +22,14 @@ use Illuminate\Database\Eloquent\Model;
  * @property bool $is_active
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * 
+ *
  * @property Collection|Plan[] $plans
  *
  * @package App\Models
  */
 class CommercialGroup extends Model
 {
+    use CRUD;
 	protected $table = 'commercial_groups';
 
 	protected $casts = [

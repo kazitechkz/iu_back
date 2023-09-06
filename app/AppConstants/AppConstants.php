@@ -38,6 +38,8 @@ class AppConstants
         "promocode create","promocode index","promocode edit","promocode show",
         //News
         "news create","news index","news edit","news show",
+        //Commercial Group
+        "commercial-group create","commercial-group index","commercial-group edit","commercial-group show",
         //Wallet
         "wallet create","wallet index","wallet edit","wallet show",
         //Faq

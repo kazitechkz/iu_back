@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Plan;
+namespace App\Http\Requests\CommercialGroup;
 
-use Bpuig\Subby\Models\Plan;
 use Illuminate\Foundation\Http\FormRequest;
 
-class PlanCreateRequest extends FormRequest
+class CommercialGroupCreateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,8 +21,11 @@ class PlanCreateRequest extends FormRequest
      */
     public function rules(): array
     {
-        $rules = (new Plan())->getRules();
-        $rules["commercial_group_id"] = "required";
-        return $rules;
+        return [
+            "title_ru"=>"required|max:255",
+            "title_kk"=>"required|max:255",
+            "title_en"=>"max:255",
+            "tag"=>"unique:commercial_groups,tag"
+        ];
     }
 }

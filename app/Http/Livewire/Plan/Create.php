@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Plan;
 
 use App\Http\Requests\RoleCreateRequest;
+use App\Models\CommercialGroup;
 use Bpuig\Subby\Models\Plan;
 use Livewire\Component;
 
@@ -26,7 +27,11 @@ class Create extends Component
     public $invoice_interval;
     public $tier;
 
+    public $commercial_group_id;
+    public $commercial_groups;
+
     public function mount(){
+        $this->commercial_groups = CommercialGroup::all();
         $this->tag = old("tag")??"";
         $this->name = old("name")??"";
         $this->description = old("description")??"";
@@ -41,10 +46,12 @@ class Create extends Component
         $this->grace_interval = old("grace_interval")??0;
         $this->invoice_period = old("invoice_period")??0;
         $this->invoice_interval = old("invoice_interval")??0;
+        $this->commercial_group_id = old("commercial_group_id")??null;
         $this->tier = old("name")??"";
     }
     protected function rules(){
         $rules = (new Plan())->getRules();
+        $rules["commercial_group_id"] = "required";
         return $rules;
     }
     public function updated($propertyName)

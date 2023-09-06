@@ -33,5 +33,6 @@ return [
     "sub-tournament-winner"=>"Победители субтурнира",
     "sub-tournament-rivals"=>"Противники в субтурнире",
     "sub-tournament-result"=>"Результаты субтурнира",
-    'context' => 'Группа контекстов'
+    'context' => 'Группа контекстов',
+    "commercial-group"=>"Группа планов"
 ];

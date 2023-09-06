@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Plan\PlanCreateRequest;
-use App\Models\CommercialGroupPlan;
-use Bpuig\Subby\Models\Plan;
+use App\Http\Requests\CommercialGroup\CommercialGroupCreateRequest;
+use App\Http\Requests\CommercialGroup\CommercialGroupUpdateRequest;
+use App\Models\CommercialGroup;
 use Illuminate\Http\Request;
 
-class PlanController extends Controller
+class CommercialGroupController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,8 +16,8 @@ class PlanController extends Controller
     public function index()
     {
         try{
-            if(auth()->user()->can("plan index") ){
-                return view("admin.plan.index");
+            if(auth()->user()->can("commercial-group index") ){
+                return view("admin.commercial-group.index");
             }
             else{
                 toastr()->warning(__("message.not_allowed"));
@@ -28,7 +28,6 @@ class PlanController extends Controller
             toastr()->error($exception->getMessage(),"Error");
             return redirect()->route("home");
         }
-
     }
 
     /**
@@ -37,8 +36,8 @@ class PlanController extends Controller
     public function create()
     {
         try{
-            if(auth()->user()->can("plan create") ){
-                return view("admin.plan.create");
+            if(auth()->user()->can("commercial-group create") ){
+                return view("admin.commercial-group.create");
             }
             else{
                 toastr()->warning(__("message.not_allowed"));
@@ -54,15 +53,14 @@ class PlanController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(PlanCreateRequest $request)
+    public function store(CommercialGroupCreateRequest $request)
     {
         try{
-            if(auth()->user()->can("plan create") ){
+            if(auth()->user()->can("commercial-group create") ){
                 $input = $request->all();
                 $input["is_active"] = $request->boolean("is_active");
-                $plan = Plan::create($input);
-                CommercialGroupPlan::add(["plan_id" => $plan->id, "group_id" => $request->get("commercial_group_id")]);
-                return redirect()->back();
+                $group = CommercialGroup::add($input);
+                return redirect()->route("commercial-group.index");
             }
             else{
                 toastr()->warning(__("message.not_allowed"));
@@ -73,7 +71,6 @@ class PlanController extends Controller
             toastr()->error($exception->getMessage(),"Error");
             return redirect()->route("home");
         }
-
     }
 
     /**
@@ -82,7 +79,7 @@ class PlanController extends Controller
     public function show(string $id)
     {
         try{
-            if(auth()->user()->can("plan create") ){
+            if(auth()->user()->can("commercial-group show") ){
 
             }
             else{
@@ -102,12 +99,12 @@ class PlanController extends Controller
     public function edit(string $id)
     {
         try{
-            if(auth()->user()->can("plan edit") ){
-                $plan = Plan::find($id);
-                if($plan){
-                    return view("admin.plan.edit",compact("plan"));
+            if(auth()->user()->can("commercial-group edit") ){
+                if($commercial_group = CommercialGroup::find($id))
+                {
+                    return view("admin.commercial-group.edit",compact("commercial_group"));
                 }
-                return redirect()->route("plan.index");
+                return redirect()->route("commercial-group.index");
             }
             else{
                 toastr()->warning(__("message.not_allowed"));
@@ -118,23 +115,21 @@ class PlanController extends Controller
             toastr()->error($exception->getMessage(),"Error");
             return redirect()->route("home");
         }
-
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(CommercialGroupUpdateRequest $request, string $id)
     {
         try{
-            if(auth()->user()->can("plan edit") ){
-                $plan = Plan::find($id);
-                if($plan){
+            if(auth()->user()->can("commercial-group edit") ){
+                if($commercial_group = CommercialGroup::find($id)){
                     $input = $request->all();
                     $input["is_active"] = $request->boolean("is_active");
-                    $plan->update($input);
+                    $commercial_group->edit($input);
                 }
-                return redirect()->route("plan.index");
+                return redirect()->route("commercial-group.index");
             }
             else{
                 toastr()->warning(__("message.not_allowed"));
@@ -153,7 +148,7 @@ class PlanController extends Controller
     public function destroy(string $id)
     {
         try{
-            if(auth()->user()->can("plan edit") ){
+            if(auth()->user()->can("commercial-group edit") ){
 
             }
             else{
