@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\Group;
 use App\Models\Locale;
 use App\Models\QuestionType;
+use App\Models\SubCategory;
 use App\Models\Subject;
 use App\Models\SubjectContext;
 use Livewire\Component;
@@ -22,6 +23,8 @@ class Create extends Component
     public int|null $subject_id;
     public $categories;
     public int|null $category_id;
+    public $subcategories;
+    public int|null $sub_category_id;
     public $groups;
     public int|null $group_id;
     public string|null $answer_a;
@@ -68,18 +71,19 @@ class Create extends Component
         $this->subject_id = old('subject_id') ?? null;
         $this->group_id = old('group_id') ?? null;
     }
-
-    public function selectCategory(): void
-    {
-        $this->categories = Category::where('subject_id', $this->subject_id)->get();
-    }
-
     public function updatedSubjectId(): void
     {
         $this->categories = Category::where('subject_id', $this->subject_id)->get();
         $this->contexts = SubjectContext::where('subject_id', $this->subject_id)->get();
         $this->category_id = null;
+        $this->sub_category_id = null;
         $this->context_id = null;
+    }
+
+    public function updatedCategoryId(): void
+    {
+        $this->subcategories = SubCategory::where('category_id', $this->category_id)->get();
+        $this->sub_category_id = null;
     }
 
     public function render(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application

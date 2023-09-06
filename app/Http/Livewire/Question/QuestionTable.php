@@ -9,6 +9,7 @@ use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Exceptions\DataTableConfigurationException;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Models\Question;
+use Rappasoft\LaravelLivewireTables\Views\Filters\DateFilter;
 use Rappasoft\LaravelLivewireTables\Views\Filters\MultiSelectFilter;
 use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 
@@ -21,6 +22,7 @@ class QuestionTable extends DataTableComponent
      */
     public function configure(): void
     {
+        $this->setDefaultSort('questions.created_at', 'desc');
         $this->setPrimaryKey('id');
         $this->setPerPageAccepted([20,50,100]);
         $this->setPerPage(20);
@@ -85,10 +87,10 @@ class QuestionTable extends DataTableComponent
         return [
             Column::make("Id", "id")
                 ->sortable(),
-            Column::make('Категория', 'category.title_ru')
-                ->format(fn($val) => StrHelper::getSubStr($val, 30))
-                ->html()
-                ->searchable(),
+//            Column::make('Категория', 'category.title_ru')
+//                ->format(fn($val) => StrHelper::getSubStr($val, 30))
+//                ->html()
+//                ->searchable(),
             Column::make('Вопрос', 'text')
                 ->format(fn($val) => StrHelper::getSubStr($val, 30))
                 ->html()

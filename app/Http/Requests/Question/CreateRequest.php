@@ -23,7 +23,7 @@ class CreateRequest extends FormRequest
     {
         return [
             'subject_id' => 'required|exists:subjects,id',
-            'category_id' => 'nullable|exists:categories,id',
+            'sub_category_id' => 'nullable|exists:sub_categories,id',
             'type_id' => 'required|exists:question_types,id',
             'locale_id' => 'required|exists:locales,id',
             'group_id' => 'sometimes|exists:groups,id',

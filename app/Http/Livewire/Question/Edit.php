@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Models\Group;
 use App\Models\Locale;
 use App\Models\QuestionType;
+use App\Models\SubCategory;
 use App\Models\Subject;
 use App\Models\SubjectContext;
 use Livewire\Component;
@@ -24,6 +25,8 @@ class Edit extends Component
     public $subject_id;
     public $categories;
     public $category_id;
+    public $subcategories;
+    public $sub_category_id;
     public $groups;
     public $group_id;
     public string $answer_a;
@@ -63,7 +66,9 @@ class Edit extends Component
         $this->group_id = $question->group_id;
         $this->locale_id = $question->locale_id;
         $this->categories = Category::where('subject_id', $question->subject_id)->get();
-        $this->category_id = $question->category_id;
+        $this->category_id = $question->subcategory->category_id;
+        $this->subcategories = SubCategory::where('category_id', $question->subcategory->category_id)->get();
+        $this->sub_category_id = $question->sub_category_id;
         $this->answer_a = StrHelper::convertLatex($question->answer_a);
         $this->answer_b = StrHelper::convertLatex($question->answer_b);
         $this->answer_c = StrHelper::convertLatex($question->answer_c);
@@ -80,17 +85,19 @@ class Edit extends Component
         $this->context_id = $question->context_id != null ? $question->context_id : null;
     }
 
-    public function selectCategory(): void
-    {
-        $this->categories = Category::where('subject_id', $this->subject_id)->get();
-    }
-
     public function updatedSubjectId(): void
     {
         $this->categories = Category::where('subject_id', $this->subject_id)->get();
         $this->contexts = SubjectContext::where('subject_id', $this->subject_id)->get();
         $this->category_id = null;
+        $this->sub_category_id = null;
         $this->context_id = null;
+    }
+
+    public function updatedCategoryId(): void
+    {
+        $this->subcategories = SubCategory::where('category_id', $this->category_id)->get();
+        $this->sub_category_id = null;
     }
     public function render(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {

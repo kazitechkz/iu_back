@@ -78,7 +78,6 @@ class Question extends Model implements Searchable
 		'subject_id',
 		'type_id',
         'group_id',
-        'category_id',
         'sub_category_id'
 	];
 
@@ -91,7 +90,10 @@ class Question extends Model implements Searchable
     {
         return $this->belongsTo(Category::class);
     }
-
+    public function subcategory(): BelongsTo
+    {
+        return $this->belongsTo(SubCategory::class, 'sub_category_id', 'id');
+    }
     public function group(): BelongsTo
     {
         return $this->belongsTo(Group::class);

@@ -25,6 +25,17 @@
     </div>
     <div class="my-3">
         <x-select
+            label="СубКатегория"
+            wire:model="sub_category_id"
+            placeholder="Выберите субкатегорию предмета"
+            :options="$subcategories"
+            option-label="title_ru"
+            option-value="id"
+            {{--            class="hover:bg-primary-500"--}}
+        />
+    </div>
+    <div class="my-3">
+        <x-select
             label="Тип вопроса"
             wire:model="type_id"
             placeholder="Выберите тип"

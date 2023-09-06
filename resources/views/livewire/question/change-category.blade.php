@@ -11,7 +11,7 @@
         <option value="0" selected>Выберите категорию</option>
         @foreach($categories as $category)
             <option disabled value="">
-                <b>{{$category->title_ru}}</b>
+                <b>{{\App\Helpers\StrHelper::getSubStr($category->title_ru, 45)}}</b>
             </option>
             @if(count($category->subcategories)>0)
                 @foreach($category->subcategories as $item)

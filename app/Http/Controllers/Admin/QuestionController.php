@@ -33,8 +33,9 @@ class QuestionController extends Controller
     {
         try{
             if(auth()->user()->can("questions index") ){
-                $questions = Question::with('category', 'subject', 'context')
+                $questions = Question::with('subcategory', 'subject', 'context')
                     ->where(['subject_id' => $id, 'locale_id' => $locale_id])
+                    ->latest()
                     ->paginate(20);
                 $subjects = Subject::all();
                 return view('admin.question.change-category', compact( 'questions', 'subjects'));
@@ -140,7 +141,7 @@ class QuestionController extends Controller
     {
         try{
             if(auth()->user()->can("questions edit") ){
-                $question = Question::findOrFail($id);
+                $question = Question::with('subcategory')->findOrFail($id);
                 return view('admin.question.edit', compact('question'));
             }
             else{
