@@ -44,7 +44,7 @@ class QuestionTable extends DataTableComponent
     public function filters(): array
     {
         return [
-            SelectFilter::make('Язык')
+            SelectFilter::make('Предмет')
                 ->options(Subject::pluck('title_ru', 'id')->toArray())
                 ->filter(function ($builder, string $value){
                     $builder->where(['questions.subject_id' => $value]);

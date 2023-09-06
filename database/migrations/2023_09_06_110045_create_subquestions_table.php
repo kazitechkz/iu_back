@@ -11,12 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('sub_step_contents', function (Blueprint $table) {
-            $table->bigIncrements("id");
-            $table->text("text_ru");
-            $table->text("text_kk");
-            $table->text("text_en")->nullable();
-            $table->foreignId("sub_step_id")->references("id")->on("sub_steps")->cascadeOnDelete();
+        Schema::create('sub_questions', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->text('text');
+            $table->text('answer_a');
+            $table->text('answer_b');
+            $table->text('answer_c');
+            $table->text('answer_d');
+            $table->char('correct_answer');
             $table->timestamps();
         });
     }
@@ -26,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('sub_step_contents');
+        Schema::dropIfExists('sub_questions');
     }
 };

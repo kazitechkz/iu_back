@@ -30,6 +30,7 @@ use App\Http\Controllers\Admin\SubTournamentWinnerController as AdminSubTourname
 use App\Http\Controllers\Admin\SubTournamentResultController as AdminSubTournamentResultController;
 use App\Http\Controllers\Admin\SubTournamentRivalController as AdminSubTournamentRivalController;
 use App\Http\Controllers\Admin\CommercialGroupController as AdminCommercialGroupController;
+use App\Http\Controllers\Admin\SubStepTestController as AdminSubStepTestController;
 use App\Http\Controllers\Admin\TestController;
 use App\Http\Controllers\TestController as Testing;
 use Illuminate\Support\Facades\Route;
@@ -92,6 +93,7 @@ Route::group(["prefix" => "dashboard","middleware" => "auth"],function (){
     Route::resource("sub-tournament-result",AdminSubTournamentResultController::class);
     Route::resource("sub-tournament-rival",AdminSubTournamentRivalController::class);
     Route::resource("commercial-group",AdminCommercialGroupController::class);
+    Route::resource("sub-step-test",AdminSubStepTestController::class);
 
 
 

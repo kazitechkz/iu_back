@@ -66,8 +66,8 @@ class Edit extends Component
         $this->group_id = $question->group_id;
         $this->locale_id = $question->locale_id;
         $this->categories = Category::where('subject_id', $question->subject_id)->get();
-        $this->category_id = $question->subcategory->category_id;
-        $this->subcategories = SubCategory::where('category_id', $question->subcategory->category_id)->get();
+        $this->category_id = $question->subcategory->category_id ?? null;
+        $this->subcategories = $question->subcategory != null ? SubCategory::where('category_id', $question->subcategory->category_id)->get() : [];
         $this->sub_category_id = $question->sub_category_id;
         $this->answer_a = StrHelper::convertLatex($question->answer_a);
         $this->answer_b = StrHelper::convertLatex($question->answer_b);
