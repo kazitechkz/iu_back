@@ -189,6 +189,12 @@
                             :link="'sub-step.index'"
                             :name="__('sidebar.sub-step')"/>
                     @endcan
+                    @can('sub-step-content index')
+                        <x-shared.sub-sidebar-menu
+                            :icon="'fas fa-shoe-prints'"
+                            :link="'sub-step-content.index'"
+                            :name="__('sidebar.sub-step-content')"/>
+                    @endcan
         </x-shared.sidebar-menu>
         <x-shared.sidebar-menu :element-id="'tournament'" :name="__('sidebar.tournament')" :icon="'fas fa-trophy'">
             @can("tournament index")

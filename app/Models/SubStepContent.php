@@ -39,7 +39,8 @@ class SubStepContent extends Model
 		'text_ru',
 		'text_kk',
 		'text_en',
-		'sub_step_id'
+		'sub_step_id',
+        'is_active'
 	];
 
 	public function sub_step()

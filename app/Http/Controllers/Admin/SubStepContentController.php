@@ -3,6 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\SubStep\SubStepUpdateRequest;
+use App\Http\Requests\SubStepContent\SubStepContentCreateRequest;
+use App\Http\Requests\SubStepContent\SubStepContentUpdateRequest;
+use App\Models\Step;
+use App\Models\SubStep;
+use App\Models\SubStepContent;
 use Illuminate\Http\Request;
 
 class SubStepContentController extends Controller
@@ -12,7 +18,19 @@ class SubStepContentController extends Controller
      */
     public function index()
     {
-        //
+        try{
+            if(auth()->user()->can("sub-step-content index") ){
+                return view("admin.sub-step-content.index");
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 
     /**
@@ -20,15 +38,42 @@ class SubStepContentController extends Controller
      */
     public function create()
     {
-        //
+        try{
+            if(auth()->user()->can("sub-step-content create") ){
+                return view("admin.sub-step-content.create");
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(SubStepContentCreateRequest $request)
     {
-        //
+        try{
+            if(auth()->user()->can("sub-step-content create") ){
+                $input = $request->all();
+                $input["is_active"] = $request->boolean("is_active");
+                $step = SubStepContent::add($input);
+                return redirect()->back();
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 
     /**
@@ -36,7 +81,26 @@ class SubStepContentController extends Controller
      */
     public function show(string $id)
     {
-        //
+        try{
+            if(auth()->user()->can("sub-step-content show") ){
+                $sub_step = SubStep::find($id);
+                if($sub_step){
+                    return view("admin.sub-step-content.show",compact("sub_step"));
+                }
+                else{
+                    toastr()->warning(__("message.not_found"));
+                    return redirect()->back();
+                }
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 
     /**
@@ -44,15 +108,56 @@ class SubStepContentController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        try{
+            if(auth()->user()->can("sub-step-content edit") ){
+                $sub_step_content = SubStepContent::find($id);
+                if($sub_step_content){
+                    return view("admin.sub-step-content.edit",compact("sub_step_content"));
+                }
+                else{
+                    toastr()->warning(__("message.not_found"));
+                    return redirect()->back();
+                }
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(SubStepContentUpdateRequest $request, string $id)
     {
-        //
+        try{
+            if(auth()->user()->can("sub-step-content edit") ){
+                $sub_step_content = SubStepContent::find($id);
+                if($sub_step_content){
+                    $input = $request->all();
+                    $input["is_active"] = $request->boolean("is_active");
+                    $sub_step_content->edit($input);
+                }
+                else{
+                    toastr()->warning(__("message.not_found"));
+                }
+                return redirect()->back();
+
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 
     /**
@@ -60,6 +165,26 @@ class SubStepContentController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try{
+            if(auth()->user()->can("sub-step-content edit") ){
+                $sub_step_content = SubStepContent::find($id);
+                if($sub_step_content){
+
+                }
+                else{
+                    toastr()->warning(__("message.not_found"));
+                }
+                return redirect()->back();
+
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 }

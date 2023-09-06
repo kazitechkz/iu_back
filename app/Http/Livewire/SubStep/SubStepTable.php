@@ -75,6 +75,14 @@ class SubStepTable extends DataTableComponent
                                 'class' => 'fas fa-t btn btn-primary btn-rounded btn-icon flex align-center justify-center items-center',
                             ];
                         }),
+                    LinkColumn::make('View') // make() has no effect in this case but needs to be set anyway
+                    ->title(fn($row) => '')
+                        ->location(fn($row) => route('sub-step-content.show', $row))
+                        ->attributes(function($row) {
+                            return [
+                                'class' => 'fas fa-k btn btn-primary btn-rounded btn-icon flex align-center justify-center items-center',
+                            ];
+                        }),
                     LinkColumn::make('Edit')
                         ->title(fn($row) => "")
                         ->location(fn($row) => route('step.edit', $row))
