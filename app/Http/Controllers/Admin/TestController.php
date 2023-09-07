@@ -3,12 +3,15 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Attempt;
 use App\Models\AttemptQuestion;
+use App\Models\AttemptSubject;
 use App\Models\Question;
 use App\Services\AnswerService;
 use App\Services\AttemptService;
 use App\Services\PlanService;
 use App\Services\QuestionService;
+use App\Services\TournamentService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -34,7 +37,24 @@ class TestController extends Controller
     }
 
     public function answerTest(){
-//        $this->_answerService->check(1,1,12811,"c");//1
+            $answers = ["a","b","c","d","e"];
+            dump(array_rand($answers,1));
+            $attempts = Attempt::all();
+            foreach ($attempts as $attempt){
+                $user_id = $attempt->user_id;
+                $attempt_subjects = AttemptSubject::where(["attempt_id" => $attempt->id])->pluck("id");
+                foreach ($attempt_subjects as $attempt_subject){
+                    $right_answer = $answers[array_rand($answers,1)];
+                    $questions = AttemptQuestion::where(["attempt_subject_id" => $attempt_subjects])->get();
+                    foreach ($questions as $question){
+                        $this->_answerService->check($user_id,$attempt->id,$attempt_subject,$question->question_id,$right_answer,3);
+
+                    }
+                }
+            }
+            dd($attempts);
+
+        $this->_answerService->check(1,1,12811,"c");//1
 //        $this->_answerService->check(1,2,6447,"a");//1
 //        //3
 //        $this->_answerService->check(1,5,16278,"h,f,e");//1
@@ -53,6 +73,25 @@ class TestController extends Controller
         $planService = new PlanService();
         dd($planService->getSubjects());
     }
+
+    public function participate(){
+        $tournament_service = new TournamentService();
+        $users = [10,11,12,13,14,15,16,17,18,19,20,21];
+        $sub_tournament_id = 1;
+        foreach ($users as $user){
+            $tournament_service->participate($user,$sub_tournament_id);
+        }
+    }
+
+    public function create_attempt(){
+        $tournament_service = new TournamentService();
+        foreach ([10,11,12,13,14,15,16,17,18,19,20,21] as $user){
+            $tournament_service->get_questions($user,1,1);
+        }
+
+    }
+
+
 
 
 }

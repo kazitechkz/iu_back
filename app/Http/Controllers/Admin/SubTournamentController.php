@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SubTournament\SubTournamentCreateRequest;
 use App\Models\SubTournament;
+use App\Services\TournamentService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 
@@ -46,7 +47,7 @@ class SubTournamentController extends Controller
         }
         catch (\Exception $exception){
             toastr()->error($exception->getMessage(),"Error");
-            return redirect()->route("home");
+            return redirect()->back();
         }
     }
 
@@ -58,17 +59,9 @@ class SubTournamentController extends Controller
         try{
             if(auth()->user()->can("sub-tournament create") ){
                 $input = $request->all();
-                $input["question_quantity"] =
-                    $request->get("single_question_quantity") +
-                    $request->get("multiple_question_quantity") +
-                    $request->get("context_question_quantity");
-                $input["max_point"] =
-                    $request->get("single_question_quantity") +
-                    $request->get("multiple_question_quantity") * 2 +
-                    $request->get("context_question_quantity");
-                $input["start_at"] = Carbon::parse($input["start_at"]);
-                $input["end_at"] = Carbon::parse($input["end_at"]);
-                SubTournament::add($input);
+                $tournament_service = new TournamentService();
+                $tournament_service->create_sub_tournament($input);
+
                 return redirect()->back();
             }
             else{
@@ -78,7 +71,7 @@ class SubTournamentController extends Controller
         }
         catch (\Exception $exception){
             toastr()->error($exception->getMessage(),"Error");
-            return redirect()->route("home");
+            return redirect()->back();
         }
     }
 
