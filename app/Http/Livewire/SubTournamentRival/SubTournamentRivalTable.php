@@ -59,19 +59,21 @@ class SubTournamentRivalTable extends DataTableComponent
                 ->sortable(),
             Column::make("Sub Tournament", "sub_tournament.tournament_step.title_ru")
                 ->sortable(),
-            Column::make("Rival one", "rivalOne.name")
-                ->sortable(),
+            Column::make("Rival one")->format(
+                fn($value, $row, Column $column) => $row->rival_one_user->name
+            ),
             Column::make("Point one", "point_one")
                 ->sortable(),
             Column::make("Time one", "time_one")
                 ->sortable(),
-            Column::make("Rival two", "rivalTwo.name")
-                ->sortable(),
+            Column::make("Rival two")->format(
+                fn($value, $row, Column $column) => $row->rival_two_user->name
+            ),
             Column::make("Point two", "point_two")
                 ->sortable(),
             Column::make("Time two", "time_two")
                 ->sortable(),
-            Column::make("Winner", "user.name")
+            Column::make("Winner", "winner_user.name")
                 ->sortable(),
             Column::make("Created at", "created_at")
                 ->sortable(),

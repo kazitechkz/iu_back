@@ -6,7 +6,10 @@ use App\Models\Attempt;
 use App\Models\AttemptQuestion;
 use App\Models\AttemptSubject;
 use App\Models\Question;
+use App\Models\SubTournament;
 use App\Models\SubTournamentResult;
+use App\Models\SubTournamentRival;
+use App\Models\TournamentStep;
 use Carbon\Carbon;
 use Carbon\Traits\Date;
 
@@ -45,6 +48,36 @@ class AnswerService
                             $sub_tournament_result = SubTournamentResult::where(["attempt_id" => $attempt_id,"user_id" => $user_id,])->first();
                             if($sub_tournament_result){
                                 $sub_tournament_result->edit(["point"=>$attempt->points,"time"=>$attempt->time]);
+                                $query = SubTournamentRival::where(["sub_tournament_id" => $sub_tournament_result->sub_tournament_id]);
+                                $sub_tournament_rival = $query->where(["rival_one"=>$user_id])->first() ?? $query->where(["rival_two"=>$user_id])->first();
+                                if($sub_tournament_rival){
+                                    if($sub_tournament_rival->rival_one == $user_id){
+                                        $sub_tournament_rival->point_one = $attempt->points;
+                                        $sub_tournament_rival->time_one = $attempt->time;
+                                    }
+                                    elseif($sub_tournament_rival->rival_two == $user_id){
+                                        $sub_tournament_rival->point_two = $attempt->points;
+                                        $sub_tournament_rival->time_two = $attempt->time;
+                                    }
+                                    if($sub_tournament_rival->point_two > $sub_tournament_rival->point_one){
+                                        $sub_tournament_rival->winner = $sub_tournament_rival->rival_two;
+                                    }
+                                    elseif ($sub_tournament_rival->point_two < $sub_tournament_rival->point_one){
+                                        $sub_tournament_rival->winner = $sub_tournament_rival->rival_one;
+                                    }
+                                    elseif ($sub_tournament_rival->point_two == $sub_tournament_rival->point_one){
+                                        if($sub_tournament_rival->time_one < $sub_tournament_rival->time_two){
+                                            $sub_tournament_rival->winner = $sub_tournament_rival->rival_one;
+                                        }
+                                        elseif ($sub_tournament_rival->time_one > $sub_tournament_rival->time_two){
+                                            $sub_tournament_rival->winner = $sub_tournament_rival->rival_two;
+                                        }
+                                    }
+                                    $sub_tournament_rival->save();
+
+                                }
+
+
                             }
                         }
                         return true;

@@ -7,6 +7,9 @@ use App\Models\Attempt;
 use App\Models\AttemptQuestion;
 use App\Models\AttemptSubject;
 use App\Models\Question;
+use App\Models\SubTournamentResult;
+use App\Models\SubTournamentRival;
+use App\Models\SubTournamentWinner;
 use App\Services\AnswerService;
 use App\Services\AttemptService;
 use App\Services\PlanService;
@@ -37,9 +40,10 @@ class TestController extends Controller
     }
 
     public function answerTest(){
-            $answers = ["a","b","c","d","e"];
-            dump(array_rand($answers,1));
-            $attempts = Attempt::all();
+
+            $answers = ["a","b","c","d","e","f","g"];
+            $attempt_ids = SubTournamentResult::where("sub_tournament_id",9)->pluck("attempt_id","attempt_id");
+            $attempts = Attempt::whereIn("id",$attempt_ids)->get();
             foreach ($attempts as $attempt){
                 $user_id = $attempt->user_id;
                 $attempt_subjects = AttemptSubject::where(["attempt_id" => $attempt->id])->pluck("id");
@@ -54,15 +58,7 @@ class TestController extends Controller
             }
             dd($attempts);
 
-        $this->_answerService->check(1,1,12811,"c");//1
-//        $this->_answerService->check(1,2,6447,"a");//1
-//        //3
-//        $this->_answerService->check(1,5,16278,"h,f,e");//1
-//        //2
-//        $this->_answerService->check(1,5,16147,"f,g"); //2
-//        //1
-        //$this->_answerService->check(1,5,16268,"d"); //2
-        //$this->_answerService->check(1,4,15224,"B"); //2
+        $this->_answerService->check(1,1,12811,"c");
     }
 
     public function finishTest(){
@@ -85,9 +81,10 @@ class TestController extends Controller
 
     public function create_attempt(){
         $tournament_service = new TournamentService();
-        foreach ([10,11,12,13,14,15,16,17,18,19,20,21] as $user){
-            $tournament_service->get_questions($user,1,1);
-        }
+        $users = SubTournamentWinner::where("sub_tournament_id",1)->pluck("user_id","user_id");
+        foreach ($users as $user){
+            $tournament_service->get_questions($user,9,1);
+       }
 
     }
 

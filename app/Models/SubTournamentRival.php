@@ -60,15 +60,15 @@ class SubTournamentRival extends Model
 		'sub_tournament_id'
 	];
 
-	public function user()
+	public function winner_user()
 	{
 		return $this->belongsTo(User::class, 'winner');
 	}
-    public function rivalOne()
+    public function rival_one_user()
     {
         return $this->belongsTo(User::class, 'rival_one');
     }
-    public function rivalTwo()
+    public function rival_two_user()
     {
         return $this->belongsTo(User::class, 'rival_two');
     }

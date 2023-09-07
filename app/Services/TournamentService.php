@@ -7,6 +7,8 @@ use App\Models\Subject;
 use App\Models\SubTournament;
 use App\Models\SubTournamentParticipant;
 use App\Models\SubTournamentResult;
+use App\Models\SubTournamentRival;
+use App\Models\SubTournamentWinner;
 use App\Models\Tournament;
 use App\Models\TournamentStep;
 use Illuminate\Support\Carbon;
@@ -28,35 +30,34 @@ class TournamentService{
         //First step check the step_id and is it first or last
         $step = TournamentStep::find($step_id);
         if($step == null){
-            throw new \Exception("Этап должны существовать");
+            throw new \Exception("Этапы должны существовать");
         }
+        $input = $this->prepare_data($data);
         //Check if sub_tournaments exist
         if((SubTournament::where(["step_id" => $step_id,"tournament_id" => $tournament_id])->count()) == 0){
-            //Check if previous step exists in sub_tournament
-            $prev_sub_tournament = SubTournament::where(["tournament_id" => $tournament_id,"step_id" => $step->prev_id])->first();
-            //So it doesnt exist
-            if(!$prev_sub_tournament){
-                throw new \Exception("Сначала выберите предыдущий этап");
+            if($step->is_first){
+                SubTournament::add($input);
             }
-            //Теперь выберем победителей и определим игроков следующего этапа
-            $this->choose_winners($step,$tournament_id);
+            else{
+                //Теперь выберем победителей и определим игроков следующего этапа
+                //Check if previous step exists in sub_tournament
+                $prev_sub_tournament = SubTournament::where(["tournament_id" => $tournament_id,"step_id" => $step->prev_id])->first();
+                //So it doesnt exist
+                if(!$prev_sub_tournament){
+                    throw new \Exception("Сначала выберите предыдущий этап");
+                }
+                $this->choose_winners($step,$tournament_id,$input);
+            }
+
 
         }
         // if is null the step must be isFirst or it doesn`t exists
         else{
-            if(!$step->is_first){
-                throw new \Exception("Сначала выберите первый этап");
-            }
-            else{
-                //Alright it  exists
-                $input = $this->prepareData($data);
-                SubTournament::add($input);
-            }
-
+            throw new \Exception("Этап уже существует");
         }
     }
 
-    protected function prepareData($data){
+    protected function prepare_data($data){
         $input = $data;
         $input["question_quantity"] =
             $data["single_question_quantity"] +
@@ -72,18 +73,59 @@ class TournamentService{
     }
 
 
-    protected function choose_winners(TournamentStep $step,$tournament_id){
+    protected function choose_winners(TournamentStep $step,$tournament_id,$data){
         $prev_step = TournamentStep::find($step->prev_id);
-        if($step->is_playoff){
-            if($prev_step->is_first){
-                $sub_tournament = SubTournament::where(["tournament_id" => $tournament_id,"step_id" =>$prev_step->id])->first();
-                dd(SubTournamentResult::where(["sub_tournament_id" => $sub_tournament->id])->orderBy("point","DESC")->orderBy("time","ASC")->get()->toArray());
-
-            }
+        $prev_sub_tournament = SubTournament::where(["tournament_id" => $tournament_id,"step_id" =>$prev_step->id])->first();
+        if($prev_step->is_playoff){
+            $winners = SubTournamentRival::where(["sub_tournament_id" => $prev_sub_tournament->id])->where("winner","!=",null)->pluck("winner","winner")->toArray();
         }
         else{
-
+            $winners = SubTournamentResult::where(["sub_tournament_id" => $prev_sub_tournament->id])->orderBy("point","DESC")->orderBy("time","ASC")->take($step->max_participants)->pluck("user_id","user_id")->toArray();
         }
+        if(count($winners) != $step->max_participants){
+            throw new \Exception("Участников для перехода на следующий уровень недостаточно");
+        }
+        if($step->is_playoff){
+            $play_off_diff = [];
+            $play_off_participants = [];
+            if(count($winners)%2 != 0){
+                throw new \Exception("Участников для перехода на следующий уровень недостаточно");
+            }
+            for ($i = 0;$i<count($winners)/2;$i++){
+                $random_participants = array_rand(array_diff($winners,$play_off_diff),2);
+                array_push($play_off_diff,...$random_participants);
+                $play_off_participants[$i] = $random_participants;
+            }
+            if(count($play_off_participants) != $step->max_participants/2){
+                throw new \Exception("Участников для перехода на следующий уровень недостаточно");
+            }
+        }
+        $random_participants = array_rand($winners,2);
+        //Определяем следующий этап
+        $i = 0;
+        $sub_tournament = SubTournament::add($data);
+        foreach ($winners as $winner){
+            //Определяем победителей прошлого этапа
+            SubTournamentWinner::add(["user_id"=>$winner,"sub_tournament_id"=>$prev_sub_tournament->id]);
+            SubTournamentParticipant::add(['user_id' => $winner, 'sub_tournament_id' => $sub_tournament->id, 'status' => 1]);
+        }
+        if($step->is_playoff){
+            foreach ($play_off_participants as $participant){
+                SubTournamentRival::add([
+                    'rival_one' => $participant[0],
+                    'point_one' => 0,
+                    'time_one' => 0,
+                    'rival_two' => $participant[1],
+                    'point_two' => 0,
+                    'time_two' => 0,
+                    'winner' => null,
+                    'sub_tournament_id' => $sub_tournament->id
+                ]);
+            }
+        }
+
+
+
 
     }
 
