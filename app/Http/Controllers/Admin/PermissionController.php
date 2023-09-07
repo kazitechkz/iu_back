@@ -59,7 +59,7 @@ class PermissionController extends Controller
     {
         try{
             if(auth()->user()->can("permission create") ){
-                Permission::add($request->all());
+                Permission::create($request->all())->save();
                 return redirect()->back();
             }
             else{
@@ -128,7 +128,7 @@ class PermissionController extends Controller
             if(auth()->user()->can("permission edit") ){
                 $permission = Permission::findById($id);
                 if($permission){
-                    $permission->edit($request->all());
+                    $permission->update($request->all());
                 }
                 return redirect()->back();
             }

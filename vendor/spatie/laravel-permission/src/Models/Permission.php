@@ -2,7 +2,6 @@
 
 namespace Spatie\Permission\Models;
 
-use App\Traits\CRUD;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -25,7 +24,6 @@ class Permission extends Model implements PermissionContract
 {
     use HasRoles;
     use RefreshesPermissionCache;
-    use CRUD;
 
     protected $guarded = [];
 

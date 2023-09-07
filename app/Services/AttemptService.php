@@ -10,8 +10,8 @@ class AttemptService
 {
 
 
-    public function create_attempt($type_id,$locale_id,$max_points,$questions,$time):Attempt{
-        $attempt = Attempt::add(["type_id"=>$type_id,"user_id"=>auth()->user()->id,"locale_id"=>$locale_id,"max_points"=>$max_points,"time"=>$time]);
+    public function create_attempt($user_id,$type_id,$locale_id,$max_points,$questions,$time):Attempt{
+        $attempt = Attempt::add(["type_id"=>$type_id,"user_id"=>$user_id,"locale_id"=>$locale_id,"max_points"=>$max_points,"time"=>$time]);
         $subjects = array_keys($questions);
         foreach ($subjects as $subject){
             $attempt_subject = AttemptSubject::add(["attempt_id"=>$attempt->id,"subject_id"=>$subject]);

@@ -58,10 +58,15 @@ Route::get('/home', function () {
 Route::get('login', function () {
     return view('auth.login');
 })->name("login");
-Route::get("/test",[TestController::class,"test"]);
-Route::get("/test-answer",[TestController::class,"answerTest"]);
-Route::get("/test-finish",[TestController::class,"finishTest"]);
-Route::get("/test-subjects",[TestController::class,"subjectTest"]);
+
+Route::group(["prefix" => "test"],function (){
+    Route::get("/",[TestController::class,"test"]);
+    Route::get("/answer",[TestController::class,"answerTest"]);
+    Route::get("/finish",[TestController::class,"finishTest"]);
+    Route::get("/subjects",[TestController::class,"subjectTest"]);
+    Route::get("/participate",[TestController::class,"participate"]);
+    Route::get("/create-attempt",[TestController::class,"create_attempt"]);
+});
 
 Route::group(["prefix" => "dashboard","middleware" => "auth"],function (){
     Route::resource("user",AdminUserController::class);

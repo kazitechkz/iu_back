@@ -70,6 +70,18 @@ class AppConstants
         "sub-step create","sub-step index","sub-step edit","sub-step show",
         //Sub Step Content
         "sub-step-content create","sub-step-content index","sub-step-content edit","sub-step-content show",
+
+
+        //Permission for main menu
+        "user management",
+        "locale management",
+        "subject management",
+        "finance management",
+        "support management",
+        "examination management",
+        "content management",
+        "step management",
+        "tournament management"
     ];
 
     public const ADMIN_PERMISSIONS = self::all_permissions;

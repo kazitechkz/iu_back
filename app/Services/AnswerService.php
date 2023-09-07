@@ -6,13 +6,14 @@ use App\Models\Attempt;
 use App\Models\AttemptQuestion;
 use App\Models\AttemptSubject;
 use App\Models\Question;
+use App\Models\SubTournamentResult;
 use Carbon\Carbon;
 use Carbon\Traits\Date;
 
 class AnswerService
 {
-        public function finishTest(int $attempt_id){
-            if($attempt = Attempt::where(["id"=>$attempt_id,"user_id" => auth()->user()->id,"end_at" => null])->first()){
+        public function finishTest($user_id,int $attempt_id){
+            if($attempt = Attempt::where(["id"=>$attempt_id,"user_id" => $user_id,"end_at" => null])->first()){
                 $attempt->end_at = Carbon::now();
                 $attempt->save();
                 return true;
@@ -23,10 +24,10 @@ class AnswerService
         }
 
 
-        public function check(int $attempt_id,int $attempt_subject_id,int $question_id,string $answers){
+        public function check($user_id,int $attempt_id,int $attempt_subject_id,int $question_id,string $answers,$type_id){
             $answers = strtolower($answers);
             //Check if attempt_id exists
-            if($attempt = Attempt::where(["id"=>$attempt_id,"user_id" => auth()->user()->id])->first()){
+            if($attempt = Attempt::where(["id"=>$attempt_id,"user_id" =>$user_id])->first()){
                 if($attempt->end_at != null){
                     return throw new \Exception("Attempts is finished");
                 }
@@ -40,6 +41,12 @@ class AnswerService
                         $attempt_question->update(["is_right"=>$result["is_right"],"point"=>$result["point"],"is_answered"=>true,"user_answer"=>$answers]);
                         $attempt->points = $attempt->points + $result["point"];
                         $attempt->save();
+                        if($type_id == QuestionService::TOURNAMENT_TYPE){
+                            $sub_tournament_result = SubTournamentResult::where(["attempt_id" => $attempt_id,"user_id" => $user_id,])->first();
+                            if($sub_tournament_result){
+                                $sub_tournament_result->edit(["point"=>$attempt->points,"time"=>$attempt->time]);
+                            }
+                        }
                         return true;
                     }
                 }
