@@ -45,6 +45,24 @@
         <x-ckeditor :description="$this->text" :input-name="'text'" :title="'Текст вопроса ($$ @@)'"/>
     </div>
 
+    <div class="w-full" id="context-img">
+        <x-select
+            label="Контексты"
+            wire:model="context_id"
+            placeholder="Выбрать контекст"
+            :options="$contexts"
+            option-label="contextWithCount"
+            option-value="id"
+            {{--            class="hover:bg-primary-500"--}}
+        />
+    </div>
+
+    <div class="md:flex lg:flex justify-between my-3">
+        <div wire:ignore class="w-full">
+            <x-ckeditor :description="$context" :input-name="'context'" :title="'Контекст ($$ @@)'"/>
+        </div>
+    </div>
+
     <div class="md:flex my-3 justify-between">
         <div class="w-full pr-2">
             <x-input wire:model="answer_a" label="Ответ А ($$ @@)" placeholder="a"/>
@@ -62,7 +80,7 @@
     <div class="my-3">
         <x-select
             label="Правильный ответ"
-            wire:model="correct_answer"
+            wire:model="correct_answers"
             :options="$listCorrectAnswers"
         />
     </div>

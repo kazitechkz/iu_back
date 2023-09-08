@@ -40,7 +40,7 @@ class SubCategoryTable extends DataTableComponent
     {
         $cats = $this->getSelected();
         foreach ($cats as $key => $value) {
-            $cat = $this->model->find($value);
+            $cat = SubCategory::find($value);
             $cat?->delete();
         }
         $this->clearSelected();

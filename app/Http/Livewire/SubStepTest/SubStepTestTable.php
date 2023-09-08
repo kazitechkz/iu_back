@@ -42,7 +42,7 @@ class SubStepTestTable extends DataTableComponent
         $questions = $this->getSelected();
         foreach ($questions as $key => $value) {
             $question = SubStepTest::find($value);
-            $question->sub_question?->delete();
+            $question->question?->delete();
             $question?->delete();
         }
         $this->clearSelected();
@@ -55,7 +55,7 @@ class SubStepTestTable extends DataTableComponent
                 ->sortable(),
             Column::make("Подраздел", "sub_step.title_ru")
                 ->sortable(),
-            Column::make('Вопрос', 'sub_question.text')
+            Column::make('Вопрос', 'question.text')
                 ->format(fn($val) => StrHelper::getSubStr($val, 30))
                 ->html()
                 ->searchable(),

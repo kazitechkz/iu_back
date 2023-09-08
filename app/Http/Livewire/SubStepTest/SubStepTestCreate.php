@@ -6,6 +6,7 @@ use App\Http\Requests\SubStepTest\SubStepTestCreateRequest;
 use App\Models\Locale;
 use App\Models\Step;
 use App\Models\Subject;
+use App\Models\SubjectContext;
 use App\Models\SubStep;
 use Livewire\Component;
 
@@ -24,7 +25,10 @@ class SubStepTestCreate extends Component
     public $answer_b;
     public $answer_c;
     public $answer_d;
-    public $correct_answer;
+    public $correct_answers;
+    public string|null $context;
+    public $contexts;
+    public int|null $context_id;
     public $listCorrectAnswers = ['a', 'b', 'c', 'd'];
 
     public function rules(): array
@@ -56,8 +60,11 @@ class SubStepTestCreate extends Component
     public function updatedSubjectId(): void
     {
         $this->steps = Step::where('subject_id', $this->subject_id)->get();
+        $this->contexts = SubjectContext::where('subject_id', $this->subject_id)->get();
+        $this->sub_steps = null;
         $this->step_id = null;
         $this->sub_step_id = null;
+        $this->context_id = null;
     }
 
     public function updatedStepId(): void

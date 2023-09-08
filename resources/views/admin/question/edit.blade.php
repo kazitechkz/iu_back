@@ -1,6 +1,8 @@
 @extends('layouts.default')
 @push('css')
-
+    <style>
+        #context-img img {width: 200px!important;}
+    </style>
 @endpush
 @section('content')
     <x-layer-components.content-navbar

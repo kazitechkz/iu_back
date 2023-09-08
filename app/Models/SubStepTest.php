@@ -6,6 +6,7 @@
 
 namespace App\Models;
 
+use App\Helpers\MathFormulaHelper;
 use App\Traits\CRUD;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
@@ -31,21 +32,44 @@ class SubStepTest extends Model
 
 	protected $casts = [
 		'sub_step_id' => 'int',
-		'sub_question_id' => 'int'
+		'question_id' => 'int'
 	];
 
 	protected $fillable = [
 		'sub_step_id',
-		'sub_question_id'
+		'question_id'
 	];
 
-	public function sub_question(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+	public function question(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-		return $this->belongsTo(SubQuestion::class);
+		return $this->belongsTo(Question::class);
 	}
 
 	public function sub_step(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
 		return $this->belongsTo(SubStep::class);
 	}
+
+    public static function createSubStepTest($request): void
+    {
+        $subStep = SubStep::findOrFail($request['sub_step_id']);
+        $data = MathFormulaHelper::replace($request);
+        $data['sub_category_id'] = $subStep->sub_category_id;
+        $question = Question::add($data);
+        $data['sub_step_id'] = $request['sub_step_id'];
+        $data['question_id'] = $question->id;
+        SubStepTest::add($data);
+    }
+
+    public function updateSubStepTest($request): void
+    {
+        $data = MathFormulaHelper::replace($request);
+        $subStep = SubStep::findOrFail($request['sub_step_id']);
+        $data['sub_category_id'] = $subStep->sub_category_id;
+        $this->question->edit($data);
+        $data['sub_step_id'] = $request['sub_step_id'];
+        $data['question_id'] = $this->question->id;
+        $this->fill($data);
+        $this->save();
+    }
 }

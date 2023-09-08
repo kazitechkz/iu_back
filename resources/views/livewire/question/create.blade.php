@@ -72,13 +72,13 @@
         <x-ckeditor :description="$this->text" :input-name="'text'" :title="'Текст вопроса ($$ @@)'"/>
     </div>
 
-    <div class="w-full">
+    <div class="w-full" id="context-img">
         <x-select
-            label="Контектсты"
+            label="Контексты"
             wire:model="context_id"
             placeholder="Выбрать контекст"
             :options="$contexts"
-            option-label="context"
+            option-label="contextWithCount"
             option-value="id"
             {{--            class="hover:bg-primary-500"--}}
         />

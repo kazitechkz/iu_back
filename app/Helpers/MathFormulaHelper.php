@@ -7,22 +7,40 @@ use Illuminate\Http\Request;
 
 class MathFormulaHelper
 {
+    private const SINGLE_TYPE_ID = 1;
+    private const CONTEXT_TYPE_ID = 2;
+    private const GROUP_ID = 1;
     public static function replace(Request $request): array|string
     {
         $math = new self();
         $data = $request->all();
-        $data['correct_answers'] = implode(',', json_decode($data['correct_answers']));
+        if (is_array($data['correct_answers'])) {
+            $data['correct_answers'] = implode(',', json_decode($data['correct_answers']));
+        }
+        if (!isset($data['group_id'])) {
+            $data['group_id'] = self::GROUP_ID;
+        }
         $data['text'] = $math->getReplaceStr($data['text']);
         if (!isset($data['context_id'])) {
             if (isset($data['context'])) {
+                if (!isset($data['type_id'])) {
+                    $data['type_id'] = self::CONTEXT_TYPE_ID;
+                }
                 $context = SubjectContext::create([
                    'subject_id' => $data['subject_id'],
-                   'context' => $data['context']
+                   'context' => $math->getReplaceStr($data['context'])
                 ]);
                 $data['context_id'] = $context->id;
+            } else {
+                if (!isset($data['type_id'])) {
+                    $data['type_id'] = self::SINGLE_TYPE_ID;
+                }
+            }
+        } else {
+            if (!isset($data['type_id'])) {
+                $data['type_id'] = self::CONTEXT_TYPE_ID;
             }
         }
-        $data['context'] = $math->getReplaceStr($data['context']);
         $data['answer_a'] = $math->getReplaceStr($data['answer_a']);
         $data['answer_b'] = $math->getReplaceStr($data['answer_b']);
         $data['answer_c'] = $math->getReplaceStr($data['answer_c']);

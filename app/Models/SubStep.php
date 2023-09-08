@@ -6,6 +6,7 @@
 
 namespace App\Models;
 
+use App\Helpers\MathFormulaHelper;
 use App\Traits\CRUD;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
@@ -55,18 +56,18 @@ class SubStep extends Model
 		'is_active'
 	];
 
-	public function step()
-	{
+	public function step(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
 		return $this->belongsTo(Step::class);
 	}
 
-	public function sub_category()
-	{
+	public function sub_category(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
 		return $this->belongsTo(SubCategory::class);
 	}
 
-	public function sub_step_contents()
-	{
+	public function sub_step_contents(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
 		return $this->hasMany(SubStepContent::class);
 	}
 }
