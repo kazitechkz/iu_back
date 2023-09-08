@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('sub_tournaments', function (Blueprint $table) {
-            $table->boolean("is_finished")->default(false);
-            $table->boolean("is_current")->default(false);
+            $table->boolean("is_finished")->default(false)->after("time");
+            $table->boolean("is_current")->default(false)->after("time");
         });
     }
 
