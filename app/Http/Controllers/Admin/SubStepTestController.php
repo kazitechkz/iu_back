@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Helpers\MathFormulaHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SubStepTest\SubStepTestCreateRequest;
+use App\Models\Question;
 use App\Models\SubQuestion;
 use App\Models\SubStep;
 use App\Models\SubStepTest;
@@ -58,10 +60,7 @@ class SubStepTestController extends Controller
     {
         try{
             if(auth()->user()->can("substeptest index") ){
-                $sub_question = SubQuestion::add($request->all());
-                $data['sub_step_id'] = $request['sub_step_id'];
-                $data['sub_question_id'] = $sub_question->id;
-                SubStepTest::add($data);
+                SubStepTest::createSubStepTest($request);
                 return redirect(route('sub-step-test.index'));
             }
             else{
@@ -124,11 +123,8 @@ class SubStepTestController extends Controller
     {
         try{
             if(auth()->user()->can("substeptest index") ){
-                $query = SubStepTest::findOrFail($id);
-                $sub_question = SubQuestion::add($request->all());
-                $data['sub_step_id'] = $request['sub_step_id'];
-                $data['sub_question_id'] = $sub_question->id;
-                $query->edit($data);
+                $subStepTest = SubStepTest::findOrFail($id);
+                $subStepTest->updateSubStepTest($request);
                 return redirect(route('sub-step-test.index'));
             }
             else{

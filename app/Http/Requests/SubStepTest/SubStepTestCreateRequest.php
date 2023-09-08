@@ -29,7 +29,7 @@ class SubStepTestCreateRequest extends FormRequest
             'answer_b' => 'required',
             'answer_c' => 'required',
             'answer_d' => 'required',
-            'correct_answer' => 'required',
+            'correct_answers' => 'required',
         ];
     }
 }

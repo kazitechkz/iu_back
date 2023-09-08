@@ -56,4 +56,11 @@ class SubjectContext extends Model
     {
         return StrHelper::getSubStr($this['context'], 20);
     }
+
+    public function getContextWithCountAttribute(): string
+    {
+        $count = Question::where('context_id', $this['id'])->count();
+        $color = $count == 5 ? 'success' : 'danger';
+        return $this['context'] . ' <span class="text-'.$color.'">(' . $count . ')</span>';
+    }
 }
