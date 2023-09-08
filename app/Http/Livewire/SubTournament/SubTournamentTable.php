@@ -21,6 +21,7 @@ class SubTournamentTable extends DataTableComponent
     {
         if($tournament){
             $this->tournament = $tournament;
+
         }
     }
 

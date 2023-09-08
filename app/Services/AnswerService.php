@@ -203,7 +203,6 @@ class AnswerService
             $count = AttemptQuestion::whereIn("attempt_subject_id",$attempt_subjects)->where("is_answered",true)->count();
             if($attempt->max_points == $count){
                 $this->finish_test($user_id,$attempt->id);
-                throw new \Exception("Тест Завершен!");
             }
         }
 }
