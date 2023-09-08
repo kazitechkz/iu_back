@@ -70,4 +70,9 @@ class SubStep extends Model
     {
 		return $this->hasMany(SubStepContent::class);
 	}
+
+    public function sub_result(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(SubStepResult::class, 'id', 'sub_step_id');
+    }
 }

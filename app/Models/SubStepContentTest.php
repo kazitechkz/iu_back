@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class SubStepContentTest
- * 
+ *
  * @property int $id
  * @property int $test_id
  * @property int $user_id
@@ -19,7 +19,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $user_answer
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * 
+ *
  * @property SubStepTest $sub_step_test
  * @property User $user
  *
@@ -42,13 +42,13 @@ class SubStepContentTest extends Model
 		'user_answer'
 	];
 
-	public function sub_step_test()
-	{
-		return $this->belongsTo(SubStepTest::class, 'test_id');
+	public function sub_step_test(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+		return $this->belongsTo(SubStepTest::class, 'test_id', 'id');
 	}
 
-	public function user()
-	{
+	public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
 		return $this->belongsTo(User::class);
 	}
 }

@@ -59,12 +59,6 @@
                         :link="'sub-categories.index'"
                         :name="__('sidebar.subcategories')"/>
                 @endcan
-                @can("substeptest index")
-                    <x-shared.sub-sidebar-menu
-                        :icon="'mdi mdi-text-shadow'"
-                        :link="'sub-step-test.index'"
-                        :name="__('sidebar.substeptest')"/>
-                @endcan
                 @can("single-tests index")
                     <x-shared.sub-sidebar-menu
                         :icon="'fas fa-edit'"
@@ -203,6 +197,12 @@
                             :icon="'fas fa-shoe-prints'"
                             :link="'sub-step-content.index'"
                             :name="__('sidebar.sub-step-content')"/>
+                    @endcan
+                    @can("substeptest index")
+                        <x-shared.sub-sidebar-menu
+                            :icon="'mdi mdi-text-shadow'"
+                            :link="'sub-step-test.index'"
+                            :name="__('sidebar.substeptest')"/>
                     @endcan
         </x-shared.sidebar-menu>
         @endcan

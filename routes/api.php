@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\StepController;
 use App\Http\Controllers\Api\SubjectController;
 use App\Http\Controllers\Api\QuestionController;
 use Illuminate\Http\Request;
@@ -35,6 +36,9 @@ Route::group(['middleware' => 'auth:sanctum'], function() {
     Route::get('forum', [ApiForumController::class, 'index']);
     Route::get("plan",[ApiPlanController::class,"index"]);
     Route::get("appeal-types",[ApiAppealTypeController::class,"index"]);
+
+    Route::post('pass-step-test', [StepController::class, 'passTest']);
+    Route::get('get-step-tests/{sub_step_id}/{locale_id}', [StepController::class, 'getStepTests']);
 });
 Route::post('/auth/login', [AuthController::class, 'loginUser']);
 Route::post("/auth/register",[AuthController::class,"register"]);

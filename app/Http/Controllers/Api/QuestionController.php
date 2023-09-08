@@ -27,20 +27,16 @@ class QuestionController extends Controller
                     ->whereIn("group_id",$group)
                     ->limit($request['count_questions'])
                     ->paginate(1);
-                return response()->json(new ResponseJSON(
-                    status: true,
-                    data: $questions
-                ));
             } else {
                 $questions = Question::where(['subject_id' => $request['subject_id'], 'locale_id' => $request['locale_id']])
                     ->where("group_id",2)
                     ->limit($request['count_questions'])
                     ->paginate(1);
-                return response()->json(new ResponseJSON(
-                    status: true,
-                    data: $questions
-                ));
             }
+            return response()->json(new ResponseJSON(
+                status: true,
+                data: $questions
+            ));
         } catch (ValidationException $ex) {
             return response()->json(new ResponseJSON(
                 status: false,
