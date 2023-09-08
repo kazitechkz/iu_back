@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreignId("rival_two")->references("id")->on("users")->cascadeOnDelete();
             $table->integer("point_two")->default(0);
             $table->integer("time_two")->default(0);
-            $table->foreignId("winner")->references("id")->on("users")->cascadeOnDelete();
+            $table->foreignId("winner")->nullable()->references("id")->on("users")->cascadeOnDelete();
             $table->foreignId("sub_tournament_id")->references("id")->on("sub_tournaments")->cascadeOnDelete();
             $table->softDeletes();
             $table->timestamps();

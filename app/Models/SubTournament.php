@@ -53,6 +53,8 @@ class SubTournament extends Model
 		'single_question_quantity' => 'int',
 		'multiple_question_quantity' => 'int',
 		'context_question_quantity' => 'int',
+        'is_finished'=>'bool',
+        'is_current'=>'bool',
 		'time' => 'int',
 		'start_at' => 'datetime',
 		'end_at' => 'datetime'
@@ -67,6 +69,8 @@ class SubTournament extends Model
 		'multiple_question_quantity',
 		'context_question_quantity',
 		'time',
+        'is_finished',
+        'is_current',
 		'start_at',
 		'end_at'
 	];
