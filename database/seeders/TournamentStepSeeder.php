@@ -63,7 +63,7 @@ class TournamentStepSeeder extends Seeder
             'prev_id' => 3,
             'next_id' => null,
             'order' => 4,
-            'is_playoff' => false
+            'is_playoff' => true
         ]);
         TournamentStep::find(1)->update(["next_id" => 2]);
         TournamentStep::find(2)->update(["next_id" => 3]);

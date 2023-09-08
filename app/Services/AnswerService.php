@@ -12,10 +12,11 @@ use App\Models\SubTournamentRival;
 use App\Models\TournamentStep;
 use Carbon\Carbon;
 use Carbon\Traits\Date;
+use function Symfony\Component\Translation\t;
 
 class AnswerService
 {
-        public function finishTest($user_id,int $attempt_id){
+        public function finish_test($user_id,int $attempt_id){
             if($attempt = Attempt::where(["id"=>$attempt_id,"user_id" => $user_id,"end_at" => null])->first()){
                 $attempt->end_at = Carbon::now();
                 $attempt->save();
@@ -27,61 +28,18 @@ class AnswerService
         }
 
 
-        public function check($user_id,int $attempt_id,int $attempt_subject_id,int $question_id,string $answers,$type_id){
+        public function check($user_id,int $attempt_id,int $attempt_subject_id,int $question_id,string $answers,$attempt_type){
             $answers = strtolower($answers);
             //Check if attempt_id exists
-            if($attempt = Attempt::where(["id"=>$attempt_id,"user_id" =>$user_id])->first()){
-                if($attempt->end_at != null){
-                    return throw new \Exception("Attempts is finished");
-                }
+            if($attempt = Attempt::where(["id"=>$attempt_id,"user_id" =>$user_id,"end_at" => null])->first()){
                 //Check if attempt_question exists
-                if($attempt_question = AttemptQuestion::where(["attempt_subject_id"=>$attempt_subject_id,"question_id"=>$question_id])->first()){
-                    if($attempt_question->is_answered){
-                       return throw new \Exception("Question has been answered");
-                    }
-                    else{
-                        $result = $this->checkAnswer($question_id, $answers);
+                if($attempt_question = AttemptQuestion::where(["attempt_subject_id"=>$attempt_subject_id,"question_id"=>$question_id,"is_answered" => false])->first()){
+                        $result = $this->check_answer($question_id, $answers);
                         $attempt_question->update(["is_right"=>$result["is_right"],"point"=>$result["point"],"is_answered"=>true,"user_answer"=>$answers]);
-                        $attempt->points = $attempt->points + $result["point"];
-                        $attempt->save();
-                        if($type_id == QuestionService::TOURNAMENT_TYPE){
-                            $sub_tournament_result = SubTournamentResult::where(["attempt_id" => $attempt_id,"user_id" => $user_id,])->first();
-                            if($sub_tournament_result){
-                                $sub_tournament_result->edit(["point"=>$attempt->points,"time"=>$attempt->time]);
-                                $query = SubTournamentRival::where(["sub_tournament_id" => $sub_tournament_result->sub_tournament_id]);
-                                $sub_tournament_rival = $query->where(["rival_one"=>$user_id])->first() ?? $query->where(["rival_two"=>$user_id])->first();
-                                if($sub_tournament_rival){
-                                    if($sub_tournament_rival->rival_one == $user_id){
-                                        $sub_tournament_rival->point_one = $attempt->points;
-                                        $sub_tournament_rival->time_one = $attempt->time;
-                                    }
-                                    elseif($sub_tournament_rival->rival_two == $user_id){
-                                        $sub_tournament_rival->point_two = $attempt->points;
-                                        $sub_tournament_rival->time_two = $attempt->time;
-                                    }
-                                    if($sub_tournament_rival->point_two > $sub_tournament_rival->point_one){
-                                        $sub_tournament_rival->winner = $sub_tournament_rival->rival_two;
-                                    }
-                                    elseif ($sub_tournament_rival->point_two < $sub_tournament_rival->point_one){
-                                        $sub_tournament_rival->winner = $sub_tournament_rival->rival_one;
-                                    }
-                                    elseif ($sub_tournament_rival->point_two == $sub_tournament_rival->point_one){
-                                        if($sub_tournament_rival->time_one < $sub_tournament_rival->time_two){
-                                            $sub_tournament_rival->winner = $sub_tournament_rival->rival_one;
-                                        }
-                                        elseif ($sub_tournament_rival->time_one > $sub_tournament_rival->time_two){
-                                            $sub_tournament_rival->winner = $sub_tournament_rival->rival_two;
-                                        }
-                                    }
-                                    $sub_tournament_rival->save();
-
-                                }
-
-
-                            }
-                        }
+                        $attempt->edit(["points"=>$attempt->points + $result["point"],'time_left'=>$attempt->start_at->diffInMilliseconds(Carbon::now())]);
+                        $this->check_tournament_result($attempt,$attempt_type,$user_id);
+                        $this->check_attempt($attempt,$user_id);
                         return true;
-                    }
                 }
                 else{
                     return throw new \Exception("Attempts doesnt exist");
@@ -93,7 +51,7 @@ class AnswerService
         }
 
 
-        protected function checkAnswer($question_id,string $answer){
+        protected function check_answer($question_id,string $answer){
             //"a,b,c"=>["a","b","c"]
             $user_answer = array_unique(explode(",",$answer));
             if($question = Question::find($question_id)){
@@ -189,12 +147,62 @@ class AnswerService
             else{
                 throw new \Exception("Question Doesnt exists");
             }
-
-
-
-
-
         }
 
 
+        protected function check_tournament_result(Attempt $attempt,int $attempt_type_id,$user_id){
+            if($attempt_type_id == QuestionService::TOURNAMENT_TYPE){
+                $sub_tournament_result = SubTournamentResult::where(["attempt_id" => $attempt->id,"user_id" => $user_id])->first();
+                if($sub_tournament_result){
+                    $sub_tournament_result->edit(["point"=>$attempt->points,"time"=>$attempt->time_left]);
+                    $sub_tournament_rival = SubTournamentRival::
+                    orWhere(function ( $query) use ($sub_tournament_result,$user_id) {
+                        $query->where("sub_tournament_id" ,"=", $sub_tournament_result->sub_tournament_id)
+                            ->where("rival_two" ,"=", $user_id);
+                    })
+                        ->orWhere(function ( $query) use ($sub_tournament_result,$user_id) {
+                            $query->where("sub_tournament_id" ,"=", $sub_tournament_result->sub_tournament_id)
+                                ->where("rival_one" ,"=", $user_id);
+                        })
+                        ->first();
+                    if($sub_tournament_rival){
+                        if($sub_tournament_rival->rival_one == $user_id){
+                            $sub_tournament_rival->point_one = $attempt->points;
+                            $sub_tournament_rival->time_one = $attempt->time_left;
+                        }
+                        elseif($sub_tournament_rival->rival_two == $user_id){
+                            $sub_tournament_rival->point_two = $attempt->points;
+                            $sub_tournament_rival->time_two = $attempt->time_left;
+                        }
+                        if($sub_tournament_rival->point_two > $sub_tournament_rival->point_one){
+                            $sub_tournament_rival->winner = $sub_tournament_rival->rival_two;
+                        }
+                        elseif ($sub_tournament_rival->point_two < $sub_tournament_rival->point_one){
+                            $sub_tournament_rival->winner = $sub_tournament_rival->rival_one;
+                        }
+                        elseif ($sub_tournament_rival->point_two == $sub_tournament_rival->point_one){
+                            if($sub_tournament_rival->time_one < $sub_tournament_rival->time_two){
+                                $sub_tournament_rival->winner = $sub_tournament_rival->rival_one;
+                            }
+                            elseif ($sub_tournament_rival->time_one > $sub_tournament_rival->time_two){
+                                $sub_tournament_rival->winner = $sub_tournament_rival->rival_two;
+                            }
+                        }
+                        $sub_tournament_rival->save();
+                    }
+                }
+            }
+        }
+
+        protected function check_attempt(Attempt $attempt,$user_id){
+            if($attempt->time < $attempt->time_left){
+                $this->finish_test($user_id,$attempt->id);
+                throw new \Exception("Время вышло!");
+            }
+            $attempt_subjects = AttemptSubject::where(["attempt_id"=>$attempt->id])->pluck("id","id");
+            $count = AttemptQuestion::whereIn("attempt_subject_id",$attempt_subjects)->where("is_answered",true)->count();
+            if($attempt->max_points == $count){
+                $this->finish_test($user_id,$attempt->id);
+            }
+        }
 }

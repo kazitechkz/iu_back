@@ -20,13 +20,6 @@ class TournamentService{
     public function create_sub_tournament($data){
         $tournament_id = $data["tournament_id"];
         $step_id = $data["step_id"];
-        $single_question_quantity = $data["single_question_quantity"];
-        $multiple_question_quantity = $data["multiple_question_quantity"];
-        $context_question_quantity = $data["context_question_quantity"];
-        $time = $data["time"];
-        $start_at = $data["start_at"];
-        $end_at = $data["start_at"];
-
         //First step check the step_id and is it first or last
         $step = TournamentStep::find($step_id);
         if($step == null){
@@ -48,8 +41,6 @@ class TournamentService{
                 }
                 $this->choose_winners($step,$tournament_id,$input);
             }
-
-
         }
         // if is null the step must be isFirst or it doesn`t exists
         else{
@@ -69,6 +60,8 @@ class TournamentService{
             $data["context_question_quantity"];
         $input["start_at"] = Carbon::parse($input["start_at"]);
         $input["end_at"] = Carbon::parse($input["end_at"]);
+        $input["is_current"] = true;
+        $input["is_finished"] = false;
         return $input;
     }
 
@@ -103,6 +96,7 @@ class TournamentService{
         $random_participants = array_rand($winners,2);
         //Определяем следующий этап
         $i = 0;
+        $prev_sub_tournament->edit(["is_finished"=>true,"is_current"=>false]);
         $sub_tournament = SubTournament::add($data);
         foreach ($winners as $winner){
             //Определяем победителей прошлого этапа
@@ -114,10 +108,10 @@ class TournamentService{
                 SubTournamentRival::add([
                     'rival_one' => $participant[0],
                     'point_one' => 0,
-                    'time_one' => 0,
+                    'time_one' => $sub_tournament->time * 60000,
                     'rival_two' => $participant[1],
                     'point_two' => 0,
-                    'time_two' => 0,
+                    'time_two' => $sub_tournament->time * 60000,
                     'winner' => null,
                     'sub_tournament_id' => $sub_tournament->id
                 ]);
@@ -134,6 +128,9 @@ class TournamentService{
         $sub_tournament = SubTournament::find($sub_tournament_id);
         if(!$sub_tournament){
             throw new \Exception("Суб турнира не существует");
+        }
+        if($sub_tournament->is_finished || !$sub_tournament->is_current){
+            throw new \Exception("Суб турнира прошел");
         }
         if(($sub_tournament->start_at < Carbon::now()) && (Carbon::now()< $sub_tournament->end_at)){
             if(SubTournamentParticipant::where(["user_id"=>$user_id,"sub_tournament_id"=>$sub_tournament_id,])->count()){
@@ -168,16 +165,16 @@ class TournamentService{
         $question_service = new QuestionService();
         $questions = [];
         //Get Subject
-        $subject = Subject::where(["id"=>$tournament->subject_id])->get();
+        $subject = Subject::where(["id"=>$tournament->subject_id])->pluck("id");
         //Now get questions
-        $questions = $question_service->get_questions(
-            $subject,
-            $questions,
-            QuestionService::TOURNAMENT_TYPE,
-            $locale_id,
-            $sub_tournament->single_question_quantity,
-            $sub_tournament->context_question_quantity,
-            $sub_tournament->multiple_question_quantity);
+        $questions = $question_service->get_questions_with_subjects(
+            subjects: [...$subject],
+            locale_id: $locale_id,
+            single_q_count: $sub_tournament->single_question_quantity,
+            multiple_q_count:$sub_tournament->multiple_question_quantity,
+            contextual_q_count: $sub_tournament->context_question_quantity,
+            attempt_type_id:QuestionService::TOURNAMENT_TYPE
+            );
         $count_question = $question_service->get_questions_max_point($questions);
         $attempt_service = new AttemptService();
         $attempt = $attempt_service->create_attempt($user_id,QuestionService::TOURNAMENT_TYPE,$locale_id,$count_question,$questions,$sub_tournament->time);
@@ -185,7 +182,7 @@ class TournamentService{
             'user_id' => $user_id,
             'sub_tournament_id' => $sub_tournament_id,
             'point' => 0,
-            'time' => 0,
+            'time' => $sub_tournament->time * 60000,
             'attempt_id' => $attempt->id
         ]);
 
