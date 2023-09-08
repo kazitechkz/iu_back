@@ -43,21 +43,34 @@ class AnswerService
                         $result = $this->checkAnswer($question_id, $answers);
                         $attempt_question->update(["is_right"=>$result["is_right"],"point"=>$result["point"],"is_answered"=>true,"user_answer"=>$answers]);
                         $attempt->points = $attempt->points + $result["point"];
+                        $attempt->time_left = $attempt->start_at->diffInMilliseconds(Carbon::now());
                         $attempt->save();
+                        if($attempt->time < $attempt->time_left){
+                            $this->finishTest($user_id,$attempt_id);
+                            throw new \Exception("Время вышло!");
+                        }
                         if($type_id == QuestionService::TOURNAMENT_TYPE){
-                            $sub_tournament_result = SubTournamentResult::where(["attempt_id" => $attempt_id,"user_id" => $user_id,])->first();
+                            $sub_tournament_result = SubTournamentResult::where(["attempt_id" => $attempt_id,"user_id" => $user_id])->first();
                             if($sub_tournament_result){
-                                $sub_tournament_result->edit(["point"=>$attempt->points,"time"=>$attempt->time]);
-                                $query = SubTournamentRival::where(["sub_tournament_id" => $sub_tournament_result->sub_tournament_id]);
-                                $sub_tournament_rival = $query->where(["rival_one"=>$user_id])->first() ?? $query->where(["rival_two"=>$user_id])->first();
+                                $sub_tournament_result->edit(["point"=>$attempt->points,"time"=>$attempt->time_left]);
+                                $sub_tournament_rival = SubTournamentRival::
+                                orWhere(function ( $query) use ($sub_tournament_result,$user_id) {
+                                    $query->where("sub_tournament_id" ,"=", $sub_tournament_result->sub_tournament_id)
+                                        ->where("rival_two" ,"=", $user_id);
+                                })
+                                ->orWhere(function ( $query) use ($sub_tournament_result,$user_id) {
+                                        $query->where("sub_tournament_id" ,"=", $sub_tournament_result->sub_tournament_id)
+                                            ->where("rival_one" ,"=", $user_id);
+                                    })
+                                    ->first();
                                 if($sub_tournament_rival){
                                     if($sub_tournament_rival->rival_one == $user_id){
                                         $sub_tournament_rival->point_one = $attempt->points;
-                                        $sub_tournament_rival->time_one = $attempt->time;
+                                        $sub_tournament_rival->time_one = $attempt->time_left;
                                     }
                                     elseif($sub_tournament_rival->rival_two == $user_id){
                                         $sub_tournament_rival->point_two = $attempt->points;
-                                        $sub_tournament_rival->time_two = $attempt->time;
+                                        $sub_tournament_rival->time_two = $attempt->time_left;
                                     }
                                     if($sub_tournament_rival->point_two > $sub_tournament_rival->point_one){
                                         $sub_tournament_rival->winner = $sub_tournament_rival->rival_two;

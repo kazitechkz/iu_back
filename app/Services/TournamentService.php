@@ -20,13 +20,6 @@ class TournamentService{
     public function create_sub_tournament($data){
         $tournament_id = $data["tournament_id"];
         $step_id = $data["step_id"];
-        $single_question_quantity = $data["single_question_quantity"];
-        $multiple_question_quantity = $data["multiple_question_quantity"];
-        $context_question_quantity = $data["context_question_quantity"];
-        $time = $data["time"];
-        $start_at = $data["start_at"];
-        $end_at = $data["start_at"];
-
         //First step check the step_id and is it first or last
         $step = TournamentStep::find($step_id);
         if($step == null){
@@ -48,8 +41,6 @@ class TournamentService{
                 }
                 $this->choose_winners($step,$tournament_id,$input);
             }
-
-
         }
         // if is null the step must be isFirst or it doesn`t exists
         else{
@@ -69,6 +60,8 @@ class TournamentService{
             $data["context_question_quantity"];
         $input["start_at"] = Carbon::parse($input["start_at"]);
         $input["end_at"] = Carbon::parse($input["end_at"]);
+        $input["is_current"] = true;
+        $input["is_finished"] = false;
         return $input;
     }
 
@@ -103,6 +96,7 @@ class TournamentService{
         $random_participants = array_rand($winners,2);
         //Определяем следующий этап
         $i = 0;
+        $prev_sub_tournament->edit(["is_finished"=>true,"is_current"=>false]);
         $sub_tournament = SubTournament::add($data);
         foreach ($winners as $winner){
             //Определяем победителей прошлого этапа

@@ -6,17 +6,16 @@ use App\Http\Controllers\Controller;
 use App\Models\Attempt;
 use App\Models\AttemptQuestion;
 use App\Models\AttemptSubject;
-use App\Models\Question;
+use App\Models\SubTournamentParticipant;
 use App\Models\SubTournamentResult;
 use App\Models\SubTournamentRival;
-use App\Models\SubTournamentWinner;
+use App\Models\Tournament;
 use App\Services\AnswerService;
 use App\Services\AttemptService;
 use App\Services\PlanService;
 use App\Services\QuestionService;
 use App\Services\TournamentService;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+
 
 class TestController extends Controller
 {
@@ -42,7 +41,7 @@ class TestController extends Controller
     public function answerTest(){
 
             $answers = ["a","b","c","d","e","f","g"];
-            $attempt_ids = SubTournamentResult::where("sub_tournament_id",9)->pluck("attempt_id","attempt_id");
+            $attempt_ids = SubTournamentResult::where("sub_tournament_id",8)->pluck("attempt_id","attempt_id");
             $attempts = Attempt::whereIn("id",$attempt_ids)->get();
             foreach ($attempts as $attempt){
                 $user_id = $attempt->user_id;
@@ -52,7 +51,6 @@ class TestController extends Controller
                     $questions = AttemptQuestion::where(["attempt_subject_id" => $attempt_subjects])->get();
                     foreach ($questions as $question){
                         $this->_answerService->check($user_id,$attempt->id,$attempt_subject,$question->question_id,$right_answer,3);
-
                     }
                 }
             }
@@ -71,9 +69,10 @@ class TestController extends Controller
     }
 
     public function participate(){
+        $data = Tournament::first();
         $tournament_service = new TournamentService();
-        $users = [10,11,12,13,14,15,16,17,18,19,20,21];
-        $sub_tournament_id = 1;
+        $users = [10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30];
+        $sub_tournament_id = 3;
         foreach ($users as $user){
             $tournament_service->participate($user,$sub_tournament_id);
         }
@@ -81,9 +80,9 @@ class TestController extends Controller
 
     public function create_attempt(){
         $tournament_service = new TournamentService();
-        $users = SubTournamentWinner::where("sub_tournament_id",1)->pluck("user_id","user_id");
+        $users = SubTournamentParticipant::where("sub_tournament_id",8)->pluck("user_id","user_id");
         foreach ($users as $user){
-            $tournament_service->get_questions($user,9,1);
+            $tournament_service->get_questions($user,8,1);
        }
 
     }
