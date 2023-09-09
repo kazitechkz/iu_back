@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Exceptions\QuestionException;
 use App\Models\GroupPlan;
 use App\Models\Question;
 use App\Models\SingleSubjectTest;
@@ -25,24 +26,30 @@ class QuestionService
     const TOURNAMENT_TYPE=3;
 
     public function get_questions_with_subjects($subjects,$locale_id,$attempt_type_id,$single_q_count =0, $contextual_q_count =0, $multiple_q_count = 0){
-        $questions = [];
-        $groups = $this->get_groups(
-            attempt_type_id:$attempt_type_id
-        );
-        $subject_ids = $this->get_subject(
-            subjects:$subjects,
-            attempt_type_id: $attempt_type_id
-        );
-        $questions = self::get_questions(
-            compulsory_subjects: $subject_ids,
-            questions: $questions,
-            type_id:$attempt_type_id,
-            locale_id: $locale_id,
-            single_q_count: $single_q_count,
-            contextual_q_count: $contextual_q_count,
-            multiple_q_count: $multiple_q_count
-        );
-        return $questions;
+        try {
+            $questions = [];
+            $groups = $this->get_groups(
+                attempt_type_id:$attempt_type_id
+            );
+            $subject_ids = $this->get_subject(
+                subjects:$subjects,
+                attempt_type_id: $attempt_type_id
+            );
+            $questions = self::get_questions(
+                compulsory_subjects: $subject_ids,
+                questions: $questions,
+                type_id:$attempt_type_id,
+                locale_id: $locale_id,
+                single_q_count: $single_q_count,
+                contextual_q_count: $contextual_q_count,
+                multiple_q_count: $multiple_q_count
+            );
+            return $questions;
+        }
+        catch (\Exception $exception){
+            throw new QuestionException($exception->getMessage());
+        }
+
     }
 
 
@@ -117,7 +124,7 @@ class QuestionService
                 return Question::whereIn("context_id",$ids)->with("context")->get()->toArray();
         }
         else{
-            throw new \Exception("Question in {$compulsory_subject->title_ru} is insufficient");
+            throw new QuestionException("Вопросов в дисциплине {$compulsory_subject->title_ru} недостаточно");
         }
     }
     protected function get_multiple_questions($locale_id,$compulsory_subject,$count){
@@ -158,7 +165,7 @@ class QuestionService
 
     protected function get_subject($subjects,$attempt_type_id){
         if(count($subjects) == 0){
-            throw new \Exception("Не выбраны дисциплины");
+            throw new QuestionException("Выберите предметы для сдачи тестирования!");
         }
         $subject_ids = [];
         if($attempt_type_id == QuestionService::UNT_TYPE){
@@ -168,10 +175,14 @@ class QuestionService
         array_push($subject_ids,...$subjects);
         if($attempt_type_id == QuestionService::UNT_TYPE){
             if(count($subject_ids) != 5){
-                throw new \Exception("Question Complete is insufficient");
+                throw new QuestionException("Недостаточно предметов для сдачи тестирования!");
             }
         }
-        return Subject::whereIn("id",$subject_ids)->get();
+        $subjects =  Subject::whereIn("id",$subject_ids)->get();
+        if(count($subjects) == 0){
+            throw new QuestionException("Недостаточно предметов для сдачи тестирования!");
+        }
+        return $subjects;
     }
 
 

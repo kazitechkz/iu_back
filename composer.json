@@ -33,6 +33,7 @@
         "spatie/laravel-permission": "^5.10",
         "spatie/laravel-query-builder": "^5.2",
         "spatie/laravel-searchable": "^1.11",
+        "wendelladriel/laravel-validated-dto": "^3.0",
         "wireui/wireui": "^1.17",
         "yoeunes/toastr": "^2.3",
         "zgabievi/laravel-promocodes": "dev-L10"

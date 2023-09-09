@@ -81,6 +81,7 @@ class TestController extends Controller
 
     public function subjectTest(){
         $planService = new PlanService();
+        dd($this->_questionService->get_questions_with_subjects([5],3,2,));
         dd($planService->get_subjects());
     }
 

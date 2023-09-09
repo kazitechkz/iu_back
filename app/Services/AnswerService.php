@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Exceptions\AnswerException;
 use App\Models\Attempt;
 use App\Models\AttemptQuestion;
 use App\Models\AttemptSubject;
@@ -17,37 +18,51 @@ use function Symfony\Component\Translation\t;
 class AnswerService
 {
         public function finish_test($user_id,int $attempt_id){
-            if($attempt = Attempt::where(["id"=>$attempt_id,"user_id" => $user_id,"end_at" => null])->first()){
-                $attempt->end_at = Carbon::now();
-                $attempt->save();
-                return true;
+            try {
+                if($attempt = Attempt::where(["id"=>$attempt_id,"user_id" => $user_id,"end_at" => null])->first()){
+                    $attempt->end_at = Carbon::now();
+                    $attempt->save();
+                    return true;
+                }
+                else{
+                    throw new AnswerException("Попытка сдачи не найдена");
+                }
             }
-            else{
-                return throw new \Exception("Attempt not found");
+            catch (\Exception $exception){
+                throw new AnswerException($exception->getMessage());
             }
+
         }
 
 
         public function check($user_id,int $attempt_id,int $attempt_subject_id,int $question_id,string $answers,$attempt_type){
-            $answers = strtolower($answers);
-            //Check if attempt_id exists
-            if($attempt = Attempt::where(["id"=>$attempt_id,"user_id" =>$user_id,"end_at" => null])->first()){
-                //Check if attempt_question exists
-                if($attempt_question = AttemptQuestion::where(["attempt_subject_id"=>$attempt_subject_id,"question_id"=>$question_id,"is_answered" => false])->first()){
+            try {
+                $answers = strtolower($answers);
+                //Check if attempt_id exists
+                if($attempt = Attempt::where(["id"=>$attempt_id,"user_id" =>$user_id,"end_at" => null])->first()){
+                    //Check if attempt_question exists
+                    if($attempt_question = AttemptQuestion::where(["attempt_subject_id"=>$attempt_subject_id,"question_id"=>$question_id,"is_answered" => false])->first()){
                         $result = $this->check_answer($question_id, $answers);
                         $attempt_question->update(["is_right"=>$result["is_right"],"point"=>$result["point"],"is_answered"=>true,"user_answer"=>$answers]);
                         $attempt->edit(["points"=>$attempt->points + $result["point"],'time_left'=>$attempt->start_at->diffInMilliseconds(Carbon::now())]);
-                        $this->check_tournament_result($attempt,$attempt_type,$user_id);
+                        if($attempt_type == QuestionService::TOURNAMENT_TYPE){
+                            $this->check_tournament_result($attempt,$attempt_type,$user_id);
+                        }
                         $this->check_attempt($attempt,$user_id);
                         return true;
+                    }
+                    else{
+                        throw new AnswerException("Вопрос на который вы хотите ответить либо не найден, либо вы уже ответили на него");
+                    }
                 }
                 else{
-                    return throw new \Exception("Attempts doesnt exist");
+                    throw new AnswerException("Попытка сдачи экзамена не найдена");
                 }
             }
-            else{
-                return throw new \Exception("Attempts doesnt exist");
+            catch (\Exception $exception){
+                throw new AnswerException($exception->getMessage());
             }
+
         }
 
 
@@ -145,7 +160,7 @@ class AnswerService
                 return ["is_right"=>$is_right,"point"=>$point];
             }
             else{
-                throw new \Exception("Question Doesnt exists");
+                throw new AnswerException("Вопрос на который вы хотите ответить либо не найден");
             }
         }
 
@@ -197,7 +212,7 @@ class AnswerService
         protected function check_attempt(Attempt $attempt,$user_id){
             if($attempt->time < $attempt->time_left){
                 $this->finish_test($user_id,$attempt->id);
-                throw new \Exception("Время вышло!");
+                throw new AnswerException("Вышло время сдачи!");
             }
             $attempt_subjects = AttemptSubject::where(["attempt_id"=>$attempt->id])->pluck("id","id");
             $count = AttemptQuestion::whereIn("attempt_subject_id",$attempt_subjects)->where("is_answered",true)->count();

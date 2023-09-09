@@ -12,6 +12,8 @@ use App\Http\Controllers\Api\FaqController as ApiFaqController;
 use App\Http\Controllers\Api\ForumController as ApiForumController;
 use App\Http\Controllers\Api\PlanController as ApiPlanController;
 use App\Http\Controllers\Api\AppealTypeController as ApiAppealTypeController;
+use App\Http\Controllers\Api\TournamentController as ApiTournamentController;
+use App\Http\Controllers\Api\AttemptController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -39,6 +41,19 @@ Route::group(['middleware' => 'auth:sanctum'], function() {
 
     Route::post('pass-step-test', [StepController::class, 'passTest']);
     Route::get('get-step-tests/{sub_step_id}/{locale_id}', [StepController::class, 'getStepTests']);
+    //Get UNT Exam
+    Route::post("/attempt",[AttemptController::class,"attempt"]);
+    //Check Answer
+    Route::post("/answer",[AttemptController::class,"answer"]);
+    Route::post("/tournament-attempt",[ApiTournamentController::class,"attempt"]);
+    Route::post("/participate",[ApiTournamentController::class,"participate"]);
+
+
+
+
+
+
+
 });
 Route::post('/auth/login', [AuthController::class, 'loginUser']);
 Route::post("/auth/register",[AuthController::class,"register"]);
