@@ -1,8 +1,10 @@
 @extends('layouts.default')
 @section('content')
     <x-layer-components.content-navbar
-        :title="'Список комментариев Форума'"
-        :subtitle="'Управление Списками Комментариев'"
+        :title="__('table.forum_lists')"
+        :subtitle="__('table.forum_management')"
+        :breadcrumbs="[__('table.forum_management')]"
+        :routes="['forum.index']"
     >
         <a href="{{route("discuss.create")}}" class="btn btn-primary mt-2 mt-xl-0">Создать</a>
 

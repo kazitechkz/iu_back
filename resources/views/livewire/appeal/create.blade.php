@@ -8,10 +8,10 @@
     <div class="form-group">
         <x-input class="my-2"
                  wire:model.debounce.500ms="search"
-                 label="Search*"
-                 placeholder="Search"
+                 label="{{__('table.search')}}*"
+                 placeholder="{{__('table.search')}}"
                  icon="search"
-                 hint="Search by question or context"
+                 hint="{{__('table.search')}}"
         />
     </div>
     {{--    Search --}}
@@ -38,7 +38,7 @@
     {{--    Appeal Types --}}
     <div class="form-group">
         <x-select
-            label="Appeal Types*"
+            label="{{__('table.type_id')}}*"
             :options="$appeal_types"
             option-label="title_ru"
             option-value="id"
@@ -52,17 +52,17 @@
     <div class="form-group">
         <x-input class="my-2"
                  wire:model="message"
-                 label="Message*"
-                 placeholder="Message"
+                 label="{{__('table.message')}}*"
+                 placeholder="{{__('table.message')}}"
                  icon="pencil"
-                 hint="Message"
+                 hint="{{__('table.message')}}"
         />
     </div>
     {{--    Message --}}
     {{--    Statuses --}}
     <div class="form-group">
         <x-select
-            label="Status of the appeal*"
+            label="{{__('table.status')}}*"
             :options="$statuses"
             option-label="name"
             option-value="id"

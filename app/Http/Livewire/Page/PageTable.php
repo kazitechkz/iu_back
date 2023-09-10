@@ -59,17 +59,17 @@ class PageTable extends DataTableComponent
         return [
             Column::make("Id", "id")
                 ->sortable(),
-            Column::make("Title", "title")
+            Column::make(__('table.title'), "title")
                 ->sortable(),
-            BooleanColumn::make("IsActive", "isActive")
+            BooleanColumn::make(__('table.is_active'), "isActive")
                 ->sortable(),
-            Column::make("Locale id", "locale.title")
+            Column::make(__('table.locale_id'), "locale.title")
                 ->sortable(),
-            Column::make("Code", "code")
+            Column::make(__('table.code'), "code")
                 ->sortable(),
-            Column::make("Created at", "created_at")
+            Column::make(__('table.created_at'), "created_at")
                 ->sortable(),
-            Column::make("Updated at", "updated_at")
+            Column::make(__('table.updated_at'), "updated_at")
                 ->sortable(),
         ];
     }

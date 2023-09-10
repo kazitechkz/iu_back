@@ -25,8 +25,8 @@ class Create extends Component
     public $exchanges;
     public function mount(){
         $this->exchanges =[
-            ["name"=>"One User","value"=>"transaction"],
-            ["name"=>"From one to other user","value"=>"transfer"],
+            ["name"=>__("table.wallet_refill"),"value"=>"transaction"],
+            ["name"=>__("table.wallet_transfer"),"value"=>"transfer"],
         ];
     }
 

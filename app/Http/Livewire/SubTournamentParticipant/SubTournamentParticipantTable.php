@@ -56,17 +56,17 @@ class SubTournamentParticipantTable extends DataTableComponent
         return [
             Column::make("Id", "id")
                 ->sortable(),
-            Column::make("User", "user.name")
+            Column::make(__("table.user_id"), "user.name")
                 ->sortable(),
-            Column::make("Tournament", "sub_tournament.tournament.title_ru")
+            Column::make(__("table.tournament_id"), "sub_tournament.tournament.title_ru")
                 ->sortable(),
-            Column::make("Sub tournament", "sub_tournament.tournament_step.title_ru")
+            Column::make(__("table.sub_tournament_id"), "sub_tournament.tournament_step.title_ru")
                 ->sortable(),
-            Column::make("Status", "status")
+            Column::make(__("table.status"), "status")
                 ->sortable(),
-            Column::make("Created at", "created_at")
+            Column::make(__("table.created_at"), "created_at")
                 ->sortable(),
-            Column::make("Updated at", "updated_at")
+            Column::make(__("table.updated_at"), "updated_at")
                 ->sortable(),
         ];
     }

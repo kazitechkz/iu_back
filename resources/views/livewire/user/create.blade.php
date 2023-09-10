@@ -8,10 +8,10 @@
     <div class="form-group">
         <x-input class="my-2"
                  wire:model="name"
-                 label="Name*"
-                 placeholder="UserName"
+                 label="{{__('table.user_name')}}*"
+                 placeholder="{{__('table.user_name_hint')}}"
                  icon="user"
-                 hint="Фамилия имя отчество"
+                 hint="{{__('table.user_name')}}"
         />
     </div>
     {{--    User Name--}}
@@ -19,10 +19,10 @@
     <div class="form-group">
         <x-input class="my-2"
                  wire:model="username "
-                 label="UserName*"
-                 placeholder="UserName"
+                 label="{{__('table.username')}}*"
+                 placeholder="john_wick_2023"
                  icon="user"
-                 hint="Уникальный логин"
+                 hint="{{__('table.username_hint')}}"
         />
     </div>
     {{--    NickName--}}
@@ -32,20 +32,20 @@
             type="email"
             class="my-2"
             wire:model="email"
-            label="Email*"
-            placeholder="Email"
+            label="{{__('table.email')}}*"
+            placeholder="{{__('table.email_placeholder')}}"
             icon="mail"
-            hint="Укажите действующую почту"
+            hint="{{__('table.email_hint')}}"
         />
     </div>
     {{--    User Email--}}
     {{--    User Password--}}
     <div class="form-group">
         <x-inputs.password
-            label="Пароль*"
+            label="{{__('table.password')}}*"
             wire:model="password"
             icon="lock-closed"
-            hint="Пароль должен иметь более 5 знаков, содержать спец символы"
+            hint="{{__('table.password_hint')}}"
 
         />
     </div>
@@ -53,8 +53,9 @@
     {{--    User Phone--}}
     <div class="form-group">
         <x-inputs.phone
-            label="Phone*"
-            hint="Only Kazakhstan Mobile"
+            label="{{__('table.phone')}}*"
+            placeholder="{{__('table.phone_placeholder')}}"
+            hint="{{__('table.phone_hint')}}"
             wire:model="phone"
             icon="phone"
         />
@@ -63,8 +64,8 @@
     {{--    User Role--}}
     <div class="form-group">
         <x-select
-            label="Role*"
-            placeholder="Choose role"
+            label="{{__('table.role_id')}}*"
+            placeholder="{{__('table.role_id')}}"
             :options="$roles"
             :option-label="'name'"
             :option-value="'name'"

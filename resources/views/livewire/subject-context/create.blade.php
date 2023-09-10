@@ -1,7 +1,7 @@
 <div>
     <div class="w-full">
         <x-select
-            label="Предмет"
+            label="{{__('table.subject_id')}}"
             wire:model="subject_id"
             placeholder="Выбрать предмет"
             :options="$subjects"

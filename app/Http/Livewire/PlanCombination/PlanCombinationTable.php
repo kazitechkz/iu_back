@@ -54,21 +54,21 @@ class PlanCombinationTable extends DataTableComponent
         return [
             Column::make("Id", "id")
                 ->sortable(),
-            Column::make("Plan", "plan.name")->searchable()
+            Column::make(__("table.plan_id"), "plan.name")->searchable()
                 ->sortable(),
-            Column::make("Tag", "tag")->searchable()
+            Column::make(__("table.tag"), "tag")->searchable()
                 ->sortable(),
-            Column::make("Country", "country")->searchable()
+            Column::make(__("table.country"), "country")->searchable()
                 ->sortable(),
-            Column::make("Price", "price")->searchable()
+            Column::make(__("table.price"), "price")->searchable()
                 ->sortable(),
-            Column::make("Sign Up Fee", "signup_fee")
+            Column::make(__("table.sign_up_fee"), "signup_fee")
                 ->sortable(),
-            Column::make("Currency", "currency")->searchable()
+            Column::make(__("table.currency"), "currency")->searchable()
                 ->sortable(),
-            Column::make("Invoice Period", "invoice_period")
+            Column::make(__("table.invoice_period"), "invoice_period")
                 ->sortable(),
-            Column::make("Invoice Interval", "invoice_interval")
+            Column::make(__("table.invoice_interval"), "invoice_interval")
                 ->sortable(),
 
         ];

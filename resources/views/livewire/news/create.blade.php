@@ -6,7 +6,7 @@
     {{--    Locales --}}
     <div class="form-group">
         <x-select
-            label="Locale*"
+            label="{{__('table.locale_id')}}*"
             :options="$locales"
             option-label="title"
             option-value="id"
@@ -19,10 +19,10 @@
     <div class="form-group">
         <x-input class="my-2"
                  wire:model="title"
-                 label="Title*"
-                 placeholder="Title for News"
+                 label="{{__('table.title')}}*"
+                 placeholder="{{__('table.title')}}"
                  icon="pencil"
-                 hint="Title for News"
+                 hint="{{__('table.title')}}"
         />
     </div>
     {{--    Title--}}
@@ -30,10 +30,10 @@
     <div class="form-group">
         <x-input class="my-2"
                  wire:model="subtitle"
-                 label="Subtitle*"
-                 placeholder="Subtitle for News"
+                 label="{{__('table.sub_title')}}*"
+                 placeholder="{{__('table.sub_title')}}"
                  icon="pencil"
-                 hint="Subtitle"
+                 hint="{{__('table.sub_title')}}"
         />
     </div>
     {{--    Subtitle--}}
@@ -41,20 +41,20 @@
     <div class="form-group">
         <x-textarea
             wire:model="description"
-            label="Description*"
-            placeholder="Description"
-            hint="Description of plan"
+            label="{{__('table.description')}}*"
+            placeholder="{{__('table.description')}}"
+            hint="{{__('table.description')}}"
         />
     </div>
     {{--    Description --}}
 
     {{-- Poster --}}
-        <label class="h-5">Poster*</label>
+        <label class="h-5">{{__('table.poster')}}*</label>
         <livewire:image-upload :output_name="'poster'" :folder-name="'news'"/>
     {{-- Poster --}}
 
     {{-- Image Url --}}
-        <label class="h-5">Image Url*</label>
+        <label class="h-5">{{__('table.image_url')}}*</label>
         <livewire:image-upload :folder-name="'news'"/>
     {{-- Image Url --}}
 
@@ -62,7 +62,7 @@
     <div class="form-group">
         <x-checkbox
             id="is_active"
-            label="Is Active"
+            label="{{__('table.is_active')}}"
             icon="check"
             wire:model.defer="is_active"
         />
@@ -72,7 +72,7 @@
     <div class="form-group">
         <x-checkbox
             id="is_important"
-            label="Showed at Main Screen"
+            label="{{__('table.is_important')}}"
             icon="check"
             wire:model.defer="is_important"
         />

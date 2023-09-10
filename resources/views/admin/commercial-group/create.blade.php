@@ -1,9 +1,10 @@
 @extends('layouts.default')
 @section('content')
     <x-layer-components.content-navbar
-        :title="'Создать Группу Планов'"
-        :subtitle="'Управление группами планов'"
-        :breadcrumbs="['Управление Группами Планов','Создать Группу планов']"
+        :title="__('table.commercial_create_title')"
+        :subtitle="__('table.commercial_create_subtitle')"
+        :breadcrumbs="[__('table.commercial_management'),__('table.commercial_create_title')]"
+        :routes="['commercial-group.index']"
     />
     <div class="col-lg-12 grid-margin stretch-card">
         <div class="card">

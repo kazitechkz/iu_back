@@ -6,7 +6,7 @@
     {{--    Plans --}}
     <div class="form-group">
         <x-select
-            label="Plan*"
+            label="{{__('table.plan_id')}}*"
             :options="$plans"
             option-label="name"
             option-value="id"
@@ -18,7 +18,7 @@
     {{--    User --}}
     <div class="form-group">
         <x-select
-            label="User*"
+            label="{{__('table.user_id')}}*"
             :options="$users"
             option-label="name"
             option-value="id"

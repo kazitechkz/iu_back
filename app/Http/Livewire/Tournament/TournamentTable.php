@@ -29,44 +29,44 @@ class TournamentTable extends DataTableComponent
         return [
             Column::make("Id", "id")
                 ->sortable(),
-            Column::make("Subject id", "subject.title_ru")
+            Column::make(__("table.subject_id"), "subject.title_ru")
                 ->sortable(),
-            Column::make("Title ru", "title_ru")
+            Column::make(__("table.title_ru"), "title_ru")
                 ->sortable(),
-            Column::make("Title kk", "title_kk")
+            Column::make(__("table.title_kk"), "title_kk")
                 ->sortable(),
-            Column::make("Title en", "title_en")
+            Column::make(__("table.text_en"), "title_en")
                 ->sortable(),
-            Column::make("Rule ru", "rule_ru")
+            Column::make(__("table.rule_ru"), "rule_ru")
                 ->sortable(),
-            Column::make("Rule kk", "rule_kk")
+            Column::make(__("table.rule_kk"), "rule_kk")
                 ->sortable(),
-            Column::make("Rule en", "rule_en")
+            Column::make(__("table.rule_en"), "rule_en")
                 ->sortable(),
-            Column::make("Description ru", "description_ru")
+            Column::make(__("table.description_ru"), "description_ru")
                 ->sortable(),
-            Column::make("Description kk", "description_kk")
+            Column::make(__("table.description_kk"), "description_kk")
                 ->sortable(),
-            Column::make("Description en", "description_en")
+            Column::make(__("table.description_en"), "description_en")
                 ->sortable(),
-            Column::make("Price", "price")
+            Column::make(__("table.price"), "price")
                 ->sortable(),
-            Column::make("Currency", "currency")
+            Column::make(__("table.currency"), "currency")
                 ->sortable(),
-            Column::make("Poster", "file.url")
+            Column::make(__("table.poster"), "file.url")
                 ->format(fn($val) => '<img class="w-50" src="'.File::getFileFromAWS($val).'" />')
                 ->html(),
-            Column::make("Status", "status")
+            Column::make(__("table.status"), "status")
                 ->sortable(),
-            Column::make("Start at", "start_at")
+            Column::make(__("table.start_at"), "start_at")
                 ->sortable(),
-            Column::make("End at", "end_at")
+            Column::make(__("table.end_at"), "end_at")
                 ->sortable(),
-            Column::make("Created at", "created_at")
+            Column::make(__("table.created_at"), "created_at")
                 ->sortable(),
-            Column::make("Updated at", "updated_at")
+            Column::make(__("table.updated_at"), "updated_at")
                 ->sortable(),
-            ButtonGroupColumn::make('Actions')
+            ButtonGroupColumn::make(__("table.updated_at"))
                 ->attributes(function($row) {
                     return [
                         'class' => 'space-x-2 flex',

@@ -8,10 +8,10 @@
     <div class="form-group">
         <x-input class="my-2"
                  wire:model="tag"
-                 label="Tag*"
-                 placeholder="Tag f.e free, standart, basic"
+                 label="{{__('table.tag')}}*"
+                 placeholder="{{__('table.tag')}}"
                  icon="pencil"
-                 hint="Tag is identifier of plan it is required to write it in english"
+                 hint="{{__('table.tag_hint')}}"
         />
     </div>
     {{--    Tag--}}
@@ -19,10 +19,10 @@
     <div class="form-group">
         <x-input class="my-2"
                  wire:model="name"
-                 label="Name*"
-                 placeholder="Name f.e Basic Standart Premium"
+                 label="{{__('table.name')}}*"
+                 placeholder="{{__('table.name')}}, like Basic,Standart,Pro"
                  icon="pencil"
-                 hint="Name is identifier of plan it is required to write it in english"
+                 hint="{{__('table.name')}}"
         />
     </div>
     {{--    Name--}}
@@ -30,9 +30,9 @@
     <div class="form-group">
         <x-textarea
             wire:model="description"
-            label="Description*"
-            placeholder="Description"
-            hint="Description of plan"
+            label="{{__('table.description')}}*"
+            placeholder="{{__('table.description')}}"
+            hint="{{__('table.description')}}"
         />
     </div>
     {{--    Description --}}
@@ -41,7 +41,7 @@
     <div class="form-group">
         <x-checkbox
             id="is_active"
-            label="Is Active"
+            label="{{__('table.is_active')}}"
             icon="check"
             wire:model.defer="is_active"
         />
@@ -50,7 +50,7 @@
     {{--    Commercial Group --}}
     <div class="form-group">
         <x-select
-            label="Commercial Group*"
+            label="{{__('table.commercial_group_id')}}*"
             :options="$commercial_groups"
             option-label="title_ru"
             option-value="id"
@@ -62,19 +62,20 @@
     {{-- Price --}}
     <div class="form-group">
         <x-inputs.number
-            label="Price*"
+            label="{{__('table.price')}}*"
             prefix="KZT"
+            placeholder="1000"
             wire:model="price"
-            hint="Price in Kazakh Tenge"
+            hint="{{__('table.price')}}"
         />
     </div>
     {{-- Price --}}
     {{-- signup_fee --}}
     <div class="form-group">
         <x-inputs.number
-            label="Sign Up Fee*"
+            label="{{__('table.sign_up_fee')}}*"
             wire:model="signup_fee"
-            hint="Price in Kazakh Tenge for signup may be 0"
+            hint="{{__('table.sign_up_fee')}}"
         />
     </div>
     {{-- signup_fee --}}
@@ -82,26 +83,26 @@
     <div class="form-group">
         <x-input class="my-2"
                  wire:model="currency"
-                 label="Currency*"
+                 label="{{__('table.currency')}}*"
                  placeholder="KZT USD EUR "
                  icon="pencil"
-                 hint="Currency in ISO 4217 format"
+                 hint="{{__('table.currency_hint')}}"
         />
     </div>
     {{-- currency --}}
     {{-- Invoice Period --}}
     <div class="form-group">
         <x-inputs.number
-            label="Invoice Period*"
+            label="{{__('table.invoice_period')}}*"
             wire:model="invoice_period"
-            hint="For example 0 days, 1 month etc"
+            hint="{{__('table.invoice_hint')}}"
         />
     </div>
     {{-- Invoice Period --}}
     {{--    Invoice Interval --}}
     <div class="form-group">
         <x-select
-            label="Invoice Interval*"
+            label="{{__('table.invoice_interval')}}*"
             :options="[
                 ['name'=>'Hour','value'=>'hour'],
                 ['name'=>'Day','value'=>'day'],
@@ -118,16 +119,16 @@
     {{-- Trial Period --}}
     <div class="form-group">
         <x-inputs.number
-            label="Count of Trial*"
+            label="{{__('table.trial_period')}}*"
             wire:model="trial_period"
-            hint="For example 0 days, 1 month etc"
+            hint="{{__('table.trial_hint')}}"
         />
     </div>
     {{-- Trial Period --}}
     {{--    Trial Interval --}}
     <div class="form-group">
         <x-select
-            label="Trial Interval*"
+            label="{{__('table.trial_interval')}}*"
             :options="[
                 ['name'=>'Hour','value'=>'hour'],
                 ['name'=>'Day','value'=>'day'],
@@ -153,23 +154,23 @@
             option-value="value"
             wire:model="trial_mode"
             name="trial_mode"
-            hint="Inside (30=3trial + 27paid) and Outside(30=3trial + 30paid)"
+            hint="{{__('table.trial_mode_hint')}}"
         />
     </div>
     {{--    Trial Mode --}}
     {{-- Grace Period --}}
     <div class="form-group">
         <x-inputs.number
-            label="Grace Period*"
+            label="{{__('table.grace_period')}}*"
             wire:model="grace_period"
-            hint="For example 0 days, 1 month etc"
+            hint="{{__('table.grace_hint')}}"
         />
     </div>
     {{-- Grace Period --}}
     {{--    Grace Interval --}}
     <div class="form-group">
         <x-select
-            label="Grace Interval*"
+            label="{{__('table.grace_interval')}}*"
             :options="[
                 ['name'=>'Not Grace Period','value'=>null],
                 ['name'=>'Hour','value'=>'hour'],

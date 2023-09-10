@@ -1,9 +1,10 @@
 @extends('layouts.default')
 @section('content')
     <x-layer-components.content-navbar
-        :title="'Изменить пользователя ' . $user->name"
-        :subtitle="'Блок редактирования пользователя'"
-        :breadcrumbs="['Управление пользователями','Редактировать пользователя']"
+        :title="__('table.user_edit_title') . $user->name"
+        :subtitle="__('table.user_edit_subtitle')"
+        :breadcrumbs="[__('table.user_management'),__('table.user_edit_title')]"
+        :routes="['user.index']"
     />
 
     <div class="col-lg-12 grid-margin stretch-card">

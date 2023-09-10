@@ -28,19 +28,14 @@ class RoleTable extends  DataTableComponent
             });
     }
 
-
-
-
-
-
     public function columns(): array
     {
         return [
             Column::make("Id", "id")
                 ->sortable(),
-            Column::make("Наименование", "name")->searchable()
+            Column::make(__("table.role_name"), "name")->searchable()
                 ->sortable(),
-            Column::make("Guard Name", "guard_name")->searchable()
+            Column::make(__("table.guard_name"), "guard_name")->searchable()
                 ->sortable(),
         ];
     }

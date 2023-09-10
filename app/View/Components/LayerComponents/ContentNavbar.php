@@ -15,11 +15,13 @@ class ContentNavbar extends Component
     public string $title;
     public string $subtitle;
     public array $breadcrumbs;
-    public function __construct(string $title, string $subtitle = '', array $breadcrumbs = [])
+    public array $routes;
+    public function __construct(string $title, string $subtitle = '', array $breadcrumbs = [],array $routes = [])
     {
         $this->title = $title;
         $this->subtitle = $subtitle;
         $this->breadcrumbs = $breadcrumbs;
+        $this->routes = $routes;
     }
 
     /**

@@ -1,9 +1,10 @@
 @extends('layouts.default')
 @section('content')
     <x-layer-components.content-navbar
-        :title="'Управление пользователя к подписке'"
-        :subtitle="'Блок управления подписками'"
-        :breadcrumbs="['Управление подписками','Изменить пользователя к подписке']"
+        :title="__('table.subscription_edit_title') . $subscription->name"
+        :subtitle="__('table.subscription_edit_subtitle')"
+        :breadcrumbs="[__('table.subscription_management'),__('table.subscription_edit_title')]"
+        :routes="['subscription.index']"
     />
 
     <div class="col-lg-12 grid-margin stretch-card">

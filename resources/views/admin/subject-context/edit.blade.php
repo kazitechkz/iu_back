@@ -1,9 +1,10 @@
 @extends('layouts.default')
 @section('content')
     <x-layer-components.content-navbar
-        :title="'Редактировать контекст'"
-        :subtitle="'Блок редактирования контекста'"
-
+        :title="__('table.subject_context_edit_title')"
+        :subtitle="__('table.subject_context_edit_subtitle')"
+        :breadcrumbs="[__('table.subject_context_management'),__('table.subject_context_edit_title')]"
+        :routes="['subject-contexts.index']"
     />
     <div class="col-lg-12 grid-margin stretch-card">
         <div class="card">

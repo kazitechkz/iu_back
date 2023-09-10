@@ -8,10 +8,10 @@
     <div class="form-group">
         <x-input class="my-2"
                  wire:model="title_ru"
-                 label="Title in Russian*"
-                 placeholder="Title in Russian"
+                 label="{{__('table.title_ru')}}*"
+                 placeholder="{{__('table.title_ru')}}"
                  icon="pencil"
-                 hint="Title in Russian"
+                 hint="{{__('table.title_ru')}}"
         />
     </div>
     {{--    Title in Russian --}}
@@ -19,10 +19,10 @@
     <div class="form-group">
         <x-input class="my-2"
                  wire:model="title_kk"
-                 label="Title in Kazakh*"
-                 placeholder="Title in Kazakh"
+                 label="{{__('table.title_kk')}}*"
+                 placeholder="{{__('table.title_kk')}}"
                  icon="pencil"
-                 hint="Title in Kazakh"
+                 hint="{{__('table.title_kk')}}"
         />
     </div>
     {{--    Title in Kazakh --}}
@@ -30,10 +30,10 @@
     <div class="form-group">
         <x-input class="my-2"
                  wire:model="title_en"
-                 label="Title in English"
-                 placeholder="Title in English"
+                 label="{{__('table.title_en')}}"
+                 placeholder="{{__('table.title_en')}}"
                  icon="pencil"
-                 hint="Title in English"
+                 hint="{{__('table.title_en')}}"
         />
     </div>
     {{--    Title in English --}}
@@ -41,17 +41,17 @@
     <div class="form-group">
         <x-input class="my-2"
                  wire:model="tag"
-                 label="Tag"
-                 placeholder="Tag"
+                 label="{{__('table.tag')}}"
+                 placeholder="{{__('table.tag')}}"
                  icon="pencil"
-                 hint="Tag must be unique"
+                 hint="{{__('table.tag_hint')}}"
         />
     </div>
     {{--    Tag --}}
     {{-- Is Active --}}
     <x-checkbox
         id="is_active"
-        label="Активный*"
+        label="{{__('table.is_active')}}*"
         icon="check"
         wire:model.defer="is_active"
     />

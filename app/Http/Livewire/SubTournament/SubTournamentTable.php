@@ -65,29 +65,29 @@ class SubTournamentTable extends DataTableComponent
         return [
             Column::make("Id", "id")
                 ->sortable(),
-            Column::make("Tournament id", "tournament.title_ru")
+            Column::make(__("table.tournament_id"), "tournament.title_ru")
                 ->sortable(),
-            Column::make("Step id", "tournament_step.title_ru")
+            Column::make(__("table.tournament_step_id"), "tournament_step.title_ru")
                 ->sortable(),
-            Column::make("Question quantity", "question_quantity")
+            Column::make(__("table.question_quantity"), "question_quantity")
                 ->sortable(),
-            Column::make("Max point", "max_point")
+            Column::make(__("table.max_point"), "max_point")
                 ->sortable(),
-            Column::make("Single question quantity", "single_question_quantity")
+            Column::make(__("table.single_question_quantity"), "single_question_quantity")
                 ->sortable(),
-            Column::make("Multiple question quantity", "multiple_question_quantity")
+            Column::make(__("table.multiple_question_quantity"), "multiple_question_quantity")
                 ->sortable(),
-            Column::make("Context question quantity", "context_question_quantity")
+            Column::make(__("table.context_question_quantity"), "context_question_quantity")
                 ->sortable(),
-            Column::make("Time", "time")
+            Column::make(__("table.time"), "time")
                 ->sortable(),
-            Column::make("Start at", "start_at")
+            Column::make(__("table.start_at"), "start_at")
                 ->sortable(),
-            Column::make("End at", "end_at")
+            Column::make(__("table.end_at"), "end_at")
                 ->sortable(),
-            Column::make("Created at", "created_at")
+            Column::make(__("table.created_at"), "created_at")
                 ->sortable(),
-            Column::make("Updated at", "updated_at")
+            Column::make(__("table.updated_at"), "updated_at")
                 ->sortable(),
         ];
     }

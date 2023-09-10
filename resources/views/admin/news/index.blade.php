@@ -1,11 +1,14 @@
 @extends('layouts.default')
 @section('content')
     <x-layer-components.content-navbar
-        :title="'Список Новостей'"
-        :subtitle="'Управление Новостями'"
-        :breadcrumbs="['Управление Новостями']"
+        :title="__('table.news_lists')"
+        :subtitle="__('table.news_management')"
+        :breadcrumbs="[__('table.news_management')]"
+        :routes="['news.index']"
     >
-        <a href="{{route("news.create")}}" class="btn btn-primary mt-2 mt-xl-0">Добавить новость</a>
+        <a href="{{route("news.create")}}" class="btn btn-primary mt-2 mt-xl-0">
+            {{__('table.news_create_title')}}
+        </a>
 
     </x-layer-components.content-navbar>
     <div class="col-lg-12 grid-margin stretch-card">

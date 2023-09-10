@@ -1,8 +1,10 @@
 @extends('layouts.default')
 @section('content')
     <x-layer-components.content-navbar
-        :title="'Список Типов Аппеляций'"
-        :subtitle="'Управление Типами Аппеляции'"
+        :title="__('table.appeal_type_lists')"
+        :subtitle="__('table.appeal_type_management')"
+        :breadcrumbs="[__('table.appeal_type_management')]"
+        :routes="['appeal-type.index']"
     >
         <a href="{{route("appeal-type.create")}}" class="btn btn-primary mt-2 mt-xl-0">Создать</a>
 

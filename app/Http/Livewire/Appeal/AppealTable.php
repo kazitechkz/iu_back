@@ -55,19 +55,19 @@ class AppealTable extends DataTableComponent
         return [
             Column::make("Id", "id")
                 ->sortable(),
-            Column::make("User id", "user.name")
+            Column::make(__("table.user_id"), "user.name")
                 ->sortable(),
-            Column::make("Type id", "appeal_type.title_ru")
+            Column::make(__("table.type_id"), "appeal_type.title_ru")
                 ->sortable(),
-            Column::make("Question id", "question.text")
+            Column::make(__("table.question_id"), "question.text")
                 ->sortable(),
-            Column::make("Message", "message")
+            Column::make(__("table.message"), "message")
                 ->sortable(),
-            Column::make("Status", "status")
+            Column::make(__("table.status"), "status")
                 ->sortable(),
-            Column::make("Created at", "created_at")
+            Column::make(__("table.created_at"), "created_at")
                 ->sortable(),
-            Column::make("Updated at", "updated_at")
+            Column::make(__("table.updated_at"), "updated_at")
                 ->sortable(),
         ];
     }

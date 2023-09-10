@@ -9,10 +9,10 @@
     <div class="form-group">
         <x-input class="my-2"
                  wire:model="title_ru"
-                 label="Title in Russian*"
-                 placeholder="Title in Russian"
+                 label="{{__('table.title_ru')}}*"
+                 placeholder="{{__('table.title_ru')}}"
                  icon="pencil"
-                 hint="Title in Russian"
+                 hint="{{__('table.title_ru')}}"
         />
     </div>
     {{--    Title in Russian --}}
@@ -20,10 +20,10 @@
     <div class="form-group">
         <x-input class="my-2"
                  wire:model="title_kk"
-                 label="Title in Kazakh*"
-                 placeholder="Title in Kazakh"
+                 label="{{__('table.title_kk')}}*"
+                 placeholder="{{__('table.title_kk')}}"
                  icon="pencil"
-                 hint="Title in Kazakh"
+                 hint="{{__('table.title_kk')}}"
         />
     </div>
     {{--    Title in Kazakh --}}
@@ -31,10 +31,10 @@
     <div class="form-group">
         <x-input class="my-2"
                  wire:model="title_en"
-                 label="Title in English*"
-                 placeholder="Title in English"
+                 label="{{__('table.title_en')}}*"
+                 placeholder="{{__('table.title_en')}}"
                  icon="pencil"
-                 hint="Title in English"
+                 hint="{{__('table.title_en')}}"
         />
     </div>
     {{--    Title in English --}}
@@ -42,14 +42,14 @@
     {{-- Is Active --}}
     <x-checkbox
         id="is_active"
-        label="Активный"
+        label="{{__('table.is_active')}}"
         icon="check"
         wire:model.defer="isActive"
     />
     {{-- Is Active --}}
     {{-- Plans --}}
     <p class="h-3 mb-3 font-weight-bold">
-        Plan:
+        {{__('table.plan_id')}}:
     </p>
     <div class="form-group">
         @foreach($plans as $plan)

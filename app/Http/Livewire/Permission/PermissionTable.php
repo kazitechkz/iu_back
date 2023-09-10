@@ -39,9 +39,9 @@ class PermissionTable extends  DataTableComponent
         return [
             Column::make("Id", "id")
                 ->sortable(),
-            Column::make("Наименование", "name")->searchable()
+            Column::make(__("table.permission_id"), "name")->searchable()
                 ->sortable(),
-            Column::make("Guard Name", "guard_name")->searchable()
+            Column::make(__("table.guard_name"), "guard_name")->searchable()
                 ->sortable(),
         ];
     }

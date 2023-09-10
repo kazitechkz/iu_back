@@ -1,9 +1,10 @@
 @extends('layouts.default')
 @section('content')
     <x-layer-components.content-navbar
-        :title="'Список FAQ'"
-        :subtitle="'Управление FAQ'"
-        :breadcrumbs="['Управление FAQ']"
+        :title="__('table.faq_lists')"
+        :subtitle="__('table.faq_management')"
+        :breadcrumbs="[__('table.faq_management')]"
+        :routes="['faq.index']"
     >
         <a href="{{route("faq.create")}}" class="btn btn-primary mt-2 mt-xl-0">Добавить FAQ</a>
 

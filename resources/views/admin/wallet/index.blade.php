@@ -1,11 +1,14 @@
 @extends('layouts.default')
 @section('content')
     <x-layer-components.content-navbar
-        :title="'Список Кошельков'"
-        :subtitle="'Управление кошельками пользователей'"
-        :breadcrumbs="['Управление кошельками']"
+        :title="__('table.wallet_lists')"
+        :subtitle="__('table.wallet_management')"
+        :breadcrumbs="[__('table.wallet_management')]"
+        :routes="['wallet.index']"
     >
-        <a href="{{route("wallet.create")}}" class="btn btn-primary mt-2 mt-xl-0">Транзакция по кошельку</a>
+        <a href="{{route("wallet.create")}}" class="btn btn-primary mt-2 mt-xl-0">
+            {{__('table.wallet_create_title')}}
+        </a>
 
     </x-layer-components.content-navbar>
     <div class="col-lg-12 grid-margin stretch-card">

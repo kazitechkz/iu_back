@@ -16,10 +16,10 @@
     <div class="form-group">
         <x-input class="my-2"
                  wire:model="title"
-                 label="Title*"
-                 placeholder="Title"
+                 label="{{__('table.title')}}*"
+                 placeholder="{{__('table.title')}}"
                  icon="pencil"
-                 hint="Title"
+                 hint="{{__('table.title')}}"
         />
     </div>
     {{--    Title--}}
@@ -27,17 +27,17 @@
     <div class="form-group">
         <x-input class="my-2"
                  wire:model="code"
-                 label="Code (kk,ru,en etc.)*"
-                 placeholder="Code"
+                 label="{{__('table.code')}} (kk,ru,en etc.)*"
+                 placeholder="{{__('table.code')}}"
                  icon="globe"
-                 hint="Code of language"
+                 hint="{{__('table.code')}} ISO 639-1"
         />
     </div>
     {{--    Code--}}
     {{-- Is Active --}}
     <x-checkbox
         id="is_active"
-        label="Активный"
+        label="{{__('table.is_active')}}"
         icon="check"
         wire:model.defer="isActive"
     />

@@ -7,7 +7,7 @@
     {{--    Tournament  --}}
     <div class="form-group">
         <x-select
-            label="Tournaments*"
+            label="{{__('table.tournament_id')}}*"
             :options="$tournaments"
             option-label="title_ru"
             option-value="id"
@@ -19,7 +19,7 @@
     {{--    Step  --}}
     <div class="form-group">
         <x-select
-            label="Steps*"
+            label="{{__('table.tournament_step_id')}}*"
             :options="$steps"
             option-label="title_ru"
             option-value="id"
@@ -31,59 +31,59 @@
     {{-- Single Question Quantity --}}
     <div class="form-group">
         <x-inputs.number
-            label="Single Question Quantity*"
+            label="{{__('table.single_question_quantity')}}*"
             wire:model="single_question_quantity"
-            hint="Single Question Quantity"
+            hint="{{__('table.single_question_quantity')}}"
         />
     </div>
     {{-- Single Question Quantity --}}
     {{-- Multiple Question Quantity --}}
     <div class="form-group">
         <x-inputs.number
-            label="Multiple Question Quantity*"
+            label="{{__('table.multiple_question_quantity')}}*"
             wire:model="multiple_question_quantity"
-            hint="Multiple Question Quantity"
+            hint="{{__('table.multiple_question_quantity')}}"
         />
     </div>
     {{-- Multiple Question Quantity --}}
     {{-- Context Question Quantity --}}
     <div class="form-group">
         <x-inputs.number
-            label="Context Question Quantity*"
+            label="{{__('table.context_question_quantity')}}*"
             wire:model="context_question_quantity"
-            hint="Context Question Quantity"
+            hint="{{__('table.context_question_quantity')}}"
         />
     </div>
     {{-- Context Question Quantity --}}
     {{-- Time in minutes --}}
     <div class="form-group">
         <x-inputs.number
-            label="Time in minutes*"
+            label="{{__('table.time')}}*"
             wire:model="time"
-            hint="Time in minutes"
+            hint="{{__('table.time')}}"
         />
     </div>
     {{-- Time in minutes --}}
     {{-- Start At --}}
     <x-datetime-picker
-        label="Start At *"
+        label="{{__('table.start_at')}} *"
         time-format="24"
         parse-format="DD-MM-YYYY HH:mm"
         :min="now()"
         :max="now()->addYear(2)"
         wire:model="start_at"
-        hint="Start At"
+        hint="{{__('table.start_at')}}"
     />
     {{--Start At --}}
     {{-- End At --}}
     <x-datetime-picker
-        label="End At *"
+        label="{{__('table.end_at')}} *"
         time-format="24"
         parse-format="DD-MM-YYYY HH:mm"
         :min="now()"
         :max="now()->addYear(2)"
         wire:model="end_at"
-        hint="End At"
+        hint="{{__('table.end_at')}}"
     />
     {{--End At --}}
 </x-form-component.form-component>

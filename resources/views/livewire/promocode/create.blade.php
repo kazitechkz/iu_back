@@ -6,22 +6,22 @@
     {{-- Usage --}}
     <div class="form-group">
         <x-inputs.number
-            label="Usage*"
+            label="{{__('table.usages')}}*"
             max="1000"
             min="1"
             wire:model="usages"
-            hint="How many times promocode can be used, it is recomended - only one"
+            hint="{{__('table.usages_hint')}}"
         />
     </div>
     {{-- Usage --}}
     {{-- Count --}}
     <div class="form-group">
         <x-inputs.number
-            label="Count*"
+            label="{{__('table.count')}}*"
             max="1000"
             min="1"
             wire:model="count"
-            hint="How many unique promocode should be generated, maximum - 1000"
+            hint="{{__('table.count_hint')}}"
         />
     </div>
     {{-- Count --}}
@@ -29,24 +29,24 @@
     {{-- Point --}}
     <div class="form-group">
         <x-inputs.number
-            label="Point*"
+            label="{{__('table.point')}}*"
             max="10000"
             min="1"
             wire:model="points"
-            hint="How many points - ui coins we can receive, 1KZT = 1 UI COIN"
+            hint="{{__('table.point')}}, 1KZT = 1 UI COIN"
         />
     </div>
     {{-- Point --}}
 
     {{--Expiration Date --}}
     <x-datetime-picker
-        label="Expiration Date"
+        label="{{__('table.expiration')}}"
         time-format="24"
         parse-format="DD-MM-YYYY HH:mm"
         :min="now()"
         :max="now()->addYear(2)"
         wire:model="expiration_date"
-        hint="Expiration Date - when it comes user cant use it"
+        hint="{{__('table.expiration')}}"
     />
     {{--Expiration Date --}}
 </x-form-component.form-component>

@@ -1,9 +1,10 @@
 @extends('layouts.default')
 @section('content')
     <x-layer-components.content-navbar
-        :title="'Список Победителей'"
-        :subtitle="'Управление Победителями'"
-        :breadcrumbs="['Управление Победителями']"
+        :title="__('table.sub_tournament_winner_lists')"
+        :subtitle="__('table.sub_tournament_winner_management')"
+        :breadcrumbs="[__('table.sub_tournament_winner_management')]"
+        :routes="['sub-tournament-winner.index']"
     >
     </x-layer-components.content-navbar>
     <div class="col-lg-12 grid-margin stretch-card">

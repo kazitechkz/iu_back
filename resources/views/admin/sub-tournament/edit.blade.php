@@ -1,9 +1,10 @@
 @extends('layouts.default')
 @section('content')
     <x-layer-components.content-navbar
-        :title="'Изменить Субтурнир'"
-        :subtitle="'Управление Субтурнирами'"
-        :breadcrumbs="['Управление Субтурнир','Изменить Субтурнирами']"
+        :title="__('table.sub_tournament_edit_title') . $sub_tournament->title_ru"
+        :subtitle="__('table.sub_tournament_edit_subtitle')"
+        :breadcrumbs="[__('table.sub_tournament_management'),__('table.sub_tournament_edit_title')]"
+        :routes="['sub-tournament.index']"
     />
     <div class="col-lg-12 grid-margin stretch-card">
         <div class="card">

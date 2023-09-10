@@ -1,9 +1,10 @@
 @extends('layouts.default')
 @section('content')
     <x-layer-components.content-navbar
-        :title="'Создать Промокод'"
-        :subtitle="'Управление Промокодами'"
-        :breadcrumbs="['Управление Промокодами','Создать промокод']"
+        :title="__('table.promocode_create_title')"
+        :subtitle="__('table.promocode_create_subtitle')"
+        :breadcrumbs="[__('table.promocode_management'),__('table.promocode_create_title')]"
+        :routes="['promocode.index']"
     />
     <div class="col-lg-12 grid-margin stretch-card">
         <div class="card">

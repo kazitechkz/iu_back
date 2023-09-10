@@ -6,7 +6,10 @@
 @endpush
 @section('content')
     <x-layer-components.content-navbar
-        :title="'Создать новый вопрос'"
+        :title="__('table.question_create_title')"
+        :subtitle="__('table.question_create_subtitle')"
+        :breadcrumbs="[__('table.question_management'),__('table.question_create_title')]"
+        :routes="['questions.index']"
     />
     <div class="col-lg-12 grid-margin stretch-card">
         <div class="card">

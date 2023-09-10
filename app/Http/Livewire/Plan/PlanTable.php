@@ -7,6 +7,7 @@ use Bpuig\Subby\Models\Plan;
 use Maatwebsite\Excel\Facades\Excel;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
+use Rappasoft\LaravelLivewireTables\Views\Columns\BooleanColumn;
 
 class PlanTable extends  DataTableComponent
 {
@@ -55,32 +56,30 @@ class PlanTable extends  DataTableComponent
         return [
             Column::make("Id", "id")
                 ->sortable(),
-            Column::make("Tag", "tag")->searchable()
+            Column::make(__("table.tag"), "tag")->searchable()
                 ->sortable(),
-            Column::make("Name", "name")->searchable()
+            Column::make(__("table.name"), "name")->searchable()
                 ->sortable(),
-            Column::make("Is Active", "is_active")->format(function ($value){
-                return $value ? "<p class='text-green-500'>Активен</p>" : "<p class='text-red-500'>Не активен</p>";
-            })->html(),
-            Column::make("Price", "price")->searchable()
+            BooleanColumn::make(__("table.is_active"), "is_active"),
+            Column::make(__("table.price"), "price")->searchable()
                 ->sortable(),
-            Column::make("Sign Up Fee", "signup_fee")
+            Column::make(__("table.sign_up_fee"), "signup_fee")
                 ->sortable(),
-            Column::make("Currency", "currency")->searchable()
+            Column::make(__("table.currency"), "currency")->searchable()
                 ->sortable(),
-            Column::make("Invoice Period", "invoice_period")
+            Column::make(__("table.invoice_period"), "invoice_period")
                 ->sortable(),
-            Column::make("Invoice Interval", "invoice_interval")
+            Column::make(__("table.invoice_interval"), "invoice_interval")
                 ->sortable(),
-            Column::make("Trial Period", "trial_period")
+            Column::make(__("table.trial_period"), "trial_period")
                 ->sortable(),
-            Column::make("Trial Interval", "trial_interval")
+            Column::make(__("table.trial_interval"), "trial_interval")
                 ->sortable(),
             Column::make("Trial Mode", "trial_mode")
                 ->sortable(),
-            Column::make("Grace Period", "grace_period")
+            Column::make(__("table.grace_period"), "grace_period")
                 ->sortable(),
-            Column::make("Grace Interval", "grace_interval")
+            Column::make(__("table.grace_interval"), "grace_interval")
                 ->sortable(),
         ];
     }

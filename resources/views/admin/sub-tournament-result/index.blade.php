@@ -1,9 +1,10 @@
 @extends('layouts.default')
 @section('content')
     <x-layer-components.content-navbar
-        :title="'Список Результатов'"
-        :subtitle="'Управление Результатов'"
-        :breadcrumbs="['Управление Результатов']"
+        :title="__('table.sub_tournament_result_lists')"
+        :subtitle="__('table.sub_tournament_result_management')"
+        :breadcrumbs="[__('table.sub_tournament_result_management')]"
+        :routes="['sub-tournament-result.index']"
     >
 
     </x-layer-components.content-navbar>

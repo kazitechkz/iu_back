@@ -7,18 +7,18 @@
     <div class="form-group">
         <x-input class="my-2"
                  wire:model="name"
-                 label="Permission Name*"
-                 placeholder="Permission Name"
+                 label="{{__('table.permission_id')}}*"
+                 placeholder="{{__('table.permission_id')}}"
                  icon="user"
-                 hint="Permission name"
+                 hint="{{__('table.permission_id')}}"
         />
     </div>
     {{--    Permission Name--}}
     {{--    Permission Guard--}}
     <div class="form-group">
         <x-select
-            label="Guard Name *"
-            placeholder="Choose Guard"
+            label="{{__('table.guard_name')}} *"
+            placeholder="{{__('table.guard_name')}}"
             :options="['web']"
             wire:model="guard_name"
             name="guard_name"

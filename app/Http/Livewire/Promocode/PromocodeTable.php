@@ -60,21 +60,21 @@ class PromocodeTable extends  DataTableComponent
         return [
             Column::make("Id", "id")
                 ->sortable(),
-            Column::make("Код", "code")->searchable()
+            Column::make(__("table.code"), "code")->searchable()
                 ->sortable(),
             Column::make("Details")->format(function ($value){
                return $value["points"] . " IU Coins";
             }),
-            BooleanColumn::make("Активный", "usages_left")
+            BooleanColumn::make(__("table.is_active"), "usages_left")
                 ->sortable(),
-            Column::make("Осталось", "usages_left")
+            Column::make(__("table.usages"), "usages_left")
                 ->sortable(),
-            Column::make("Пользователь", "user.name"),
-            Column::make("Использовал", "user.name")
+            Column::make(__("table.user_id"), "user.name"),
+            Column::make(__("table.user_id"), "user.name")
                 ->sortable(),
-            Column::make("Дата окончания","expired_at")->sortable(),
-            Column::make("Дата начала","created_at")->sortable(),
-            Column::make("Дата обновления","updated_at"),
+            Column::make(__("table.expiration"),"expired_at")->sortable(),
+            Column::make(__("table.created_at"),"created_at")->sortable(),
+            Column::make(__("table.updated_at"),"updated_at"),
         ];
     }
 

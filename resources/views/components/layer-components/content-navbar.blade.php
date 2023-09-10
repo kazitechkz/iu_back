@@ -21,9 +21,27 @@
                 @if(count($breadcrumbs)>0)
                 <div class="col-md-12">
                     <div class="d-flex">
-                        <i class="mdi mdi-home text-muted hover-cursor"></i>
-                            @foreach($breadcrumbs as $breadcrumb)
-                                <p class="text-primary mb-0 hover-cursor">/{{$breadcrumb}}</p>
+                        <i class="mdi mdi-home hover-cursor
+                                @if(isset($routes[0]))
+                                      text-blue-700
+                                       @else
+                                       text-gray-700
+                                    @endif">
+                        </i>
+                            @foreach($breadcrumbs as $key=> $breadcrumb)
+                                <a
+                                    @if(isset($routes[$key])) href="{{route($routes[$key])}}" @endif
+                                    class="font-weight-600 mb-0 hover-cursor
+                                     @if(isset($routes[$key]))
+                                      text-blue-700
+                                       @else
+                                       text-gray-700
+                                    @endif
+                                    ">
+                                    @if($key)
+                                        /
+                                    @endif
+                                    {{$breadcrumb}}</a>
                             @endforeach
                     </div>
                 </div>

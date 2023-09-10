@@ -6,7 +6,7 @@
     {{--    Plans --}}
     <div class="form-group">
         <x-select
-            label="Plan*"
+            label="{{__('table.plan_id')}}*"
             :options="$plans"
             option-label="name"
             option-value="id"
@@ -20,10 +20,10 @@
     <div class="form-group">
         <x-input class="my-2"
                  wire:model.debounce.500ms="search"
-                 label="Search*"
-                 placeholder="Search"
+                 label="{{__('table.search_user')}}*"
+                 placeholder="{{__('table.search_user')}}"
                  icon="search"
-                 hint="Search by name,username,email,phone"
+                 hint="{{__('table.search_user')}}"
         />
     </div>
     {{--    Search User --}}
@@ -49,9 +49,9 @@
         <div class="form-group">
             <x-textarea
                 wire:model="description"
-                label="Description*"
-                placeholder="Description"
-                hint="Description of plan"
+                label="{{__('table.description')}}*"
+                placeholder="{{__('table.description')}}"
+                hint="{{__('table.description')}}"
             />
         </div>
         {{--    Description --}}

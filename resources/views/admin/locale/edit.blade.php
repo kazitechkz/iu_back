@@ -1,9 +1,10 @@
 @extends('layouts.default')
 @section('content')
     <x-layer-components.content-navbar
-        :title="'Редактировать Локаль'"
-        :subtitle="'Редактирование Локали'"
-        :breadcrumbs="['Управление Локалями','Редактирование Локали']"
+        :title="__('table.locale_edit_title') . $locale->title"
+        :subtitle="__('table.locale_edit_subtitle')"
+        :breadcrumbs="[__('table.locale_management'),__('table.locale_edit_title')]"
+        :routes="['locale.index']"
     />
     <div class="col-lg-12 grid-margin stretch-card">
         <div class="card">

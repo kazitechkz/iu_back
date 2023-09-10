@@ -9,6 +9,7 @@ use App\Models\Subject;
 use Maatwebsite\Excel\Facades\Excel;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
+use Rappasoft\LaravelLivewireTables\Views\Columns\BooleanColumn;
 
 class LocaleTable extends DataTableComponent
 {
@@ -58,19 +59,17 @@ class LocaleTable extends DataTableComponent
         return [
             Column::make("Id", "id")
                 ->sortable(),
-            Column::make("Title", "title")
+            Column::make(__("table.title"), "title")
                 ->searchable()
                 ->sortable(),
-            Column::make("Code", "code")
+            Column::make(__("table.code"), "code")
                 ->searchable()
 
                 ->sortable(),
-            Column::make("IsActive", "isActive")->format(function ($value){
-                return $value ? "<p class='text-green-500'>Активен</p>" : "<p class='text-red-500'>Не активен</p>";
-            })->html(),
-            Column::make("Created at", "created_at")
+            BooleanColumn::make(__("table.is_active"), "isActive"),
+            Column::make(__("table.created_at"), "created_at")
                 ->sortable(),
-            Column::make("Updated at", "updated_at")
+            Column::make(__("table.updated_at"), "updated_at")
                 ->sortable(),
         ];
     }

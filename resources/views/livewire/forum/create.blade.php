@@ -8,10 +8,10 @@
     <div class="form-group">
         <x-input class="my-2"
                  wire:model="text"
-                 label="Title*"
-                 placeholder="Title"
+                 label="{{__('table.text')}}*"
+                 placeholder="{{__('table.text')}}"
                  icon="pencil"
-                 hint="Title"
+                 hint="{{__('table.text')}}"
         />
     </div>
     {{--    Text --}}
@@ -23,9 +23,9 @@
     {{--    Subject --}}
     <div class="form-group">
         <x-select
-            label="Subject"
+            label="{{__('table.subject_id')}}"
             wire:model="subject_id"
-            placeholder="Выберите предмет"
+            placeholder="{{__('table.subject_id')}}"
             :options="$subjects"
             option-label="title_ru"
             option-value="id"

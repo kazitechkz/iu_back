@@ -6,7 +6,7 @@
     {{--    Locales --}}
     <div class="form-group">
         <x-select
-            label="Locale*"
+            label="{{__('table.locale_id')}}*"
             :options="$locales"
             option-label="title"
             option-value="id"
@@ -19,9 +19,9 @@
     <div class="form-group">
         <x-textarea
             wire:model="question"
-            label="Question*"
-            placeholder="Question"
-            hint="Question of plan"
+            label="{{__('table.question_id')}}*"
+            placeholder="{{__('table.question_id')}}"
+            hint="{{__('table.question_id')}}"
         />
     </div>
     {{--    Question --}}
@@ -29,9 +29,9 @@
     <div class="form-group">
         <x-textarea
             wire:model="answer"
-            label="Answer*"
-            placeholder="Answer"
-            hint="Answer of plan"
+            label="{{__('table.answer')}}*"
+            placeholder="{{__('table.answer')}}"
+            hint="{{__('table.answer')}}"
         />
     </div>
     {{--    Answer --}}
@@ -40,7 +40,7 @@
     <div class="form-group">
         <x-checkbox
             id="is_active"
-            label="Is Active"
+            label="{{__('table.is_active')}}"
             icon="check"
             wire:model.defer="is_active"
         />

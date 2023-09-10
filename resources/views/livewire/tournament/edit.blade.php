@@ -7,7 +7,7 @@
     {{--    Subject  --}}
     <div class="form-group">
         <x-select
-            label="Subject*"
+            label="{{__('table.subject_id')}}*"
             :options="$subjects"
             option-label="title_ru"
             option-value="id"
@@ -20,10 +20,10 @@
     <div class="form-group">
         <x-input class="my-2"
                  wire:model="title_ru"
-                 label="Title in Russian*"
-                 placeholder="Title In Russian"
+                 label="{{__('table.title_ru')}}*"
+                 placeholder="{{__('table.title_ru')}}"
                  icon="pencil"
-                 hint="Title in Russian is required"
+                 hint="{{__('table.title_ru')}}"
         />
     </div>
     {{--    Title Ru--}}
@@ -31,10 +31,10 @@
     <div class="form-group">
         <x-input class="my-2"
                  wire:model="title_kk"
-                 label="Title in Kazakh*"
-                 placeholder="Title In Kazakh"
+                 label="{{__('table.title_kk')}}*"
+                 placeholder="{{__('table.title_kk')}}"
                  icon="pencil"
-                 hint="Title in Kazakh is required"
+                 hint="{{__('table.title_kk')}}"
         />
     </div>
     {{--    Title Kk--}}
@@ -42,10 +42,10 @@
     <div class="form-group">
         <x-input class="my-2"
                  wire:model="title_en"
-                 label="Title in English"
-                 placeholder="Title In English"
+                 label="{{__('table.title_en')}}"
+                 placeholder="{{__('table.title_en')}}"
                  icon="pencil"
-                 hint="Title in English is not required"
+                 hint="{{__('table.title_en')}}"
         />
     </div>
     {{--    Title En--}}
@@ -53,9 +53,9 @@
     <div class="form-group">
         <x-textarea
             wire:model="rule_ru"
-            label="Rule in Russian*"
-            placeholder="Rule in russian"
-            hint="Rules in russian"
+            label="{{__('table.rule_ru')}}*"
+            placeholder="{{__('table.rule_ru')}}"
+            hint="{{__('table.rule_ru')}}"
         />
     </div>
     {{--    Rule Ru --}}
@@ -63,9 +63,9 @@
     <div class="form-group">
         <x-textarea
             wire:model="rule_kk"
-            label="Rule in Kazakh*"
-            placeholder="Rule in Kazakh"
-            hint="Rules in Kazakh"
+            label="{{__('table.rule_kk')}}*"
+            placeholder="{{__('table.rule_kk')}}"
+            hint="{{__('table.rule_kk')}}"
         />
     </div>
     {{--    Rule Kk --}}
@@ -73,9 +73,9 @@
     <div class="form-group">
         <x-textarea
             wire:model="rule_en"
-            label="Rule in English"
-            placeholder="Rule in English"
-            hint="Rules in English"
+            label="{{__('table.rule_en')}}"
+            placeholder="{{__('table.rule_en')}}"
+            hint="{{__('table.rule_en')}}"
         />
     </div>
     {{--    Rule En --}}
@@ -84,9 +84,9 @@
     <div class="form-group">
         <x-textarea
             wire:model="description_ru"
-            label="Description in Russian*"
-            placeholder="Description in russian"
-            hint="Description in russian"
+            label="{{__('table.description_ru')}}*"
+            placeholder="{{__('table.description_ru')}}"
+            hint="{{__('table.description_ru')}}"
         />
     </div>
     {{--    Description Ru --}}
@@ -94,9 +94,9 @@
     <div class="form-group">
         <x-textarea
             wire:model="description_kk"
-            label="Description in Kazakh*"
-            placeholder="Description in Kazakh"
-            hint="Description in Kazakh"
+            label="{{__('table.description_kk')}}*"
+            placeholder="{{__('table.description_kk')}}"
+            hint="{{__('table.description_kk')}}"
         />
     </div>
     {{--    Description Kk --}}
@@ -104,19 +104,19 @@
     <div class="form-group">
         <x-textarea
             wire:model="description_en"
-            label="Description in English"
-            placeholder="Description in English"
-            hint="Description in English"
+            label="{{__('table.description_en')}}"
+            placeholder="{{__('table.description_en')}}"
+            hint="{{__('table.description_en')}}"
         />
     </div>
     {{--    Description En --}}
     {{-- Price --}}
     <div class="form-group">
         <x-inputs.number
-            label="Price*"
+            label="{{__('table.price')}}*"
             prefix="KZT"
             wire:model="price"
-            hint="Price in Kazakh Tenge"
+            hint="{{__('table.price')}}"
         />
     </div>
     {{-- Price --}}
@@ -124,21 +124,21 @@
     <div class="form-group">
         <x-input class="my-2"
                  wire:model="currency"
-                 label="Currency*"
+                 label="{{__('table.currency')}}*"
                  placeholder="KZT USD EUR "
                  icon="pencil"
-                 hint="Currency in ISO 4217 format"
+                 hint="{{__('table.currency_hint')}}"
         />
     </div>
     {{-- currency --}}
     {{-- Poster --}}
-    <label class="h-5">Poster*</label>
+    <label class="h-5">{{__('table.poster')}}*</label>
     <livewire:image-upload :output_name="'poster'" :folder-name="'news'"/>
     {{-- Poster --}}
     {{--    Locale --}}
     <div class="form-group">
         <p class="h-3 mb-3 font-weight-bold">
-            Available Locale:
+            {{__('table.locale_id')}}
         </p>
         <div class="form-group">
             @foreach($locales as $locale)
@@ -147,8 +147,7 @@
                     id="{{$locale->title}}"
                     name="locale_id[]"
                     multiple="multiple"
-                    wire:model="locale_id"
-                    wire:change="changeLocale({{$locale->id}})"
+                    selected
                     label="{{$locale->title}}"
                 />
             @endforeach
@@ -158,7 +157,7 @@
     {{--    Status --}}
     <div class="form-group">
         <x-select
-            label="Status*"
+            label="{{__('table.status')}}*"
             :options="[
                 ['name'=>'Регистрация завершена','value'=>-1],
                 ['name'=>'Ожидание открытия','value'=>0],
@@ -173,24 +172,24 @@
     {{--    Status --}}
     {{-- Start At --}}
     <x-datetime-picker
-        label="Start At *"
+        label="{{__('table.start_at')}} *"
         time-format="24"
         parse-format="DD-MM-YYYY HH:mm"
         :min="now()"
         :max="now()->addYear(2)"
         wire:model="start_at"
-        hint="Start At"
+        hint="{{__('table.start_at')}}"
     />
     {{--Start At --}}
     {{-- End At --}}
     <x-datetime-picker
-        label="End At *"
+        label="{{__('table.end_at')}} *"
         time-format="24"
         parse-format="DD-MM-YYYY HH:mm"
         :min="now()"
         :max="now()->addYear(2)"
         wire:model="end_at"
-        hint="End At"
+        hint="{{__('table.end_at')}}"
     />
     {{--End At --}}
 </x-form-component.form-component>

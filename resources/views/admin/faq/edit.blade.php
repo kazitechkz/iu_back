@@ -1,9 +1,10 @@
 @extends('layouts.default')
 @section('content')
     <x-layer-components.content-navbar
-        :title="'Редактировать FAQ'"
-        :subtitle="'Управление FAQ'"
-        :breadcrumbs="['Управление FAQ','Редактировать FAQ']"
+        :title="__('table.faq_edit_title') . $faq->question"
+        :subtitle="__('table.faq_edit_subtitle')"
+        :breadcrumbs="[__('table.faq_management'),__('table.forum_edit_title')]"
+        :routes="['faq.index']"
     />
     <div class="col-lg-12 grid-margin stretch-card">
         <div class="card">

@@ -56,19 +56,19 @@ class SubTournamentResultTable extends DataTableComponent
         return [
             Column::make("Id", "id")
                 ->sortable(),
-            Column::make("User id", "user.name")
+            Column::make(__("table.user_id"), "user.name")
                 ->sortable(),
-            Column::make("Sub tournament id", "sub_tournament.tournament_step.title_ru")
+            Column::make(__("table.tournament_step_id"), "sub_tournament.tournament_step.title_ru")
                 ->sortable(),
-            Column::make("Point", "point")
+            Column::make(__("table.point"), "point")
                 ->sortable(),
-            Column::make("Time", "time")
+            Column::make(__("table.time"), "time")
                 ->sortable(),
-            Column::make("Attempt id", "attempt_id")
+            Column::make(__("table.attempt_id"), "attempt_id")
                 ->sortable(),
-            Column::make("Created at", "created_at")
+            Column::make(__("table.created_at"), "created_at")
                 ->sortable(),
-            Column::make("Updated at", "updated_at")
+            Column::make(__("table.updated_at"), "updated_at")
                 ->sortable(),
         ];
     }

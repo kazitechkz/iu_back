@@ -55,29 +55,29 @@ class SubTournamentRivalTable extends DataTableComponent
         return [
             Column::make("Id", "id")
                 ->sortable(),
-            Column::make("Tournament", "sub_tournament.tournament.title_ru")
+            Column::make(__("table.tournament_id"), "sub_tournament.tournament.title_ru")
                 ->sortable(),
-            Column::make("Sub Tournament", "sub_tournament.tournament_step.title_ru")
+            Column::make(__("table.sub_tournament_id"), "sub_tournament.tournament_step.title_ru")
                 ->sortable(),
-            Column::make("Rival one")->format(
+            Column::make("rival_one")->format(
                 fn($value, $row, Column $column) => $row->rival_one_user->name
             ),
-            Column::make("Point one", "point_one")
+            Column::make(__("table.point_one"), "point_one")
                 ->sortable(),
-            Column::make("Time one", "time_one")
+            Column::make(__("table.time_one"), "time_one")
                 ->sortable(),
-            Column::make("Rival two")->format(
+            Column::make("rival_two")->format(
                 fn($value, $row, Column $column) => $row->rival_two_user->name
             ),
-            Column::make("Point two", "point_two")
+            Column::make(__("table.point_two"), "point_two")
                 ->sortable(),
-            Column::make("Time two", "time_two")
+            Column::make(__("table.time_two"), "time_two")
                 ->sortable(),
-            Column::make("Winner", "winner_user.name")
+            Column::make(__("table.winner"), "winner_user.name")
                 ->sortable(),
-            Column::make("Created at", "created_at")
+            Column::make(__("table.created_at"), "created_at")
                 ->sortable(),
-            Column::make("Updated at", "updated_at")
+            Column::make(__("table.updated_at"), "updated_at")
                 ->sortable(),
         ];
     }

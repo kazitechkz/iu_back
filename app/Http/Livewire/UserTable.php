@@ -2,10 +2,15 @@
 
 namespace App\Http\Livewire;
 use App\Exports\UsersExport;
+use Bpuig\Subby\Models\Plan;
+use Database\Seeders\UserRoleSeeder;
+use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Models\User;
+use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
+use Spatie\Permission\Models\Role;
 
 class UserTable extends DataTableComponent
 {
@@ -23,6 +28,20 @@ class UserTable extends DataTableComponent
             ->setTableRowUrl(function($row) {
                 return route('user.edit', $row);
             });
+    }
+
+    public function filters(): array
+
+    {
+        return [
+            SelectFilter::make(__("table.role_id"))
+                ->options(Role::pluck("name","id")->toArray())
+                ->filter(function($builder, string $value) {
+                    $user_ids = DB::table("model_has_roles")->where("role_id",$value)->pluck("model_id")->toArray();
+                    $builder->whereIn("id",$user_ids);
+                }),
+
+        ];
     }
     public function bulkActions(): array
     {
@@ -43,15 +62,15 @@ class UserTable extends DataTableComponent
 
             Column::make("Id", "id")
                 ->sortable(),
-            Column::make("Name", "name")->searchable()
+            Column::make(__("table.user_name"), "name")->searchable()
                 ->sortable(),
-            Column::make("Phone", "phone")->searchable()
+            Column::make(__("table.phone"), "phone")->searchable()
                 ->sortable(),
-            Column::make("Email", "email")->searchable()
+            Column::make(__("table.Email"), "email")->searchable()
                 ->sortable(),
-            Column::make("Created at", "created_at")
+            Column::make(__("table.created_at"), "created_at")
                 ->sortable(),
-            Column::make("Updated at", "updated_at")
+            Column::make(__("table.updated_at"), "updated_at")
                 ->sortable(),
 
         ];

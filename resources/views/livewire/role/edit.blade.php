@@ -8,18 +8,18 @@
     <div class="form-group">
         <x-input class="my-2"
                  wire:model="name"
-                 label="Role Name*"
-                 placeholder="Role Name"
+                 label="{{__('table.role_name')}}*"
+                 placeholder="{{__('table.role_name_placeholder')}}"
                  icon="user"
-                 hint="Role name"
+                 hint="{{__('table.role_name_hint')}}"
         />
     </div>
     {{--    Role Name--}}
     {{--    Role Guard--}}
     <div class="form-group">
         <x-select
-            label="Guard Name *"
-            placeholder="Choose Guard"
+            label="{{__('table.guard_name')}}*"
+            placeholder="Web || Api"
             :options="['web']"
             wire:model="guard_name"
             name="guard_name"
@@ -28,7 +28,7 @@
     {{--    Role Guard --}}
     {{-- Role Permission --}}
     <p class="h-3 mb-3 font-weight-bold">
-        Permission:
+        {{__('table.permission_id')}}:
     </p>
     <div class="form-group">
         @foreach($permissions as $permission)
@@ -39,7 +39,6 @@
                 wire:model="permissionGroup"
                 name="permissions[]"
                 multiple="multiple"
-
                 label="{{$permission->name}}"
             />
         @endforeach

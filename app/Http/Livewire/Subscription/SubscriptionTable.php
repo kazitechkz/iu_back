@@ -60,23 +60,23 @@ class SubscriptionTable extends DataTableComponent
         return [
             Column::make("Id", "id")
                 ->sortable(),
-            Column::make('Subscriber', 'subscriber_id'),
-            Column::make("Name","name")->searchable(),
-            Column::make("Description","description")->searchable(),
-            Column::make("Price","price")->sortable(),
-            Column::make("Currency","currency")->searchable(),
-            Column::make("Invoice Period", "invoice_period")
+            Column::make(__("table.user_id"), 'subscriber_id'),
+            Column::make(__("table.name"),"name")->searchable(),
+            Column::make(__("table.description"),"description")->searchable(),
+            Column::make(__("table.price"),"price")->sortable(),
+            Column::make(__("table.currency"),"currency")->searchable(),
+            Column::make(__("table.invoice_period"), "invoice_period")
                 ->sortable(),
-            Column::make("Invoice Interval", "invoice_interval")
+            Column::make(__("table.invoice_interval"), "invoice_interval")
                 ->sortable(),
-            BooleanColumn::make("Trial Period","trial_period")->searchable(),
-            Column::make("Trial Interval","trial_interval")->searchable(),
-            Column::make("Grace Period","grace_period")->searchable(),
-            Column::make("Grace Interval","grace_interval")->searchable(),
-            Column::make("Starts At","starts_at")->sortable(),
-            Column::make("Ends At","ends_at")->sortable(),
-            Column::make("Cancels At","cancels_at")->sortable(),
-            Column::make("Canceled At","canceled_at")->sortable(),
+            BooleanColumn::make(__("table.trial_period"),"trial_period")->searchable(),
+            Column::make(__("table.trial_interval"),"trial_interval")->searchable(),
+            Column::make(__("table.grace_period"),"grace_period")->searchable(),
+            Column::make(__("table.grace_interval"),"grace_interval")->searchable(),
+            Column::make(__("table.start_at"),"starts_at")->sortable(),
+            Column::make(__("table.end_at"),"ends_at")->sortable(),
+            Column::make(__("table.cancel_at"),"cancels_at")->sortable(),
+            Column::make((__("table.cancel_at")),"canceled_at")->sortable(),
 
         ];
     }

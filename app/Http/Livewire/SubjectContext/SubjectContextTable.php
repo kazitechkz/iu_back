@@ -49,9 +49,9 @@ class SubjectContextTable extends DataTableComponent
         return [
             Column::make("Id", "id")
                 ->sortable(),
-            Column::make("Предмет", "subject.title_ru")
+            Column::make(__("table.subject_id"), "subject.title_ru")
                 ->sortable()->searchable(),
-            Column::make("Контекст", "context")
+            Column::make(__("table.context"), "context")
                 ->format(fn($val) => StrHelper::getSubStr($val, 100))
                 ->html()
                 ->sortable()

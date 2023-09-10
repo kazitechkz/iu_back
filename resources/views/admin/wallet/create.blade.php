@@ -1,9 +1,10 @@
 @extends('layouts.default')
 @section('content')
     <x-layer-components.content-navbar
-        :title="'Операция с кошельком'"
-        :subtitle="'Блок создания новой транзакции'"
-        :breadcrumbs="['Управление пользователями','Создать новую транзакцию']"
+        :title="__('table.wallet_create_title')"
+        :subtitle="__('table.wallet_create_subtitle')"
+        :breadcrumbs="[__('table.wallet_management'),__('table.wallet_create_title')]"
+        :routes="['wallet.index']"
     />
 
     <div class="col-lg-12 grid-margin stretch-card">

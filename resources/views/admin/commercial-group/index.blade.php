@@ -1,10 +1,15 @@
 @extends('layouts.default')
 @section('content')
     <x-layer-components.content-navbar
-        :title="'Список групп планов'"
-        :subtitle="'Управление группами планов'"
+        :title="__('table.commercial_lists')"
+        :subtitle="__('table.commercial_management')"
+        :breadcrumbs="[__('table.commercial_management')]"
+        :routes="['commercial-group.index']"
     >
-        <a href="{{route("commercial-group.create")}}" class="btn btn-primary mt-2 mt-xl-0">Создать</a>
+        <a href="{{route("commercial-group.create")}}"
+           class="btn btn-primary mt-2 mt-xl-0">
+            {{__("table.commercial_create_subtitle")}}
+        </a>
 
     </x-layer-components.content-navbar>
     <div class="col-lg-12 grid-margin stretch-card">
@@ -17,3 +22,4 @@
 
 
 @endsection
+

@@ -1,10 +1,14 @@
 @extends('layouts.default')
 @section('content')
     <x-layer-components.content-navbar
-        :title="'Список плана подписок'"
-        :subtitle="'Управление планами подписок'"
+        :title="__('table.plan_lists')"
+        :subtitle="__('table.plan_management')"
+        :breadcrumbs="[__('table.plan_management')]"
+        :routes="['plan.index']"
     >
-        <a href="{{route("plan.create")}}" class="btn btn-primary mt-2 mt-xl-0">Создать</a>
+        <a href="{{route("plan.create")}}" class="btn btn-primary mt-2 mt-xl-0">
+            {{__('table.permission_create_subtitle')}}
+        </a>
 
     </x-layer-components.content-navbar>
     <div class="col-lg-12 grid-margin stretch-card">

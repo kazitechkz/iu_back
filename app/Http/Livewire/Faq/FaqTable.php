@@ -28,17 +28,17 @@ class FaqTable extends DataTableComponent
         return [
             Column::make("Id", "id")
                 ->sortable(),
-            Column::make("Question", "question")
+            Column::make(__("table.question_id"), "question")
                 ->sortable(),
-            Column::make("Answer", "answer")
+            Column::make(__("table.answer"), "answer")
                 ->sortable(),
-            BooleanColumn::make("Is active", "is_active")
+            BooleanColumn::make(__("table.is_active"), "is_active")
                 ->sortable(),
-            Column::make("Locale id", "locale.title")
+            Column::make(__("table.locale_id"), "locale.title")
                 ->sortable(),
-            Column::make("Created at", "created_at")
+            Column::make(__("table.created_at"), "created_at")
                 ->sortable(),
-            Column::make("Updated at", "updated_at")
+            Column::make(__("table.updated_at"), "updated_at")
                 ->sortable(),
         ];
     }

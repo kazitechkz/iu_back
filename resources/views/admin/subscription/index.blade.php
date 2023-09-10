@@ -1,9 +1,10 @@
 @extends('layouts.default')
 @section('content')
     <x-layer-components.content-navbar
-        :title="'Список подписок'"
-        :subtitle="'Управление подписками'"
-        :breadcrumbs="['Управление подписками']"
+        :title="__('table.subscription_lists')"
+        :subtitle="__('table.subscription_management')"
+        :breadcrumbs="[__('table.subscription_management')]"
+        :routes="['subscription.index']"
     >
         <a href="{{route("subscription.create")}}" class="btn btn-primary mt-2 mt-xl-0">Создать новую подписку</a>
 

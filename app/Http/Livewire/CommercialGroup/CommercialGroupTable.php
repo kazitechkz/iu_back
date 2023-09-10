@@ -46,19 +46,19 @@ class CommercialGroupTable extends DataTableComponent
         return [
             Column::make("Id", "id")
                 ->sortable(),
-            Column::make("Title ru", "title_ru")
+            Column::make(__("table.title_ru"), "title_ru")
                 ->sortable(),
-            Column::make("Title kk", "title_kk")
+            Column::make(__("table.title_kk"), "title_kk")
                 ->sortable(),
-            Column::make("Title en", "title_en")
+            Column::make(__("table.title_en"), "title_en")
                 ->sortable(),
-            Column::make("Tag", "tag")
+            Column::make(__("table.tag"), "tag")
                 ->sortable(),
-            BooleanColumn::make("Is active", "is_active")
+            BooleanColumn::make(__("table.is_active"), "is_active")
                 ->sortable(),
-            Column::make("Created at", "created_at")
+            Column::make(__("table.created_at"), "created_at")
                 ->sortable(),
-            Column::make("Updated at", "updated_at")
+            Column::make(__("table.updated_at"), "updated_at")
                 ->sortable(),
         ];
     }

@@ -6,7 +6,10 @@
 @endpush
 @section('content')
     <x-layer-components.content-navbar
-        :title="'Редактировать новый вопрос'"
+        :title="__('table.question_edit_title') . $locale->title"
+        :subtitle="__('table.question_edit_subtitle')"
+        :breadcrumbs="[__('table.question_management'),__('table.question_edit_title')]"
+        :routes="['question.index']"
     />
     <div class="col-lg-12 grid-margin stretch-card">
         <div class="card">
