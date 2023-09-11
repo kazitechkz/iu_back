@@ -17,6 +17,7 @@ use App\Services\AttemptService;
 use App\Services\PlanService;
 use App\Services\QuestionService;
 use App\Services\TournamentService;
+use Carbon\Carbon;
 
 
 class TestController extends Controller
@@ -80,9 +81,12 @@ class TestController extends Controller
     }
 
     public function subjectTest(){
-        $planService = new PlanService();
-        dd($this->_questionService->get_questions_with_subjects([5],3,2,));
-        dd($planService->get_subjects());
+        $attempt = Attempt::find(347);
+        $time = Carbon::now()->diffInMilliseconds($attempt->start_at);
+        dd(15%3);
+
+
+
     }
 
     public function participate(){

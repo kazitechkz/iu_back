@@ -9,9 +9,11 @@ use WendellAdriel\ValidatedDTO\ValidatedDTO;
 class AttemptDTO extends ValidatedDTO
 {
     public $attempt_id;
-    public $time;
+    public $type_id;
+    public $time_left;
     public $is_finished = false;
     public $subject_questions;
+
 
     protected function rules(): array
     {

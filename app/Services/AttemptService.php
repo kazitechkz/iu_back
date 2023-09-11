@@ -18,7 +18,7 @@ class AttemptService
     public function create_attempt(int $user_id,int $type_id,int $locale_id,int $max_points,$questions,int $time){
         try {
             //Create Attempt
-            $attempt = Attempt::add(["start_at"=>Carbon::now(),"type_id"=>$type_id,"user_id"=>$user_id,"locale_id"=>$locale_id,"max_points"=>$max_points,"time"=>$time*60000]);
+            $attempt = Attempt::add(["start_at"=>Carbon::now(),"type_id"=>$type_id,"user_id"=>$user_id,"locale_id"=>$locale_id,"max_points"=>$max_points,"time"=>$time,"time_left"=>$time]);
             //Questions = [1=>[]]
             $subjects = array_keys($questions);
             $attempts_dto = [];
@@ -38,7 +38,7 @@ class AttemptService
                 );
                 array_push($attempts_dto,$subject_dto->data);
             }
-            $attempt_dto = AttemptDTO::fromArray(["attempt_id"=>$attempt->id,"time"=>$attempt->time,"subject_questions"=>$attempts_dto]);
+            $attempt_dto = AttemptDTO::fromArray(["attempt_id"=>$attempt->id,"type_id"=>$type_id,"time_left"=>$attempt->time_left,"subject_questions"=>$attempts_dto]);
             return $attempt_dto->data;
         }
         catch (\Exception $exception){

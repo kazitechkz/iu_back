@@ -2,18 +2,15 @@
 
 namespace App\Services;
 
+use App\DTOs\AnswerResultDTO;
 use App\Exceptions\AnswerException;
 use App\Models\Attempt;
 use App\Models\AttemptQuestion;
 use App\Models\AttemptSubject;
 use App\Models\Question;
-use App\Models\SubTournament;
 use App\Models\SubTournamentResult;
 use App\Models\SubTournamentRival;
-use App\Models\TournamentStep;
 use Carbon\Carbon;
-use Carbon\Traits\Date;
-use function Symfony\Component\Translation\t;
 
 class AnswerService
 {
@@ -43,13 +40,16 @@ class AnswerService
                     //Check if attempt_question exists
                     if($attempt_question = AttemptQuestion::where(["attempt_subject_id"=>$attempt_subject_id,"question_id"=>$question_id,"is_answered" => false])->first()){
                         $result = $this->check_answer($question_id, $answers);
-                        $attempt_question->update(["is_right"=>$result["is_right"],"point"=>$result["point"],"is_answered"=>true,"user_answer"=>$answers]);
-                        $attempt->edit(["points"=>$attempt->points + $result["point"],'time_left'=>$attempt->start_at->diffInMilliseconds(Carbon::now())]);
+                        $attempt_question->update(["is_right"=>$result["is_right"],"point"=>$result["point"],"is_answered"=>true,"user_answer"=>$answers,"is_skipped" => false]);
+                        $attempt->edit(["points"=>$attempt->points + $result["point"],'time_left'=>$attempt->time - Carbon::now()->diffInMilliseconds($attempt->start_at)]);
                         if($attempt_type == QuestionService::TOURNAMENT_TYPE){
                             $this->check_tournament_result($attempt,$attempt_type,$user_id);
                         }
-                        $this->check_attempt($attempt,$user_id);
-                        return true;
+                        $result_check = $this->check_attempt($attempt,$user_id);
+                        $result_check["is_answered"] = true;
+                        $result_check["question_id"] = $question_id;
+                        $answer_dto = AnswerResultDTO::fromArray($result_check);
+                        return $answer_dto->data;
                     }
                     else{
                         throw new AnswerException("Вопрос на который вы хотите ответить либо не найден, либо вы уже ответили на него");
@@ -210,14 +210,19 @@ class AnswerService
         }
 
         protected function check_attempt(Attempt $attempt,$user_id){
-            if($attempt->time < $attempt->time_left){
-                $this->finish_test($user_id,$attempt->id);
-                throw new AnswerException("Вышло время сдачи!");
+            $time = $attempt->start_at;
+            $time = $time->addMillisecond($attempt->time);
+            $result = false;
+            if($time < Carbon::now() ){
+                $attempt->edit(["end_at"=>Carbon::now()]);
+                $result = true;
             }
             $attempt_subjects = AttemptSubject::where(["attempt_id"=>$attempt->id])->pluck("id","id");
             $count = AttemptQuestion::whereIn("attempt_subject_id",$attempt_subjects)->where("is_answered",true)->count();
-            if($attempt->max_points == $count){
-                $this->finish_test($user_id,$attempt->id);
+            if($attempt->max_points <= $count){
+                $attempt->edit(["end_at"=>Carbon::now()]);
+                $result = true;
             }
+            return ["is_finished"=>$result,"question_left" =>($attempt->max_points-$count),"time_left"=>$attempt->time_left];
         }
 }

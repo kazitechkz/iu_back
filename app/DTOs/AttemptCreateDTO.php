@@ -11,7 +11,6 @@ class AttemptCreateDTO extends ValidatedDTO
     public $locale_id;
     public $attempt_type_id;
 
-
     protected function rules(): array
     {
         return [

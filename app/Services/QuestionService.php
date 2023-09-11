@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Exceptions\QuestionException;
+use App\Http\Livewire\SingleSubjectTest\SingleSubjectTestTable;
 use App\Models\GroupPlan;
 use App\Models\Question;
 use App\Models\SingleSubjectTest;
@@ -76,6 +77,15 @@ class QuestionService
         return $count;
     }
 
+    public function get_max_time_in_ms($questions){
+        $time = 0;
+        foreach ($questions as $key=> $question){
+            $subject = SingleSubjectTest::find($key);
+            $time += ($subject->allotted_time * 60000);
+        }
+        return $time;
+    }
+
 
 
     protected function get_questions($compulsory_subjects,
@@ -98,6 +108,9 @@ class QuestionService
                 array_push($questions[$compulsory_subject->id],...$questions_one);
             }
             if($contextual_q_count > 0){
+                if($contextual_q_count%self::CONTEXT_QUESTION_NUMBER){
+                    throw new QuestionException("Контекстных Вопросов в дисциплине {$compulsory_subject->title_ru} недостаточно");
+                }
                 $context_questions = $this->get_context_questions($locale_id,$compulsory_subject,$contextual_q_count/self::CONTEXT_QUESTION_NUMBER);
                 array_push($questions[$compulsory_subject->id],...$context_questions);
             }
@@ -112,7 +125,7 @@ class QuestionService
 
     protected function get_single_questions($locale_id,$compulsory_subject,$count){
         $single_question_query = Question::with("context")->where(["subject_id" => $compulsory_subject->id,"type_id" => self::SINGLE_QUESTION_ID,"locale_id" => $locale_id])->inRandomOrder();
-        $questions_one = $single_question_query->take($count)->get()->toArray();
+        $questions_one = $single_question_query->take($count)->get()->makeHidden(["correct_answers"])->toArray();
         return $questions_one;
     }
 
@@ -121,7 +134,7 @@ class QuestionService
         if(count($questions)>=$rand_int){
                 $ids = array_rand($questions,$rand_int);
                 $ids = is_array($ids) ? $ids : [$ids];
-                return Question::whereIn("context_id",$ids)->with("context")->get()->toArray();
+                return Question::whereIn("context_id",$ids)->with("context")->get()->makeHidden(["correct_answers"])->toArray();
         }
         else{
             throw new QuestionException("Вопросов в дисциплине {$compulsory_subject->title_ru} недостаточно");
@@ -129,7 +142,7 @@ class QuestionService
     }
     protected function get_multiple_questions($locale_id,$compulsory_subject,$count){
         $multiple_question_query = Question::with("context")->where(["subject_id" => $compulsory_subject->id,"type_id" => self::MULTI_QUESTION_ID,"locale_id" => $locale_id])->inRandomOrder();
-        $multiple_question = $multiple_question_query->take($count)->get()->toArray();
+        $multiple_question = $multiple_question_query->take($count)->get()->makeHidden(["correct_answers"])->toArray();
         return $multiple_question;
     }
 

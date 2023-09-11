@@ -4,7 +4,8 @@ namespace App\DTOs;
 
 use WendellAdriel\ValidatedDTO\ValidatedDTO;
 
-class AnswerDTO extends ValidatedDTO
+class
+AnswerDTO extends ValidatedDTO
 {
     public $attempt_id;
     public $attempt_subject_id;

@@ -185,7 +185,7 @@ class TournamentService{
             );
         $count_question = $question_service->get_questions_max_point($questions);
         $attempt_service = new AttemptService();
-        $attempt = $attempt_service->create_attempt($user_id,QuestionService::TOURNAMENT_TYPE,$locale_id,$count_question,$questions,$sub_tournament->time);
+        $attempt = $attempt_service->create_attempt($user_id,QuestionService::TOURNAMENT_TYPE,$locale_id,$count_question,$questions,$sub_tournament->time*60000);
         SubTournamentResult::add([
             'user_id' => $user_id,
             'sub_tournament_id' => $sub_tournament_id,
