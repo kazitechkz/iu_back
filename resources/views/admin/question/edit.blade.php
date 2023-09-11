@@ -6,7 +6,7 @@
 @endpush
 @section('content')
     <x-layer-components.content-navbar
-        :title="__('table.question_edit_title') . $locale->title"
+        :title="__('table.question_edit_title') . $question->id"
         :subtitle="__('table.question_edit_subtitle')"
         :breadcrumbs="[__('table.question_management'),__('table.question_edit_title')]"
         :routes="['question.index']"
