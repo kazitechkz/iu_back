@@ -24,4 +24,10 @@ class PlanService
         }
         return Subject::whereNotIn("id",$subject_plans)->get();
     }
+
+    public static function check_user_subject(int $subject_id): bool
+    {
+        $subject_plans = auth()->user()->activeSubscriptions()->pluck("tag")->toArray();
+        return in_array($subject_id, $subject_plans);
+    }
 }

@@ -42,7 +42,7 @@ class SubStepTest extends Model
 
 	public function question(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-		return $this->belongsTo(Question::class);
+		return $this->belongsTo(Question::class)->select(['id','text','answer_a', 'answer_b', 'answer_c', 'answer_d', 'context_id']);
 	}
 
 	public function sub_step(): \Illuminate\Database\Eloquent\Relations\BelongsTo

@@ -33,10 +33,10 @@ class Edit extends Component
     public string $answer_b;
     public string $answer_c;
     public string $answer_d;
-    public string $answer_e;
-    public string $answer_f;
-    public string $answer_g;
-    public string $answer_h;
+    public string|null $answer_e;
+    public string|null $answer_f;
+    public string|null $answer_g;
+    public string|null $answer_h;
     public $correct_answers;
     public $text;
     public $context;

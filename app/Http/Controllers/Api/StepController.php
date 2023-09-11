@@ -24,10 +24,18 @@ class StepController extends Controller
 
     public function getStepTests(int $sub_step_id, int $locale_id)
     {
-        return response()->json(new ResponseJSON(
-            status: true,
-            data: $this->stepService->getSubStepTests($sub_step_id, $locale_id)
-        ));
+        $results = $this->stepService->getSubStepTests($sub_step_id, $locale_id);
+        if ($results != null) {
+            return response()->json(new ResponseJSON(
+                status: true,
+                data: $results
+            ));
+        } else {
+            return response()->json(new ResponseJSON(
+                status: false,
+                errors: "Недостаточно прав!"
+            ));
+        }
     }
 
     public function passTest(Request $request)
