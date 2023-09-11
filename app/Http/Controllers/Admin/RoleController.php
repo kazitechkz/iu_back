@@ -59,7 +59,8 @@ class RoleController extends Controller
     {
         try{
             if(auth()->user()->can("role create")) {
-                $role = Role::add($request->all());
+                $role = Role::create($request->all());
+                $role->save();
                 if ($role) {
                     foreach ($request->get("permissions") as $permission) {
                         $role->givePermissionTo($permission);
@@ -132,7 +133,8 @@ class RoleController extends Controller
             if(auth()->user()->can("role edit")) {
                 $role = Role::findById($id);
                 if($role){
-                    $role->edit($request->all());
+                    $role->update($request->all());
+                    $role->save();
                 }
                 return redirect()->back();
             }
