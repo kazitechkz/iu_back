@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('tutor_skills', function (Blueprint $table) {
             $table->id();
+            $table->foreignId("tutor_id")->references("id")->on("tutors")->cascadeOnDelete();
+            $table->foreignId("subject_id")->references("id")->on("subjects")->cascadeOnDelete();
+            $table->foreignId("category_id")->references("id")->on("categories")->cascadeOnDelete();
+            $table->foreignId("sub_category_id")->references("id")->on("sub_categories")->cascadeOnDelete();
             $table->timestamps();
         });
     }

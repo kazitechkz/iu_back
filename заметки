@@ -3,6 +3,18 @@
 - is_current - Кто сейчас активен
 Изменить следующие поля в SubTournament в поля winner is null
 
+php artisan code:models --table=genders
+php artisan code:models --table=tutors
+php artisan code:models --table=tutor_skills
+php artisan code:models --table=lesson_schedules
+php artisan code:models --table=lesson_schedule_participants
+php artisan code:models --table=lesson_ratings
+php artisan code:models --table=participant_ratings
+php artisan code:models --table=lesson_complaints
+
+
+
+
 1.Tutors
 
 -User_Id

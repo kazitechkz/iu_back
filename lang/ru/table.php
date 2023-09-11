@@ -351,4 +351,62 @@ return [
     "sub_tournament_rival_edit_title"=>"Изменить противников суб-турнира ",
     "sub_tournament_rival_create_subtitle"=>"Блок создания противников суб-турнира",
     "sub_tournament_rival_edit_subtitle"=>"Блок редактирования противников суб-турнира",
+
+    //Gender
+    "gender_lists"=>"Список гендеров",
+    "gender_management"=>"Управление гендерами",
+    "gender_create_title"=>"Создать гендерами",
+    "gender_edit_title"=>"Изменить гендеры ",
+    "gender_create_subtitle"=>"Блок создания гендеров",
+    "gender_edit_subtitle"=>"Блок редактирования гендеров",
+    //Tutor
+    "tutor_lists"=>"Список тютор",
+    "tutor_management"=>"Управление тюторами",
+    "tutor_create_title"=>"Создать тюторами",
+    "tutor_edit_title"=>"Изменить тюторами ",
+    "tutor_create_subtitle"=>"Блок создания тютеров",
+    "tutor_edit_subtitle"=>"Блок редактирования тютеров",
+    //Tutor-Skill
+    "tutor_skill_lists"=>"Список навыков тютор",
+    "tutor_skill_management"=>"Управление навыков тюторами",
+    "tutor_skill_create_title"=>"Создать навыков тюторами",
+    "tutor_skill_edit_title"=>"Изменить навыков тюторами ",
+    "tutor_skill_create_subtitle"=>"Блок создания навыков тютеров",
+    "tutor_skill_edit_subtitle"=>"Блок редактирования навыков тютеров",
+    //Lesson Schedule
+    "lesson_schedule_lists"=>"Список расписаний тьюторов",
+    "lesson_schedule_management"=>"Управление расписаний тьюторов",
+    "lesson_schedule_create_title"=>"Создать расписаний тьюторов",
+    "lesson_schedule_edit_title"=>"Изменить расписание тьюторов ",
+    "lesson_schedule_create_subtitle"=>"Блок создания расписание тьюторов",
+    "lesson_schedule_edit_subtitle"=>"Блок редактирования расписание тьюторов",
+    //Lesson-Schedule-Participant
+    "lesson_schedule_participant_lists"=>"Список участников",
+    "lesson_schedule_participant_management"=>"Управление участниками",
+    "lesson_schedule_participant_create_title"=>"Создать участников",
+    "lesson_schedule_participant_edit_title"=>"Изменить участников ",
+    "lesson_schedule_participant_create_subtitle"=>"Блок создания участников",
+    "lesson_schedule_participant_edit_subtitle"=>"Блок редактирования участников",
+    //Lesson Rating
+    "lesson_rating_lists"=>"Список рейтинг занятий",
+    "lesson_rating_management"=>"Управление рейтингами занятий",
+    "lesson_rating_create_title"=>"Создать рейтингами занятий",
+    "lesson_rating_edit_title"=>"Изменить рейтингами занятий ",
+    "lesson_rating_create_subtitle"=>"Блок создания рейтингов занятий",
+    "lesson_rating_edit_subtitle"=>"Блок редактирования рейтингов занятий",
+    //Participant Rating
+    "participant_rating_lists"=>"Список рейтинга участников",
+    "participant_rating_management"=>"Управление рейтингами участников",
+    "participant_rating_create_title"=>"Создать рейтингами участников",
+    "participant_rating_edit_title"=>"Изменить рейтингами участников ",
+    "participant_rating_create_subtitle"=>"Блок создания рейтингами участников",
+    "participant_rating_edit_subtitle"=>"Блок редактирования рейтингами участников",
+    //Lesson Complaint
+    "lesson_complaint_lists"=>"Список жалоб",
+    "lesson_complaint_management"=>"Управление жалоб",
+    "lesson_complaint_create_title"=>"Создать жалобу",
+    "lesson_complaint_edit_title"=>"Изменить жалобу ",
+    "lesson_complaint_create_subtitle"=>"Блок создания жалоб",
+    "lesson_complaint_edit_subtitle"=>"Блок редактирования жалоб",
+
 ];

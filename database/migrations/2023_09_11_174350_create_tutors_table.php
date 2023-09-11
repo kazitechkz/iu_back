@@ -13,6 +13,17 @@ return new class extends Migration
     {
         Schema::create('tutors', function (Blueprint $table) {
             $table->id();
+            $table->foreignId("user_id")->unique()->references("id")->on("users")->cascadeOnDelete();
+            $table->foreignId("image_url")->nullable()->references("id")->on("files")->onDelete("set null");
+            $table->foreignId("gender_id")->nullable()->references("id")->on("genders")->onDelete("set null");
+            $table->string("phone")->unique()->index();
+            $table->string("email")->unique()->index();
+            $table->string("iin")->unique()->index();
+            $table->datetime("birth_date");
+            $table->text("bio");
+            $table->text("experience");
+            $table->json("skills");
+            $table->boolean("is_proved")->default(false);
             $table->timestamps();
         });
     }

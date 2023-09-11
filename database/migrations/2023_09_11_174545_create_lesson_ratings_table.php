@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('lesson_ratings', function (Blueprint $table) {
             $table->id();
+            $table->foreignId("participant_id")->references("id")->on("users")->onDelete("NO ACTION");
+            $table->integer("rating")->nullable();
+            $table->text("review")->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

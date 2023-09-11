@@ -34,6 +34,14 @@ use App\Http\Controllers\Admin\StepController as AdminStepController;
 use App\Http\Controllers\Admin\SubStepController as AdminSubStepController;
 use App\Http\Controllers\Admin\SubStepContentController as AdminSubStepContentController;
 use App\Http\Controllers\Admin\SubStepTestController as AdminSubStepTestController;
+use App\Http\Controllers\Admin\GenderController as AdminGenderController;
+use App\Http\Controllers\Admin\TutorController as AdminTutorController;
+use App\Http\Controllers\Admin\TutorSkillController as AdminTutorSkillController;
+use App\Http\Controllers\Admin\LessonScheduleController as AdminLessonScheduleController;
+use App\Http\Controllers\Admin\LessonScheduleParticipantController as AdminLessonScheduleParticipantController;
+use App\Http\Controllers\Admin\LessonRatingController as AdminLessonRatingController;
+use App\Http\Controllers\Admin\ParticipantRatingController as AdminParticipantRatingController;
+use App\Http\Controllers\Admin\LessonComplaintController as AdminLessonComplaintController;
 use App\Http\Controllers\Admin\TestController;
 use App\Http\Controllers\TestController as Testing;
 use Illuminate\Support\Facades\Route;
@@ -94,6 +102,7 @@ Route::group(["prefix" => "dashboard","middleware" => "auth"],function (){
     Route::resource("page",AdminPageController::class);
     Route::resource("forum",AdminForumController::class);
     Route::resource("discuss",AdminDiscussController::class);
+    //Tournament
     Route::resource("tournament",AdminTournamentController::class);
     Route::resource("sub-tournament",AdminSubTournamentController::class);
     Route::resource("sub-tournament-participant",AdminSubTournamentParticipantController::class);
@@ -101,13 +110,20 @@ Route::group(["prefix" => "dashboard","middleware" => "auth"],function (){
     Route::resource("sub-tournament-result",AdminSubTournamentResultController::class);
     Route::resource("sub-tournament-rival",AdminSubTournamentRivalController::class);
     Route::resource("commercial-group",AdminCommercialGroupController::class);
+    //Step
     Route::resource("step",AdminStepController::class);
     Route::resource("sub-step",AdminSubStepController::class);
     Route::resource("sub-step-content",AdminSubStepContentController::class);
     Route::resource("sub-step-test",AdminSubStepTestController::class);
-
-
-
+    //Tutor
+    Route::resource("gender",AdminGenderController::class);
+    Route::resource("tutor",AdminTutorController::class);
+    Route::resource("tutor-skill",AdminTutorSkillController::class);
+    Route::resource("lesson-schedule",AdminLessonScheduleController::class);
+    Route::resource("lesson-schedule-participant",AdminLessonScheduleParticipantController::class);
+    Route::resource("lesson-rating",AdminLessonRatingController::class);
+    Route::resource("participant-rating",AdminParticipantRatingController::class);
+    Route::resource("lesson-complaint",AdminLessonComplaintController::class);
 });
 
 

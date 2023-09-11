@@ -70,8 +70,22 @@ class AppConstants
         "sub-step create","sub-step index","sub-step edit","sub-step show",
         //Sub Step Content
         "sub-step-content create","sub-step-content index","sub-step-content edit","sub-step-content show",
-
-
+        //Gender
+        "gender index","gender create","gender edit","gender show",
+        //Tutor
+        "tutor index","tutor create","tutor edit","tutor show",
+        //Tutor Skill
+        "tutor-skill index","tutor-skill create","tutor-skill edit","tutor-skill show",
+        //Lesson Schedule
+        "lesson-schedule index","lesson-schedule create","lesson-schedule edit","lesson-schedule show",
+        //Lesson Schedule Participant
+        "lesson-schedule-participant index","lesson-schedule-participant create","lesson-schedule-participant edit","lesson-schedule-participant show",
+        //Lesson Rating
+        "lesson-rating index","lesson-rating create","lesson-rating edit","lesson-rating show",
+        //Participant Rating
+        "participant-rating index","participant-rating create","participant-rating edit","participant-rating show",
+        //Lesson Complaint
+        "lesson-complaint index","lesson-complaint create","lesson-complaint edit","lesson-complaint show",
         //Permission for main menu
         "user management",
         "locale management",

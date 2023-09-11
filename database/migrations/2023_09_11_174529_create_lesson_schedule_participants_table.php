@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('lesson_schedule_participants', function (Blueprint $table) {
             $table->id();
+            $table->foreignId("participant_id")->references("id")->on("users")->onDelete("NO ACTION");
+            $table->foreignId("schedule_id")->references("id")->on("lesson_schedules")->onDelete("NO ACTION");
+            $table->boolean("is_presented");
+            $table->softDeletes();
             $table->timestamps();
         });
     }
