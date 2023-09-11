@@ -2,3 +2,62 @@
 - is_finished - завершен или нет
 - is_current - Кто сейчас активен
 Изменить следующие поля в SubTournament в поля winner is null
+
+1.Tutors
+
+-User_Id
+-Image Url
+-Mobile Phone
+-Birth Date
+-Gender
+-Email
+-Bio
+-Experience
+-Skills
+-IIN
+-Is Proved
+
+2.Tutor_Skills
+
+-Tutor Id
+-Subject Id
+-Category Id
+-Sub Category Id
+
+3.Lesson_Schedules
+
+-Tutor Id
+-Start At
+-End At
+-Price
+-Amount
+-Info - Like url, or info how to connect
+-From Canceled
+-Is Canceled
+-Canceled To
+
+4.Tutor Schedule Participants
+
+-Schedule Id
+-Participant Id
+-Presence
+
+5.Lesson Ratings
+
+-Participant Id
+-Rating
+-Review
+
+6.Participant Ratings
+
+-Tutor Id
+-Schedule Id
+-Rating
+-Review
+
+7.Complaint
+
+-Tutor Id
+-Participant Id
+-Complain
+-Schedule Id
