@@ -28,8 +28,8 @@ class Create extends Component
 
     public function mount()
     {
-        $tutors = Tutor::all();
-        $subjects = Subject::all();
+        $this->tutors = Tutor::all();
+        $this->subjects = Subject::all();
     }
 
     protected function rules(){

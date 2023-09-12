@@ -3,19 +3,7 @@
     :route="'tutor-skill.store'"
     :element-id="'tutor-skill-create'"
 >
-    {{--    Tutor  --}}
-    <div class="form-group">
-        <x-select
-            label="{{__('table.tutor')}}*"
-            :options="$tutors"
-            option-label="name"
-            option-description="email"
-            option-value="id"
-            wire:model="tutor_id"
-            name="tutor_id"
-        />
-    </div>
-    {{--    Tutor--}}
+
     {{--    Subject  --}}
     <div class="form-group">
         <x-select
