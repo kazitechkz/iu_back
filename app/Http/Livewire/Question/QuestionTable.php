@@ -27,7 +27,7 @@ class QuestionTable extends DataTableComponent
         $this->setPerPageAccepted([20,50,100]);
         $this->setPerPage(20);
         $this->setBulkActions([
-//            'exportSelected' => 'Export',
+            'import' => 'Import',
             'deleteSelected' => 'Удалить'
         ]);
         $this->setPrimaryKey('id')
@@ -60,9 +60,14 @@ class QuestionTable extends DataTableComponent
     public function bulkActions(): array
     {
         return [
-//            'exportSelected' => 'Export',
+            'import' => 'Import',
             'deleteSelected' => 'Удалить'
         ];
+    }
+
+    public function import(): \Illuminate\Foundation\Application|\Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse|\Illuminate\Contracts\Foundation\Application
+    {
+        return redirect(route('import-questions'));
     }
 
     public function deleteSelected(): void
@@ -101,10 +106,10 @@ class QuestionTable extends DataTableComponent
 //                ->searchable(),
             Column::make("Язык", "locale.title")
                 ->sortable(),
-            Column::make("Предмет", "subject.title_ru")
+            Column::make("Предмет", "subject.".StrHelper::getTitleAttribute())
                 ->sortable()
                 ->searchable(),
-            Column::make("Тип вопроса", "type.title_ru")
+            Column::make("Тип вопроса", "type.".StrHelper::getTitleAttribute())
                 ->sortable(),
 //            Column::make("Created at", "created_at")
 //                ->sortable(),

@@ -24,9 +24,11 @@ class Edit extends Component
 
     public function mount($sub_step_content = null): void
     {
+        $this->step_id = $sub_step_content->sub_step->step_id;
         $this->sub_step_content = $sub_step_content;
         $this->sub_step_id = $sub_step_content->sub_step_id;
         $this->steps = Step::where('is_active', true)->get();
+        $this->sub_steps = SubStep::where(['step_id' => $this->step_id, 'is_active' => true])->get();
         $this->text_ru = $sub_step_content->text_ru ?? "";
         $this->text_kk = $sub_step_content->text_kk ?? "";
         $this->text_en = $sub_step_content->text_en ?? null;
