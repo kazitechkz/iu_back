@@ -6,11 +6,13 @@ use App\Helpers\MathFormulaHelper;
 use App\Helpers\StrHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Question\CreateRequest;
+use App\Imports\QuestionsImport;
 use App\Models\File;
 use App\Models\Question;
 use App\Models\Subject;
 use Illuminate\Http\Request;
 use League\CommonMark\Util\RegexHelper;
+use Maatwebsite\Excel\Facades\Excel;
 
 class QuestionController extends Controller
 {
@@ -39,6 +41,46 @@ class QuestionController extends Controller
                     ->paginate(20);
                 $subjects = Subject::all();
                 return view('admin.question.change-category', compact( 'questions', 'subjects'));
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
+    }
+
+    public function importQuestions()
+    {
+        try{
+            if(auth()->user()->can("questions index") ){
+                return view('livewire.question.import-questions');
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
+    }
+
+    public function importFromCsv(Request $request)
+    {
+        try{
+            if(auth()->user()->can("questions index") ){
+                $this->validate($request, [
+                   'file' => 'required'
+                ]);
+                $import = new QuestionsImport();
+                Excel::import($import, $request['file']);
+                toastr()->success('Data has been imported successfully!');
+                return redirect(route('questions.index'));
             }
             else{
                 toastr()->warning(__("message.not_allowed"));

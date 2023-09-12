@@ -99,6 +99,8 @@ Route::group([
         Route::resource("wallet",AdminWalletController::class);
         Route::resource("faq",AdminFaqController::class);
         Route::resource("questions",AdminQuestionController::class);
+        Route::get("questions-import",[AdminQuestionController::class, 'importQuestions'])->name('import-questions');
+        Route::post("import-from-csv",[AdminQuestionController::class, 'importFromCsv'])->name('import-from-csv');
         Route::post('questions-ckeditor-upload', [AdminQuestionController::class, 'uploadFromCkeditor'])->name('questions-ckeditor-upload');
         Route::get('change-category-in-subject/{id}/{locale_id?}', [AdminQuestionController::class, 'changeCategoryInSubject'])->name('change-category-in-subject');
         Route::resource("group",AdminGroupController::class);
