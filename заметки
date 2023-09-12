@@ -12,7 +12,8 @@ php artisan code:models --table=lesson_ratings
 php artisan code:models --table=participant_ratings
 php artisan code:models --table=lesson_complaints
 
-
+ // Reset cached roles and permissions
+app()['cache']->forget('spatie.permission.cache');
 
 
 1.Tutors

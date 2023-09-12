@@ -6,12 +6,13 @@
 
 namespace App\Models;
 
+use App\Traits\CRUD;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class LessonComplaint
- * 
+ *
  * @property int $id
  * @property int|null $tutor_id
  * @property int|null $participant_id
@@ -19,7 +20,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $complaint
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * 
+ *
  * @property User|null $user
  * @property LessonSchedule|null $lesson_schedule
  * @property Tutor|null $tutor
@@ -28,6 +29,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class LessonComplaint extends Model
 {
+    use CRUD;
 	protected $table = 'lesson_complaints';
 
 	protected $casts = [

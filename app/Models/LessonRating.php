@@ -6,13 +6,14 @@
 
 namespace App\Models;
 
+use App\Traits\CRUD;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class LessonRating
- * 
+ *
  * @property int $id
  * @property int $participant_id
  * @property int|null $rating
@@ -20,13 +21,14 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string|null $deleted_at
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * 
+ *
  * @property User $user
  *
  * @package App\Models
  */
 class LessonRating extends Model
 {
+    use CRUD;
 	use SoftDeletes;
 	protected $table = 'lesson_ratings';
 

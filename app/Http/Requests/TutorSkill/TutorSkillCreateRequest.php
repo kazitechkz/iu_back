@@ -23,8 +23,8 @@ class TutorSkillCreateRequest extends FormRequest
     {
         return [
             "tutor_id"=>"required|exists:tutors,id",
-            "category_id"=>"required|categories,id",
-            "subject_id"=>"required|subjects,id"
+            "category_id"=>"required|exists:categories,id",
+            "subject_id"=>"required|exists:subjects,id"
         ];
     }
 }

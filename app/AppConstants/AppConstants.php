@@ -96,7 +96,7 @@ class AppConstants
         "content management",
         "step management",
         "tournament management",
-        "gender management"
+        "tutor management"
     ];
 
     public const ADMIN_PERMISSIONS = self::all_permissions;

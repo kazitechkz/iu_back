@@ -6,13 +6,14 @@
 
 namespace App\Models;
 
+use App\Traits\CRUD;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class LessonScheduleParticipant
- * 
+ *
  * @property int $id
  * @property int $participant_id
  * @property int $schedule_id
@@ -20,7 +21,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string|null $deleted_at
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * 
+ *
  * @property User $user
  * @property LessonSchedule $lesson_schedule
  *
@@ -28,6 +29,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class LessonScheduleParticipant extends Model
 {
+    use CRUD;
 	use SoftDeletes;
 	protected $table = 'lesson_schedule_participants';
 
