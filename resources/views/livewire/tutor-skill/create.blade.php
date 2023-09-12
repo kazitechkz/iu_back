@@ -1,7 +1,7 @@
 <x-form-component.form-component
     :method="'post'"
-    :route="'tournament.store'"
-    :element-id="'tournament-create'"
+    :route="'tutor-skill.store'"
+    :element-id="'tutor-skill-create'"
 >
     {{--    Tutor  --}}
     <div class="form-group">

@@ -11,7 +11,7 @@ class TutorSkillCreateRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,9 @@ class TutorSkillCreateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            "tutor_id"=>"required|exists:tutors,id",
+            "category_id"=>"required|categories,id",
+            "subject_id"=>"required|subjects,id"
         ];
     }
 }
