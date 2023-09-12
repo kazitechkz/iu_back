@@ -161,7 +161,8 @@
                         :name="__('sidebar.questions')"/>
                 @endcan
             </x-shared.sidebar-menu>
-
+        @endcan
+        @can('content management')
             <x-shared.sidebar-menu :element-id="'content'" :name="__('sidebar.content')" :icon="'fas fa-wallet'">
                 @can("news index")
                     <x-shared.sub-sidebar-menu
@@ -175,7 +176,6 @@
                         :link="'page.index'"
                         :name="__('sidebar.page')"/>
                 @endcan
-
             </x-shared.sidebar-menu>
         @endcan
         @can("step management")

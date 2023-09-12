@@ -35,15 +35,15 @@ class UserSeeder extends Seeder
                 "password" => bcrypt("admin123"),
                 "phone" => "+777111111111"
             ]);
-            foreach ($users as $user) {
-                User::create([
-                   'name' => $user->name,
-                   'username' => $user->name,
-                   'phone' => $user->phone,
-                   'email' => $user->email,
-                   'password' => bcrypt('123456')
-                ]);
-            }
+//            foreach ($users as $user) {
+//                User::create([
+//                   'name' => $user->name,
+//                   'username' => $user->name,
+//                   'phone' => $user->phone,
+//                   'email' => $user->email,
+//                   'password' => bcrypt('123456')
+//                ]);
+//            }
         }
     }
 }
