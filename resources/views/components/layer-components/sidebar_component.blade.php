@@ -238,6 +238,7 @@
                 @endcan
             </x-shared.sidebar-menu>
         @endcan
+        @can("tutor management")
             <x-shared.sidebar-menu :element-id="'tutor-content'" :name="__('sidebar.tutor')" :icon="'fa-solid fa-chalkboard-user'">
                 <x-shared.sub-sidebar-menu
                     :icon="'fas fa-venus-mars'"
@@ -272,8 +273,6 @@
                     :link="'lesson-complaint.index'"
                     :name="__('sidebar.lesson-complaint')"/>
             </x-shared.sidebar-menu>
-
-
-
+        @endcan
     </ul>
 </nav>

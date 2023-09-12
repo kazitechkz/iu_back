@@ -2,6 +2,8 @@
 
 namespace App\Http\Livewire\Tutor;
 
+use App\Http\Requests\SubTournament\SubTournamentCreateRequest;
+use App\Http\Requests\Tutor\TutorCreateRequest;
 use App\Models\Category;
 use App\Models\Gender;
 use App\Models\Subject;
@@ -17,6 +19,7 @@ class Create extends Component
     public $users;
     public $roles = [];
     public $user_id;
+    public $user;
     public bool $loading = false;
 
     public $image_url;
@@ -47,19 +50,37 @@ class Create extends Component
         $this->loading = false;
         $this->genders = Gender::all();
         $this->search = old("search")??"";
+        $this->gender_id = old("gender_id");
         $this->phone = old("phone")??"";
         $this->email = old("email")??"";
         $this->iin = old("iin")??"";
         $this->bio = old("bio")??"";
         $this->experience = old("experience")??"";
         $this->is_proved = old("is_proved")??false;
+        $this->birth_date = old("birth_date");
     }
 
 
     public function render()
     {
-
+        $this->change_subject();
         return view('livewire.tutor.create');
+    }
+
+    public function select_user($id){
+        $this->user_id = $id;
+        $this->user = User::find($id);
+        $this->email =  $this->user->email;
+        $this->phone =  $this->user->phone;
+    }
+
+    protected function rules(){
+        return (new TutorCreateRequest())->rules();
+    }
+
+    public function updated($propertyName)
+    {
+        $this->validateOnly($propertyName);
     }
 
     public function search_user(){
@@ -73,13 +94,12 @@ class Create extends Component
         }
     }
 
-    public function change_subject(){
+    protected function change_subject(){
         if($this->subject_id){
-            $this->categories = Category::whereIn("subject_id",$this->subject_id);
+            $this->categories = Category::whereIn("subject_id",$this->subject_id)->get();
         }
         else{
             $this->categories = null;
-
             $this->category_id = [];
         }
     }

@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Tutor\TutorCreateRequest;
 use App\Http\Requests\Tutor\TutorUpdateRequest;
+use App\Models\Category;
 use App\Models\Tutor;
+use App\Models\TutorSkill;
 use Illuminate\Http\Request;
 
 class TutorController extends Controller
@@ -57,7 +59,13 @@ class TutorController extends Controller
     {
         try{
             if(auth()->user()->can("tutor create") ){
-                Tutor::add($request->all());
+                $input = $request->all();
+                $input["is_proved"] = $request->boolean("is_proved");
+                $tutor = Tutor::add($input);
+                $cats = Category::whereIn("id",$input["category_id"])->pluck("id","id");
+                    foreach ($cats as $cat){
+                        TutorSkill::add(["category_id"=>$cat->category_id,"subject_id"=>$cat->subject_id,"tutor_id"=>$tutor->id]);
+                    }
                 return redirect()->route("tutor.index");
             }
             else{

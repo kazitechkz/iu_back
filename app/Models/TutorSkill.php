@@ -6,6 +6,7 @@
 
 namespace App\Models;
 
+use App\Traits\CRUD;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
@@ -29,6 +30,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class TutorSkill extends Model
 {
+    use CRUD;
 	protected $table = 'tutor_skills';
 
 	protected $casts = [

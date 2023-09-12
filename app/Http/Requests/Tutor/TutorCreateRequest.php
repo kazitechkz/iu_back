@@ -23,13 +23,15 @@ class TutorCreateRequest extends FormRequest
     {
         return [
             "user_id"=>"required|exists:users,id",
-            "gender_id"=>"required|exists:genders",
-            "phone"=>"required|max:255|unique:tutors.phone",
+            "gender_id"=>"required|exists:genders,id",
+            "phone"=>"required|max:255|unique:tutors,phone",
             "email"=>"required|email|unique:tutors,email",
-            "iin"=>"required|iin|unique:tutors,iin",
+            "iin"=>"required|unique:tutors,iin|size:12",
             "birth_date"=>"required|date",
             "bio"=>"required",
             "experience"=>"required",
+            "subject_id"=>"required|array|min:1",
+            "category_id"=>"required|array|min:1",
         ];
     }
 }

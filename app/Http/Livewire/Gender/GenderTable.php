@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Gender;
 
+use App\Models\Tutor;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Models\Gender;
@@ -18,7 +19,22 @@ class GenderTable extends DataTableComponent
                 return route('gender.edit', $row);
             });
     }
+    public function deleteSelected()
+    {
+        $model = $this->getSelected();
+        foreach ($model as $key => $value) {
+            $entity = Gender::find($value);
+            $entity?->delete();
+        }
+        $this->clearSelected();
+    }
 
+    public function bulkActions(): array
+    {
+        return [
+            'deleteSelected' => 'Удалить'
+        ];
+    }
     public function columns(): array
     {
         return [

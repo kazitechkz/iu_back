@@ -1,3 +1,8 @@
+<x-form-component.form-component
+    :method="'post'"
+    :route="'tutor.store'"
+    :element-id="'tutor-create'"
+>
 <div>
     <div class="form-group">
         <x-input icon="search"
@@ -21,11 +26,19 @@
                 <div class="form-group">
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-400" for="user_result">{{__("table.user_id")}}</label>
                     <select wire:model="user_id" name="user_id" class="form-control" id="user_result">
-                        <option value="">{{__("table.user_id")}}</option>
+                        @if($user)
+                            <option
+                                class="py-2 px-3 focus:outline-none all-colors ease-in-out duration-150 relative group text-secondary-600 dark:text-secondary-400 flex items-center justify-between cursor-pointer focus:bg-primary-100 focus:text-primary-800 hover:text-white dark:focus:bg-secondary-700 hover:bg-primary-500 dark:hover:bg-secondary-700"
+                                value="{{$user->id}}">
+                                {{$user->name}}
+                                ({{$user->email}})
+                            </option>
+                        @endif
                         @foreach($users as $userItem)
                             @if(is_object($userItem))
                                 @if(in_array($userItem->searchable->id,$roles))
                                     <option
+                                        wire:click="select_user({{$userItem->searchable->id}})"
                                         class="py-2 px-3 focus:outline-none all-colors ease-in-out duration-150 relative group text-secondary-600 dark:text-secondary-400 flex items-center justify-between cursor-pointer focus:bg-primary-100 focus:text-primary-800 hover:text-white dark:focus:bg-secondary-700 hover:bg-primary-500 dark:hover:bg-secondary-700"
                                         value="{{$userItem->searchable->id}}">
                                         {{$userItem->searchable->name}}
@@ -38,7 +51,20 @@
                 </div>
             @endif
         @endif
-
+        @if($user_id)
+            {{--    IIN  --}}
+            <div class="form-group">
+                <x-input
+                    type="iin"
+                    class="my-2"
+                    wire:model="iin"
+                    label="{{__('table.iin')}}*"
+                    placeholder="{{__('table.iin')}}"
+                    icon="user"
+                    hint="{{__('table.iin_hint')}}"
+                />
+            </div>
+            {{--    IIN--}}
 
             {{--    User Email--}}
             <div class="form-group">
@@ -97,19 +123,19 @@
                 />
             </div>
             {{--    Experience --}}
-        {{--    Birth Date --}}
-        <div class="form-group">
-            <x-datetime-picker
-                label="{{__('table.birth_date')}}"
-                placeholder="{{__('table.birth_date')}}"
-                :without-time="true"
-                parse-format="DD-MM-YYYY"
-                wire:model.defer="birth_date"
+            {{--    Birth Date --}}
+            <div class="form-group">
+                <x-datetime-picker
+                    label="{{__('table.birth_date')}}"
+                    placeholder="{{__('table.birth_date')}}"
+                    :without-time="true"
+                    parse-format="DD-MM-YYYY"
+                    wire:model.defer="birth_date"
 
-            />
-        </div>
-        {{--    Birth Date --}}
-        {{--   Subject --}}
+                />
+            </div>
+            {{--    Birth Date --}}
+            {{--   Subject --}}
             <div class="form-group">
                 <x-select
                     label="{{__('table.subject_id')}}"
@@ -119,36 +145,38 @@
                     option-value="id"
                     option-label="title"
                     wire:model="subject_id"
+                    multiple
+                    name="subject_id[]"
                 />
             </div>
-        {{--   Subject --}}
-        {{--   Category --}}
-        <div class="form-group">
-            <x-select
-                label="{{__('table.category_id')}}"
-                placeholder="{{__('table.category_id')}}"
-                multiselect
-                :options="$categories"
-                option-value="id"
-                option-label="title"
-                wire:model="category_id"
-            />
-        </div>
-        {{--   Category --}}
+            {{--   Subject --}}
+            {{--   Category --}}
+            <div class="form-group">
+                <x-select
+                    label="{{__('table.category_id')}}"
+                    placeholder="{{__('table.category_id')}}"
+                    multiselect
+                    :options="$categories"
+                    option-value="id"
+                    option-label="title"
+                    wire:model="category_id"
+                    multiple
+                    name="category_id[]"
+                />
+            </div>
+            {{--   Category --}}
             {{-- Is Proved --}}
-        <div class="form-group">
-            <x-checkbox
-                id="is_proved"
-                label="{{__('table.is_proved')}}"
-                icon="check"
-                wire:model.defer="is_proved"
-            />
-        </div>
+            <div class="form-group">
+                <x-checkbox
+                    id="is_proved"
+                    label="{{__('table.is_proved')}}"
+                    icon="check"
+                    wire:model.defer="is_proved"
+                />
+            </div>
             {{-- Is Proved --}}
-
-
-
-
+        @endif
 
     </div>
 </div>
+</x-form-component.form-component>

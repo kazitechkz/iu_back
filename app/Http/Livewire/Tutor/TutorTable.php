@@ -2,6 +2,9 @@
 
 namespace App\Http\Livewire\Tutor;
 
+use App\Exports\NewsExport;
+use App\Models\News;
+use Maatwebsite\Excel\Facades\Excel;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Models\Tutor;
@@ -12,7 +15,29 @@ class TutorTable extends DataTableComponent
 
     public function configure(): void
     {
-        $this->setPrimaryKey('id');
+        $this->setPerPageAccepted([20, 50, 100]);
+        $this->setPerPage(20);
+        $this->setPrimaryKey('id')
+            ->setTableRowUrl(function ($row) {
+                return route('tutor.edit', $row);
+            });
+    }
+
+    public function deleteSelected()
+    {
+        $model = $this->getSelected();
+        foreach ($model as $key => $value) {
+            $entity = Tutor::find($value);
+            $entity?->delete();
+        }
+        $this->clearSelected();
+    }
+
+    public function bulkActions(): array
+    {
+        return [
+            'deleteSelected' => 'Удалить'
+        ];
     }
 
     public function columns(): array
@@ -20,31 +45,29 @@ class TutorTable extends DataTableComponent
         return [
             Column::make("Id", "id")
                 ->sortable(),
-            Column::make("User id", "user_id")
+            Column::make(__("table.user_id"), "user_id")
                 ->sortable(),
-            Column::make("Image url", "image_url")
+            Column::make(__("table.image_url"), "image_url")
                 ->sortable(),
-            Column::make("Gender id", "gender_id")
+            Column::make(__("table.gender_id"), "gender_id")
                 ->sortable(),
-            Column::make("Phone", "phone")
+            Column::make(__("table.phone"), "phone")
                 ->sortable(),
-            Column::make("Email", "email")
+            Column::make(__("table.email"), "email")
                 ->sortable(),
-            Column::make("Iin", "iin")
+            Column::make(__("table.iin"), "iin")
                 ->sortable(),
-            Column::make("Birth date", "birth_date")
+            Column::make(__("table.birth_date"), "birth_date")
                 ->sortable(),
-            Column::make("Bio", "bio")
+            Column::make(__("table.bio"), "bio")
                 ->sortable(),
-            Column::make("Experience", "experience")
+            Column::make(__("table.experience"), "experience")
                 ->sortable(),
-            Column::make("Skills", "skills")
+            Column::make(__("table.is_proved"), "is_proved")
                 ->sortable(),
-            Column::make("Is proved", "is_proved")
+            Column::make(__("table.created_at"), "created_at")
                 ->sortable(),
-            Column::make("Created at", "created_at")
-                ->sortable(),
-            Column::make("Updated at", "updated_at")
+            Column::make(__("table.updated_at"), "updated_at")
                 ->sortable(),
         ];
     }

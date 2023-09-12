@@ -11,7 +11,7 @@ class TutorUpdateRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -19,10 +19,20 @@ class TutorUpdateRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array|string>
      */
-    public function rules(): array
+    public function rules($id = 0): array
     {
+        if($id == 0){
+            $id = $this->get("tutor_id");
+        }
         return [
-            //
+            "tutor_id"=>"required|exists:tutors,id",
+            "gender_id"=>"required|exists:genders,id",
+            "phone"=>"required|max:255|unique:tutors,phone,".$id,
+            "email"=>"required|email|unique:tutors,email,".$id,
+            "iin"=>"required|unique:tutors,iin,".$id,
+            "birth_date"=>"required|date",
+            "bio"=>"required",
+            "experience"=>"required",
         ];
     }
 }
