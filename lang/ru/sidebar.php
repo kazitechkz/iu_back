@@ -39,4 +39,12 @@ return [
     "step"=>"Этапы",
     "sub-step"=>"Субэтапы",
     "sub-step-content"=>"Контент Субэтапов",
+    "gender"=>"Пол",
+    "tutor"=>"Репетитор",
+    "tutor-skill"=>"Навыки",
+    "lesson-schedule"=>"Расписание",
+    "lesson-schedule-participant"=>"Участники",
+    "lesson-rating"=>"Рейтинг урока",
+    "participant-rating"=>"Рейтинг ученика",
+    "lesson-complaint"=>"Жалобы",
 ];

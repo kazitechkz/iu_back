@@ -39,4 +39,15 @@ return [
     "step"=>"Step",
     "sub-step"=>"Sub-steps",
     "sub-step-content"=>"Sub-steps content",
+    "gender"=>"Gender",
+    "tutor"=>"Tutor",
+    "tutor-skill"=>"Tutor Skills",
+    "lesson-schedule"=>"Lesson Schedules",
+    "lesson-schedule-participant"=>"Lesson Participant",
+    "lesson-rating"=>"Lesson Rating",
+    "participant-rating"=>"Participant Rating",
+    "lesson-complaint"=>"Lesson Complaint",
+
+
+
 ];

@@ -408,5 +408,4 @@ return [
     "lesson_complaint_edit_title"=>"Изменить жалобу ",
     "lesson_complaint_create_subtitle"=>"Блок создания жалоб",
     "lesson_complaint_edit_subtitle"=>"Блок редактирования жалоб",
-
 ];

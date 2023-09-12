@@ -30,7 +30,7 @@
     <p class="h-3 mb-3 font-weight-bold">
         {{__('table.permission_id')}}:
     </p>
-    <div class="form-group">
+    <div class="form-group" wire:ignore>
         @foreach($permissions as $permission)
             <x-checkbox
                 wire:change="changePermission('{{ $permission->name }}')"

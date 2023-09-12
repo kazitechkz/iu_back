@@ -238,6 +238,42 @@
                 @endcan
             </x-shared.sidebar-menu>
         @endcan
+            <x-shared.sidebar-menu :element-id="'tutor-content'" :name="__('sidebar.tutor')" :icon="'fa-solid fa-chalkboard-user'">
+                <x-shared.sub-sidebar-menu
+                    :icon="'fas fa-venus-mars'"
+                    :link="'gender.index'"
+                    :name="__('sidebar.gender')"/>
+                <x-shared.sub-sidebar-menu
+                    :icon="'fas fa-solid fa-chalkboard-user'"
+                    :link="'tutor.index'"
+                    :name="__('sidebar.tutor')"/>
+                <x-shared.sub-sidebar-menu
+                    :icon="'fa-solid fa-toolbox'"
+                    :link="'tutor-skill.index'"
+                    :name="__('sidebar.tutor-skill')"/>
+                <x-shared.sub-sidebar-menu
+                    :icon="'fa-solid fa-calendar-days'"
+                    :link="'lesson-schedule.index'"
+                    :name="__('sidebar.lesson-schedule')"/>
+                <x-shared.sub-sidebar-menu
+                    :icon="'fa-solid fa-graduation-cap'"
+                    :link="'lesson-schedule-participant.index'"
+                    :name="__('sidebar.lesson-schedule-participant')"/>
+                <x-shared.sub-sidebar-menu
+                    :icon="'fa-solid fa-star'"
+                    :link="'lesson-rating.index'"
+                    :name="__('sidebar.lesson-rating')"/>
+                <x-shared.sub-sidebar-menu
+                    :icon="'fa-solid fa-star'"
+                    :link="'participant-rating.index'"
+                    :name="__('sidebar.participant-rating')"/>
+                <x-shared.sub-sidebar-menu
+                    :icon="'fa-solid fa-ticket'"
+                    :link="'lesson-complaint.index'"
+                    :name="__('sidebar.lesson-complaint')"/>
+            </x-shared.sidebar-menu>
+
+
 
     </ul>
 </nav>
