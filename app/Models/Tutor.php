@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class Tutor
- * 
+ *
  * @property int $id
  * @property int $user_id
  * @property int|null $image_url
@@ -27,7 +27,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property bool $is_proved
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * 
+ *
  * @property Gender|null $gender
  * @property File|null $file
  * @property User $user
@@ -47,7 +47,6 @@ class Tutor extends Model
 		'image_url' => 'int',
 		'gender_id' => 'int',
 		'birth_date' => 'datetime',
-		'skills' => 'json',
 		'is_proved' => 'bool'
 	];
 
@@ -61,7 +60,6 @@ class Tutor extends Model
 		'birth_date',
 		'bio',
 		'experience',
-		'skills',
 		'is_proved'
 	];
 

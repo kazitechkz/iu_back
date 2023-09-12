@@ -13,6 +13,10 @@ class GenderTable extends DataTableComponent
     public function configure(): void
     {
         $this->setPrimaryKey('id');
+        $this->setPrimaryKey('id')
+            ->setTableRowUrl(function ($row) {
+                return route('gender.edit', $row);
+            });
     }
 
     public function columns(): array
@@ -20,15 +24,15 @@ class GenderTable extends DataTableComponent
         return [
             Column::make("Id", "id")
                 ->sortable(),
-            Column::make("Title ru", "title_ru")
+            Column::make(__("table.title_ru"), "title_ru")
                 ->sortable(),
-            Column::make("Title kk", "title_kk")
+            Column::make(__("table.title_kk"), "title_kk")
                 ->sortable(),
-            Column::make("Title en", "title_en")
+            Column::make(__("table.title_en"), "title_en")
                 ->sortable(),
-            Column::make("Created at", "created_at")
+            Column::make(__("table.created_at"), "created_at")
                 ->sortable(),
-            Column::make("Updated at", "updated_at")
+            Column::make(__("table.updated_at"), "updated_at")
                 ->sortable(),
         ];
     }

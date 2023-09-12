@@ -1,5 +1,5 @@
 <x-form-component.form-component
-    :method="'post'"
+    :method="'put'"
     :route="'gender.update'"
     :parameters="['gender'=>$gender]"
     :element-id="'gender-update'"

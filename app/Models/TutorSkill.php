@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class TutorSkill
- * 
+ *
  * @property int $id
  * @property int $tutor_id
  * @property int $subject_id
@@ -19,7 +19,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $sub_category_id
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * 
+ *
  * @property Category $category
  * @property SubCategory $sub_category
  * @property Subject $subject
@@ -35,14 +35,12 @@ class TutorSkill extends Model
 		'tutor_id' => 'int',
 		'subject_id' => 'int',
 		'category_id' => 'int',
-		'sub_category_id' => 'int'
 	];
 
 	protected $fillable = [
 		'tutor_id',
 		'subject_id',
 		'category_id',
-		'sub_category_id'
 	];
 
 	public function category()
@@ -50,10 +48,6 @@ class TutorSkill extends Model
 		return $this->belongsTo(Category::class);
 	}
 
-	public function sub_category()
-	{
-		return $this->belongsTo(SubCategory::class);
-	}
 
 	public function subject()
 	{
