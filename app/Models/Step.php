@@ -7,6 +7,7 @@
 namespace App\Models;
 
 use App\Traits\CRUD;
+use App\Traits\Language;
 use Bpuig\Subby\Models\Plan;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
@@ -41,7 +42,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class Step extends Model
 {
-	use SoftDeletes,CRUD;
+	use SoftDeletes,CRUD, Language;
 	protected $table = 'steps';
 
 	protected $casts = [

@@ -7,6 +7,7 @@
 namespace App\Models;
 
 use App\Traits\CRUD;
+use App\Traits\Language;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
@@ -31,7 +32,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class AttemptQuestion extends Model
 {
-    use CRUD;
+    use CRUD, Language;
 	protected $table = 'attempt_questions';
 
 	protected $casts = [

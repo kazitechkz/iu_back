@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\AppConstants\AppConstants;
 use App\Helpers\AWS;
+use App\Traits\Language;
 use Aws\Credentials\Credentials;
 use Aws\S3\S3Client;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -13,7 +14,7 @@ use Illuminate\Support\Str;
 
 class File extends Model
 {
-    use HasFactory;
+    use HasFactory, Language;
 
     protected $fillable = ['url'];
 

@@ -7,6 +7,7 @@
 namespace App\Models;
 
 use App\Traits\CRUD;
+use App\Traits\Language;
 use Bpuig\Subby\Models\Plan;
 use Illuminate\Database\Eloquent\Model;
 
@@ -24,7 +25,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class GroupPlan extends Model
 {
-    use CRUD;
+    use CRUD, Language;
 	protected $table = 'group_plan';
 	public $timestamps = false;
 

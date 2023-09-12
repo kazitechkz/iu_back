@@ -3,19 +3,28 @@
     :route="'sub-step-content.store'"
     :element-id="'sub-step-content-create'"
 >
+    {{--    Steps --}}
+    <div class="form-group">
+        <x-select
+            label="Cтепы*"
+            :options="$steps"
+            option-label="title"
+            option-value="id"
+            wire:model="step_id"
+        />
+    </div>
+    {{--    Steps --}}
     {{--    Sub-Steps --}}
-    @if($sub_steps)
-        <div class="form-group">
-            <x-select
-                label="Sub-Steps*"
-                :options="$sub_steps"
-                option-label="title_ru"
-                option-value="id"
-                wire:model="sub_step_id"
-                name="sub_step_id"
-            />
-        </div>
-    @endif
+    <div class="form-group">
+        <x-select
+            label="Субстепы*"
+            :options="$sub_steps"
+            option-label="title"
+            option-value="id"
+            wire:model="sub_step_id"
+            name="sub_step_id"
+        />
+    </div>
     {{--    Sub-Steps --}}
     {{--    CkEditor --}}
     <div class="form-group" wire:ignore>

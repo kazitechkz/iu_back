@@ -7,6 +7,7 @@
 namespace App\Models;
 
 use App\Traits\CRUD;
+use App\Traits\Language;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -30,7 +31,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class DiscussRating extends Model
 {
 	use SoftDeletes;
-    use CRUD;
+    use CRUD, Language;
 	protected $table = 'discuss_rating';
 
 	protected $casts = [

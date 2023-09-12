@@ -43,26 +43,14 @@ class SubStepContentTable extends DataTableComponent
         return [
             Column::make("Id", "id")
                 ->sortable(),
-            Column::make("Text ru", "text_ru")
+            Column::make("Текст", StrHelper::getTextAttribute())
                 ->format(fn($val) => StrHelper::getSubStr($val, 30))
                 ->html()
                 ->searchable(),
-            Column::make("Text kk", "text_kk")
-                ->format(fn($val) => StrHelper::getSubStr($val, 30))
-                ->html()
-                ->searchable(),
-            Column::make("Text en", "text_en")
-                ->format(fn($val) => StrHelper::getSubStr($val, 30))
-                ->html()
-                ->searchable(),
-            Column::make("Sub step id", "sub_step.title_ru")
+            Column::make("Субстеп", "sub_step.".StrHelper::getTitleAttribute())
                 ->sortable(),
-            BooleanColumn::make("Is Active", "sub_step.is_active")
-                ->sortable(),
-            Column::make("Created at", "created_at")
-                ->sortable(),
-            Column::make("Updated at", "updated_at")
-                ->sortable(),
+            BooleanColumn::make("Активный", "sub_step.is_active")
+                ->sortable()
         ];
     }
 }

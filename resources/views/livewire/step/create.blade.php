@@ -4,83 +4,81 @@
     :element-id="'step-create'"
 >
 
+    <input type="hidden" wire:model="title_ru" name="title_ru">
+    <input type="hidden" wire:model="title_kk" name="title_kk">
     {{--    Title in Russian --}}
-    <div class="form-group">
-        <x-input class="my-2"
-                 wire:model="title_ru"
-                 label="Title in Russian*"
-                 placeholder="Title in Russian"
-                 icon="pencil"
-                 hint="Title in Russian"
-        />
-    </div>
-    {{--    Title in Russian --}}
-    {{--    Title in Kazakh --}}
-    <div class="form-group">
-        <x-input class="my-2"
-                 wire:model="title_kk"
-                 label="Title in Kazakh*"
-                 placeholder="Title in Kazakh"
-                 icon="pencil"
-                 hint="Title in Kazakh"
-        />
-    </div>
+{{--    <div class="form-group">--}}
+{{--        <x-input class="my-2"--}}
+{{--                 wire:model="title_ru"--}}
+{{--                 label="Title in Russian*"--}}
+{{--                 placeholder="Title in Russian"--}}
+{{--                 icon="pencil"--}}
+{{--                 hint="Title in Russian"--}}
+{{--        />--}}
+{{--    </div>--}}
+{{--    --}}{{--    Title in Russian --}}
+{{--    --}}{{--    Title in Kazakh --}}
+{{--    <div class="form-group">--}}
+{{--        <x-input class="my-2"--}}
+{{--                 wire:model="title_kk"--}}
+{{--                 label="Title in Kazakh*"--}}
+{{--                 placeholder="Title in Kazakh"--}}
+{{--                 icon="pencil"--}}
+{{--                 hint="Title in Kazakh"--}}
+{{--        />--}}
+{{--    </div>--}}
     {{--    Title in Kazakh --}}
     {{--    Title in English --}}
+{{--    <div class="form-group">--}}
+{{--        <x-input class="my-2"--}}
+{{--                 wire:model="title_en"--}}
+{{--                 label="Title in English"--}}
+{{--                 placeholder="Title in English"--}}
+{{--                 icon="pencil"--}}
+{{--                 hint="Title in English"--}}
+{{--        />--}}
+{{--    </div>--}}
+    {{--    Title in English --}}
+
+    {{--    Subjects --}}
     <div class="form-group">
-        <x-input class="my-2"
-                 wire:model="title_en"
-                 label="Title in English"
-                 placeholder="Title in English"
-                 icon="pencil"
-                 hint="Title in English"
+        <x-select
+            label="Предмет*"
+            :options="$subjects"
+            option-label="title"
+            option-value="id"
+            wire:model="subject_id"
+            name="subject_id"
         />
     </div>
-    {{--    Title in English --}}
+    {{--    Subjects --}}
+
+    {{--    Categories --}}
+    <div class="form-group">
+        <x-select
+            label="Категория*"
+            :options="$categories"
+            option-label="title"
+            option-value="id"
+            wire:model="category_id"
+            name="category_id"
+        />
+    </div>
+    {{--    Categories --}}
     {{-- Level --}}
     <div class="form-group">
         <x-inputs.number
-            label="Level*"
+            label="Уровень*"
             wire:model="level"
             hint="Level - higher - more difficult"
         />
     </div>
     {{-- Level --}}
-    {{--    Subjects --}}
-    @if($subjects)
-        <div class="form-group">
-            <x-select
-                label="Subject*"
-                :options="$subjects"
-                option-label="title_ru"
-                option-value="id"
-                wire:model="subject_id"
-                name="subject_id"
-            />
-        </div>
-    @endif
-    {{--    Subjects --}}
-
-    {{--    Categories --}}
-    @if($categories)
-        <div class="form-group">
-            <x-select
-                label="Category*"
-                :options="$categories"
-                option-label="title_ru"
-                option-value="id"
-                wire:model="category_id"
-                name="category_id"
-            />
-        </div>
-    @endif
-    {{--    Categories --}}
-
     {{--    Plans --}}
     @if($plans)
         <div class="form-group">
             <x-select
-                label="Plan*"
+                label="План*"
                 :options="$plans"
                 option-label="name"
                 option-value="id"
@@ -91,7 +89,7 @@
     @endif
     {{--    Plans--}}
     {{-- Image Url --}}
-    <label class="h-5">Image Url*</label>
+    <label class="h-5">Картинка*</label>
     <livewire:image-upload :folder-name="'step'"/>
     {{-- Image Url --}}
 

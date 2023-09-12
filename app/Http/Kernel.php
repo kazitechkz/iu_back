@@ -6,6 +6,8 @@ use App\Http\Middleware\AuthMiddleware;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use LaravelAt\ImageSanitize\ImageSanitizeMiddleware;
+use Mcamara\LaravelLocalization\Middleware\LaravelLocalizationRedirectFilter;
+use Mcamara\LaravelLocalization\Middleware\LocaleSessionRedirect;
 use Sarfraznawaz2005\Loading\Http\Middleware\LoadingMiddleware;
 use Spatie\LaravelImageOptimizer\Middlewares\OptimizeImages;
 
@@ -74,6 +76,11 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         "authenticate" => AuthMiddleware::class,
         'image-sanitize' => ImageSanitizeMiddleware::class,
-        'optimizeImages' => OptimizeImages::class
+        'optimizeImages' => OptimizeImages::class,
+        'localize'                => \Mcamara\LaravelLocalization\Middleware\LaravelLocalizationRoutes::class,
+        'localizationRedirect'    => \Mcamara\LaravelLocalization\Middleware\LaravelLocalizationRedirectFilter::class,
+        'localeSessionRedirect'   => \Mcamara\LaravelLocalization\Middleware\LocaleSessionRedirect::class,
+        'localeCookieRedirect'    => \Mcamara\LaravelLocalization\Middleware\LocaleCookieRedirect::class,
+        'localeViewPath'          => \Mcamara\LaravelLocalization\Middleware\LaravelLocalizationViewPath::class
     ];
 }

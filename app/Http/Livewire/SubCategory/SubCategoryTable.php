@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\SubCategory;
 
+use App\Helpers\StrHelper;
 use App\Models\File;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Exceptions\DataTableConfigurationException;
@@ -51,13 +52,11 @@ class SubCategoryTable extends DataTableComponent
         return [
             Column::make("Id", "id")
                 ->sortable(),
-            Column::make("Предмет", "category.subject.title_ru")
+            Column::make("Предмет", "category.subject.".StrHelper::getTitleAttribute())
                 ->sortable(),
-            Column::make("Категория", "category.title_ru")
+            Column::make("Категория", "category.".StrHelper::getTitleAttribute())
                 ->sortable(),
-            Column::make("Title kk", "title_kk")
-                ->sortable(),
-            Column::make("Title ru", "title_ru")
+            Column::make("Наименование", StrHelper::getTitleAttribute())
                 ->sortable(),
             Column::make('Image', 'file.url')
                 ->format(fn($val) => '<img class="w-50" src="'.File::getFileFromAWS($val).'" />')

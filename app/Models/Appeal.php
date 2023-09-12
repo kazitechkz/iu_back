@@ -7,6 +7,7 @@
 namespace App\Models;
 
 use App\Traits\CRUD;
+use App\Traits\Language;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -32,7 +33,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class Appeal extends Model
 {
-	use SoftDeletes;
+	use SoftDeletes, Language;
     use CRUD;
 	protected $table = 'appeals';
 

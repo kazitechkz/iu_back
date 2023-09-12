@@ -7,6 +7,7 @@ use App\Exports\SubjectExports;
 use App\Models\File;
 use App\Models\Subject;
 use Maatwebsite\Excel\Facades\Excel;
+use Mcamara\LaravelLocalization\LaravelLocalization;
 use Rappasoft\LaravelLivewireTables\Exceptions\DataTableConfigurationException;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
@@ -64,10 +65,12 @@ class SubjectTable extends DataTableComponent
     }
     public function columns(): array
     {
+        $title = "title_".\Mcamara\LaravelLocalization\Facades\LaravelLocalization::getCurrentLocale();
         return [
             Column::make("Id", "id")
                 ->sortable(),
-            Column::make("Наименование", "title_ru")->searchable()
+            Column::make("Наименование", $title)
+                ->searchable()
                 ->sortable(),
             BooleanColumn::make("Обязательный компонент", "is_compulsory")
                 ->sortable(),

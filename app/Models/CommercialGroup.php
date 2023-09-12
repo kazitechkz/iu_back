@@ -7,6 +7,7 @@
 namespace App\Models;
 
 use App\Traits\CRUD;
+use App\Traits\Language;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
@@ -29,7 +30,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class CommercialGroup extends Model
 {
-    use CRUD;
+    use CRUD, Language;
 	protected $table = 'commercial_groups';
 
 	protected $casts = [

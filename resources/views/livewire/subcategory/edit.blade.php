@@ -5,7 +5,7 @@
             wire:model="subject_id"
             placeholder="Выберите предмет"
             :options="$subjects"
-            option-label="title_ru"
+            option-label="title"
             option-value="id"
             {{--            class="hover:bg-primary-500"--}}
         />
@@ -17,7 +17,7 @@
             wire:model="category_id"
             placeholder="Выберите категорию"
             :options="$categories"
-            option-label="title_ru"
+            option-label="title"
             option-value="id"
             {{--            class="hover:bg-primary-500"--}}
         />

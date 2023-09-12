@@ -5,18 +5,27 @@
     :element-id="'sub-step-content-update'"
 >
     {{--    Sub-Steps --}}
-    @if($sub_steps)
-        <div class="form-group">
-            <x-select
-                label="Sub-Steps*"
-                :options="$sub_steps"
-                option-label="title_ru"
-                option-value="id"
-                wire:model="sub_step_id"
-                name="sub_step_id"
-            />
-        </div>
-    @endif
+    <div class="form-group">
+        <x-select
+            label="Степы*"
+            :options="$steps"
+            option-label="title"
+            option-value="id"
+            wire:model="step_id"
+        />
+    </div>
+    {{--    Sub-Steps --}}
+    {{--    Sub-Steps --}}
+    <div class="form-group">
+        <x-select
+            label="Субстепы*"
+            :options="$sub_steps"
+            option-label="title_ru"
+            option-value="id"
+            wire:model="sub_step_id"
+            name="sub_step_id"
+        />
+    </div>
     {{--    Sub-Steps --}}
     {{--    CkEditor --}}
     <div class="form-group" wire:ignore>

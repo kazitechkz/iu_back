@@ -46,4 +46,13 @@ class StrHelper
         $text = str_replace('<pre>', '$$', $str);
         return str_replace('</pre>', '@@', $text);
     }
+
+    public static function getTitleAttribute(): string
+    {
+        return "title_".\Mcamara\LaravelLocalization\Facades\LaravelLocalization::getCurrentLocale();
+    }
+    public static function getTextAttribute(): string
+    {
+        return "text_".\Mcamara\LaravelLocalization\Facades\LaravelLocalization::getCurrentLocale();
+    }
 }

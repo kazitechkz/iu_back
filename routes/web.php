@@ -45,6 +45,7 @@ use App\Http\Controllers\Admin\LessonComplaintController as AdminLessonComplaint
 use App\Http\Controllers\Admin\TestController;
 use App\Http\Controllers\TestController as Testing;
 use Illuminate\Support\Facades\Route;
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 /*
 |--------------------------------------------------------------------------
@@ -76,55 +77,61 @@ Route::group(["prefix" => "test"],function (){
     Route::get("/create-attempt",[TestController::class,"create_attempt"]);
 });
 
-Route::group(["prefix" => "dashboard","middleware" => "auth"],function (){
-    Route::resource("user",AdminUserController::class);
-    Route::resource("role",AdminRoleController::class);
-    Route::resource("locale",AdminLocaleController::class);
-    Route::resource("permission",AdminPermissionController::class);
-    Route::resource('subject', AdminSubjectController::class)->except(['show', 'destroy']);
-    Route::resource('subject-contexts', AdminSubjectContextController::class)->except(['show', 'destroy']);
-    Route::resource('single-tests', AdminSingleSubjectTestController::class)->except(['create', 'show', 'destroy']);
-    Route::resource("plan",AdminPlanController::class);
-    Route::resource('categories', AdminCategoryController::class)->except(['show', 'destroy']);
-    Route::resource('sub-categories', AdminSubCategoryController::class)->except(['show', 'destroy']);
-    Route::resource("plan-combination",AdminPlanCombinationController::class);
-    Route::resource("subscription",AdminSubscriptionController::class);
-    Route::resource("promocode",AdminPromocodeController::class);
-    Route::resource("news",AdminNewsController::class);
-    Route::resource("wallet",AdminWalletController::class);
-    Route::resource("faq",AdminFaqController::class);
-    Route::resource("questions",AdminQuestionController::class);
-    Route::post('questions-ckeditor-upload', [AdminQuestionController::class, 'uploadFromCkeditor'])->name('questions-ckeditor-upload');
-    Route::get('change-category-in-subject/{id}/{locale_id?}', [AdminQuestionController::class, 'changeCategoryInSubject'])->name('change-category-in-subject');
-    Route::resource("group",AdminGroupController::class);
-    Route::resource("appeal-type",AdminAppealTypeController::class);
-    Route::resource("appeal",AdminAppealController::class);
-    Route::resource("page",AdminPageController::class);
-    Route::resource("forum",AdminForumController::class);
-    Route::resource("discuss",AdminDiscussController::class);
-    //Tournament
-    Route::resource("tournament",AdminTournamentController::class);
-    Route::resource("sub-tournament",AdminSubTournamentController::class);
-    Route::resource("sub-tournament-participant",AdminSubTournamentParticipantController::class);
-    Route::resource("sub-tournament-winner",AdminSubTournamentWinnerController::class);
-    Route::resource("sub-tournament-result",AdminSubTournamentResultController::class);
-    Route::resource("sub-tournament-rival",AdminSubTournamentRivalController::class);
-    Route::resource("commercial-group",AdminCommercialGroupController::class);
-    //Step
-    Route::resource("step",AdminStepController::class);
-    Route::resource("sub-step",AdminSubStepController::class);
-    Route::resource("sub-step-content",AdminSubStepContentController::class);
-    Route::resource("sub-step-test",AdminSubStepTestController::class);
-    //Tutor
-    Route::resource("gender",AdminGenderController::class);
-    Route::resource("tutor",AdminTutorController::class);
-    Route::resource("tutor-skill",AdminTutorSkillController::class);
-    Route::resource("lesson-schedule",AdminLessonScheduleController::class);
-    Route::resource("lesson-schedule-participant",AdminLessonScheduleParticipantController::class);
-    Route::resource("lesson-rating",AdminLessonRatingController::class);
-    Route::resource("participant-rating",AdminParticipantRatingController::class);
-    Route::resource("lesson-complaint",AdminLessonComplaintController::class);
+Route::group([
+    'prefix' => LaravelLocalization::setLocale(),
+    'middleware' => [ 'localeSessionRedirect', 'localizationRedirect', 'localeViewPath' ]
+], function (){
+    Route::group(["prefix" => "dashboard","middleware" => "auth"],function (){
+        Route::resource("user",AdminUserController::class);
+        Route::resource("role",AdminRoleController::class);
+        Route::resource("locale",AdminLocaleController::class);
+        Route::resource("permission",AdminPermissionController::class);
+        Route::resource('subject', AdminSubjectController::class)->except(['show', 'destroy']);
+        Route::resource('subject-contexts', AdminSubjectContextController::class)->except(['show', 'destroy']);
+        Route::resource('single-tests', AdminSingleSubjectTestController::class)->except(['create', 'show', 'destroy']);
+        Route::resource("plan",AdminPlanController::class);
+        Route::resource('categories', AdminCategoryController::class)->except(['show', 'destroy']);
+        Route::resource('sub-categories', AdminSubCategoryController::class)->except(['show', 'destroy']);
+        Route::resource("plan-combination",AdminPlanCombinationController::class);
+        Route::resource("subscription",AdminSubscriptionController::class);
+        Route::resource("promocode",AdminPromocodeController::class);
+        Route::resource("news",AdminNewsController::class);
+        Route::resource("wallet",AdminWalletController::class);
+        Route::resource("faq",AdminFaqController::class);
+        Route::resource("questions",AdminQuestionController::class);
+        Route::post('questions-ckeditor-upload', [AdminQuestionController::class, 'uploadFromCkeditor'])->name('questions-ckeditor-upload');
+        Route::get('change-category-in-subject/{id}/{locale_id?}', [AdminQuestionController::class, 'changeCategoryInSubject'])->name('change-category-in-subject');
+        Route::resource("group",AdminGroupController::class);
+        Route::resource("appeal-type",AdminAppealTypeController::class);
+        Route::resource("appeal",AdminAppealController::class);
+        Route::resource("page",AdminPageController::class);
+        Route::resource("forum",AdminForumController::class);
+        Route::resource("discuss",AdminDiscussController::class);
+        //Tournament
+        Route::resource("tournament",AdminTournamentController::class);
+        Route::resource("sub-tournament",AdminSubTournamentController::class);
+        Route::resource("sub-tournament-participant",AdminSubTournamentParticipantController::class);
+        Route::resource("sub-tournament-winner",AdminSubTournamentWinnerController::class);
+        Route::resource("sub-tournament-result",AdminSubTournamentResultController::class);
+        Route::resource("sub-tournament-rival",AdminSubTournamentRivalController::class);
+        Route::resource("commercial-group",AdminCommercialGroupController::class);
+        //Step
+        Route::resource("step",AdminStepController::class);
+        Route::resource("sub-step",AdminSubStepController::class);
+        Route::resource("sub-step-content",AdminSubStepContentController::class);
+        Route::resource("sub-step-test",AdminSubStepTestController::class);
+        //Tutor
+        Route::resource("gender",AdminGenderController::class);
+        Route::resource("tutor",AdminTutorController::class);
+        Route::resource("tutor-skill",AdminTutorSkillController::class);
+        Route::resource("lesson-schedule",AdminLessonScheduleController::class);
+        Route::resource("lesson-schedule-participant",AdminLessonScheduleParticipantController::class);
+        Route::resource("lesson-rating",AdminLessonRatingController::class);
+        Route::resource("participant-rating",AdminParticipantRatingController::class);
+        Route::resource("lesson-complaint",AdminLessonComplaintController::class);
+    });
 });
+
 
 
 Route::get('import-db', [Testing::class, 'importDb']);

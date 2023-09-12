@@ -7,6 +7,7 @@
 namespace App\Models;
 
 use App\Traits\CRUD;
+use App\Traits\Language;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
@@ -46,7 +47,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Tournament extends Model
 {
     use CRUD;
-	use SoftDeletes;
+	use SoftDeletes, Language;
 	protected $table = 'tournaments';
 
 	protected $casts = [
@@ -77,23 +78,23 @@ class Tournament extends Model
 		'end_at'
 	];
 
-	public function file()
-	{
+	public function file(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
 		return $this->belongsTo(File::class, 'poster');
 	}
 
-	public function subject()
-	{
+	public function subject(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
 		return $this->belongsTo(Subject::class);
 	}
 
-	public function sub_tournaments()
-	{
+	public function sub_tournaments(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
 		return $this->hasMany(SubTournament::class);
 	}
 
-	public function locales()
-	{
+	public function locales(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
 		return $this->belongsToMany(Locale::class, 'tournament_locales')
                         ->withPivot('id', 'deleted_at')
 					->withTimestamps();

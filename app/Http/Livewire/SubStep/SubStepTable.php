@@ -2,7 +2,9 @@
 
 namespace App\Http\Livewire\SubStep;
 
+use App\Helpers\StrHelper;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
+use Rappasoft\LaravelLivewireTables\Exceptions\DataTableConfigurationException;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Models\SubStep;
 use Rappasoft\LaravelLivewireTables\Views\Columns\BooleanColumn;
@@ -15,12 +17,16 @@ class SubStepTable extends DataTableComponent
 
     protected $step;
 
-    public function mount($step = null)
+    public function mount($step = null): void
     {
         if($this->step){
             $this->step = $step;
         }
     }
+
+    /**
+     * @throws DataTableConfigurationException
+     */
     public function configure(): void
     {
         $this->setPrimaryKey('id');
@@ -32,7 +38,7 @@ class SubStepTable extends DataTableComponent
             });
     }
 
-    public function query(): \Illuminate\Database\Eloquent\Builder
+    public function query()
     {
         if($this->step != null){
             return SubStep::query()->where('step_id', $this->step->id);
@@ -44,23 +50,17 @@ class SubStepTable extends DataTableComponent
         return [
             Column::make("Id", "id")
                 ->sortable(),
-            Column::make("Title ru", "title_ru")
+            Column::make("Наименование", StrHelper::getTitleAttribute())
                 ->sortable(),
-            Column::make("Title kk", "title_kk")
+            Column::make("Степ", "step.".StrHelper::getTitleAttribute())
                 ->sortable(),
-            Column::make("Title en", "title_en")
+            Column::make("Субстеп", "sub_category.".StrHelper::getTitleAttribute())
                 ->sortable(),
-            Column::make("Step id", "step.title_ru")
+            Column::make("Уровень", "level")
                 ->sortable(),
-            Column::make("Sub category id", "sub_category.title_ru")
+            BooleanColumn::make("Активный", "is_active")
                 ->sortable(),
-            Column::make("Level", "level")
-                ->sortable(),
-            BooleanColumn::make("Is active", "is_active")
-                ->sortable(),
-            Column::make("Created at", "created_at")
-                ->sortable(),
-            ButtonGroupColumn::make('Actions')
+            ButtonGroupColumn::make('Действие')
                 ->attributes(function($row) {
                     return [
                         'class' => 'space-x-2 flex',

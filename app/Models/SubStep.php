@@ -8,6 +8,7 @@ namespace App\Models;
 
 use App\Helpers\MathFormulaHelper;
 use App\Traits\CRUD;
+use App\Traits\Language;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
@@ -36,7 +37,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class SubStep extends Model
 {
-	use SoftDeletes,CRUD;
+	use SoftDeletes, CRUD, Language;
 	protected $table = 'sub_steps';
 
 	protected $casts = [

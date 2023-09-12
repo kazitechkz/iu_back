@@ -25,9 +25,8 @@ class Edit extends Component
     public bool $is_active;
 
 
-
-    public function mount($sub_step){
-
+    public function mount($sub_step): void
+    {
         $this->sub_step = $sub_step;
         $this->steps = Step::where(["id" => $sub_step->step_id])->with("subject")->get();
         $this->step_id = $sub_step->step_id;
@@ -39,22 +38,38 @@ class Edit extends Component
         $this->is_active = $this->sub_step->is_active ?? true;
     }
 
-    protected function rules(){
-        $rules = (new SubStepUpdateRequest())->rules();
-        return $rules;
+    protected function rules(): array
+    {
+        return (new SubStepUpdateRequest())->rules();
+    }
+
+    public function updatedStepId(): void
+    {
+        $this->step = Step::find($this->step_id);
+        $this->sub_categories = SubCategory::where(["category_id" => $this->step->category_id])->get();
+        $this->sub_category_id = null;
+        $this->title_ru = null;
+        $this->title_kk = null;
+    }
+
+    public function updatedSubCategoryId(): void
+    {
+        $cat = SubCategory::firstWhere(['id' => $this->sub_category_id, 'category_id' => $this->step->category_id]);
+        $this->title_kk = $cat->title_kk;
+        $this->title_ru = $cat->title_ru;
     }
 
 
-    public function updated($propertyName)
+    public function updated($propertyName): void
     {
         $this->validateOnly($propertyName);
     }
 
-    public function render()
+    public function render(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
-        if($this->step_id){
+        if ($this->step_id) {
             $this->step = Step::find($this->step_id);
-            $this->sub_categories = SubCategory::where(["category_id"=>$this->step->category_id])->get();
+            $this->sub_categories = SubCategory::where(["category_id" => $this->step->category_id])->get();
         }
         return view('livewire.sub-step.edit');
     }

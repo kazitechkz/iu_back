@@ -6,7 +6,7 @@
             wire:model="subject_id"
             placeholder="Выберите предмет"
             :options="$subjects"
-            option-label="title_ru"
+            option-label="title"
             option-value="id"
         />
     </div>
@@ -16,7 +16,7 @@
             wire:model="step_id"
             placeholder="Выберите раздел"
             :options="$steps"
-            option-label="title_ru"
+            option-label="title"
             option-value="id"
         />
     </div>
@@ -26,7 +26,7 @@
             wire:model="sub_step_id"
             placeholder="Выберите подраздел"
             :options="$sub_steps"
-            option-label="title_ru"
+            option-label="title"
             option-value="id"
         />
     </div>

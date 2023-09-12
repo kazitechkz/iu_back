@@ -31,7 +31,8 @@ class Edit extends Component
     public bool $is_active;
     public $image_url;
 
-    public function mount(Step $step){
+    public function mount(Step $step): void
+    {
         $this->subjects = Subject::all();
         $this->step = $step;
         $this->title_ru = $this->step->title_ru;
@@ -46,17 +47,34 @@ class Edit extends Component
         $this->is_free = $this->step->is_free;
         $this->image_url = $this->step->image_url;
     }
-    protected function rules(){
-        $rules = (new StepUpdateRequest())->rules();
-        return $rules;
+    protected function rules(): array
+    {
+        return (new StepUpdateRequest())->rules();
     }
 
-    public function updated($propertyName)
+    public function updated($propertyName): void
     {
         $this->validateOnly($propertyName);
     }
 
-    public function render()
+    public function updatedSubjectId(): void
+    {
+        $this->plans = Plan::where("tag","{$this->subject_id}")->get();
+        $this->categories = Category::where(["subject_id" => $this->subject_id])->get();
+        $this->plan_id = null;
+        $this->category_id = null;
+        $this->title_ru = null;
+        $this->title_kk = null;
+    }
+
+    public function updatedCategoryId(): void
+    {
+        $cat = Category::firstWhere(['subject_id' => $this->subject_id, 'id' => $this->category_id]);
+        $this->title_ru = $cat->title_ru;
+        $this->title_kk = $cat->title_kk;
+    }
+
+    public function render(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         if($this->subject_id){
             $this->plans = Plan::where("tag","{$this->subject_id}")->get();

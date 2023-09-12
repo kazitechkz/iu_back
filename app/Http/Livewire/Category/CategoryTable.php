@@ -47,12 +47,13 @@ class CategoryTable extends DataTableComponent
 
     public function columns(): array
     {
+        $title = "title_".\Mcamara\LaravelLocalization\Facades\LaravelLocalization::getCurrentLocale();
         return [
             Column::make("Id", "id")
                 ->sortable(),
-            Column::make("Наименование", "title_ru")
+            Column::make("Наименование", $title)
                 ->sortable()->searchable(),
-            Column::make("Предмет", "subject.title_ru")
+            Column::make("Предмет", "subject.".$title)
                 ->sortable()->searchable(),
             Column::make("Создано", "created_at")
                 ->sortable(),

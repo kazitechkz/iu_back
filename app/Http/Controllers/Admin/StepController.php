@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Step\StepCreateRequest;
 use App\Http\Requests\Step\StepUpdateRequest;
+use App\Models\Category;
 use App\Models\Step;
 use Illuminate\Http\Request;
 
@@ -60,7 +61,7 @@ class StepController extends Controller
                 $input = $request->all();
                 $input["is_active"] = $request->boolean("is_active");
                 $input["is_free"] = $request->boolean("is_free");
-                $step = Step::add($input);
+                Step::add($input);
                 return redirect()->back();
             }
             else{

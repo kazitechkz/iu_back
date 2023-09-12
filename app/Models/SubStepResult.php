@@ -11,14 +11,14 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class SubStepResult
- * 
+ *
  * @property int $id
  * @property int $sub_step_id
  * @property int $user_id
  * @property string|null $user_point
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * 
+ *
  * @property SubStep $sub_step
  * @property User $user
  *
@@ -39,13 +39,13 @@ class SubStepResult extends Model
 		'user_point'
 	];
 
-	public function sub_step()
-	{
+	public function sub_step(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
 		return $this->belongsTo(SubStep::class);
 	}
 
-	public function user()
-	{
+	public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
 		return $this->belongsTo(User::class);
 	}
 }

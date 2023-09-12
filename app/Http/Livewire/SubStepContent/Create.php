@@ -15,18 +15,20 @@ class Create extends Component
     public string|null $text_en;
     public bool|null $is_active;
 
+    public $steps;
+    public int|null $step_id;
     public $sub_step_id;
     public $sub_steps;
     public $sub_step;
 
-    public function mount($sub_step = null){
-        if($sub_step){
+    public function mount($sub_step = null): void
+    {
+        if ($sub_step) {
             $this->sub_step_id = $sub_step->id;
             $this->sub_steps = SubStep::where(["id" => $sub_step->id])->get();
             $this->sub_step = $sub_step;
-        }
-        else{
-            $this->sub_steps = SubStep::where(["is_active" => true])->get();
+        } else {
+            $this->steps = Step::where('is_active', true)->get();
         }
         $this->text_ru = old("text_ru") ?? "";
         $this->text_kk = old("title_kk") ?? "";
@@ -34,19 +36,24 @@ class Create extends Component
         $this->is_active = old("is_active") ?? false;
     }
 
-    protected function rules(){
-        $rules = (new SubStepContentCreateRequest())->rules();
-        return $rules;
+    protected function rules(): array
+    {
+        return (new SubStepContentCreateRequest())->rules();
     }
 
+    public function updatedStepId(): void
+    {
+        $this->sub_steps = SubStep::where(['step_id' => $this->step_id, 'is_active' => true])->get();
+        $this->sub_step_id = null;
+    }
 
-    public function updated($propertyName)
+    public function updated($propertyName): void
     {
         $this->validateOnly($propertyName);
     }
 
 
-    public function render()
+    public function render(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         return view('livewire.sub-step-content.create');
     }

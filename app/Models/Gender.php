@@ -6,6 +6,7 @@
 
 namespace App\Models;
 
+use App\Traits\Language;
 use App\Traits\CRUD;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
@@ -27,6 +28,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Gender extends Model
 {
+    use Language;
     use CRUD;
 	protected $table = 'genders';
 

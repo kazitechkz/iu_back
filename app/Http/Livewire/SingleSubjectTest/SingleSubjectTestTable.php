@@ -6,6 +6,7 @@ use App\Exports\SingleSubjectExports;
 use App\Exports\SubjectExports;
 use App\Models\Subject;
 use Maatwebsite\Excel\Facades\Excel;
+use Mcamara\LaravelLocalization\LaravelLocalization;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Exceptions\DataTableConfigurationException;
 use Rappasoft\LaravelLivewireTables\Views\Column;
@@ -59,10 +60,11 @@ class SingleSubjectTestTable extends DataTableComponent
     }
     public function columns(): array
     {
+        $title = "title_". \Mcamara\LaravelLocalization\Facades\LaravelLocalization::getCurrentLocale();
         return [
             Column::make("Id", "id")
                 ->sortable(),
-            Column::make("Предмет", "subject.title_ru")->searchable()
+            Column::make("Предмет", "subject.".$title)->searchable()
                 ->sortable(),
             Column::make("Кол-во вопросов с 1 ответом", "single_answer_questions_quantity")
                 ->sortable(),

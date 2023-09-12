@@ -7,6 +7,7 @@
 namespace App\Models;
 
 use App\Traits\CRUD;
+use App\Traits\Language;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -28,7 +29,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class SubStepContent extends Model
 {
-    use CRUD;
+    use CRUD, Language;
 	protected $table = 'sub_step_contents';
 
 	protected $casts = [
@@ -43,8 +44,8 @@ class SubStepContent extends Model
         'is_active'
 	];
 
-	public function sub_step()
-	{
+	public function sub_step(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
 		return $this->belongsTo(SubStep::class);
 	}
 }

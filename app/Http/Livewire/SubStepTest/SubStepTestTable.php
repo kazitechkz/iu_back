@@ -53,7 +53,7 @@ class SubStepTestTable extends DataTableComponent
         return [
             Column::make("Id", "id")
                 ->sortable(),
-            Column::make("Подраздел", "sub_step.title_ru")
+            Column::make("Подраздел", "sub_step.".StrHelper::getTitleAttribute())
                 ->sortable(),
             Column::make('Вопрос', 'question.text')
                 ->format(fn($val) => StrHelper::getSubStr($val, 30))

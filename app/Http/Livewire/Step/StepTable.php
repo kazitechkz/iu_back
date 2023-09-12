@@ -2,12 +2,14 @@
 
 namespace App\Http\Livewire\Step;
 
+use App\Helpers\StrHelper;
 use App\Models\Category;
 use App\Models\File;
 use App\Models\Subject;
 use App\Models\Tournament;
 use App\Models\TournamentStep;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
+use Rappasoft\LaravelLivewireTables\Exceptions\DataTableConfigurationException;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Models\Step;
 use Rappasoft\LaravelLivewireTables\Views\Columns\BooleanColumn;
@@ -18,6 +20,10 @@ use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 class StepTable extends DataTableComponent
 {
     protected $model = Step::class;
+
+    /**
+     * @throws DataTableConfigurationException
+     */
     public function configure(): void
     {
         $this->setPrimaryKey('id');
@@ -33,17 +39,17 @@ class StepTable extends DataTableComponent
 
     {
         return [
-            SelectFilter::make('Subject')
-                ->options(Subject::pluck("title_ru","id")->toArray())
+            SelectFilter::make('Предмет')
+                ->options(Subject::pluck(StrHelper::getTitleAttribute(),"id")->toArray())
                 ->filter(function($builder, string $value) {
                     $builder->where(["steps.subject_id"=>$value]);
                 }),
 
-            SelectFilter::make('Category')
-                ->options(Category::pluck("title_ru","id")->toArray())
-                ->filter(function($builder, string $value) {
-                    $builder->where(["steps.category_id"=>$value]);
-                }),
+//            SelectFilter::make('Категория')
+//                ->options(Category::pluck(StrHelper::getTitleAttribute(),"id")->toArray())
+//                ->filter(function($builder, string $value) {
+//                    $builder->where(["steps.category_id"=>$value]);
+//                }),
         ];
     }
 
@@ -51,35 +57,26 @@ class StepTable extends DataTableComponent
 
     public function columns(): array
     {
+
         return [
             Column::make("Id", "id")
                 ->sortable(),
-            Column::make("Title ru", "title_ru")
+            Column::make("Наименование", StrHelper::getTitleAttribute())
                 ->sortable(),
-            Column::make("Title kk", "title_kk")
+            Column::make("Предмет", "subject.".StrHelper::getTitleAttribute())
                 ->sortable(),
-            Column::make("Title en", "title_en")
+            Column::make("Категория", "category.".StrHelper::getTitleAttribute())
                 ->sortable(),
-            Column::make("Subject id", "subject.title_ru")
+            Column::make("Уровень", "level")
                 ->sortable(),
-            Column::make("Category id", "category.title_ru")
+            BooleanColumn::make("Бесплатный", "is_free")
                 ->sortable(),
-            Column::make("Plan id", "plan.name")
+            BooleanColumn::make("Активный", "is_active")
                 ->sortable(),
-            Column::make("Level", "level")
-                ->sortable(),
-            BooleanColumn::make("Is free", "is_free")
-                ->sortable(),
-            BooleanColumn::make("Is active", "is_active")
-                ->sortable(),
-            Column::make("Image url", "file.url")
+            Column::make("Картинка", "file.url")
                 ->format(fn($val) => '<img class="w-50" src="'.File::getFileFromAWS($val).'" />')
                 ->html(),
-            Column::make("Created at", "created_at")
-                ->sortable(),
-            Column::make("Updated at", "updated_at")
-                ->sortable(),
-            ButtonGroupColumn::make('Actions')
+            ButtonGroupColumn::make('Действие')
                 ->attributes(function($row) {
                     return [
                         'class' => 'space-x-2 flex',
@@ -91,7 +88,7 @@ class StepTable extends DataTableComponent
                         ->location(fn($row) => route('step.show', $row))
                         ->attributes(function($row) {
                             return [
-                                'class' => 'fas fa-eye btn btn-primary btn-rounded btn-icon flex align-center justify-center items-center',
+                                'class' => 'fas fa-plus btn btn-primary btn-rounded btn-icon flex align-center justify-center items-center',
                             ];
                         }),
                     LinkColumn::make('Edit')

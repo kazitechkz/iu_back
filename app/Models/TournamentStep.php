@@ -7,6 +7,7 @@
 namespace App\Models;
 
 use App\Traits\CRUD;
+use App\Traits\Language;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
@@ -39,7 +40,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class TournamentStep extends Model
 {
     use CRUD;
-	use SoftDeletes;
+	use SoftDeletes, Language;
 	protected $table = 'tournament_steps';
 
 	protected $casts = [
