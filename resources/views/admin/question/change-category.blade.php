@@ -10,6 +10,7 @@
         mjx-container {text-align: left!important; display: inline!important;}
         #answers_math > li {margin: 20px 20px}
     </style>
+
 @endpush
 @section('content')
     <div class="col-lg-12 grid-margin stretch-card my-2">
@@ -181,12 +182,18 @@
 @endsection
 @push('js')
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-{{--<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>--}}
-<script async>
-    MathJax.Hub.Config({
+    <script type="text/javascript" async
+            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+    {{--<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>--}}
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Register.StartupHook("End",function () {
+      console.log("Mathjax loaded");
+       MathJax.Hub.Config({
         tex2jax: { inlineMath: [['$$','$$']], displayMath: [['$$$$','$$$$']] }
+    });;
     });
 </script>
+
 
 @endpush
