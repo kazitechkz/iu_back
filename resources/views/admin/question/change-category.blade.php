@@ -9,6 +9,9 @@
         }
         mjx-container {text-align: left!important; display: inline!important;}
         #answers_math > li {margin: 20px 20px}
+        .mjx-chtml.MJXc-display{
+            display: inline-block;!important;
+        }
     </style>
 
 @endpush
