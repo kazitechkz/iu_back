@@ -14,9 +14,6 @@ class MathFormulaHelper
     {
         $math = new self();
         $data = $request->all();
-        if (is_array($data['correct_answers'])) {
-            $data['correct_answers'] = implode(',', json_decode($data['correct_answers']));
-        }
         if (!isset($data['group_id'])) {
             $data['group_id'] = self::GROUP_ID;
         }

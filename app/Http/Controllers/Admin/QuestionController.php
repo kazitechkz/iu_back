@@ -140,7 +140,9 @@ class QuestionController extends Controller
     {
         try{
             if(auth()->user()->can("questions create") ){
-                $data = MathFormulaHelper::replace($request);
+                $input = $request;
+                $input['correct_answers'] = implode(',', json_decode($request['correct_answers']));
+                $data = MathFormulaHelper::replace($input);
                 Question::add($data);
                 return redirect(route('questions.index'));
             }
@@ -206,7 +208,9 @@ class QuestionController extends Controller
         try{
             if(auth()->user()->can("questions edit") ){
                 $question = Question::findOrFail($id);
-                $data = MathFormulaHelper::replace($request);
+                $input = $request;
+                $input['correct_answers'] = implode(',', json_decode($request['correct_answers']));
+                $data = MathFormulaHelper::replace($input);
                 $question->edit($data);
                 return redirect()->back();
             }
