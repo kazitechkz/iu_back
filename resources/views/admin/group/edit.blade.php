@@ -1,7 +1,7 @@
 @extends('layouts.default')
 @section('content')
     <x-layer-components.content-navbar
-        :title="__('table.group_edit_title') . $gender->title_ru"
+        :title="__('table.group_edit_title') . $group->title_ru"
         :subtitle="__('table.group_edit_subtitle')"
         :breadcrumbs="[__('table.group_management'),__('table.group_edit_title')]"
         :routes="['group.index']"
