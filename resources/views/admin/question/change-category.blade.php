@@ -9,6 +9,7 @@
         }
         mjx-container {text-align: left!important; display: inline!important;}
         #answers_math > li {margin: 20px 20px}
+        .MJXc-display {display: inline!important; text-align: center; margin: 1em 0; padding: 0}
     </style>
 
 @endpush
@@ -145,7 +146,7 @@
                             <th scope="col">Действие</th>
                         </tr>
                     </thead>
-                        <tbody>
+                        <tbody id="mathdiv">
                             @foreach($questions as $question)
                                 <tr>
                                     <th scope="row">{{$questions->firstItem() + $loop->index}}</th>
@@ -158,8 +159,7 @@
 {{--                                            {{$loop->iteration}}. {{\App\Helpers\StrHelper::getSubStr(\App\Helpers\StrHelper::getCorrectAnswers($question, $ans), 30)}} <br>--}}
 {{--                                        @endforeach--}}
 {{--                                    </td>--}}
-                                    <td class="flex">
-
+                                    <td class="flex" >
                                         <livewire:question.preview-question :question="$question"/>
                                         <x-shared.action-buttons
                                             :edit-link="route('questions.edit', $question->id)"
@@ -182,17 +182,28 @@
 @endsection
 @push('js')
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-    <script type="text/javascript" async
-            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML">
+    <script>
+        MathJax = {
+            loader: {
+                load: ['[tex]/color','[tex]/cancel']
+            },
+            tex: {
+                packages: {'[+]': ['cancel', 'color']},
+                inlineMath: [['$', '$'], ['\\(', '\\)']]
+            },
+            startup: {
+                pageReady() {
+                    return MathJax.startup.defaultPageReady();
+                }
+            }
+        };
     </script>
-    {{--<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>--}}
-    <script type="text/x-mathjax-config">
-        MathJax.Hub.Register.StartupHook('TeX Jax Ready', function () {
-          MathJax.Hub.Config({
-                tex2jax: { inlineMath: [['$$','$$']], displayMath: [['$$$$','$$$$']] }
-            });
-        });
-</script>
+
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+
+
+
 
 
 @endpush

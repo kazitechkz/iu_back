@@ -1,4 +1,4 @@
-<div>
+<div wire:ignore>
     <x-modal wire:model.defer="showModal" :z-index="'z-5000'">
         <x-card title="Предпросмотр">
             <p id="text-img" class="text-gray-700">
