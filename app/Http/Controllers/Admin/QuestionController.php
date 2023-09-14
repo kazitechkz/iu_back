@@ -233,7 +233,9 @@ class QuestionController extends Controller
     {
         try{
             if(auth()->user()->can("questions edit") ){
-
+                $question = Question::findOrFail($id);
+                $question->delete();
+                return redirect()->back();
             }
             else{
                 toastr()->warning(__("message.not_allowed"));
