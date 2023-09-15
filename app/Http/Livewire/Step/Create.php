@@ -23,7 +23,7 @@ class Create extends Component
     public $plans;
     public int|null $plan_id;
 
-    public int $level;
+    public $level;
     public bool $is_free;
     public bool $is_active;
     public $image_url;

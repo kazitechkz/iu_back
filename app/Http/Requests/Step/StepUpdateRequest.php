@@ -31,7 +31,7 @@ class StepUpdateRequest extends FormRequest
             'subject_id'=>"required|exists:subjects,id",
             'category_id'=>"required|exists:categories,id",
             'plan_id'=>"required|exists:plans,id",
-            'level'=>"required|min:1|unique:steps,level,".$level_id,
+            'level'=>"required|min:1",
         ];
     }
 }

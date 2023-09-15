@@ -28,7 +28,7 @@ class StepCreateRequest extends FormRequest
             'subject_id'=>"required|exists:subjects,id",
             'category_id'=>"required|exists:categories,id",
             'plan_id'=>"required|exists:plans,id",
-            'level'=>"required|unique:steps,level|min:1",
+            'level'=>"required|min:1",
         ];
     }
 }

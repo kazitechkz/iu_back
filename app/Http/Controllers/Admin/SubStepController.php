@@ -59,6 +59,11 @@ class SubStepController extends Controller
     {
         try{
             if(auth()->user()->can("sub-step create") ){
+                $another_step = SubStep::where(["level"=>$request->get("level"),"step_id" => $request->get("step_id")])->first();
+                if($another_step){
+                    toastr()->warning("Такой уровень уже существует");
+                    return redirect()->back();
+                }
                 $input = $request->all();
                 $input["is_active"] = $request->boolean("is_active");
                 SubStep::add($input);
@@ -135,6 +140,13 @@ class SubStepController extends Controller
         try{
             if(auth()->user()->can("sub-step edit") ){
                 if($sub_step = SubStep::find($id)){
+                    $another_step = SubStep::where(["level"=>$request->get("level"),"step_id" => $request->get("step_id")])->first();
+                    if($another_step){
+                        if($another_step->id != $sub_step->id){
+                            toastr()->warning("Такой уровень уже существует");
+                            return redirect()->back();
+                        }
+                    }
                     $input = $request->all();
                     $input["is_active"] = $request->boolean("is_active");
                     $sub_step->edit($input);
