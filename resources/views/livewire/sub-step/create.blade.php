@@ -8,7 +8,7 @@
         <x-select
             label="Step*"
             :options="$steps"
-            option-label="title_ru"
+            option-label="title"
             option-value="id"
             wire:model="step_id"
             name="step_id"
@@ -20,7 +20,7 @@
         <x-select
             label="Sub-Category*"
             :options="$sub_categories"
-            option-label="title_ru"
+            option-label="title"
             option-value="id"
             wire:model="sub_category_id"
             name="sub_category_id"
