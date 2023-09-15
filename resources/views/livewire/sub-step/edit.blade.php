@@ -6,10 +6,20 @@
 >
     <input type="hidden" wire:model="title_ru" name="title_ru">
     <input type="hidden" wire:model="title_kk" name="title_kk">
+    <div class="form-group">
+        <x-select
+            label="Предмет*"
+            :options="$subjects"
+            option-label="title"
+            option-value="id"
+            wire:model="subject_id"
+            name="subject_id"
+        />
+    </div>
     {{--    Steps --}}
     <div class="form-group">
         <x-select
-            label="Step*"
+            label="Степ*"
             :options="$steps"
             option-label="title"
             option-value="id"
@@ -21,7 +31,7 @@
     {{--    Sub-Category --}}
     <div class="form-group">
         <x-select
-            label="Sub-Category*"
+            label="Субстеп*"
             :options="$sub_categories"
             option-label="title"
             option-value="id"

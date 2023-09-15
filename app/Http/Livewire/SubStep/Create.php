@@ -13,6 +13,8 @@ class Create extends Component
     public string|null $title_ru;
     public string|null $title_kk;
     public string|null $title_en;
+    public $subjects;
+    public int|null $subject_id;
 
     public $steps;
     public $step;
@@ -26,6 +28,7 @@ class Create extends Component
 
     public function mount($step_id = null): void
     {
+        $this->subjects = Subject::all();
         if ($step_id) {
             $this->step_id = $step_id;
             $this->steps = Step::where(["id" => $step_id])->with("subject")->get();
@@ -44,6 +47,15 @@ class Create extends Component
     protected function rules(): array
     {
         return (new SubStepCreateRequest())->rules();
+    }
+
+    public function updatedSubjectId(): void
+    {
+        $this->steps = Step::where('subject_id', $this->subject_id)->get();
+        $this->step_id = null;
+        $this->sub_category_id = null;
+        $this->title_ru = null;
+        $this->title_kk = null;
     }
 
     public function updatedStepId(): void

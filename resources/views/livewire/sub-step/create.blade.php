@@ -3,10 +3,20 @@
     :route="'sub-step.store'"
     :element-id="'sub-step-create'"
 >
+    <div class="form-group">
+        <x-select
+            label="Предмет*"
+            :options="$subjects"
+            option-label="title"
+            option-value="id"
+            wire:model="subject_id"
+            name="subject_id"
+        />
+    </div>
     {{--    Steps --}}
     <div class="form-group">
         <x-select
-            label="Step*"
+            label="Степ*"
             :options="$steps"
             option-label="title"
             option-value="id"
@@ -18,7 +28,7 @@
     {{--    Sub-Category --}}
     <div class="form-group">
         <x-select
-            label="Sub-Category*"
+            label="Субстеп*"
             :options="$sub_categories"
             option-label="title"
             option-value="id"

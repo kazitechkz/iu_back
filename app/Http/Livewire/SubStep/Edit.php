@@ -6,6 +6,7 @@ use App\Http\Requests\SubStep\SubStepCreateRequest;
 use App\Http\Requests\SubStep\SubStepUpdateRequest;
 use App\Models\Step;
 use App\Models\SubCategory;
+use App\Models\Subject;
 use Livewire\Component;
 
 class Edit extends Component
@@ -13,7 +14,8 @@ class Edit extends Component
     public string|null $title_ru;
     public string|null $title_kk;
     public string|null $title_en;
-
+    public $subjects;
+    public int|null $subject_id;
     public $steps;
     public $step;
     public $sub_step;
@@ -27,6 +29,8 @@ class Edit extends Component
 
     public function mount($sub_step): void
     {
+        $this->subjects = Subject::all();
+        $this->subject_id = $sub_step->step->subject_id;
         $this->sub_step = $sub_step;
         $this->steps = Step::where(["id" => $sub_step->step_id])->with("subject")->get();
         $this->step_id = $sub_step->step_id;
@@ -43,6 +47,14 @@ class Edit extends Component
         return (new SubStepUpdateRequest())->rules();
     }
 
+    public function updatedSubjectId(): void
+    {
+        $this->steps = Step::where('subject_id', $this->subject_id)->get();
+        $this->step_id = null;
+        $this->sub_category_id = null;
+        $this->title_ru = null;
+        $this->title_kk = null;
+    }
     public function updatedStepId(): void
     {
         $this->step = Step::find($this->step_id);
