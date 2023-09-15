@@ -25,8 +25,8 @@ class Edit extends Component
     public $plans;
     public int|null $plan_id;
 
-    public int $level;
-    public int $level_id;
+    public $level;
+    public $level_id;
     public bool $is_free;
     public bool $is_active;
     public $image_url;

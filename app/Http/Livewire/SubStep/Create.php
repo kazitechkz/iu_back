@@ -20,7 +20,7 @@ class Create extends Component
 
     public $sub_categories;
     public $sub_category_id;
-    public int $level;
+    public $level;
     public bool $is_active;
 
 
