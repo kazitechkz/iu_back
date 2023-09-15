@@ -59,7 +59,7 @@ class StepController extends Controller
     {
         try{
             if(auth()->user()->can("step create") ){
-                $another_step = Step::where(["level_id"=>$request->get("level"),"subject_id" => $request->get("subject_id")])->first();
+                $another_step = Step::where(["level"=>$request->get("level"),"subject_id" => $request->get("subject_id")])->first();
                 if($another_step){
                     toastr()->warning("Такой уровень уже существует");
                     return redirect()->back();
@@ -144,7 +144,7 @@ class StepController extends Controller
             if(auth()->user()->can("step edit") ){
                 $step = Step::find($id);
                 if($step){
-                    $another_step = Step::where(["level_id"=>$request->get("level"),"subject_id" => $request->get("subject_id")])->first();
+                    $another_step = Step::where(["level"=>$request->get("level"),"subject_id" => $request->get("subject_id")])->first();
                     if($another_step){
                         if($another_step->id != $step->id){
                             toastr()->warning("Такой уровень уже существует");
