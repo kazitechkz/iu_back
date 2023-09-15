@@ -7,6 +7,7 @@ use App\Http\Requests\Step\StepCreateRequest;
 use App\Http\Requests\Step\StepUpdateRequest;
 use App\Models\Category;
 use App\Models\Step;
+use App\Models\SubStep;
 use Illuminate\Http\Request;
 
 class StepController extends Controller
@@ -58,6 +59,11 @@ class StepController extends Controller
     {
         try{
             if(auth()->user()->can("step create") ){
+                $another_step = Step::where(["level_id"=>$request->get("level"),"subject_id" => $request->get("subject_id")])->first();
+                if($another_step){
+                    toastr()->warning("Такой уровень уже существует");
+                    return redirect()->back();
+                }
                 $input = $request->all();
                 $input["is_active"] = $request->boolean("is_active");
                 $input["is_free"] = $request->boolean("is_free");
@@ -138,6 +144,13 @@ class StepController extends Controller
             if(auth()->user()->can("step edit") ){
                 $step = Step::find($id);
                 if($step){
+                    $another_step = Step::where(["level_id"=>$request->get("level"),"subject_id" => $request->get("subject_id")])->first();
+                    if($another_step){
+                        if($another_step->id != $step->id){
+                            toastr()->warning("Такой уровень уже существует");
+                            return redirect()->back();
+                        }
+                    }
                     $input = $request->all();
                     $input["is_active"] = $request->boolean("is_active");
                     $input["is_free"] = $request->boolean("is_free");
