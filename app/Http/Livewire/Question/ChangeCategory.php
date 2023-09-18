@@ -24,7 +24,6 @@ class ChangeCategory extends Component
     public function updatedSubCategoryId(): void
     {
         if ($this->sub_category_id != 0) {
-            $this->question->category_id = $this->category_id;
             $this->question->sub_category_id = $this->sub_category_id;
             $this->question->save();
         }

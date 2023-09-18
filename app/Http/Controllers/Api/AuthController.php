@@ -26,11 +26,10 @@ class AuthController extends Controller
                     'password' => 'required'
                 ]);
             if($validateUser->fails()){
-                return response()->json(new ResponseJSON(status: false,message: "Validation Error",data:$validateUser->errors() ), 401);
+                return response()->json(new ResponseJSON(status: false,message: "Validation Error",errors:$validateUser->errors() ), 422);
             }
             if(!Auth::attempt($request->only(['email', 'password']))){
                 return response()->json(new ResponseJSON(status: false,message: "Email & Password does not match with our record."), 401);
-
             }
             $user = User::where('email', $request->email)->first();
             return response()->json(new ResponseJSON(status: true,message: "User Logged In Successfully",data: $user->createToken("API TOKEN")->plainTextToken), 200);
