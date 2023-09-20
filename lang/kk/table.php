@@ -408,4 +408,8 @@ return [
     "lesson_complaint_edit_title" => "шағымды өзгерту",
     "lesson_complaint_create_subtitle" => "шағым жасау блогы",
     "lesson_complaint_edit_subtitle" => "шағымдарды өңдеу блогы",
+
+
+    //    other
+    'select_category' => 'Категорияны таңдаңыз'
 ];
