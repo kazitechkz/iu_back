@@ -15,7 +15,7 @@ class AuthController extends Controller
     /**
      * Login The User
      * @param Request $request
-     * @return User
+     * @return \Illuminate\Http\JsonResponse
      */
     public function loginUser(Request $request)
     {
@@ -25,35 +25,39 @@ class AuthController extends Controller
                     'email' => 'required|email',
                     'password' => 'required'
                 ]);
-            if($validateUser->fails()){
-                return response()->json(new ResponseJSON(status: false,message: "Validation Error",errors:$validateUser->errors() ), 400);
+            if ($validateUser->fails()) {
+                return response()->json(new ResponseJSON(status: false, message: "Validation Error", errors: $validateUser->errors()), 400);
             }
-            if(!Auth::attempt($request->only(['email', 'password']))){
-                return response()->json(new ResponseJSON(status: false,message: "Email & Password does not match with our record."), 401);
+            if (!Auth::attempt($request->only(['email', 'password']))) {
+                return response()->json(new ResponseJSON(status: false, message: "Email & Password does not match with our record."), 401);
             }
-            $user = User::where('email', $request->email)->first();
-            return response()->json(new ResponseJSON(status: true,message: "User Logged In Successfully",data: $user->createToken("API TOKEN")->plainTextToken), 200);
+            $user = User::with('roles')->where('email', $request->email)->first();
+            $data['token'] = $user->createToken("API TOKEN")->plainTextToken;
+            $data['name'] = $user->name;
+            $data['email'] = $user->email;
+            $data['phone'] = $user->phone;
+            $data['role'] = $user->roles[0]['name'];
+            return response()->json(new ResponseJSON(status: true, message: "User Logged In Successfully", data: $data));
 
         } catch (\Throwable $th) {
-            return response()->json(new ResponseJSON(status: false,errors: $th->getMessage()), 500);
+            return response()->json(new ResponseJSON(status: false, errors: $th->getMessage()), 500);
         }
     }
 
-    public function register(Request $request){
-        try{
-            $validateUser = Validator::make($request->all(),(new UserCreateRequest())->rules());
-            if($validateUser->fails()){
-                return response()->json(new ResponseJSON(status: false,message: "Validation Error",errors:$validateUser->errors() ), 400);
+    public function register(Request $request)
+    {
+        try {
+            $validateUser = Validator::make($request->all(), (new UserCreateRequest())->rules());
+            if ($validateUser->fails()) {
+                return response()->json(new ResponseJSON(status: false, message: "Validation Error", errors: $validateUser->errors()), 400);
             }
             $input = $request->all();
             $input["password"] = bcrypt($input["password"]);
             User::add($input);
-            return response()->json(new ResponseJSON(status: true,message: "User registered successfully"), 200);
+            return response()->json(new ResponseJSON(status: true, message: "User registered successfully"), 200);
+        } catch (\Throwable $th) {
+            return response()->json(new ResponseJSON(status: false, message: $th->getMessage()), 500);
         }
-        catch (\Throwable $th) {
-            return response()->json(new ResponseJSON(status: false,message: $th->getMessage()), 500);
-        }
-
 
 
     }
