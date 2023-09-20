@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserCreateRequest;
 use App\Models\User;
+use App\Models\UserResetToken;
 use App\Traits\ResponseJSON;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -58,7 +60,53 @@ class AuthController extends Controller
         } catch (\Throwable $th) {
             return response()->json(new ResponseJSON(status: false, message: $th->getMessage()), 500);
         }
-
-
     }
+
+    public function sendResetToken(Request $request){
+        try {
+            $validateUser = Validator::make($request->all(), ["email"=>"required|email|max:255"]);
+            if ($validateUser->fails()) {
+                return response()->json(new ResponseJSON(status: false, message: "Validation Error", errors: $validateUser->errors()), 400);
+            }
+            $user = User::where(["email" => $request->get("email")])->first();
+            if(!$user){
+                return response()->json(new ResponseJSON(status: true, message: "User not found"), 422);
+            }
+            UserResetToken::where(["user_id" => $user->id])->update(["is_used" => true]);
+            $token = random_int(100000, 999999);
+            UserResetToken::add(["user_id"=>$user->id,"email"=>$request->get("email"),"expired_at"=>Carbon::now()->addHour(2),"code"=>$token]);
+            return response()->json(new ResponseJSON(status: true, message: "Token Sended to your account"), 200);
+        } catch (\Throwable $th) {
+            return response()->json(new ResponseJSON(status: false, message: $th->getMessage()), 500);
+        }
+    }
+
+
+    public function resetPassword(Request $request){
+        try {
+            $validateUser = Validator::make($request->all(), ["email"=>"required|email|max:255","password"=>"required|min:4|max:20","code"=>"required"]);
+            if ($validateUser->fails()) {
+                return response()->json(new ResponseJSON(status: false, message: "Validation Error", errors: $validateUser->errors()), 400);
+            }
+            $reset_token = UserResetToken::where(["code" => $request->get("code"),"email" => $request->get("email"),"is_used" => false])->first();
+            if(!$reset_token){
+                return response()->json(new ResponseJSON(status: true, message: "Token is not valid or used"), 422);
+            }
+            if($reset_token->expired_at < Carbon::now()){
+                $reset_token->edit(["is_used"=>true]);
+                return response()->json(new ResponseJSON(status: true, message: "Token is expired"), 422);
+            }
+            $user = User::where(["email" => $request->get("email")])->first();
+            if(!$user){
+                return response()->json(new ResponseJSON(status: true, message: "User not found"), 422);
+            }
+            $user->password = bcrypt($request->get("password"));
+            UserResetToken::where(["user_id" => $reset_token->user_id])->update(["is_used" => true]);
+            return response()->json(new ResponseJSON(status: true, message: "Password successfully changed"), 200);
+        } catch (\Throwable $th) {
+            return response()->json(new ResponseJSON(status: false, message: $th->getMessage()), 500);
+        }
+    }
+
+
 }
