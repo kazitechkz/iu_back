@@ -29,7 +29,7 @@ class UserEditRequest extends FormRequest
             "username"=>"required|unique:users,username," . $id . "|max:255",
             "email"=>"required|email|unique:users,email," . $id . "|max:255",
             "phone"=>"required|unique:users,phone,". $id ."|max:255",
-            "password"=>"nullable|confirmed|min:4|max:255"
+            "password"=>"nullable|min:4|max:255"
         ];
     }
 }
