@@ -26,7 +26,7 @@ class AuthController extends Controller
                     'password' => 'required'
                 ]);
             if($validateUser->fails()){
-                return response()->json(new ResponseJSON(status: false,message: "Validation Error",errors:$validateUser->errors() ), 422);
+                return response()->json(new ResponseJSON(status: false,message: "Validation Error",errors:$validateUser->errors() ), 400);
             }
             if(!Auth::attempt($request->only(['email', 'password']))){
                 return response()->json(new ResponseJSON(status: false,message: "Email & Password does not match with our record."), 401);
@@ -43,7 +43,7 @@ class AuthController extends Controller
         try{
             $validateUser = Validator::make($request->all(),(new UserCreateRequest())->rules());
             if($validateUser->fails()){
-                return response()->json(new ResponseJSON(status: false,message: "Validation Error",data:$validateUser->errors() ), 401);
+                return response()->json(new ResponseJSON(status: false,message: "Validation Error",errors:$validateUser->errors() ), 400);
             }
             $input = $request->all();
             $input["password"] = bcrypt($input["password"]);
@@ -51,7 +51,7 @@ class AuthController extends Controller
             return response()->json(new ResponseJSON(status: true,message: "User registered successfully"), 200);
         }
         catch (\Throwable $th) {
-            return response()->json(new ResponseJSON(status: false,errors: $th->getMessage()), 500);
+            return response()->json(new ResponseJSON(status: false,message: $th->getMessage()), 500);
         }
 
 
