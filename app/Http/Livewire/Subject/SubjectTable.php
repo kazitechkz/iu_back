@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Subject;
 
 use App\AppConstants\AppConstants;
 use App\Exports\SubjectExports;
+use App\Helpers\StrHelper;
 use App\Models\File;
 use App\Models\Subject;
 use Maatwebsite\Excel\Facades\Excel;
@@ -13,6 +14,7 @@ use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Columns\BooleanColumn;
 use Rappasoft\LaravelLivewireTables\Views\Columns\ImageColumn;
+use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 
 class SubjectTable extends DataTableComponent
 {
@@ -62,6 +64,17 @@ class SubjectTable extends DataTableComponent
         $subjects = $this->getSelected();
         $this->clearSelected();
         return Excel::download(new SubjectExports($subjects), 'subjects.xlsx');
+    }
+
+    public function filters(): array
+    {
+        return [
+            SelectFilter::make('Предмет')
+                ->options(Subject::pluck(StrHelper::getTitleAttribute(),"id")->toArray())
+                ->filter(function($builder, string $value) {
+                    $builder->where(["categories.subject_id"=>$value]);
+                }),
+        ];
     }
     public function columns(): array
     {

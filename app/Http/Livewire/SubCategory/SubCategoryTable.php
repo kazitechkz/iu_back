@@ -4,10 +4,12 @@ namespace App\Http\Livewire\SubCategory;
 
 use App\Helpers\StrHelper;
 use App\Models\File;
+use App\Models\Subject;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Exceptions\DataTableConfigurationException;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Models\SubCategory;
+use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 
 class SubCategoryTable extends DataTableComponent
 {
@@ -34,6 +36,17 @@ class SubCategoryTable extends DataTableComponent
     {
         return [
             'deleteSelected' => 'Удалить'
+        ];
+    }
+
+    public function filters(): array
+    {
+        return [
+            SelectFilter::make('Предмет')
+                ->options(Subject::pluck(StrHelper::getTitleAttribute(),"id")->toArray())
+                ->filter(function($builder, string $value) {
+                    $builder->where(["sub_categories.category.subject_id"=>$value]);
+                }),
         ];
     }
 
