@@ -62,7 +62,7 @@ class StepTable extends DataTableComponent
             Column::make("Id", "id")
                 ->sortable(),
             Column::make("Наименование", StrHelper::getTitleAttribute())
-                ->sortable(),
+                ->searchable(),
             Column::make("Предмет", "subject.".StrHelper::getTitleAttribute())
                 ->sortable(),
             Column::make("Категория", "category.".StrHelper::getTitleAttribute())

@@ -3,6 +3,9 @@
 namespace App\Http\Livewire\SubStep;
 
 use App\Helpers\StrHelper;
+use App\Models\Category;
+use App\Models\Step;
+use App\Models\Subject;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Exceptions\DataTableConfigurationException;
 use Rappasoft\LaravelLivewireTables\Views\Column;
@@ -10,18 +13,32 @@ use App\Models\SubStep;
 use Rappasoft\LaravelLivewireTables\Views\Columns\BooleanColumn;
 use Rappasoft\LaravelLivewireTables\Views\Columns\ButtonGroupColumn;
 use Rappasoft\LaravelLivewireTables\Views\Columns\LinkColumn;
+use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 
 class SubStepTable extends DataTableComponent
 {
     protected $model = SubStep::class;
 
     protected $step;
-
+    protected $selected_subject = 1;
     public function mount($step = null): void
     {
         if($this->step){
             $this->step = $step;
         }
+    }
+
+    public function filters(): array
+
+    {
+        return [
+            SelectFilter::make('Этап')
+                ->options(Step::pluck(StrHelper::getTitleAttribute(),"id")->toArray())
+                ->filter(function($builder, string $value) {
+                    $builder->where(["sub_steps.step_id"=>$value]);
+                }),
+
+        ];
     }
 
     /**
@@ -45,13 +62,15 @@ class SubStepTable extends DataTableComponent
         }
     }
 
+
+
     public function columns(): array
     {
         return [
             Column::make("Id", "id")
                 ->sortable(),
             Column::make("Наименование", StrHelper::getTitleAttribute())
-                ->sortable(),
+                ->searchable(),
             Column::make("Степ", "step.".StrHelper::getTitleAttribute())
                 ->sortable(),
             Column::make("Субстеп", "sub_category.".StrHelper::getTitleAttribute())
