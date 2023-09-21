@@ -58,6 +58,6 @@ Route::group(['middleware' => 'auth:sanctum'], function() {
 Route::post('/auth/login', [AuthController::class, 'loginUser']);
 Route::post("/auth/register",[AuthController::class,"register"]);
 Route::post("/auth/send-reset-token",[AuthController::class,"sendResetToken"]);
-Route::post("/auth/reset-password",[AuthController::class,"resetPassword"]);
+Route::post("/auth/reset",[AuthController::class,"resetPassword"]);
 Route::get("/test",[\App\Http\Controllers\Api\TestController::class,"test"]);
 

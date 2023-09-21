@@ -66,18 +66,18 @@ class AuthController extends Controller
         try {
             $validateUser = Validator::make($request->all(), ["email"=>"required|email|max:255"]);
             if ($validateUser->fails()) {
-                return response()->json(new ResponseJSON(status: false, message: "Validation Error", errors: $validateUser->errors()), 400);
+                return response()->json(new ResponseJSON(status: false, message: "Validation Error", errors: $validateUser->errors(),data: false), 400);
             }
             $user = User::where(["email" => $request->get("email")])->first();
             if(!$user){
-                return response()->json(new ResponseJSON(status: true, message: "User not found"), 422);
+                return response()->json(new ResponseJSON(status: true, message: "User not found",data: false), 422);
             }
             UserResetToken::where(["user_id" => $user->id])->update(["is_used" => true]);
             $token = random_int(100000, 999999);
             UserResetToken::add(["user_id"=>$user->id,"email"=>$request->get("email"),"expired_at"=>Carbon::now()->addHour(2),"code"=>$token]);
-            return response()->json(new ResponseJSON(status: true, message: "Token Sended to your account"), 200);
+            return response()->json(new ResponseJSON(status: true, message: "Token Sended to your account",data: true), 200);
         } catch (\Throwable $th) {
-            return response()->json(new ResponseJSON(status: false, message: $th->getMessage()), 500);
+            return response()->json(new ResponseJSON(status: false, message: $th->getMessage(),data: false), 500);
         }
     }
 
@@ -86,25 +86,26 @@ class AuthController extends Controller
         try {
             $validateUser = Validator::make($request->all(), ["email"=>"required|email|max:255","password"=>"required|min:4|max:20","code"=>"required"]);
             if ($validateUser->fails()) {
-                return response()->json(new ResponseJSON(status: false, message: "Validation Error", errors: $validateUser->errors()), 400);
+                return response()->json(new ResponseJSON(status: false, message: "Validation Error", errors: $validateUser->errors(),data: false), 400);
             }
             $reset_token = UserResetToken::where(["code" => $request->get("code"),"email" => $request->get("email"),"is_used" => false])->first();
             if(!$reset_token){
-                return response()->json(new ResponseJSON(status: true, message: "Token is not valid or used"), 422);
+                return response()->json(new ResponseJSON(status: true, message: "Token is not valid or used",data: false), 422);
             }
             if($reset_token->expired_at < Carbon::now()){
                 $reset_token->edit(["is_used"=>true]);
-                return response()->json(new ResponseJSON(status: true, message: "Token is expired"), 422);
+                return response()->json(new ResponseJSON(status: true, message: "Token is expired",data: false), 422);
             }
             $user = User::where(["email" => $request->get("email")])->first();
             if(!$user){
-                return response()->json(new ResponseJSON(status: true, message: "User not found"), 422);
+                return response()->json(new ResponseJSON(status: true, message: "User not found",data: false), 422);
             }
             $user->password = bcrypt($request->get("password"));
+            $user->save();
             UserResetToken::where(["user_id" => $reset_token->user_id])->update(["is_used" => true]);
-            return response()->json(new ResponseJSON(status: true, message: "Password successfully changed"), 200);
+            return response()->json(new ResponseJSON(status: true, message: "Password successfully changed",data: true), 200);
         } catch (\Throwable $th) {
-            return response()->json(new ResponseJSON(status: false, message: $th->getMessage()), 500);
+            return response()->json(new ResponseJSON(status: false, message: $th->getMessage(),data: false), 500);
         }
     }
 
