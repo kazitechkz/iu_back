@@ -32,10 +32,12 @@ class SubStepTable extends DataTableComponent
 
     {
         return [
-            SelectFilter::make('Этап')
-                ->options(Step::pluck(StrHelper::getTitleAttribute(),"id")->toArray())
+            SelectFilter::make('Предмет')
+                ->options(Subject::pluck(StrHelper::getTitleAttribute(),"id")->toArray())
                 ->filter(function($builder, string $value) {
-                    $builder->where(["sub_steps.step_id"=>$value]);
+                    $builder->whereHas("step",function($q) use ($value){
+                        $q->where('subject_id','=',$value);
+                    });
                 }),
 
         ];

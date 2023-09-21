@@ -2,10 +2,13 @@
 
 namespace App\Http\Livewire\Category;
 
+use App\Helpers\StrHelper;
+use App\Models\Subject;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Exceptions\DataTableConfigurationException;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Models\Category;
+use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 
 class CategoryTable extends DataTableComponent
 {
@@ -26,6 +29,17 @@ class CategoryTable extends DataTableComponent
             ->setTableRowUrl(function($row) {
                 return route('categories.edit', $row);
             });
+    }
+
+    public function filters(): array
+    {
+        return [
+            SelectFilter::make('Предмет')
+                ->options(Subject::pluck(StrHelper::getTitleAttribute(),"id")->toArray())
+                ->filter(function($builder, string $value) {
+                    $builder->where(["categories.subject_id"=>$value]);
+                }),
+        ];
     }
 
     public function bulkActions(): array

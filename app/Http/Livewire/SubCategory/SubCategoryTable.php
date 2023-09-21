@@ -45,7 +45,9 @@ class SubCategoryTable extends DataTableComponent
             SelectFilter::make('Предмет')
                 ->options(Subject::pluck(StrHelper::getTitleAttribute(),"id")->toArray())
                 ->filter(function($builder, string $value) {
-                    $builder->where(["sub_categories.category.subject_id"=>$value]);
+                    $builder->whereHas("category",function($q) use ($value){
+                        $q->where('subject_id','=',$value);
+                    });
                 }),
         ];
     }
