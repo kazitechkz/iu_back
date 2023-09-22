@@ -7,7 +7,7 @@
             wire:model="subject_id"
             placeholder="Выберите предмет"
             :options="$subjects"
-            option-label="title_ru"
+            option-label="title"
             option-value="id"
             {{--            class="hover:bg-primary-500"--}}
         />
@@ -18,7 +18,7 @@
             wire:model="category_id"
             placeholder="Выберите категорию предмета"
             :options="$categories"
-            option-label="title_ru"
+            option-label="title"
             option-value="id"
             {{--            class="hover:bg-primary-500"--}}
         />
@@ -29,7 +29,7 @@
             wire:model="sub_category_id"
             placeholder="Выберите субкатегорию предмета"
             :options="$subcategories"
-            option-label="title_ru"
+            option-label="title"
             option-value="id"
             {{--            class="hover:bg-primary-500"--}}
         />
@@ -40,7 +40,7 @@
             wire:model="type_id"
             placeholder="Выберите тип"
             :options="$types"
-            option-label="title_ru"
+            option-label="title"
             option-value="id"
             {{--            class="hover:bg-primary-500"--}}
         />
@@ -62,7 +62,7 @@
             wire:model="group_id"
             placeholder="Выбрать группу"
             :options="$groups"
-            option-label="title_ru"
+            option-label="title"
             option-value="id"
             {{--            class="hover:bg-primary-500"--}}
         />
