@@ -1,17 +1,20 @@
 <div wire:ignore>
     <x-modal wire:model.defer="showModal" :z-index="'z-5000'">
         <x-card title="Предпросмотр">
-            <p id="text-img" class="text-gray-700">
-                <b>Вопрос: </b>
-                {!! \App\Helpers\StrHelper::latexToHTML($question->text) !!}
-            </p>
-
-            @if($question->context != null && $question->context->context != '')
-                <p class="text-gray-600">
-                    <b>Контекст: </b>
-                    {{\App\Helpers\StrHelper::latexToHTML($question->context->context)}}
+            <div id="preview-img">
+                <p id="text-img" class="text-gray-700">
+                    <b>Вопрос: </b>
+                    {!! \App\Helpers\StrHelper::latexToHTML($question->text) !!}
                 </p>
-            @endif
+
+                @if($question->context != null && $question->context->context != '')
+                    <p class="text-gray-600">
+                        <b>Контекст: </b>
+                        {!! \App\Helpers\StrHelper::latexToHTML($question->context->context) !!}
+                    </p>
+                @endif
+            </div>
+
 
             <p class="text-gray-600">
                 <b>Ответы: </b>

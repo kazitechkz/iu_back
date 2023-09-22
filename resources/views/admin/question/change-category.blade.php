@@ -7,6 +7,8 @@
             height: 100%!important;
             border-radius: inherit!important;
         }
+        #preview-img img {width: 100%; max-width: 320px; height: auto; border-radius: inherit!important;}
+        #preview-img p {white-space: pre-line}
         mjx-container {text-align: left!important; display: inline!important;}
         #answers_math > li {margin: 20px 20px}
         .MJXc-display {display: inline!important; text-align: center; margin: 1em 0; padding: 0}
@@ -140,6 +142,7 @@
                     <thead>
                         <tr>
                             <th scope="col">#</th>
+                            <th scope="col">ID</th>
                             <th scope="col">Категория</th>
                             <th scope="col">Вопрос</th>
 {{--                            <th scope="col">Правильный ответ</th>--}}
@@ -150,6 +153,7 @@
                             @foreach($questions as $question)
                                 <tr>
                                     <th scope="row">{{$questions->firstItem() + $loop->index}}</th>
+                                    <th scope="row">{{$question->id}}</th>
                                     <td>
                                         <livewire:question.change-category :question="$question"/>
                                     </td>
