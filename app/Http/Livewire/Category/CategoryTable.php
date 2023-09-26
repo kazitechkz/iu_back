@@ -54,6 +54,9 @@ class CategoryTable extends DataTableComponent
         $cats = $this->getSelected();
         foreach ($cats as $key => $value) {
             $cat = Category::find($value);
+            foreach ($cat->subcategories as $subcategory) {
+                $subcategory?->delete();
+            }
             $cat?->delete();
         }
         $this->clearSelected();

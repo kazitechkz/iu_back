@@ -29,10 +29,30 @@ class StepTable extends DataTableComponent
         $this->setPrimaryKey('id');
         $this->setPerPageAccepted([20, 50, 100]);
         $this->setPerPage(20);
+        $this->setBulkActions([
+            'deleteSelected' => 'Удалить'
+        ]);
         $this->setPrimaryKey('id')
             ->setTableRowUrl(function ($row) {
                 return route('step.edit', $row);
             });
+    }
+
+    public function bulkActions(): array
+    {
+        return [
+            'deleteSelected' => 'Удалить'
+        ];
+    }
+
+    public function deleteSelected(): void
+    {
+        $steps = $this->getSelected();
+        foreach ($steps as $key => $value) {
+            $step = Step::find($value);
+            $step?->delete();
+        }
+        $this->clearSelected();
     }
 
     public function filters(): array

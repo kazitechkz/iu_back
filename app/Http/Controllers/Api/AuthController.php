@@ -34,12 +34,7 @@ class AuthController extends Controller
                 return response()->json(new ResponseJSON(status: false, message: "Email & Password does not match with our record."), 401);
             }
             $user = User::with('roles')->where('email', $request->email)->first();
-            $data['token'] = $user->createToken("API TOKEN")->plainTextToken;
-            $data['name'] = $user->name;
-            $data['email'] = $user->email;
-            $data['phone'] = $user->phone;
-            $data['role'] = $user->roles[0]['name'];
-            return response()->json(new ResponseJSON(status: true, message: "User Logged In Successfully", data: $data));
+            return response()->json(new ResponseJSON(status: true, message: "User Logged In Successfully", data: $user->createToken("API TOKEN")->plainTextToken));
 
         } catch (\Throwable $th) {
             return response()->json(new ResponseJSON(status: false, errors: $th->getMessage()), 500);
