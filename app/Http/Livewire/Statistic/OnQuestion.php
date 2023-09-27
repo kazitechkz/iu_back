@@ -4,7 +4,9 @@ namespace App\Http\Livewire\Statistic;
 
 use App\Models\Category;
 use App\Models\Locale;
+use App\Models\Question;
 use App\Models\Subject;
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
@@ -12,6 +14,7 @@ class OnQuestion extends Component
 {
     public bool $show = false;
     public $subjects;
+    public $questions;
     public $locales;
     public int|null $locale_id = 2;
     public $subject;
@@ -22,7 +25,7 @@ class OnQuestion extends Component
 
     public function mount(): void
     {
-        $this->subjects = Subject::with('questions')->get();
+        $this->subjects = Subject::all();
         $this->locales = Locale::all();
         LaravelLocalization::setLocale('ru');
     }
@@ -32,6 +35,7 @@ class OnQuestion extends Component
         if ($this->subject_id) {
             $this->show = true;
             $this->subject = Subject::find($this->subject_id);
+            $this->questions = Question::where(['subject_id' => $this->subject_id, 'locale_id' => $this->locale_id])->get();
             $this->categories = Category::with('subcategories')->where('subject_id', $this->subject_id)->get();
         } else {
             $this->show = false;
@@ -40,6 +44,7 @@ class OnQuestion extends Component
 
     public function updatedLocaleId(): void
     {
+        $this->questions = Question::where(['subject_id' => $this->subject_id, 'locale_id' => $this->locale_id])->get();
         if ($this->locale_id == 1) {
             LaravelLocalization::setLocale('kk');
         } else {

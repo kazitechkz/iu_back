@@ -36,12 +36,12 @@
                     </div>
                     <div class="w-[20%] p-3 break-all flex justify-start items-center">
 
-                        {{$subject->questions->where('locale_id', $locale_id)->count()}}<span class="mx-2">/</span>
+                        {{$questions->count()}}<span class="mx-2">/</span>
                         <span
-                            class="text-red-600">{{$subject->questions->where('locale_id', $locale_id)->where('sub_category_id', null)->count()}}</span>
+                            class="text-red-600">{{$questions->where('sub_category_id', null)->count()}}</span>
                         <span class="mx-2">/</span>
                         <span
-                            class="text-green-600">{{$subject->questions->where('locale_id', $locale_id)->where('sub_category_id', !null)->count()}}</span>
+                            class="text-green-600">{{$questions->where('sub_category_id', !null)->count()}}</span>
                     </div>
                     <div class="w-[20%] p-3 break-all flex justify-start items-center">
                         One / Context / Multi
