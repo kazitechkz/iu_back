@@ -1,5 +1,5 @@
 <div>
-    <div class="my-3">
+    <div class="my-3 flex">
         <x-select
             label="Предмет"
             wire:model="subject_id"
@@ -9,9 +9,46 @@
             option-value="id"
             {{--            class="hover:bg-primary-500"--}}
         />
-    </div>
+        <div class="mx-2"></div>
+        <x-select
+            label="Язык"
+            wire:model="locale_id"
+            placeholder="Выберите язык"
+            :options="$locales"
+            option-label="title"
+            option-value="id"
+            {{--            class="hover:bg-primary-500"--}}
+        />
 
+    </div>
+    <x-loading-indicator />
     @if($show)
+        <div
+            class="my-3 flex flex-col rounded-lg bg-white shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700 md:flex-row">
+            <div class="w-[30%] p-5 flex justify-center items-center">
+                <strong>Категория</strong>
+            </div>
+
+            <div class="flex flex-col justify-start p-6 w-full">
+                <div class="flex">
+                    <div class="w-[60%] p-5 break-all">
+                        <strong>Субкатегория</strong>
+                    </div>
+                    <div class="w-[20%] p-3 break-all flex justify-start items-center">
+
+                        {{$subject->questions->where('locale_id', $locale_id)->count()}}<span class="mx-2">/</span>
+                        <span
+                            class="text-red-600">{{$subject->questions->where('locale_id', $locale_id)->where('sub_category_id', null)->count()}}</span>
+                        <span class="mx-2">/</span>
+                        <span
+                            class="text-green-600">{{$subject->questions->where('locale_id', $locale_id)->where('sub_category_id', !null)->count()}}</span>
+                    </div>
+                    <div class="w-[20%] p-3 break-all flex justify-start items-center">
+                        One / Context / Multi
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="my-3">
             @if($categories)
                 @foreach($categories as $category)
@@ -26,17 +63,24 @@
                             @if($category->subcategories)
                                 @foreach($category->subcategories as $item)
                                     <div class="flex">
-                                        <div class="w-[70%] p-3 break-all">
+                                        <div class="w-[60%] p-3 break-all">
                                             {{$item->title}}
                                         </div>
-                                        <div class="w-[30%] p-3 break-all">
-                                            @if($item->questions->count() >= 20)
-                                                <span class="text-green-500">{{$item->questions->count()}}</span>
+                                        <div class="w-[20%] p-3 break-all flex">
+                                            @if($item->questions->where('locale_id', $locale_id)->count() >= 20)
+                                                <span class="text-green-500">{{$item->questions->where('locale_id', $locale_id)->count()}}</span>
                                             @elseif($item->questions->count() > 0)
-                                                <span class="text-yellow-500">{{$item->questions->count()}}</span>
+                                                <span class="text-yellow-500">{{$item->questions->where('locale_id', $locale_id)->count()}}</span>
                                             @else
-                                                <span class="text-red-500">{{$item->questions->count()}}</span>
+                                                <span class="text-red-500">{{$item->questions->where('locale_id', $locale_id)->count()}}</span>
                                             @endif
+                                        </div>
+                                        <div class="w-[20%] p-3 break-all flex">
+                                            {{$item->questions->where('locale_id', $locale_id)->where('type_id', \App\Services\QuestionService::SINGLE_QUESTION_ID)->count()}}
+                                            <span class="mx-2">/</span>
+                                            {{$item->questions->where('locale_id', $locale_id)->where('type_id', \App\Services\QuestionService::CONTEXT_QUESTION_ID)->count()}}
+                                            <span class="mx-2">/</span>
+                                            {{$item->questions->where('locale_id', $locale_id)->where('type_id', \App\Services\QuestionService::MULTI_QUESTION_ID)->count()}}
                                         </div>
                                     </div>
                                 @endforeach
