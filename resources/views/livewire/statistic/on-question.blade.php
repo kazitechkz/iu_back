@@ -56,7 +56,7 @@
                         class="my-3 flex flex-col rounded-lg bg-white shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700 md:flex-row">
                         <div class="w-[30%] p-5 flex">
                             <span>{{$loop->iteration}}.</span>
-                            <span class="break-all ml-2">{{$category->title}}</span>
+                            <span class="break-all ml-2">{{$category[\App\Services\LanguageService::getTitleByLocale($this->locale_id)]}}</span>
                         </div>
 
                         <div class="flex flex-col justify-start p-6 w-full">
@@ -64,7 +64,7 @@
                                 @foreach($category->subcategories as $item)
                                     <div class="flex">
                                         <div class="w-[60%] p-3 break-all">
-                                            {{$item->title}}
+                                            {{$item[\App\Services\LanguageService::getTitleByLocale($this->locale_id)]}}
                                         </div>
                                         <div class="w-[20%] p-3 break-all flex">
                                             @if($item->questions->where('locale_id', $locale_id)->count() >= 20)

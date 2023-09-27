@@ -27,7 +27,6 @@ class OnQuestion extends Component
     {
         $this->subjects = Subject::all();
         $this->locales = Locale::all();
-        LaravelLocalization::setLocale('ru');
     }
 
     public function updatedSubjectId(): void
@@ -45,11 +44,6 @@ class OnQuestion extends Component
     public function updatedLocaleId(): void
     {
         $this->questions = Question::where(['subject_id' => $this->subject_id, 'locale_id' => $this->locale_id])->get();
-        if ($this->locale_id == 1) {
-            LaravelLocalization::setLocale('kk');
-        } else {
-            LaravelLocalization::setLocale('ru');
-        }
     }
 
     public function render(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application

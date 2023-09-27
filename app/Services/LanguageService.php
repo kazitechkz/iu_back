@@ -15,4 +15,13 @@ class LanguageService
             return 2;
         }
     }
+
+    public static function getTitleByLocale($id): string
+    {
+        if ($id == 1) {
+            return 'title_kk';
+        } else {
+            return 'title_ru';
+        }
+    }
 }
