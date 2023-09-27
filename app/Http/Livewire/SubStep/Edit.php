@@ -33,13 +33,13 @@ class Edit extends Component
         $this->subject_id = $sub_step->step->subject_id;
         $this->sub_step = $sub_step;
         $this->steps = Step::where(["id" => $sub_step->step_id])->with("subject")->get();
+        $this->sub_categories = SubCategory::where(['category_id' => $sub_step->sub_category_id, 'deleted_at' => !null])->get();
         $this->step_id = $sub_step->step_id;
         $this->sub_category_id = $sub_step->sub_category_id;
-        $this->title_ru = $this->sub_step->title_ru;
-        $this->title_kk = $this->sub_step->title_kk;
-        $this->title_en = $this->sub_step->title_en;
         $this->level = $this->sub_step->level;
         $this->is_active = $this->sub_step->is_active ?? true;
+        $this->title_kk = $sub_step->title_kk;
+        $this->title_ru = $sub_step->title_ru;
     }
 
     protected function rules(): array

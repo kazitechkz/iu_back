@@ -274,5 +274,13 @@
                     :name="__('sidebar.lesson-complaint')"/>
             </x-shared.sidebar-menu>
         @endcan
+        @can("statistic management")
+            <x-shared.sidebar-menu :element-id="'statistic-content'" :name="__('sidebar.statistic')" :icon="'fa fa-line-chart'">
+                <x-shared.sub-sidebar-menu
+                    :icon="'fa fa-bar-chart'"
+                    :link="'stats-on-questions'"
+                    :name="__('sidebar.stats-on-questions')"/>
+            </x-shared.sidebar-menu>
+        @endcan
     </ul>
 </nav>

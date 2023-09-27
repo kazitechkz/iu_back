@@ -106,10 +106,9 @@ class SubStepTable extends DataTableComponent
                         }),
                     LinkColumn::make('Edit')
                         ->title(fn($row) => "")
-                        ->location(fn($row) => route('step.edit', $row))
+                        ->location(fn($row) => route('sub-step.edit', $row))
                         ->attributes(function($row) {
                             return [
-                                'target' => '_blank',
                                 'class' => 'fas fa-pencil btn btn-danger btn-rounded btn-icon flex align-center justify-center items-center',
                             ];
                         }),

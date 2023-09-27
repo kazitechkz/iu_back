@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AppealController as AdminAppealController;
 use App\Http\Controllers\Admin\AppealTypeController as AdminAppealTypeController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
+use App\Http\Controllers\Admin\StatisticController as AdminStatisticController;
 use App\Http\Controllers\Admin\SubCategoryController as AdminSubCategoryController;
 use App\Http\Controllers\Admin\FaqController as AdminFaqController;
 use App\Http\Controllers\Admin\ForumController as AdminForumController;
@@ -131,6 +132,9 @@ Route::group([
         Route::resource("lesson-rating",AdminLessonRatingController::class);
         Route::resource("participant-rating",AdminParticipantRatingController::class);
         Route::resource("lesson-complaint",AdminLessonComplaintController::class);
+
+        //Statistics
+        Route::get('stats-on-questions', [AdminStatisticController::class, 'statsOnQuestions'])->name('stats-on-questions');
     });
 });
 

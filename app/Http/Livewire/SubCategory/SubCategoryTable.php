@@ -72,7 +72,8 @@ class SubCategoryTable extends DataTableComponent
             Column::make("Категория", "category.".StrHelper::getTitleAttribute())
                 ->sortable(),
             Column::make("Наименование", StrHelper::getTitleAttribute())
-                ->sortable(),
+                ->sortable()
+                ->searchable(),
             Column::make('Image', 'file.url')
                 ->format(fn($val) => '<img class="w-50" src="'.File::getFileFromAWS($val).'" />')
                 ->html()

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\SubStep\SubStepCreateRequest;
 use App\Http\Requests\SubStep\SubStepUpdateRequest;
 use App\Models\Step;
+use App\Models\SubCategory;
 use App\Models\Subject;
 use App\Models\SubStep;
 use Illuminate\Http\Request;

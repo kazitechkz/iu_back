@@ -11,81 +11,83 @@ class AppConstants
     public const STUDENT_NAME = "student";
     public const all_permissions = [
         //User
-        "user create","user index","user edit","user show",
+        "user create", "user index", "user edit", "user show",
         //Role
-        "role create","role index","role edit","role show",
+        "role create", "role index", "role edit", "role show",
         //Locale
-        "locale create","locale index","locale edit","locale show",
+        "locale create", "locale index", "locale edit", "locale show",
         //Permission
-        "permission create","permission index","permission edit","permission show",
+        "permission create", "permission index", "permission edit", "permission show",
         //Subject
-        "subject create","subject index","subject edit","subject show",
+        "subject create", "subject index", "subject edit", "subject show",
         //Subject Contexts
-        "subject-contexts create","subject-contexts index","subject-contexts edit","subject-contexts show",
+        "subject-contexts create", "subject-contexts index", "subject-contexts edit", "subject-contexts show",
         //Single-tests
-        "single-tests create","single-tests index","single-tests edit","single-tests show",
+        "single-tests create", "single-tests index", "single-tests edit", "single-tests show",
         //Plan Create
-        "plan create","plan index","plan edit","plan show",
+        "plan create", "plan index", "plan edit", "plan show",
         //Categories
-        "categories create","categories index","categories edit","categories show",
+        "categories create", "categories index", "categories edit", "categories show",
         //SubCategories
-        "subcategories create","subcategories index","subcategories edit","subcategories show",
+        "subcategories create", "subcategories index", "subcategories edit", "subcategories show",
         //Plan Combination
-        "plan-combination create","plan-combination index","plan-combination edit","plan-combination show",
+        "plan-combination create", "plan-combination index", "plan-combination edit", "plan-combination show",
         //Subscription
-        "subscription create","subscription index","subscription edit","subscription show",
+        "subscription create", "subscription index", "subscription edit", "subscription show",
         //Promocode
-        "promocode create","promocode index","promocode edit","promocode show",
+        "promocode create", "promocode index", "promocode edit", "promocode show",
         //News
-        "news create","news index","news edit","news show",
+        "news create", "news index", "news edit", "news show",
         //Commercial Group
-        "commercial-group create","commercial-group index","commercial-group edit","commercial-group show",
+        "commercial-group create", "commercial-group index", "commercial-group edit", "commercial-group show",
         //Wallet
-        "wallet create","wallet index","wallet edit","wallet show",
+        "wallet create", "wallet index", "wallet edit", "wallet show",
         //Faq
-        "faq create","faq index","faq edit","faq show",
+        "faq create", "faq index", "faq edit", "faq show",
         //Question
-        "questions create","questions index","questions edit","questions show",
+        "questions create", "questions index", "questions edit", "questions show",
         //Group
-        "group create","group index","group edit","group show",
+        "group create", "group index", "group edit", "group show",
         //Appeal Type
-        "appeal-type create","appeal-type index","appeal-type edit","appeal-type show",
+        "appeal-type create", "appeal-type index", "appeal-type edit", "appeal-type show",
         //Appeal
-        "appeal create","appeal index","appeal edit","appeal show",
+        "appeal create", "appeal index", "appeal edit", "appeal show",
         //Page
-        "page create","page index","page edit","page show",
+        "page create", "page index", "page edit", "page show",
         //Forum
-        "forum create","forum index","forum edit","forum show",
+        "forum create", "forum index", "forum edit", "forum show",
         //Discuss
-        "discuss create","discuss index","discuss edit","discuss show",
+        "discuss create", "discuss index", "discuss edit", "discuss show",
         //Tournament
-        "tournament create","tournament index","tournament edit","tournament show",
+        "tournament create", "tournament index", "tournament edit", "tournament show",
         //SubTournament
-        "sub-tournament create","sub-tournament index","sub-tournament edit","sub-tournament show",
+        "sub-tournament create", "sub-tournament index", "sub-tournament edit", "sub-tournament show",
         //SubStepTest
-        "substeptest create","substeptest index","substeptest edit","substeptest show",
+        "substeptest create", "substeptest index", "substeptest edit", "substeptest show",
         //Step
-        "step create","step index","step edit","step show",
+        "step create", "step index", "step edit", "step show",
         //Sub Step
-        "sub-step create","sub-step index","sub-step edit","sub-step show",
+        "sub-step create", "sub-step index", "sub-step edit", "sub-step show",
         //Sub Step Content
-        "sub-step-content create","sub-step-content index","sub-step-content edit","sub-step-content show",
+        "sub-step-content create", "sub-step-content index", "sub-step-content edit", "sub-step-content show",
         //Gender
-        "gender index","gender create","gender edit","gender show",
+        "gender index", "gender create", "gender edit", "gender show",
         //Tutor
-        "tutor index","tutor create","tutor edit","tutor show",
+        "tutor index", "tutor create", "tutor edit", "tutor show",
         //Tutor Skill
-        "tutor-skill index","tutor-skill create","tutor-skill edit","tutor-skill show",
+        "tutor-skill index", "tutor-skill create", "tutor-skill edit", "tutor-skill show",
         //Lesson Schedule
-        "lesson-schedule index","lesson-schedule create","lesson-schedule edit","lesson-schedule show",
+        "lesson-schedule index", "lesson-schedule create", "lesson-schedule edit", "lesson-schedule show",
         //Lesson Schedule Participant
-        "lesson-schedule-participant index","lesson-schedule-participant create","lesson-schedule-participant edit","lesson-schedule-participant show",
+        "lesson-schedule-participant index", "lesson-schedule-participant create", "lesson-schedule-participant edit", "lesson-schedule-participant show",
         //Lesson Rating
-        "lesson-rating index","lesson-rating create","lesson-rating edit","lesson-rating show",
+        "lesson-rating index", "lesson-rating create", "lesson-rating edit", "lesson-rating show",
         //Participant Rating
-        "participant-rating index","participant-rating create","participant-rating edit","participant-rating show",
+        "participant-rating index", "participant-rating create", "participant-rating edit", "participant-rating show",
         //Lesson Complaint
-        "lesson-complaint index","lesson-complaint create","lesson-complaint edit","lesson-complaint show",
+        "lesson-complaint index", "lesson-complaint create", "lesson-complaint edit", "lesson-complaint show",
+        //Statistics
+        "statistic index", "statistic create", "statistic edit", "statistic show",
         //Permission for main menu
         "user management",
         "locale management",
@@ -96,28 +98,29 @@ class AppConstants
         "content management",
         "step management",
         "tournament management",
-        "tutor management"
+        "tutor management",
+        "statistic management"
     ];
 
     public const ADMIN_PERMISSIONS = self::all_permissions;
     public const METHOD_PERMISSIONS = [
         //Subject
-        "subject create","subject index","subject edit","subject show",
+        "subject create", "subject index", "subject edit", "subject show",
         //Categories
-        "categories create","categories index","categories edit","categories show",
+        "categories create", "categories index", "categories edit", "categories show",
         //SubCategories
-        "subcategories create","subcategories index","subcategories edit","subcategories show",
+        "subcategories create", "subcategories index", "subcategories edit", "subcategories show",
         //SubStepTest
-        "substeptest create","substeptest index","substeptest edit","substeptest show",
+        "substeptest create", "substeptest index", "substeptest edit", "substeptest show",
         //Question
-        "questions create","questions index","questions edit","questions show",
+        "questions create", "questions index", "questions edit", "questions show",
         //Subject Contexts
-        "subject-contexts create","subject-contexts index","subject-contexts edit","subject-contexts show",
+        "subject-contexts create", "subject-contexts index", "subject-contexts edit", "subject-contexts show",
 
     ];
 
-    public const tags = ["basic","standart","pro","premium"];
+    public const tags = ["basic", "standart", "pro", "premium"];
 
-    public  const  permissions_action = ["create","index","edit","show"];
+    public const  permissions_action = ["create", "index", "edit", "show"];
 
 }
