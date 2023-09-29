@@ -72,7 +72,7 @@
         <x-ckeditor :description="$text" :input-name="'text'" :title="'Текст вопроса ($$ @@)'"/>
     </div>
     @if($context)
-        <div class="w-full" id="context-img">
+        <div class="w-full my-2" id="context-img">
             <label class="block text-sm font-medium text-gray-700 dark:text-gray-400 mb-1">
                 Текущий контекст вопроса
             </label>
@@ -97,7 +97,7 @@
 
     <div class="md:flex lg:flex justify-between my-3">
         <div wire:ignore class="w-full">
-            <x-ckeditor :description="$context" :input-name="'context'" :title="'Контекст ($$ @@)'"/>
+            <x-ckeditor :description="$context->context" :input-name="'context'" :title="'Контекст ($$ @@)'"/>
         </div>
     </div>
 
