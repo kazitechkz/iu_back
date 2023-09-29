@@ -83,6 +83,7 @@ class Edit extends Component
         $this->prompt = StrHelper::convertLatex($question->prompt);
         $this->explanation = StrHelper::convertLatex($question->explanation);
         $this->context_id = $question->context_id != null ? $question->context_id : null;
+        $this->context = $question->context_id != null ? SubjectContext::firstWhere(["id"=>$this->context_id]) : null;
     }
 
     public function updatedSubjectId(): void
@@ -93,6 +94,8 @@ class Edit extends Component
         $this->sub_category_id = null;
         $this->context_id = null;
     }
+
+
 
     public function updatedCategoryId(): void
     {

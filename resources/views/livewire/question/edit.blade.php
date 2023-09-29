@@ -71,10 +71,9 @@
     <div wire:ignore class="md:flex lg:flex justify-between my-3">
         <x-ckeditor :description="$text" :input-name="'text'" :title="'Текст вопроса ($$ @@)'"/>
     </div>
-
     <div class="w-full" id="context-img">
         <x-select
-            label="Контексты"
+            label="Выберите контекст"
             wire:model="context_id"
             placeholder="Выбрать контекст"
             :options="$contexts"
@@ -83,11 +82,21 @@
             option-value="id"
             {{--            class="hover:bg-primary-500"--}}
         />
+        <div class="my-4">
+            @if($context_id)
+                <div class="my-3">
+                    <a target="_blank" href="{{route("subject-contexts.edit",$context_id)}}" class="btn btn-danger text-white">
+                        <i class="fas fa-pen text-white mr-4 text-md"></i>
+                        Изменить контекст
+                    </a>
+                </div>
+            @endif
+        </div>
     </div>
 
     <div class="md:flex lg:flex justify-between my-3">
         <div wire:ignore class="w-full">
-            <x-ckeditor :description="$context" :input-name="'context'" :title="'Контекст ($$ @@)'"/>
+            <x-ckeditor :description="$context?->context" :input-name="'context'" :title="'Добавить новый Контекст ($$ @@)'"/>
         </div>
     </div>
 

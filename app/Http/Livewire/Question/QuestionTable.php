@@ -4,7 +4,9 @@ namespace App\Http\Livewire\Question;
 
 use App\Helpers\StrHelper;
 use App\Models\Locale;
+use App\Models\QuestionType;
 use App\Models\Subject;
+use App\Services\LanguageService;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Exceptions\DataTableConfigurationException;
 use Rappasoft\LaravelLivewireTables\Views\Column;
@@ -53,6 +55,11 @@ class QuestionTable extends DataTableComponent
                 ->options(Locale::pluck('title', 'id')->toArray())
                 ->filter(function ($builder, string $value){
                     $builder->where(['locale_id' => $value]);
+                }),
+            SelectFilter::make('Тип вопроса')
+                ->options(QuestionType::pluck(LanguageService::getTitleByLocaleAuto(), 'id')->toArray())
+                ->filter(function ($builder, string $value){
+                    $builder->where(['type_id' => $value]);
                 }),
         ];
     }

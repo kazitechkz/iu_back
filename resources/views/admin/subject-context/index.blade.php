@@ -1,4 +1,12 @@
 @extends('layouts.default')
+@push("css")
+    <style>
+        td img{
+            width: 250px;
+        }
+        table td {word-break: break-word}
+    </style>
+@endpush
 @section('content')
     <x-layer-components.content-navbar
         :title="__('table.subject_context_lists')"
@@ -21,3 +29,7 @@
 
 
 @endsection
+
+@push("js")
+
+@endpush
