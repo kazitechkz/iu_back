@@ -87,7 +87,7 @@
                 <div class="my-3">
                     <a target="_blank" href="{{route("subject-contexts.edit",$context_id)}}" class="btn btn-danger text-white">
                         <i class="fas fa-pen text-white mr-4 text-md"></i>
-                        Изменить контекст: {{\App\Helpers\StrHelper::getSubStr($context->context,50)}}
+                        Изменить контекст
                     </a>
                 </div>
             @endif
