@@ -97,7 +97,7 @@
 
     <div class="md:flex lg:flex justify-between my-3">
         <div wire:ignore class="w-full">
-            <x-ckeditor :description="$context->context" :input-name="'context'" :title="'Контекст ($$ @@)'"/>
+            <x-ckeditor :description="$context?->context" :input-name="'context'" :title="'Контекст ($$ @@)'"/>
         </div>
     </div>
 
