@@ -1,4 +1,5 @@
 <div>
+
     <div class="w-full">
         <x-select
             label="Предмет"
@@ -10,7 +11,7 @@
             {{--            class="hover:bg-primary-500"--}}
         />
     </div>
-
+    <livewire:math-type />
     <div class="md:flex lg:flex justify-between my-3">
         <div wire:ignore class="w-full">
             <x-ckeditor :description="$context" :input-name="'context'" :title="'Контекст ($$ @@)'"/>

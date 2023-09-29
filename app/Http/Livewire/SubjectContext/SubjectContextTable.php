@@ -3,10 +3,12 @@
 namespace App\Http\Livewire\SubjectContext;
 
 use App\Helpers\StrHelper;
+use App\Models\Subject;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Exceptions\DataTableConfigurationException;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Models\SubjectContext;
+use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 
 class SubjectContextTable extends DataTableComponent
 {
@@ -27,6 +29,19 @@ class SubjectContextTable extends DataTableComponent
             ->setTableRowUrl(function($row) {
                 return route('subject-contexts.edit', $row);
             });
+    }
+
+    public function filters(): array
+
+    {
+        return [
+            SelectFilter::make('Предмет')
+                ->options(Subject::pluck(StrHelper::getTitleAttribute(),"id")->toArray())
+                ->filter(function($builder, string $value) {
+                    $builder->where("subject_id",$value);
+                }),
+
+        ];
     }
     public function bulkActions(): array
     {
@@ -52,7 +67,7 @@ class SubjectContextTable extends DataTableComponent
             Column::make(__("table.subject_id"), "subject.title_ru")
                 ->sortable()->searchable(),
             Column::make(__("table.context"), "context")
-                ->format(fn($val) => StrHelper::getSubStr($val, 100))
+                ->format(fn($val) => $val)
                 ->html()
                 ->sortable()
                 ->searchable()

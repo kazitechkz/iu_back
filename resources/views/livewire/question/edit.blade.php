@@ -71,17 +71,6 @@
     <div wire:ignore class="md:flex lg:flex justify-between my-3">
         <x-ckeditor :description="$text" :input-name="'text'" :title="'Текст вопроса ($$ @@)'"/>
     </div>
-    @if($context)
-        <div class="w-full my-2" id="context-img">
-            <label class="block text-sm font-medium text-gray-700 dark:text-gray-400 mb-1">
-                Текущий контекст вопроса
-            </label>
-            <small>
-                {{$context->context}}
-            </small>
-        </div>
-    @endif
-
     <div class="w-full" id="context-img">
         <x-select
             label="Выберите контекст"
@@ -93,11 +82,21 @@
             option-value="id"
             {{--            class="hover:bg-primary-500"--}}
         />
+        <div class="my-4">
+            @if($context_id)
+                <div class="my-3">
+                    <a target="_blank" href="{{route("subject-contexts.edit",$context_id)}}" class="btn btn-danger text-white">
+                        <i class="fas fa-pen text-white mr-4 text-md"></i>
+                        Изменить контекст: {{\App\Helpers\StrHelper::getSubStr($context->context,50)}}
+                    </a>
+                </div>
+            @endif
+        </div>
     </div>
 
     <div class="md:flex lg:flex justify-between my-3">
         <div wire:ignore class="w-full">
-            <x-ckeditor :description="$context?->context" :input-name="'context'" :title="'Контекст ($$ @@)'"/>
+            <x-ckeditor :description="$context?->context" :input-name="'context'" :title="'Добавить новый Контекст ($$ @@)'"/>
         </div>
     </div>
 

@@ -38,6 +38,3 @@
 
 
 @endsection
-@push('js')
-
-@endpush

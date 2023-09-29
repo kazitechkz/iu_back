@@ -4,7 +4,8 @@ namespace App\Services;
 
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
-class LanguageService
+class
+LanguageService
 {
     public static function getLocaleId(): int
     {
@@ -19,6 +20,15 @@ class LanguageService
     public static function getTitleByLocale($id): string
     {
         if ($id == 1) {
+            return 'title_kk';
+        } else {
+            return 'title_ru';
+        }
+    }
+    public static function getTitleByLocaleAuto(): string
+    {
+        $lang = LaravelLocalization::getCurrentLocale();
+        if ($lang == 'kk') {
             return 'title_kk';
         } else {
             return 'title_ru';

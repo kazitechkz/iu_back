@@ -1,4 +1,4 @@
-<div>
+<div class="my-4">
     <x-button primary :label="$text" wire:click="toggle"/>
     @if($show)
         <div style="width: 100%; height: 700px;" class="my-3">
