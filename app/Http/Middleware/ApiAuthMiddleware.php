@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use App\Traits\ResponseJSON;
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
 class ApiAuthMiddleware
@@ -12,11 +13,11 @@ class ApiAuthMiddleware
     /**
      * Handle an incoming request.
      *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
+     * @param  \Closure(Request): (Response)  $next
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (\Auth::check()) {
+        if (Auth::guard('api')->check()) {
             return $next($request);
         } else {
             return response()->json(new ResponseJSON(

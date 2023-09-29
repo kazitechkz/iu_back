@@ -13,13 +13,13 @@ class UserController extends Controller
     public function me()
     {
         try {
-            $user = auth()->user();
+            $user = auth()->guard('api')->user();
             $data = UserDTO::fromArray([
                 'username' => $user->username,
                 'name' => $user->name,
                 'email' => $user->email,
                 'phone' => $user->phone,
-                'id' => $user->id,
+//                'id' => $user->id,
                 'role' => $user->roles[0]['name'],
                 'subscription' => $user->activeSubscriptions()->pluck('name')->toArray()
             ]);
@@ -27,11 +27,8 @@ class UserController extends Controller
                 status: true,
                 data: $data->data
             ));
-        } catch (Exception $ex) {
-
+        } catch (Exception $exception) {
+            return response()->json(new ResponseJSON(status: false, errors: $exception->getMessage()), 500);
         }
     }
-
-
-
 }
