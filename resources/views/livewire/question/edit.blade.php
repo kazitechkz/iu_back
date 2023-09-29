@@ -71,10 +71,20 @@
     <div wire:ignore class="md:flex lg:flex justify-between my-3">
         <x-ckeditor :description="$text" :input-name="'text'" :title="'Текст вопроса ($$ @@)'"/>
     </div>
+    @if($context)
+        <div class="w-full" id="context-img">
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-400 mb-1">
+                Текущий контекст вопроса
+            </label>
+            <small>
+                {{$context->context}}
+            </small>
+        </div>
+    @endif
 
     <div class="w-full" id="context-img">
         <x-select
-            label="Контексты"
+            label="Выберите контекст"
             wire:model="context_id"
             placeholder="Выбрать контекст"
             :options="$contexts"
