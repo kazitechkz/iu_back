@@ -34,6 +34,8 @@ Route::group(['middleware' => 'API'], function() {
     Route::get("important-news",[ApiNewsController::class,"importantNews"]);
     Route::get("news",[ApiNewsController::class,"news"]);
     Route::get('subjects', [ApiSubjectController::class, 'index']);
+    Route::get('steps', [ApiStepController::class, 'getSteps']);
+    Route::get('step-detail/{id}', [ApiStepController::class, 'getStepDetail']);
     Route::post('get-single-subject-test', [ApiQuestionController::class, 'getSingleSubjectTest']);
     Route::get('locales', [ApiLocaleController::class, 'index']);
     Route::get('faq', [ApiFaqController::class, 'index']);

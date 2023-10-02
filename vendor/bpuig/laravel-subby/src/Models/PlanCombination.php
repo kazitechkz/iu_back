@@ -6,7 +6,7 @@ namespace Bpuig\Subby\Models;
 
 use Bpuig\Subby\Traits\BelongsToPlan;
 use Bpuig\Subby\Traits\MorphsSchedules;
-use Illuminate\Validation\Rule;
+use Illuminate\Contracts\Validation\Rule;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -72,11 +72,11 @@ class PlanCombination extends Model
                 }),
             ],
             'country' => 'required|alpha|size:3',
-            'price' => 'required|numeric|min:0',
-            'signup_fee' => 'required|numeric|min:0',
+            'price' => 'required|numeric',
+            'signup_fee' => 'required|numeric',
             'currency' => 'required|alpha|size:3',
-            'invoice_period' => 'required|integer|min:0|max:100000',
-            'invoice_interval' => 'required|in:hour,day,week,month'
+            'invoice_period' => 'sometimes|integer|max:100000',
+            'invoice_interval' => 'sometimes|in:hour,day,week,month'
         ];
     }
 

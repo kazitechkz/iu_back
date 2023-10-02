@@ -12,6 +12,8 @@ use Bpuig\Subby\Models\Plan;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -33,10 +35,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property Carbon|null $updated_at
  *
  * @property Category $category
- * @property File|null $file
+ * @property File|null $image
  * @property Plan $plan
  * @property Subject $subject
  * @property Collection|SubStep[] $sub_steps
+ * @property StepResult $result
  *
  * @package App\Models
  */
@@ -68,28 +71,38 @@ class Step extends Model
 		'image_url'
 	];
 
-	public function category()
-	{
+	public function category(): BelongsTo
+    {
 		return $this->belongsTo(Category::class);
 	}
 
-	public function file()
-	{
+	public function file(): BelongsTo
+    {
 		return $this->belongsTo(File::class, 'image_url');
 	}
 
-	public function plan()
-	{
+	public function plan(): BelongsTo
+    {
 		return $this->belongsTo(Plan::class);
 	}
 
-	public function subject()
-	{
+	public function subject(): BelongsTo
+    {
 		return $this->belongsTo(Subject::class);
 	}
 
-	public function sub_steps()
-	{
+	public function sub_steps(): HasMany
+    {
 		return $this->hasMany(SubStep::class);
 	}
+
+    public function image(): BelongsTo
+    {
+        return $this->belongsTo(File::class, 'image_url', 'id');
+    }
+
+    public function result(): BelongsTo
+    {
+        return $this->belongsTo(StepResult::class, 'id','step_id');
+    }
 }

@@ -86,17 +86,17 @@ class Plan extends Model
             'tag' => 'required|max:150|unique:' . config('subby.tables.plans') . ',tag',
             'name' => 'required|string|max:150',
             'description' => 'nullable|string|max:32768',
-            'is_active' => 'sometimes|nullable',
-            'price' => 'required|numeric|min:0',
+            'is_active' => 'sometimes|boolean',
+            'price' => 'required|numeric',
             'signup_fee' => 'required|numeric',
             'currency' => 'required|alpha|size:3',
-            'trial_period' => 'sometimes|integer|min:0|max:100000',
+            'trial_period' => 'sometimes|integer|max:100000',
             'trial_interval' => 'sometimes|in:hour,day,week,month',
             'trial_mode' => 'required|in:inside,outside',
-            'grace_period' => 'sometimes|integer|min:0|max:100000',
+            'grace_period' => 'sometimes|integer|max:100000',
             'grace_interval' => 'sometimes|in:hour,day,week,month',
-            'invoice_period' => 'required|integer|min:0|max:100000',
-            'invoice_interval' => 'required|in:hour,day,week,month',
+            'invoice_period' => 'sometimes|integer|max:100000',
+            'invoice_interval' => 'sometimes|in:hour,day,week,month',
             'tier' => 'nullable|integer|max:100000'
         ];
     }

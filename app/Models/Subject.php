@@ -48,4 +48,14 @@ class Subject extends Model
         return $this->belongsTo(File::class, 'image_url', 'id');
     }
 
+    public function steps(): HasMany
+    {
+        return $this->hasMany(Step::class);
+    }
+
+    public function subSteps(): \Illuminate\Database\Eloquent\Relations\HasManyThrough
+    {
+        return $this->hasManyThrough(SubStep::class, Step::class);
+    }
+
 }
