@@ -150,7 +150,7 @@ class QuestionService
 
     protected function get_groups(int $attempt_type_id){
         //1 Check User Available Status free or premium (Plan Id)
-        $plan_ids = auth()->user()->activeSubscriptions()->pluck("plan_id","plan_id");
+        $plan_ids = auth()->guard("api")->user()->activeSubscriptions()->pluck("plan_id","plan_id");
         //2 Define Group Id for plan
         $groups = [];
         //If UNT OR CASUAL PASS
