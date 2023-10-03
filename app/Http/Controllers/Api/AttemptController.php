@@ -9,6 +9,7 @@ use App\DTOs\SubjectQuestionDTO;
 use App\Http\Controllers\Controller;
 use App\Models\Attempt;
 use App\Models\AttemptQuestion;
+use App\Models\AttemptSubject;
 use App\Models\Subject;
 use App\Services\AnswerService;
 use App\Services\AttemptService;
@@ -70,7 +71,7 @@ class AttemptController extends Controller
     public function answer(Request $request){
         $answer_dto = AnswerDTO::fromRequest($request);
         $result = $this->answerService->check(
-            user_id: auth()->id(),
+            user_id: auth()->guard("api")->id(),
             attempt_id: $answer_dto->attempt_id,
             attempt_subject_id: $answer_dto->attempt_subject_id,
             question_id: $answer_dto->question_id,
@@ -79,8 +80,23 @@ class AttemptController extends Controller
         return response()->json(new ResponseJSON(status: true,data: $result),200);
     }
 
+    public function answerResult(int $attempt_subject_id){
+        $user = auth()->guard("api")->user();
+        $attempt_subject = AttemptSubject::where(["id"=>$attempt_subject_id])->first();
 
-    public function getAttempt(int $id){
+        if(!$attempt_subject){
+            return response()->json(new ResponseJSON(status: false,message: "Not Found"),404);
+        }
+        $attempt = Attempt::where(["id"=>$attempt_subject->attempt_id])->first();
+        if($attempt->user_id != $user->id){
+            return response()->json(new ResponseJSON(status: false,message: "Forbidden"),403);
+        }
+        $result = AttemptQuestion::where(["attempt_subject_id"=>$attempt_subject_id,"is_answered"=>true])->pluck("user_answer","question_id")->toArray();
+        foreach ($result as $key=>$value) {
+            $result[$key] = explode(",", $value);
+        }
+        return response()->json(new ResponseJSON(status: true,data: $result),200);
+
 
     }
 

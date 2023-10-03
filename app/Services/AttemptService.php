@@ -65,7 +65,7 @@ class AttemptService
             $idsImploded = implode(',',$questions_attempt);
             $questions = Question::whereIn("id",$questions_attempt)
                 ->orderByRaw("field(id,{$idsImploded})")
-                ->with("context")->get()->toArray();
+                ->with("context")->get()->makeHidden(["correct_answers"])->toArray();
             $subject_dto["question"] = $questions;
             array_push($subject_dtos,$subject_dto);
         }

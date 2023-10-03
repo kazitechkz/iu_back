@@ -50,6 +50,7 @@ Route::group(['middleware' => 'API'], function() {
     Route::get("/attempt_by/{id}",[AttemptController::class,"attemptById"]);
     //Check Answer
     Route::post("/answer",[AttemptController::class,"answer"]);
+    Route::get("/answer-result/{attempt_subject_id}",[AttemptController::class,"answerResult"]);
     Route::post("/tournament-attempt",[ApiTournamentController::class,"attempt"]);
     Route::post("/participate",[ApiTournamentController::class,"participate"]);
 
