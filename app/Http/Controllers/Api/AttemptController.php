@@ -7,12 +7,14 @@ use App\DTOs\AttemptCreateDTO;
 use App\DTOs\AttemptDTO;
 use App\DTOs\SubjectQuestionDTO;
 use App\Http\Controllers\Controller;
+use App\Models\Attempt;
 use App\Models\AttemptQuestion;
 use App\Models\Subject;
 use App\Services\AnswerService;
 use App\Services\AttemptService;
 use App\Services\QuestionService;
 use App\Traits\ResponseJSON;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class AttemptController extends Controller
@@ -39,6 +41,31 @@ class AttemptController extends Controller
         $attempt = $this->attemptService->create_attempt($user->id,$attempt->attempt_type_id,$attempt->locale_id,$max_points,$questions,$max_time);
         return response()->json(new ResponseJSON(status: true,data: $attempt),200);
     }
+
+
+
+    public function attemptById($id){
+        try{
+            $user = auth()->guard("api")->user();
+            $attempt  = Attempt::find($id);
+            if(!$attempt){
+                return response()->json(new ResponseJSON(status: false,message: "Not Found"),404);
+            }
+            if($attempt->user_id != $user->id){
+                return response()->json(new ResponseJSON(status: false,message: "Forbidden"),403);
+            }
+            if($attempt->start_at->addMilliseconds($attempt->time) < Carbon::now()){
+                return response()->json(new ResponseJSON(status: false,message: "Time Passed"),404);
+            }
+            $data = $this->attemptService->get_attempt_by_id($id);
+            return response()->json(new ResponseJSON(status: true,data: $data),200);
+        }
+        catch (\Exception $exception){
+            return response()->json(new ResponseJSON(status: false,message: $exception->getMessage()),500);
+        }
+
+    }
+
 
     public function answer(Request $request){
         $answer_dto = AnswerDTO::fromRequest($request);

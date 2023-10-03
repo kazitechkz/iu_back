@@ -13,6 +13,7 @@ class AttemptDTO extends ValidatedDTO
     public $time_left;
     public $is_finished = false;
     public $subject_questions;
+    public $start_at;
 
 
     protected function rules(): array

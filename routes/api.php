@@ -47,6 +47,7 @@ Route::group(['middleware' => 'API'], function() {
     Route::get('get-step-tests/{sub_step_id}/{locale_id}', [ApiStepController::class, 'getStepTests']);
     //Get UNT Exam
     Route::post("/attempt",[AttemptController::class,"attempt"]);
+    Route::get("/attempt_by/{id}",[AttemptController::class,"attemptById"]);
     //Check Answer
     Route::post("/answer",[AttemptController::class,"answer"]);
     Route::post("/tournament-attempt",[ApiTournamentController::class,"attempt"]);
