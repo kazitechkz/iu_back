@@ -38,6 +38,7 @@ return [
     "commercial-group" => "Группа планов",
     "step" => "Этапы",
     "sub-step" => "Субэтапы",
+    "sub-step-content" => "Контент субэтапов",
     "sub-step-video" => "Видео Субэтапов",
     "gender" => "Пол",
     "tutor" => "Репетитор",
