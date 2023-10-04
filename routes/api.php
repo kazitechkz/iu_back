@@ -48,6 +48,10 @@ Route::group(['middleware' => 'API'], function() {
     //Get UNT Exam
     Route::post("/attempt",[AttemptController::class,"attempt"]);
     Route::get("/attempt_by/{id}",[AttemptController::class,"attemptById"]);
+    Route::get("/save-question/{questionId}",[ApiQuestionController::class,"saveQuestion"]);
+    Route::get("/get-fifty-fifty/{questionId}",[ApiQuestionController::class,"getFiftyFifty"]);
+    Route::post("/create-appeal-question",[ApiQuestionController::class,"appealQuestion"]);
+
     //Check Answer
     Route::post("/answer",[AttemptController::class,"answer"]);
     Route::get("/answer-result/{attempt_subject_id}",[AttemptController::class,"answerResult"]);

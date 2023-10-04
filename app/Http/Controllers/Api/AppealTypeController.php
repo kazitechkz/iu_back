@@ -12,7 +12,7 @@ class AppealTypeController extends Controller
     public function index(){
         try {
             $appeal_types = AppealType::where(["isActive" => true])->get();
-            return response()->json(new ResponseJSON(status: true,data: $appeal_types),500);
+            return response()->json(new ResponseJSON(status: true,data: $appeal_types),200);
 
         }
         catch (\Exception $exception){

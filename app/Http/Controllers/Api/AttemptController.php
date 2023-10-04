@@ -10,7 +10,10 @@ use App\Http\Controllers\Controller;
 use App\Models\Attempt;
 use App\Models\AttemptQuestion;
 use App\Models\AttemptSubject;
+use App\Models\CommercialGroupPlan;
+use App\Models\Question;
 use App\Models\Subject;
+use App\Models\UserQuestion;
 use App\Services\AnswerService;
 use App\Services\AttemptService;
 use App\Services\QuestionService;
@@ -64,7 +67,6 @@ class AttemptController extends Controller
         catch (\Exception $exception){
             return response()->json(new ResponseJSON(status: false,message: $exception->getMessage()),500);
         }
-
     }
 
 
@@ -96,9 +98,9 @@ class AttemptController extends Controller
             $result[$key] = explode(",", $value);
         }
         return response()->json(new ResponseJSON(status: true,data: $result),200);
-
-
     }
+
+
 
 
 
