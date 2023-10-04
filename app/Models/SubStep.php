@@ -32,6 +32,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property Step $step
  * @property SubCategory $sub_category
  * @property SubStepContent $sub_step_content
+ * @property SubStepVideo $sub_step_video
  *
  * @package App\Models
  */
@@ -69,8 +70,13 @@ class SubStep extends Model
 
 	public function sub_step_content(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-		return $this->belongsTo(SubStepContent::class);
+		return $this->belongsTo(SubStepContent::class, 'id', 'sub_step_id');
 	}
+
+    public function sub_step_video(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(SubStepVideo::class, 'id', 'sub_step_id');
+    }
 
     public function sub_result(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {

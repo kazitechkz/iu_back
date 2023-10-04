@@ -43,6 +43,7 @@ use App\Http\Controllers\Admin\LessonScheduleParticipantController as AdminLesso
 use App\Http\Controllers\Admin\LessonRatingController as AdminLessonRatingController;
 use App\Http\Controllers\Admin\ParticipantRatingController as AdminParticipantRatingController;
 use App\Http\Controllers\Admin\LessonComplaintController as AdminLessonComplaintController;
+use App\Http\Controllers\Admin\SubStepVideoController as AdminSubStepVideoController;
 use App\Http\Controllers\Admin\TestController;
 use App\Http\Controllers\TestController as Testing;
 use Illuminate\Support\Facades\Route;
@@ -123,6 +124,7 @@ Route::group([
         Route::resource("sub-step",AdminSubStepController::class);
         Route::resource("sub-step-content",AdminSubStepContentController::class);
         Route::resource("sub-step-test",AdminSubStepTestController::class);
+        Route::resource("sub-step-video",AdminSubStepVideoController::class);
         //Tutor
         Route::resource("gender",AdminGenderController::class);
         Route::resource("tutor",AdminTutorController::class);

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\SubStep;
+use App\Models\SubStepContent;
 use App\Traits\ResponseJSON;
 use Exception;
 use Illuminate\Http\Request;
@@ -30,9 +31,8 @@ class SubStepController extends Controller
     public function getSubStepById($id)
     {
         try {
-            $subSteps = SubStep::with('sub_step_content')->where('id', $id)->orderBy('level', 'asc')->first();
-
-            return  response()->json(new ResponseJSON(status: true, data: $subSteps));
+            $subStep = SubStep::with(['sub_step_content', 'sub_step_video'])->where('id', $id)->orderBy('level', 'asc')->first();
+            return  response()->json(new ResponseJSON(status: true, data: $subStep));
         } catch (Exception $exception) {
             return response()->json(new ResponseJSON(status: false, errors: $exception->getMessage()), 500);
         }

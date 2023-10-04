@@ -39,6 +39,7 @@ return [
     "step" => "Step",
     "sub-step" => "Sub-steps",
     "sub-step-content" => "Sub-steps content",
+    "sub-step-video" => "Sub-steps video",
     "gender" => "Gender",
     "tutor" => "Tutor",
     "statistic" => "Statistic",
