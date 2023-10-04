@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AuthController as ApiAuthController;
 use App\Http\Controllers\Api\StepController as ApiStepController;
+use App\Http\Controllers\Api\SubStepController as ApiSubStepController;
 use App\Http\Controllers\Api\SubjectController as ApiSubjectController;
 use App\Http\Controllers\Api\QuestionController as ApiQuestionController;
 use App\Http\Controllers\Api\UserController as ApiUserController;
@@ -36,6 +37,8 @@ Route::group(['middleware' => 'API'], function() {
     Route::get('subjects', [ApiSubjectController::class, 'index']);
     Route::get('steps', [ApiStepController::class, 'getSteps']);
     Route::get('step-detail/{id}', [ApiStepController::class, 'getStepDetail']);
+    Route::get('sub-steps/{id}', [ApiSubStepController::class, 'getSubStepsByStepId']);
+    Route::get('sub-step/{id}', [ApiSubStepController::class, 'getSubStepById']);
     Route::post('get-single-subject-test', [ApiQuestionController::class, 'getSingleSubjectTest']);
     Route::get('locales', [ApiLocaleController::class, 'index']);
     Route::get('faq', [ApiFaqController::class, 'index']);

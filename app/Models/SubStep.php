@@ -31,7 +31,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *
  * @property Step $step
  * @property SubCategory $sub_category
- * @property Collection|SubStepContent[] $sub_step_contents
+ * @property SubStepContent $sub_step_content
  *
  * @package App\Models
  */
@@ -67,9 +67,9 @@ class SubStep extends Model
 		return $this->belongsTo(SubCategory::class);
 	}
 
-	public function sub_step_contents(): \Illuminate\Database\Eloquent\Relations\HasMany
+	public function sub_step_content(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-		return $this->hasMany(SubStepContent::class);
+		return $this->belongsTo(SubStepContent::class);
 	}
 
     public function sub_result(): \Illuminate\Database\Eloquent\Relations\BelongsTo
