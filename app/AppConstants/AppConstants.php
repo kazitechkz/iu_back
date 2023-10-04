@@ -88,6 +88,8 @@ class AppConstants
         "lesson-complaint index", "lesson-complaint create", "lesson-complaint edit", "lesson-complaint show",
         //Statistics
         "statistic index", "statistic create", "statistic edit", "statistic show",
+        //SubStepVideo
+        "subStepVideo index", "subStepVideo create", "subStepVideo edit", "subStepVideo show",
         //Permission for main menu
         "user management",
         "locale management",
@@ -99,7 +101,8 @@ class AppConstants
         "step management",
         "tournament management",
         "tutor management",
-        "statistic management"
+        "statistic management",
+        "subStepVideo management"
     ];
 
     public const ADMIN_PERMISSIONS = self::all_permissions;

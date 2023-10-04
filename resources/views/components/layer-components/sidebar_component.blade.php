@@ -198,6 +198,12 @@
                             :link="'sub-step-content.index'"
                             :name="__('sidebar.sub-step-content')"/>
                     @endcan
+                    @can('subStepVideo index')
+                        <x-shared.sub-sidebar-menu
+                            :icon="'fa fa-video-camera'"
+                            :link="'sub-step-video.index'"
+                            :name="__('sidebar.sub-step-video')"/>
+                    @endcan
                     @can("substeptest index")
                         <x-shared.sub-sidebar-menu
                             :icon="'mdi mdi-text-shadow'"

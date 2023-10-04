@@ -40,6 +40,7 @@ return [
     "step" => "Кезең",
     "sub-step" => "Суб кезең",
     "sub-step-content" => "Субэтап контенттері",
+    "sub-step-video" => "Субэтап видеолары",
     "gender" => "Жыныс",
     "tutor" => "Репетитор",
     "statistic" => "Статистика",
