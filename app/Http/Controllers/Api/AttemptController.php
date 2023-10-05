@@ -127,6 +127,19 @@ class AttemptController extends Controller
         return response()->json(new ResponseJSON(status: true,data: $result),200);
     }
 
+    public function finish(int $attempt_id){
+        $user = auth()->guard("api")->user();
+        $attempt  = Attempt::where("end_at","!=",null)->find($attempt_id);
+        if(!$attempt){
+            return response()->json(new ResponseJSON(status: false,message: "Not Found"),404);
+        }
+        if($attempt->user_id != $user->id){
+            return response()->json(new ResponseJSON(status: false,message: "Forbidden"),403);
+        }
+        $attempt->update(["end_at" => Carbon::now()]);
+        return response()->json(new ResponseJSON(status: true,data: $attempt_id),200);
+    }
+
 
 
 
