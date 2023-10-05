@@ -20,7 +20,11 @@ class StepService
     {
         $subStep = SubStep::with('step')->findOrFail($sub_step_id);
         $tests = SubStepTest::with(['question' => function($query) use ($locale_id) {
-            $query->where(['locale_id' => $locale_id])->with('context');
+            if ($query->firstWhere('locale_id', $locale_id)) {
+                $query->where(['locale_id' => $locale_id])->with('context');
+            } else {
+                abort(400, 'Нет вопросов');
+            }
         } ])->where(['sub_step_id' => $sub_step_id])->get();
         if ($subStep->step->is_free) {
             return $tests;

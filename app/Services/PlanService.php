@@ -27,7 +27,7 @@ class PlanService
 
     public static function check_user_subject(int $subject_id): bool
     {
-        $subject_plans = auth()->user()->activeSubscriptions()->pluck("tag")->toArray();
+        $subject_plans = auth()->guard('api')->user()->activeSubscriptions()->pluck("tag")->toArray();
         return in_array($subject_id, $subject_plans);
     }
 }

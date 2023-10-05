@@ -67,17 +67,21 @@ class StepController extends Controller
 
     public function getStepTests(int $sub_step_id, int $locale_id)
     {
-        $results = $this->stepService->getSubStepTests($sub_step_id, $locale_id);
-        if ($results != null) {
-            return response()->json(new ResponseJSON(
-                status: true,
-                data: $results
-            ));
-        } else {
-            return response()->json(new ResponseJSON(
-                status: false,
-                errors: "Недостаточно прав!"
-            ));
+        try {
+            $results = $this->stepService->getSubStepTests($sub_step_id, $locale_id);
+            if ($results != null) {
+                return response()->json(new ResponseJSON(
+                    status: true,
+                    data: $results
+                ));
+            } else {
+                return response()->json(new ResponseJSON(
+                    status: false,
+                    errors: "Недостаточно прав!"
+                ), 403);
+            }
+        } catch (Exception $exception) {
+            return response()->json(new ResponseJSON(status: false, errors: $exception->getMessage()), 500);
         }
     }
 
