@@ -209,7 +209,7 @@ class AnswerService
             }
         }
 
-        protected function check_attempt(Attempt $attempt,$user_id){
+        public function check_attempt(Attempt $attempt,$user_id){
             $time = $attempt->start_at;
             $time = $time->addMillisecond($attempt->time);
             $result = false;
@@ -219,10 +219,11 @@ class AnswerService
             }
             $attempt_subjects = AttemptSubject::where(["attempt_id"=>$attempt->id])->pluck("id","id");
             $count = AttemptQuestion::whereIn("attempt_subject_id",$attempt_subjects)->where("is_answered",true)->count();
-            if($attempt->max_points <= $count){
+            $left_count = AttemptQuestion::whereIn("attempt_subject_id",$attempt_subjects)->where("is_answered",false)->count();
+            if($left_count == 0){
                 $attempt->edit(["end_at"=>Carbon::now()]);
                 $result = true;
             }
-            return ["is_finished"=>$result,"question_left" =>($attempt->max_points-$count),"time_left"=>$attempt->time_left];
+            return ["is_finished"=>$result,"question_left" =>$left_count,"time_left"=>$attempt->time_left];
         }
 }

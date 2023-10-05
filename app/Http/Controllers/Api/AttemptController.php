@@ -51,7 +51,7 @@ class AttemptController extends Controller
     public function attemptById($id){
         try{
             $user = auth()->guard("api")->user();
-            $attempt  = Attempt::find($id);
+            $attempt  = Attempt::where(["end_at"=>null])->find($id);
             if(!$attempt){
                 return response()->json(new ResponseJSON(status: false,message: "Not Found"),404);
             }
@@ -59,10 +59,37 @@ class AttemptController extends Controller
                 return response()->json(new ResponseJSON(status: false,message: "Forbidden"),403);
             }
             if($attempt->start_at->addMilliseconds($attempt->time) < Carbon::now()){
-                return response()->json(new ResponseJSON(status: false,message: "Time Passed"),404);
+                $attempt->update(["end_at" => Carbon::now()]);
+                return response()->json(new ResponseJSON(status: false,message: "Время уже прошло"),404);
             }
+            if($attempt->start_at > Carbon::now()){
+                return response()->json(new ResponseJSON(status: false,message: "Время еще не наступило"),404);
+            }
+            $this->answerService->check_attempt($attempt,$user->id);
             $data = $this->attemptService->get_attempt_by_id($id);
             return response()->json(new ResponseJSON(status: true,data: $data),200);
+        }
+        catch (\Exception $exception){
+            return response()->json(new ResponseJSON(status: false,message: $exception->getMessage()),500);
+        }
+    }
+
+    public function statAttemptById($id){
+        try{
+            $user = auth()->guard("api")->user();
+            $attempt  = Attempt::where("end_at","!=",null)->find($id);
+            if(!$attempt){
+                return response()->json(new ResponseJSON(status: false,message: "Not Found"),404);
+            }
+            if($attempt->user_id != $user->id){
+                return response()->json(new ResponseJSON(status: false,message: "Forbidden"),403);
+            }
+            $data = $this->attemptService->get_attempt_by_id($id,false);
+
+            $attempt_subjects = AttemptSubject::where(["attempt_id"=>$attempt->id])->pluck("id")->toArray();
+            $attempt_questions = AttemptQuestion::whereIn("attempt_subject_id",$attempt_subjects)->get();
+
+            return response()->json(new ResponseJSON(status: true,data: ["attempt"=>$data,"attempt_questions"=>$attempt_questions]),200);
         }
         catch (\Exception $exception){
             return response()->json(new ResponseJSON(status: false,message: $exception->getMessage()),500);

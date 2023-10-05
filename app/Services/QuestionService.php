@@ -131,10 +131,15 @@ class QuestionService
 
     protected function get_context_questions($locale_id,$compulsory_subject,$rand_int){
         $questions = Question::where(["type_id"=>self::CONTEXT_QUESTION_ID,"subject_id" => $compulsory_subject->id,"locale_id" => $locale_id])->select("context_id",DB::raw('COUNT(questions.context_id) as context_qty'))->groupBy("context_id")->having(DB::raw('count(context_id)'), '=', 5)->pluck("context_qty","context_id")->toArray();
+        $context_questions = [];
         if(count($questions)>=$rand_int){
                 $ids = array_rand($questions,$rand_int);
                 $ids = is_array($ids) ? $ids : [$ids];
-                return Question::whereIn("context_id",$ids)->with("context")->get()->makeHidden(["correct_answers"])->toArray();
+                foreach ($ids as $id){
+                    $context_question = Question::whereIn("context_id",[$id])->with("context")->get()->take(5)->makeHidden(["correct_answers"])->toArray();
+                    array_push($context_questions, ...$context_question);
+                }
+                return $context_questions;
         }
         else{
             throw new QuestionException("Вопросов в дисциплине {$compulsory_subject->title_ru} недостаточно");

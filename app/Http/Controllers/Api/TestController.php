@@ -20,7 +20,7 @@ class TestController extends Controller
 
     public function test(){
 
-        $questions = $this->_questionService->get_questions_with_subjects([5,6,],1);
+        $questions = $this->_questionService->get_questions_with_subjects([15],1,2);
         $points = $this->_questionService->get_questions_max_point($questions);
         $attempt = $this->_attemptService->create_attempt(type_id: 2,locale_id: 1,max_points:$points,questions: $questions,time: 240 );
         dd($attempt);

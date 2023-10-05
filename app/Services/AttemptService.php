@@ -47,10 +47,12 @@ class AttemptService
         }
     }
 
-    public function get_attempt_by_id($attempt_id){
+    public function get_attempt_by_id($attempt_id,$hide_correct = true){
         $attempts_dto = [];
         $attempt = Attempt::find($attempt_id);
-        $attempt->update(['time_left'=>$attempt->time - Carbon::now()->diffInMilliseconds($attempt->start_at)]);
+        if(!$attempt->end_at){
+            $attempt->update(['time_left'=>$attempt->time - Carbon::now()->diffInMilliseconds($attempt->start_at)]);
+        }
         $subject_dtos = [];
         $attempt_subjects = AttemptSubject::where(["attempt_id"=>$attempt->id])->with("subject")->get();
         $attempts_dto["attempt_id"] = $attempt->id;
@@ -63,9 +65,10 @@ class AttemptService
             $subject_dto["attempt_subject_id"] = $attempt_subject->id;
             $questions_attempt = AttemptQuestion::where(["attempt_subject_id"=>$attempt_subject->id])->pluck("question_id")->toArray();
             $idsImploded = implode(',',$questions_attempt);
-            $questions = Question::whereIn("id",$questions_attempt)
+            $question_query = Question::whereIn("id",$questions_attempt)
                 ->orderByRaw("field(id,{$idsImploded})")
-                ->with("context")->get()->makeHidden(["correct_answers"])->toArray();
+                ->with("context")->get();
+            $questions = $hide_correct ? $question_query->makeHidden(["correct_answers"])->toArray() : $question_query->toArray();
             $subject_dto["question"] = $questions;
             array_push($subject_dtos,$subject_dto);
         }
