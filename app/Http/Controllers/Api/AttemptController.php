@@ -89,7 +89,7 @@ class AttemptController extends Controller
             $attempt_subjects = AttemptSubject::where(["attempt_id"=>$attempt->id])->pluck("id")->toArray();
             $attempt_questions = AttemptQuestion::whereIn("attempt_subject_id",$attempt_subjects)->get();
 
-            return response()->json(new ResponseJSON(status: true,data: ["attempt"=>$data,"attempt_questions"=>$attempt_questions]),200);
+            return response()->json(new ResponseJSON(status: true,data: ["attempt"=>$data,"attempt_questions"=>$attempt_questions,"result"=>$attempt]),200);
         }
         catch (\Exception $exception){
             return response()->json(new ResponseJSON(status: false,message: $exception->getMessage()),500);
@@ -139,8 +139,6 @@ class AttemptController extends Controller
         $attempt->update(["end_at" => Carbon::now()]);
         return response()->json(new ResponseJSON(status: true,data: $attempt_id),200);
     }
-
-
 
 
 
