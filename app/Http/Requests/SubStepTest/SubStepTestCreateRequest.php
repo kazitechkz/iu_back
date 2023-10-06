@@ -24,12 +24,12 @@ class SubStepTestCreateRequest extends FormRequest
         return [
             'sub_step_id' => 'required|exists:sub_steps,id',
             'locale_id' => 'required|exists:locales,id',
-            'text' => 'required',
-            'answer_a' => 'required',
-            'answer_b' => 'required',
-            'answer_c' => 'required',
-            'answer_d' => 'required',
-            'correct_answers' => 'required',
+//            'text' => 'required',
+//            'answer_a' => 'required',
+//            'answer_b' => 'required',
+//            'answer_c' => 'required',
+//            'answer_d' => 'required',
+//            'correct_answers' => 'required',
         ];
     }
 }

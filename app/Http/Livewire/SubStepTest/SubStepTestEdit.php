@@ -46,26 +46,26 @@ class SubStepTestEdit extends Component
         $this->question_id = $item->question_id;
         $this->subjects = Subject::all();
         $this->locales = Locale::all();
-        $this->text = $item->question->text;
-        $this->answer_a = $item->question->answer_a;
-        $this->answer_b = $item->question->answer_b;
-        $this->answer_c = $item->question->answer_c;
-        $this->answer_d = $item->question->answer_d;
-        $this->correct_answers = $item->question->correct_answers;
-        $this->locale_id = $item->question->locale_id;
+        $this->text = $item->subQuestion->text;
+        $this->answer_a = $item->subQuestion->answer_a;
+        $this->answer_b = $item->subQuestion->answer_b;
+        $this->answer_c = $item->subQuestion->answer_c;
+        $this->answer_d = $item->subQuestion->answer_d;
+        $this->correct_answers = $item->subQuestion->correct_answers;
+        $this->locale_id = $item->subQuestion->locale_id;
         $this->subject_id = $item->sub_step->step->subject_id;
         $this->step_id = $item->sub_step->step_id;
         $this->sub_step_id = $item->sub_step_id;
-        $this->context_id = $item->question->context_id;
-        $this->context = $item->question->context ? $item->question->context->context : null;
+        $this->context_id = $item->subQuestion->context_id;
+        $this->context = $item->subQuestion->context ? $item->subQuestion->context->context : null;
         $this->contexts = SubjectContext::where('subject_id', $this->subject_id)->get();
-        $this->steps = Step::where('subject_id', $this->subject_id)->get();
-        $this->sub_steps = SubStep::where('step_id', $this->step_id)->get();
+        $this->steps = Step::where('subject_id', $this->subject_id)->orderBy('level', 'asc')->get();
+        $this->sub_steps = SubStep::where('step_id', $this->step_id)->orderBy('level', 'asc')->get();
     }
 
     public function updatedSubjectId(): void
     {
-        $this->steps = Step::where('subject_id', $this->subject_id)->get();
+        $this->steps = Step::where('subject_id', $this->subject_id)->orderBy('level', 'asc')->get();
         $this->contexts = SubjectContext::where('subject_id', $this->subject_id)->get();
         $this->sub_steps = null;
         $this->step_id = null;
@@ -74,7 +74,7 @@ class SubStepTestEdit extends Component
 
     public function updatedStepId(): void
     {
-        $this->sub_steps = SubStep::where('step_id', $this->step_id)->get();
+        $this->sub_steps = SubStep::where('step_id', $this->step_id)->orderBy('level', 'asc')->get();
         $this->sub_step_id = null;
     }
     public function render()

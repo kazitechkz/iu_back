@@ -20,7 +20,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  *
- * @property SubQuestion $sub_question
+ * @property Question $question
  * @property SubStep $sub_step
  *
  * @package App\Models
@@ -32,18 +32,25 @@ class SubStepTest extends Model
 
 	protected $casts = [
 		'sub_step_id' => 'int',
-		'question_id' => 'int'
+		'question_id' => 'int',
+        'locale_id' => 'int'
 	];
 
 	protected $fillable = [
 		'sub_step_id',
-		'question_id'
+		'question_id',
+        'locale_id'
 	];
 
 	public function question(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-		return $this->belongsTo(Question::class)->select(['id','text','answer_a', 'answer_b', 'answer_c', 'answer_d', 'context_id']);
+		return $this->belongsTo(Question::class)->select(['id','text','answer_a', 'answer_b', 'answer_c', 'answer_d', 'context_id', 'locale_id']);
 	}
+
+    public function subQuestion(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Question::class, 'question_id', 'id')->select(['id','text','answer_a', 'answer_b', 'answer_c', 'answer_d', 'context_id', 'locale_id', 'correct_answers']);
+    }
 
 	public function sub_step(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
@@ -58,6 +65,7 @@ class SubStepTest extends Model
         $question = Question::add($data);
         $data['sub_step_id'] = $request['sub_step_id'];
         $data['question_id'] = $question->id;
+        $data['locale_id'] = $question->locale_id;
         SubStepTest::add($data);
     }
 
@@ -69,6 +77,7 @@ class SubStepTest extends Model
         $this->question->edit($data);
         $data['sub_step_id'] = $request['sub_step_id'];
         $data['question_id'] = $this->question->id;
+        $data['locale_id'] = $this->question->locale_id;
         $this->fill($data);
         $this->save();
     }

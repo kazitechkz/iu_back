@@ -102,7 +102,7 @@ class SubStepTestController extends Controller
     {
         try{
             if(auth()->user()->can("substeptest index") ){
-                $subStepTest = SubStepTest::findOrFail($id);
+                $subStepTest = SubStepTest::with('subQuestion')->findOrFail($id);
                 return view('admin.sub-step-test.edit', compact('subStepTest'));
             }
             else{
