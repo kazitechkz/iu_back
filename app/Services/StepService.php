@@ -38,7 +38,7 @@ class StepService
      * @param $user_answer = UserAnswer ответ пользователя
      * @param int $user_id = UserId айди пользователя
      */
-    public function check(int $sub_step_test_id, $user_answer, int $user_id): SubStepContentTest
+    public function check(int $sub_step_test_id, $user_answer, int $user_id, int $locale_id): SubStepContentTest
     {
         $subStepTest = SubStepTest::with('sub_step')->findOrFail($sub_step_test_id);
         $is_right = $this->checkAnswer($subStepTest->question_id, $user_answer);
@@ -56,20 +56,20 @@ class StepService
                'user_answer' => $user_answer
             ]);
         }
-        $this->refreshSubStepResults($subStepTest->sub_step_id, $user_id);
-        $this->refreshStepResults($subStepTest->sub_step->step_id, $user_id);
+        $this->refreshSubStepResults($subStepTest->sub_step_id, $user_id, $locale_id);
+        $this->refreshStepResults($subStepTest->sub_step->step_id, $user_id, $locale_id);
         return $result;
     }
 
-    public function refreshSubStepResults(int $sub_step_id, int $user_id): void
+    public function refreshSubStepResults(int $sub_step_id, int $user_id, int $locale_id): void
     {
         $points = 0;
-        $sub_step_tests = SubStepTest::where('sub_step_id', $sub_step_id)->get();
+        $sub_step_tests = SubStepTest::where(['sub_step_id' => $sub_step_id, 'locale_id' => $locale_id])->get();
         foreach ($sub_step_tests as $sub_step_test) {
             $contentTest = SubStepContentTest::firstWhere('test_id', $sub_step_test->id);
             $points += $contentTest != null ? $contentTest->is_right : 0;
         }
-        $stepResult = SubStepResult::firstWhere(['sub_step_id' => $sub_step_id, 'user_id' => $user_id]);
+        $stepResult = SubStepResult::firstWhere(['sub_step_id' => $sub_step_id, 'user_id' => $user_id, 'locale_id' => $locale_id]);
         $user_point = round(($points/$sub_step_tests->count()) * 100, 1);
         if ($stepResult) {
             $stepResult->user_point = $user_point;
@@ -78,12 +78,13 @@ class StepService
             SubStepResult::create([
                'sub_step_id' => $sub_step_id,
                'user_id' => $user_id,
-               'user_point' => $user_point
+               'user_point' => $user_point,
+                'locale_id' => $locale_id
             ]);
         }
     }
 
-    public function refreshStepResults(int $step_id, int $user_id) : void
+    public function refreshStepResults(int $step_id, int $user_id, int $locale_id) : void
     {
         $user = \Auth::user();
         $sub_steps = SubStep::with('sub_result')->where('step_id', $step_id)->get();
@@ -94,7 +95,7 @@ class StepService
             }
         }
         $point = round(($user_point/($sub_steps->count()*100))*100,1);
-        $test_result = StepResult::firstWhere('step_id', $step_id);
+        $test_result = StepResult::firstWhere(['step_id' => $step_id, 'user_id' => $user_id, 'locale_id' => $locale_id]);
         if ($test_result) {
             $test_result->user_point = $point;
             $test_result->save();
@@ -109,7 +110,8 @@ class StepService
             StepResult::create([
                 'step_id' => $step_id,
                 'user_id' => $user_id,
-                'user_point' => $point
+                'user_point' => $point,
+                'locale_id' => $locale_id
             ]);
         }
     }

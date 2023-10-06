@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Step;
 use App\Models\StepResult;
 use App\Models\Subject;
+use App\Models\SubStepContentTest;
 use App\Services\StepService;
 use App\Traits\ResponseJSON;
 use Exception;
@@ -73,7 +74,7 @@ class StepController extends Controller
                 return response()->json(new ResponseJSON(
                     status: true,
                     data: $results
-                ));
+                ), 200);
             } else {
                 return response()->json(new ResponseJSON(
                     status: false,
@@ -88,19 +89,27 @@ class StepController extends Controller
     public function passTest(Request $request)
     {
         try {
-            $this->validate($request, [
-                'sub_step_id' => 'required|exists:sub_step_tests,id',
-                'user_answer' => 'required'
-            ]);
-            return response()->json(new ResponseJSON(
-                status: true,
-                data: $this->stepService->check($request['sub_step_id'], $request['user_answer'], auth()->id())
-            ));
+            if ($request->all()) {
+                foreach ($request->all() as $item) {
+                    $this->stepService->check($item['sub_step_id'], $item['answer'], auth()->guard('api')->id(), $item['locale_id']);
+                }
+//                $results = SubStepContentTest::where()
+                return response()->json(new ResponseJSON(
+                    status: true,
+                    data: true
+                ));
+            } else {
+                return response()->json(new ResponseJSON(
+                    status: false,
+                    message: "Ничего не выбрано",
+                    data: null
+                ), 400);
+            }
         } catch (ValidationException $exception) {
             return response()->json(new ResponseJSON(
                 status: false,
                 errors: $exception->errors()
-            ));
+            ), 400);
         }
     }
 }

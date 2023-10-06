@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $id
  * @property int $sub_step_id
  * @property int $user_id
+ * @property int $locale_id
  * @property string|null $user_point
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
@@ -30,13 +31,15 @@ class SubStepResult extends Model
 
 	protected $casts = [
 		'sub_step_id' => 'int',
-		'user_id' => 'int'
+		'user_id' => 'int',
+        'locale_id' => 'int'
 	];
 
 	protected $fillable = [
 		'sub_step_id',
 		'user_id',
-		'user_point'
+		'user_point',
+        'locale_id'
 	];
 
 	public function sub_step(): \Illuminate\Database\Eloquent\Relations\BelongsTo

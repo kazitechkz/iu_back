@@ -11,14 +11,14 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class StepResult
- * 
+ *
  * @property int $id
  * @property int $step_id
  * @property int $user_id
  * @property string|null $user_point
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * 
+ *
  * @property Step $step
  * @property User $user
  *
@@ -30,13 +30,15 @@ class StepResult extends Model
 
 	protected $casts = [
 		'step_id' => 'int',
-		'user_id' => 'int'
+		'user_id' => 'int',
+        'locale_id' => 'int'
 	];
 
 	protected $fillable = [
 		'step_id',
 		'user_id',
-		'user_point'
+		'user_point',
+        'locale_id'
 	];
 
 	public function step()

@@ -204,12 +204,12 @@
                             :link="'sub-step-video.index'"
                             :name="__('sidebar.sub-step-video')"/>
                     @endcan
-                    @can("substeptest index")
-                        <x-shared.sub-sidebar-menu
-                            :icon="'mdi mdi-text-shadow'"
-                            :link="'sub-step-test.index'"
-                            :name="__('sidebar.substeptest')"/>
-                    @endcan
+{{--                    @can("substeptest index")--}}
+{{--                        <x-shared.sub-sidebar-menu--}}
+{{--                            :icon="'mdi mdi-text-shadow'"--}}
+{{--                            :link="'sub-step-test.index'"--}}
+{{--                            :name="__('sidebar.substeptest')"/>--}}
+{{--                    @endcan--}}
         </x-shared.sidebar-menu>
         @endcan
         @can("tournament management")
