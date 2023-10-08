@@ -79,8 +79,10 @@ class SubStepTable extends DataTableComponent
                 ->sortable(),
             Column::make("Уровень", "level")
                 ->sortable(),
-            BooleanColumn::make("Активный", "is_active")
-                ->sortable(),
+            Column::make("На каз")
+                ->label(fn($val) => $val->total_test_kk),
+            Column::make("На рус")
+                ->label(fn($val) => $val->total_test_ru),
             ButtonGroupColumn::make('Действие')
                 ->attributes(function($row) {
                     return [

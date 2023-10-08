@@ -12,6 +12,7 @@ use App\Traits\Language;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -81,5 +82,20 @@ class SubStep extends Model
     public function sub_result(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(SubStepResult::class, 'id', 'sub_step_id');
+    }
+
+    public function sub_tests(): HasMany
+    {
+        return $this->hasMany(SubStepTest::class, 'sub_step_id', 'id');
+    }
+
+    public function getTotalTestKkAttribute(): int
+    {
+        return $this->hasMany(SubStepTest::class, 'sub_step_id', 'id')->where('locale_id', 1)->count();
+    }
+
+    public function getTotalTestRuAttribute(): int
+    {
+        return $this->hasMany(SubStepTest::class, 'sub_step_id', 'id')->where('locale_id', 2)->count();
     }
 }
