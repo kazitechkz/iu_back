@@ -57,6 +57,11 @@ class SubStepTest extends Model
 		return $this->belongsTo(SubStep::class);
 	}
 
+    public function result(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(SubStepContentTest::class, 'id', 'test_id');
+    }
+
     public static function createSubStepTest($request): void
     {
         $subStep = SubStep::findOrFail($request['sub_step_id']);

@@ -17,9 +17,21 @@ class SubStepController extends Controller
             $subSteps = SubStep::with('sub_result')->where('step_id', $id)->orderBy('level', 'asc')->get();
             foreach ($subSteps as $key => $subStep) {
                 if ($subStep->sub_result) {
-                    $subSteps[$key]['progress'] = $subStep->sub_result->user_point;
+                    $resKk = $subStep->sub_result->firstWhere('locale_id', 1);
+                    $resRu = $subStep->sub_result->firstWhere('locale_id', 2);
+                    if ($resKk) {
+                        $subSteps[$key]['progress_kk'] = $resKk->user_point;
+                    } else {
+                        $subSteps[$key]['progress_kk'] = 0;
+                    }
+                    if ($resRu) {
+                        $subSteps[$key]['progress_ru'] = $resRu->user_point;
+                    } else {
+                        $subSteps[$key]['progress_ru'] = 0;
+                    }
                 } else {
-                    $subSteps[$key]['progress'] = 0;
+                    $subSteps[$key]['progress_kk'] = 0;
+                    $subSteps[$key]['progress_ru'] = 0;
                 }
             }
             return  response()->json(new ResponseJSON(status: true, data: $subSteps));
@@ -31,7 +43,7 @@ class SubStepController extends Controller
     public function getSubStepById($id)
     {
         try {
-            $subStep = SubStep::with(['sub_step_content', 'sub_step_video'])->where('id', $id)->orderBy('level', 'asc')->first();
+            $subStep = SubStep::with(['sub_step_content', 'sub_step_video', 'sub_result'])->where('id', $id)->orderBy('level', 'asc')->first();
             return  response()->json(new ResponseJSON(status: true, data: $subStep));
         } catch (Exception $exception) {
             return response()->json(new ResponseJSON(status: false, errors: $exception->getMessage()), 500);

@@ -19,7 +19,7 @@ class StepService
     public function getSubStepTests(int $sub_step_id, int $locale_id): \Illuminate\Database\Eloquent\Collection|array|null
     {
         $subStep = SubStep::with('step')->findOrFail($sub_step_id);
-        $tests = SubStepTest::with(['question' => function($query) use ($locale_id) {
+        $tests = SubStepTest::with(['result', 'question' => function($query) use ($locale_id) {
             $query->where(['locale_id' => $locale_id])->with('context');
         } ])->where(['sub_step_id' => $sub_step_id, 'locale_id' => $locale_id])->get();
         if ($subStep->step->is_free) {
@@ -79,7 +79,7 @@ class StepService
                'sub_step_id' => $sub_step_id,
                'user_id' => $user_id,
                'user_point' => $user_point,
-                'locale_id' => $locale_id
+               'locale_id' => $locale_id
             ]);
         }
     }
@@ -91,7 +91,10 @@ class StepService
         $user_point = 0;
         foreach ($sub_steps as $sub_step) {
             if ($sub_step->sub_result != null) {
-                $user_point += $sub_step->sub_result->user_point;
+                foreach ($sub_step->sub_result as $item) {
+                    $res = $item->firstWhere('locale_id', $locale_id);
+                    $user_point += $res->user_point;
+                }
             }
         }
         $point = round(($user_point/($sub_steps->count()*100))*100,1);

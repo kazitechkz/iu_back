@@ -79,9 +79,9 @@ class SubStep extends Model
         return $this->belongsTo(SubStepVideo::class, 'id', 'sub_step_id');
     }
 
-    public function sub_result(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function sub_result(): HasMany
     {
-        return $this->belongsTo(SubStepResult::class, 'id', 'sub_step_id');
+        return $this->hasMany(SubStepResult::class, 'sub_step_id', 'id');
     }
 
     public function sub_tests(): HasMany

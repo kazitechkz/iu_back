@@ -101,8 +101,8 @@ class Step extends Model
         return $this->belongsTo(File::class, 'image_url', 'id');
     }
 
-    public function result(): BelongsTo
+    public function results(): HasMany
     {
-        return $this->belongsTo(StepResult::class, 'id','step_id');
+        return $this->hasMany(StepResult::class, 'step_id','id');
     }
 }
