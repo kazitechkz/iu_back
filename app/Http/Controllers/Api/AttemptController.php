@@ -127,6 +127,20 @@ class AttemptController extends Controller
         return response()->json(new ResponseJSON(status: true,data: $result),200);
     }
 
+    public function userAttempts(){
+        $user = auth()->guard("api")->user();
+        foreach (Attempt::where(["user_id" => $user->id,"end_at" => null])->get() as $attempt){
+           $time = $attempt->start_at->addMilliseconds($attempt->time);
+            if($time <= Carbon::now()){
+                $attempt->update(["end_at" => $time]);
+                $attempt->save();
+            }
+        }
+        $result = Attempt::where(["user_id" => $user->id])->orderBy("start_at","DESC")->paginate(12);
+        return response()->json(new ResponseJSON(status: true,data: $result),200);
+    }
+
+
     public function finish(int $attempt_id){
         $user = auth()->guard("api")->user();
         $attempt  = Attempt::where("end_at","!=",null)->find($attempt_id);
