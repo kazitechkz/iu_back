@@ -160,7 +160,7 @@
             :options="[
                 ['name'=>'Регистрация завершена','value'=>-1],
                 ['name'=>'Ожидание открытия','value'=>0],
-                ['name'=>'Открыта регистрация','value'=>0],
+                ['name'=>'Открыта регистрация','value'=>1],
             ]"
             option-label="name"
             option-value="value"
