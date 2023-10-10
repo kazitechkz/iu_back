@@ -28,6 +28,14 @@ class TournamentController extends Controller
     }
 
 
+
+    public function getAllTournaments(){
+
+
+
+
+    }
+
     public function attempt(Request $request){
         $attempt_tournament = SubTournamentCreateDTO::fromRequest($request);
         $user = auth()->guard("api")->user();
