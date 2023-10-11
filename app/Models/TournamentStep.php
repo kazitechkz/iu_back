@@ -66,7 +66,7 @@ class TournamentStep extends Model
 		'is_playoff'
 	];
 
-	public function tournament_step()
+	public function prev_step()
 	{
 		return $this->belongsTo(TournamentStep::class, 'prev_id');
 	}
@@ -76,7 +76,7 @@ class TournamentStep extends Model
 		return $this->hasMany(SubTournament::class, 'step_id');
 	}
 
-	public function tournament_steps()
+	public function next_steps()
 	{
 		return $this->hasMany(TournamentStep::class, 'prev_id');
 	}

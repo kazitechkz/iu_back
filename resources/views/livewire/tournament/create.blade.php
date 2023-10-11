@@ -132,7 +132,7 @@
     {{-- currency --}}
     {{-- Poster --}}
     <label class="h-5">{{__('table.poster')}}*</label>
-    <livewire:image-upload :output_name="'poster'" :folder-name="'news'"/>
+    <livewire:image-upload :output_name="'poster'" :folder-name="'tournament'"/>
     {{-- Poster --}}
     {{--    Locale --}}
     <div class="form-group">

@@ -133,7 +133,7 @@
     {{-- currency --}}
     {{-- Poster --}}
     <label class="h-5">{{__('table.poster')}}*</label>
-    <livewire:image-upload :output_name="'poster'" :folder-name="'news'"/>
+    <livewire:image-upload :output_name="'poster'" :folder-name="'tournament'"/>
     {{-- Poster --}}
     {{--    Locale --}}
     <div class="form-group">
@@ -161,7 +161,7 @@
             :options="[
                 ['name'=>'Регистрация завершена','value'=>-1],
                 ['name'=>'Ожидание открытия','value'=>0],
-                ['name'=>'Открыта регистрация','value'=>0],
+                ['name'=>'Открыта регистрация','value'=>1],
             ]"
             option-label="name"
             option-value="value"

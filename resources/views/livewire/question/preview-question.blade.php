@@ -29,7 +29,7 @@
                 @if($question->answer_e)
                     <li class="{{in_array('e', $correct_answers) ? 'text-green-500' : ''}}"><b>E)</b> {{\App\Helpers\StrHelper::latexToHTML($question->answer_e)}}</li>
                 @endif
-                @if($question->f)
+                @if($question->answer_f)
                     <li class="{{in_array('f', $correct_answers) ? 'text-green-500' : ''}}"><b>F)</b> {{\App\Helpers\StrHelper::latexToHTML($question->answer_f)}}</li>
                 @endif
                 @if($question->answer_g)

@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Api;
 use App\DTOs\AttemptCreateDTO;
 use App\DTOs\SubTournamentCreateDTO;
 use App\Http\Controllers\Controller;
+use App\Models\Step;
 use App\Models\SubTournament;
 use App\Models\SubTournamentParticipant;
 use App\Models\Tournament;
+use App\Models\TournamentStep;
 use App\Services\AnswerService;
 use App\Services\AttemptService;
 use App\Services\QuestionService;
@@ -38,11 +40,31 @@ class TournamentController extends Controller
         $sub_tournament_ids = SubTournamentParticipant::where(["user_id"=>$user->id])->pluck("sub_tournament_id","sub_tournament_id")->toArray();
         $tournament_ids = SubTournament::whereIn("id",$sub_tournament_ids)->pluck("tournament_id","tournament_id")->toArray();
         $open_tournaments = Tournament::
-            where("status","==",1)
+            where(["status"=>1])
+            ->where("start_at","<",Carbon::now())
+            ->where("end_at",">",Carbon::now())
             ->with(["locales","subject","file"])
             ->get();
         $participated_tournaments = Tournament::whereIn("id",$tournament_ids)->with(["locales","subject","file"])->get();
         return response()->json(new ResponseJSON(status: true,data: ["open"=>$open_tournaments,"participated"=>$participated_tournaments,"tournament_ids"=>$tournament_ids]),200);
+    }
+
+
+    public function tournamentDetail($id){
+        $user = auth()->guard("api")->user();
+        $tournament = Tournament::with(["locales","subject","file","sub_tournaments.tournament_step"])->firstWhere(["id"=>$id]);
+        if ($tournament){
+            $steps = TournamentStep::all();
+            $sub_tournament_ids = SubTournamentParticipant::where(["user_id"=>$user->id])->pluck("sub_tournament_id","sub_tournament_id")->toArray();
+            $tournament_ids = SubTournament::whereIn("id",$sub_tournament_ids)->pluck("tournament_id","tournament_id")->toArray();
+            $data = ["tournament"=>$tournament,"subtournament_ids"=>$sub_tournament_ids,"tournament_ids"=>$tournament_ids,"steps"=>$steps];
+            return response()->json(new ResponseJSON(status: true,data: $data),200);
+        }
+        return response()->json(new ResponseJSON(status: false,message: "Tournament Not Found"),404);
+
+
+
+
     }
 
     public function attempt(Request $request){
