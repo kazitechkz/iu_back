@@ -50,63 +50,57 @@
     {{--    Title En--}}
     {{--    Rule Ru --}}
     <div class="form-group">
-        <x-textarea
-            wire:model="rule_ru"
-            label="{{__('table.rule_ru')}}*"
-            placeholder="{{__('table.rule_ru')}}"
-            hint="{{__('table.rule_ru')}}"
-        />
+    <div class="md:flex lg:flex justify-between my-3">
+        <div wire:ignore class="w-full">
+            <x-ckeditor :description="$rule_ru" :input-name="'rule_ru'" :title="'Правила (RU)'"/>
+        </div>
+    </div>
     </div>
     {{--    Rule Ru --}}
     {{--    Rule Kk --}}
     <div class="form-group">
-        <x-textarea
-            wire:model="rule_kk"
-            label="{{__('table.rule_kk')}}*"
-            placeholder="{{__('table.rule_kk')}}"
-            hint="{{__('table.rule_kk')}}"
-        />
+        <div class="md:flex lg:flex justify-between my-3">
+            <div wire:ignore class="w-full">
+                <x-ckeditor :description="$rule_kk" :input-name="'rule_kk'" :title="'Правила (KK)'"/>
+            </div>
+        </div>
     </div>
     {{--    Rule Kk --}}
     {{--    Rule En --}}
     <div class="form-group">
-        <x-textarea
-            wire:model="rule_en"
-            label="{{__('table.rule_en')}}"
-            placeholder="{{__('table.rule_en')}}"
-            hint="{{__('table.rule_en')}}"
-        />
+        <div class="md:flex lg:flex justify-between my-3">
+            <div wire:ignore class="w-full">
+                <x-ckeditor :description="$rule_en" :input-name="'rule_en'" :title="'Правила (EN)'"/>
+            </div>
+        </div>
     </div>
     {{--    Rule En --}}
 
     {{--    Description Ru --}}
     <div class="form-group">
-        <x-textarea
-            wire:model="description_ru"
-            label="{{__('table.description_ru')}}*"
-            placeholder="{{__('table.description_ru')}}"
-            hint="{{__('table.description_ru')}}"
-        />
+        <div class="md:flex lg:flex justify-between my-3">
+            <div wire:ignore class="w-full">
+                <x-ckeditor :description="$description_ru" :input-name="'description_ru'" :title="'Описание (Ru)'"/>
+            </div>
+        </div>
     </div>
     {{--    Description Ru --}}
     {{--    Description Kk --}}
     <div class="form-group">
-        <x-textarea
-            wire:model="description_kk"
-            label="{{__('table.description_kk')}}*"
-            placeholder="{{__('table.description_kk')}}"
-            hint="{{__('table.description_kk')}}"
-        />
+        <div class="md:flex lg:flex justify-between my-3">
+            <div wire:ignore class="w-full">
+                <x-ckeditor :description="$description_kk" :input-name="'description_kk'" :title="'Описание (Kk)'"/>
+            </div>
+        </div>
     </div>
     {{--    Description Kk --}}
     {{--    Description En --}}
     <div class="form-group">
-        <x-textarea
-            wire:model="description_en"
-            label="{{__('table.description_en')}}"
-            placeholder="{{__('table.description_en')}}"
-            hint="{{__('table.description_en')}}"
-        />
+        <div class="md:flex lg:flex justify-between my-3">
+            <div wire:ignore class="w-full">
+                <x-ckeditor :description="$description_en" :input-name="'description_en'" :title="'Описание (En)'"/>
+            </div>
+        </div>
     </div>
     {{--    Description En --}}
     {{-- Price --}}

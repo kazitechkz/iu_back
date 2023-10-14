@@ -65,14 +65,12 @@ Route::group(['middleware' => 'API'], function() {
     Route::post("/tournament-attempt",[ApiTournamentController::class,"attempt"]);
     Route::get("/tournaments-all",[ApiTournamentController::class,"getAllTournaments"]);
     Route::get("/tournament-detail/{id}",[ApiTournamentController::class,"tournamentDetail"]);
-    Route::post("/participate",[ApiTournamentController::class,"participate"]);
-
-
-
-
-
-
-
+    Route::get("/sub-tournament-winners/{id}",[ApiTournamentController::class,"subTournamentWinners"]);
+    Route::get("/sub-tournament-participants/{id}",[ApiTournamentController::class,"subTournamentParticipants"]);
+    Route::get("/sub-tournament-results/{id}",[ApiTournamentController::class,"subTournamentResult"]);
+    Route::get("/sub-tournament-rivals/{id}",[ApiTournamentController::class,"subTournamentRival"]);
+    Route::get("/sub-tournament-detail/{id}",[ApiTournamentController::class,"subTournamentDetail"]);
+    Route::post("/participate-tournament",[ApiTournamentController::class,"participate"]);
 });
 Route::post('/auth/login', [ApiAuthController::class, 'loginUser']);
 Route::post("/auth/register",[ApiAuthController::class,"register"]);

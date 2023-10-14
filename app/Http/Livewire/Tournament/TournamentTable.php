@@ -37,18 +37,6 @@ class TournamentTable extends DataTableComponent
                 ->sortable(),
             Column::make(__("table.text_en"), "title_en")
                 ->sortable(),
-            Column::make(__("table.rule_ru"), "rule_ru")
-                ->sortable(),
-            Column::make(__("table.rule_kk"), "rule_kk")
-                ->sortable(),
-            Column::make(__("table.rule_en"), "rule_en")
-                ->sortable(),
-            Column::make(__("table.description_ru"), "description_ru")
-                ->sortable(),
-            Column::make(__("table.description_kk"), "description_kk")
-                ->sortable(),
-            Column::make(__("table.description_en"), "description_en")
-                ->sortable(),
             Column::make(__("table.price"), "price")
                 ->sortable(),
             Column::make(__("table.currency"), "currency")

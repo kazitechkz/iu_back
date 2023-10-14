@@ -113,7 +113,6 @@ class AttemptController extends Controller
     public function answerResult(int $attempt_subject_id){
         $user = auth()->guard("api")->user();
         $attempt_subject = AttemptSubject::where(["id"=>$attempt_subject_id])->first();
-
         if(!$attempt_subject){
             return response()->json(new ResponseJSON(status: false,message: "Not Found"),404);
         }
