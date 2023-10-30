@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\SubStep;
 use App\Models\SubStepContent;
+use App\Models\SubStepResult;
 use App\Traits\ResponseJSON;
 use Exception;
 use Illuminate\Http\Request;
@@ -45,6 +46,24 @@ class SubStepController extends Controller
         try {
             $subStep = SubStep::with(['sub_step_content', 'sub_step_video', 'sub_result'])->where('id', $id)->orderBy('level', 'asc')->first();
             return  response()->json(new ResponseJSON(status: true, data: $subStep));
+        } catch (Exception $exception) {
+            return response()->json(new ResponseJSON(status: false, errors: $exception->getMessage()), 500);
+        }
+    }
+
+    public function checkSubStepResultByUser(Request $request)
+    {
+        try {
+            $this->validate($request, [
+               'sub_step_id' => 'required',
+               'locale_id' => 'required'
+            ]);
+            $subStepResult = SubStepResult::firstWhere(['sub_step_id' => $request['sub_step_id'], 'locale_id' => $request['locale_id'], 'user_id' => auth()->guard('api')->id()]);
+            if ($subStepResult) {
+                return  response()->json(new ResponseJSON(status: true, data: true));
+            } else {
+                return  response()->json(new ResponseJSON(status: true, data: false));
+            }
         } catch (Exception $exception) {
             return response()->json(new ResponseJSON(status: false, errors: $exception->getMessage()), 500);
         }
