@@ -6,20 +6,27 @@ use App\Http\Controllers\Controller;
 use App\Models\SubStep;
 use App\Models\SubStepContent;
 use App\Models\SubStepResult;
+use App\Services\StepService;
 use App\Traits\ResponseJSON;
 use Exception;
 use Illuminate\Http\Request;
 
 class SubStepController extends Controller
 {
+    private StepService $stepService;
+
+    public function __construct(StepService $stepService)
+    {
+        $this->stepService = $stepService;
+    }
     public function getSubStepsByStepId(int $id)
     {
         try {
-            $subSteps = SubStep::with('sub_result')->where('step_id', $id)->orderBy('level', 'asc')->get();
+            $subSteps = SubStep::with('sub_result', 'own_result')->where('step_id', $id)->orderBy('level', 'asc')->get();
             foreach ($subSteps as $key => $subStep) {
                 if ($subStep->sub_result) {
-                    $resKk = $subStep->sub_result->firstWhere('locale_id', 1);
-                    $resRu = $subStep->sub_result->firstWhere('locale_id', 2);
+                    $resKk = $subStep->own_result->firstWhere('locale_id', 1);
+                    $resRu = $subStep->own_result->firstWhere('locale_id', 2);
                     if ($resKk) {
                         $subSteps[$key]['progress_kk'] = $resKk->user_point;
                     } else {
@@ -44,8 +51,18 @@ class SubStepController extends Controller
     public function getSubStepById($id)
     {
         try {
-            $subStep = SubStep::with(['sub_step_content', 'sub_step_video', 'sub_result'])->where('id', $id)->orderBy('level', 'asc')->first();
-            return  response()->json(new ResponseJSON(status: true, data: $subStep));
+            $subStep = SubStep::with(['sub_step_content', 'sub_step_video', 'sub_result', 'step'])->where('id', $id)->orderBy('level', 'asc')->first();
+            if ($subStep) {
+                $accept = $this->stepService->checkStepAccept($subStep->step);
+                if ($accept) {
+                    return  response()->json(new ResponseJSON(status: true, data: $subStep));
+                } else {
+                    return  response()->json(new ResponseJSON(status: false, message: "Недостаточно прав!"), 200);
+                }
+            } else {
+                return  response()->json(new ResponseJSON(status: false, message: "Что-то пошло не так!"), 500);
+            }
+
         } catch (Exception $exception) {
             return response()->json(new ResponseJSON(status: false, errors: $exception->getMessage()), 500);
         }

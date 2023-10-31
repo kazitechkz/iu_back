@@ -105,4 +105,9 @@ class Step extends Model
     {
         return $this->hasMany(StepResult::class, 'step_id','id');
     }
+
+    public function own_result(): HasMany
+    {
+        return $this->results()->where('user_id', auth()->guard('api')->id());
+    }
 }
