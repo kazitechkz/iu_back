@@ -74,7 +74,8 @@ class TournamentController extends Controller
         }
         $sub_tournament_ids = SubTournamentParticipant::where(["user_id"=>$user->id])->pluck("sub_tournament_id")->toArray();
         $tournament = Tournament::with(["locales","subject","file"])->firstWhere(["id"=>$sub_tournament->tournament_id]);
-        $data = ["tournament"=>$tournament,"subtournament_ids"=>$sub_tournament_ids,"sub_tournament"=>$sub_tournament];
+        $my_result = SubTournamentResult::where(["sub_tournament_id" => $sub_tournament->id,"user_id" => $user->id])->with(["user"])->first();
+        $data = ["tournament"=>$tournament,"sub_tournament_ids"=>$sub_tournament_ids,"sub_tournament"=>$sub_tournament,"my_result"=>$my_result];
         return response()->json(new ResponseJSON(status: true,data: $data),200);
     }
     public function subTournamentWinners($id){
@@ -83,12 +84,11 @@ class TournamentController extends Controller
         if(!$sub_tournament){
             return response()->json(new ResponseJSON(status: false,message: "Этапа не существует"),404);
         }
-        $sub_tournament_winner = null;
-        $my_result = null;
+        $sub_tournament_winners = null;
         if($sub_tournament->is_finished){
-            $sub_tournament_winner = SubTournamentWinner::where(["sub_tournament_id" => $sub_tournament->id])->with(['user'])->paginate(20);
+            $sub_tournament_winners = SubTournamentWinner::where(["sub_tournament_id" => $sub_tournament->id])->with(['user'])->get();
         }
-        return response()->json(new ResponseJSON(status: true,data: $sub_tournament_winner),200);
+        return response()->json(new ResponseJSON(status: true,data: $sub_tournament_winners),200);
     }
 
     public function subTournamentRival($id){
@@ -109,10 +109,9 @@ class TournamentController extends Controller
             return response()->json(new ResponseJSON(status: false,message: "Этапа не существует"),404);
         }
         $sub_tournament_result = null;
-        $my_result = null;
+        $my_result = SubTournamentResult::where(["sub_tournament_id" => $sub_tournament->id,"user_id" => $user->id])->with(["user"])->first();
         if($sub_tournament->is_finished){
-            $sub_tournament_result = SubTournamentResult::where(["sub_tournament_id" => $sub_tournament->id])->with(["user"])->paginate(20);
-            $my_result = SubTournamentResult::where(["sub_tournament_id" => $sub_tournament->id,"user_id" => $user->id])->with(["user"])->first();
+            $sub_tournament_result = SubTournamentResult::where(["sub_tournament_id" => $sub_tournament->id])->orderBy("point","DESC")->orderBy("time","ASC")->with(["user"])->paginate(20);
         }
         $data = ["results"=>$sub_tournament_result,"my_result"=>$my_result];
         return response()->json(new ResponseJSON(status: true,data: $data),200);

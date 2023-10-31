@@ -63,6 +63,7 @@ class SubTournamentRival extends Model
 	public function winner_user()
 	{
 		return $this->belongsTo(User::class, 'winner',"id")->select([
+            'id',
             "username",
             'name',
             'phone',
@@ -71,6 +72,7 @@ class SubTournamentRival extends Model
     public function rival_one_user()
     {
         return $this->belongsTo(User::class, 'rival_one',"id")->select([
+            'id',
             "username",
             'name',
             'phone',
