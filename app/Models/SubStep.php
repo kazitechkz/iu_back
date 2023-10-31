@@ -31,7 +31,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property Carbon|null $updated_at
  *
  * @property Step $step
+ * @property $own_result
  * @property SubCategory $sub_category
+ * @property SubStepResult $sub_result
  * @property SubStepContent $sub_step_content
  * @property SubStepVideo $sub_step_video
  *
@@ -82,6 +84,11 @@ class SubStep extends Model
     public function sub_result(): HasMany
     {
         return $this->hasMany(SubStepResult::class, 'sub_step_id', 'id');
+    }
+
+    public function own_result(): Model|HasMany|null
+    {
+        return $this->sub_result()->where('user_id', auth()->guard('api')->id());
     }
 
     public function sub_tests(): HasMany

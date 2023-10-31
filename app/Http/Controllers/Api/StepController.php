@@ -45,11 +45,11 @@ class StepController extends Controller
     public function getStepDetail($id)
     {
         try {
-            $steps = Step::with(['image', 'results'])->where('subject_id', $id)->orderBy('level', 'desc')->get();
+            $steps = Step::with(['image', 'results', 'own_result'])->where('subject_id', $id)->orderBy('level', 'desc')->get();
             foreach ($steps as $key => $step) {
                 if ($step->results) {
-                    $resKk = $step->results->firstWhere('locale_id', 1);
-                    $resRu = $step->results->firstWhere('locale_id', 2);
+                    $resKk = $step->own_result->firstWhere('locale_id', 1);
+                    $resRu = $step->own_result->firstWhere('locale_id', 2);
                     if ($resKk) {
                         $steps[$key]['progress_kk'] = $resKk->user_point;
                     } else {

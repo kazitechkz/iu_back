@@ -128,4 +128,23 @@ class StepService
             return 0;
         }
     }
+
+    public function checkStepAccept(Step $step): bool
+    {
+        $subs = auth()->guard('api')->user()->activeSubscriptions();
+        if ($step->is_free) {
+            return true;
+        } else {
+            if ($subs->count()) {
+                $pl = $subs->pluck('name', 'tag');
+                if (isset($pl[$step->subject_id])) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        }
+    }
 }
