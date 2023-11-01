@@ -102,20 +102,21 @@ class QuestionService
                 $contextual_q_count = $single_subject_test->contextual_questions_quantity;
                 $multiple_q_count = $single_subject_test->multi_answer_questions_quantity;
             }
+            $hidden = QuestionService::getHidden($type_id);
             $questions[$compulsory_subject->id] = [];
             if($single_q_count > 0){
-                $questions_one = $this->get_single_questions($locale_id,$compulsory_subject,$single_q_count);
+                $questions_one = $this->get_single_questions($locale_id,$compulsory_subject,$single_q_count,$hidden);
                 array_push($questions[$compulsory_subject->id],...$questions_one);
             }
             if($contextual_q_count > 0){
                 if($contextual_q_count%self::CONTEXT_QUESTION_NUMBER){
                     throw new QuestionException("Контекстных Вопросов в дисциплине {$compulsory_subject->title_ru} недостаточно");
                 }
-                $context_questions = $this->get_context_questions($locale_id,$compulsory_subject,$contextual_q_count/self::CONTEXT_QUESTION_NUMBER);
+                $context_questions = $this->get_context_questions($locale_id,$compulsory_subject,$contextual_q_count/self::CONTEXT_QUESTION_NUMBER,$hidden);
                 array_push($questions[$compulsory_subject->id],...$context_questions);
             }
             if($multiple_q_count > 0){
-                $multiple_question = $this->get_multiple_questions($locale_id,$compulsory_subject,$multiple_q_count);
+                $multiple_question = $this->get_multiple_questions($locale_id,$compulsory_subject,$multiple_q_count,$hidden);
                 array_push($questions[$compulsory_subject->id],...$multiple_question);
             }
         }
@@ -123,20 +124,20 @@ class QuestionService
     }
 
 
-    protected function get_single_questions($locale_id,$compulsory_subject,$count){
+    protected function get_single_questions($locale_id,$compulsory_subject,$count,$hidden){
         $single_question_query = Question::with("context")->where(["subject_id" => $compulsory_subject->id,"type_id" => self::SINGLE_QUESTION_ID,"locale_id" => $locale_id])->inRandomOrder();
-        $questions_one = $single_question_query->take($count)->get()->makeHidden(["correct_answers"])->toArray();
+        $questions_one = $single_question_query->take($count)->get()->makeHidden($hidden)->toArray();
         return $questions_one;
     }
 
-    protected function get_context_questions($locale_id,$compulsory_subject,$rand_int){
+    protected function get_context_questions($locale_id,$compulsory_subject,$rand_int,$hidden){
         $questions = Question::where(["type_id"=>self::CONTEXT_QUESTION_ID,"subject_id" => $compulsory_subject->id,"locale_id" => $locale_id])->select("context_id",DB::raw('COUNT(questions.context_id) as context_qty'))->groupBy("context_id")->having(DB::raw('count(context_id)'), '=', 5)->pluck("context_qty","context_id")->toArray();
         $context_questions = [];
         if(count($questions)>=$rand_int){
                 $ids = array_rand($questions,$rand_int);
                 $ids = is_array($ids) ? $ids : [$ids];
                 foreach ($ids as $id){
-                    $context_question = Question::whereIn("context_id",[$id])->with("context")->get()->take(5)->makeHidden(["correct_answers"])->toArray();
+                    $context_question = Question::whereIn("context_id",[$id])->with("context")->get()->take(5)->makeHidden($hidden)->toArray();
                     array_push($context_questions, ...$context_question);
                 }
                 return $context_questions;
@@ -145,9 +146,9 @@ class QuestionService
             throw new QuestionException("Вопросов в дисциплине {$compulsory_subject->title_ru} недостаточно");
         }
     }
-    protected function get_multiple_questions($locale_id,$compulsory_subject,$count){
+    protected function get_multiple_questions($locale_id,$compulsory_subject,$count,$hidden){
         $multiple_question_query = Question::with("context")->where(["subject_id" => $compulsory_subject->id,"type_id" => self::MULTI_QUESTION_ID,"locale_id" => $locale_id])->inRandomOrder();
-        $multiple_question = $multiple_question_query->take($count)->get()->makeHidden(["correct_answers"])->toArray();
+        $multiple_question = $multiple_question_query->take($count)->get()->makeHidden($hidden)->toArray();
         return $multiple_question;
     }
 
@@ -203,5 +204,14 @@ class QuestionService
         return $subjects;
     }
 
-
+    public static function getHidden($type_id):array{
+        $hidden = [];
+        if($type_id == QuestionService::UNT_TYPE || $type_id == QuestionService::CASUAL_TYPE){
+            $hidden = ["correct_answers","explanation","explanation_image",];
+        }
+        else if($type_id == QuestionService::TOURNAMENT_TYPE){
+            $hidden = ["correct_answers","explanation","prompt","explanation_image"];
+        }
+        return  $hidden;
+    }
 }

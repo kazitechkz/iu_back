@@ -68,16 +68,16 @@ class AttemptService
             $question_query = Question::whereIn("id",$questions_attempt)
                 ->orderByRaw("field(id,{$idsImploded})")
                 ->with("context")->get();
-            $questions = $hide_correct ? $question_query->makeHidden(["correct_answers"])->toArray() : $question_query->toArray();
+            $questions = $hide_correct ? $question_query->makeHidden(QuestionService::getHidden($attempt->type_id))->toArray() : $question_query->toArray();
             $subject_dto["question"] = $questions;
             array_push($subject_dtos,$subject_dto);
         }
         $attempts_dto["subject_questions"] = $subject_dtos;
         return $attempts_dto;
-
-
-
     }
+
+
+
 
 
 

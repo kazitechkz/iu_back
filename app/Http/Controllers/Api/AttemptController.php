@@ -164,7 +164,7 @@ class AttemptController extends Controller
 
     public function finish(int $attempt_id){
         $user = auth()->guard("api")->user();
-        $attempt  = Attempt::where("end_at","!=",null)->find($attempt_id);
+        $attempt  = Attempt::where(["end_at" => null,"id"=>$attempt_id])->first();
         if(!$attempt){
             return response()->json(new ResponseJSON(status: false,message: "Not Found"),404);
         }
