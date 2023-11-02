@@ -15,6 +15,7 @@ use App\Http\Controllers\Api\ForumController as ApiForumController;
 use App\Http\Controllers\Api\PlanController as ApiPlanController;
 use App\Http\Controllers\Api\AppealTypeController as ApiAppealTypeController;
 use App\Http\Controllers\Api\TournamentController as ApiTournamentController;
+use App\Http\Controllers\Api\StatisticsController as ApiStatisticsController;
 use App\Http\Controllers\Api\AttemptController;
 /*
 |--------------------------------------------------------------------------
@@ -72,10 +73,19 @@ Route::group(['middleware' => 'API'], function() {
     Route::get("/sub-tournament-rivals/{id}",[ApiTournamentController::class,"subTournamentRival"]);
     Route::get("/sub-tournament-detail/{id}",[ApiTournamentController::class,"subTournamentDetail"]);
     Route::post("/participate-tournament",[ApiTournamentController::class,"participate"]);
+    //Statistics
+    Route::get("/statistics/attempt-result/{attempt_id}",[ApiStatisticsController::class,"resultByAttemptId"]);
+    Route::get("/statistics/attempt-stats/{attempt_id}",[ApiStatisticsController::class,"statsByAttemptId"]);
+    Route::get("/statistics/subject-stats/{subject_id}",[ApiStatisticsController::class,"statsBySubjectId"]);
+
+
 });
 Route::post('/auth/login', [ApiAuthController::class, 'loginUser']);
 Route::post("/auth/register",[ApiAuthController::class,"register"]);
 Route::post("/auth/send-reset-token",[ApiAuthController::class,"sendResetToken"]);
 Route::post("/auth/reset",[ApiAuthController::class,"resetPassword"]);
 Route::get("/test",[\App\Http\Controllers\Api\TestController::class,"test"]);
+
+
+
 

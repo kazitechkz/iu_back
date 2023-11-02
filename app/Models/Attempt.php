@@ -92,7 +92,12 @@ class Attempt extends Model
 
 	public function sub_tournament_results()
 	{
-		return $this->hasMany(SubTournamentResult::class);
+		return $this->hasMany(SubTournamentResult::class)->select([
+            'id',
+            "username",
+            'name',
+            'phone',
+            'email',]);
 	}
 
 }

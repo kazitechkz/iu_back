@@ -14,14 +14,14 @@ class AttemptTypeSeeder extends Seeder
     public function run(): void
     {
         AttemptType::create([
-            'title_ru' => 'Сдача одного предмета',
-            'title_kk' => 'Бір пәнді тапсыру',
-            'title_en' => 'Pass one subject',
-        ]);
-        AttemptType::create([
             'title_ru' => 'Полноценная сдача ЕНТ',
             'title_kk' => 'ҰБТ-ны толыққанды тапсыру',
             'title_en' => 'Full-fledged passing of the UNT',
+        ]);
+        AttemptType::create([
+            'title_ru' => 'Сдача одного предмета',
+            'title_kk' => 'Бір пәнді тапсыру',
+            'title_en' => 'Pass one subject',
         ]);
         AttemptType::create([
             'title_ru' => 'Сдача предмета в рамках Турнира',
