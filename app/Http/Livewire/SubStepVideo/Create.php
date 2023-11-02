@@ -26,8 +26,17 @@ class Create extends Component
     {
         return (new SubStepVideoCreate())->rules();
     }
-    public function mount(): void
+    public function mount($sub_step = null): void
     {
+        if ($sub_step) {
+            $this->sub_step_id = $sub_step->id;
+            $this->steps = Step::where('subject_id', $sub_step->step->subject_id)->get();
+            $this->step_id = $sub_step->step->id;
+            $this->subject_id = $sub_step->step->subject_id;
+            $this->sub_steps = SubStep::where(["step_id" => $sub_step->step->id])->get();
+        } else {
+            $this->steps = Step::where('is_active', true)->get();
+        }
         $this->subjects = Subject::all();
     }
 

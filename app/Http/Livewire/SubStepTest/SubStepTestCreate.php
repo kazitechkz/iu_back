@@ -100,11 +100,15 @@ class SubStepTestCreate extends Component
     {
         if ($this->sub_step != null) {
             $this->stepQuestions = SubStepTest::with('question')->where(['locale_id' => $this->locale_id, 'sub_step_id' => $this->sub_step_id])->get();
-            $this->questions = Question::where(['locale_id' => $this->locale_id, 'sub_category_id' => $this->sub_step->sub_category_id])->get();
+            $this->questions = Question::where([
+                'locale_id' => $this->locale_id,
+                'sub_category_id' => $this->sub_step->sub_category_id,
+                ['type_id','!=', 3]
+            ])->get();
         }
     }
 
-    public function addQuestion(int $question_id)
+    public function addQuestion(int $question_id): void
     {
         SubStepTest::where(['question_id' => $question_id, 'sub_step_id' => $this->sub_step_id])->firstOrCreate([
            'sub_step_id' => $this->sub_step_id,
@@ -114,7 +118,7 @@ class SubStepTestCreate extends Component
         $this->stepQuestions = SubStepTest::with('question')->where(['locale_id' => $this->locale_id, 'sub_step_id' => $this->sub_step_id])->get();
     }
 
-    public function removeQuestion($question_id)
+    public function removeQuestion($question_id): void
     {
         $question = SubStepTest::where(['sub_step_id' => $this->sub_step_id, 'locale_id' => $this->locale_id, 'question_id' => $question_id])->first();
         $question?->delete();

@@ -16,20 +16,24 @@ class StepService
     /**
      * @param int $sub_step_id = SubStepId айди Субраздела
      */
-    public function getSubStepTests(int $sub_step_id, int $locale_id): \Illuminate\Database\Eloquent\Collection|array|null
+    public function getSubStepTests(int $sub_step_id, int $locale_id): bool|array
     {
         $subStep = SubStep::with('step')->findOrFail($sub_step_id);
         $tests = SubStepTest::with(['result', 'question' => function($query) use ($locale_id) {
             $query->where(['locale_id' => $locale_id])->with('context');
         } ])->where(['sub_step_id' => $sub_step_id, 'locale_id' => $locale_id])->get();
-        if ($subStep->step->is_free) {
-            return $tests;
-        } else {
-            if (PlanService::check_user_subject($subStep->step->subject_id)) {
+        if ($tests->count()) {
+            if ($subStep->step->is_free) {
                 return $tests;
             } else {
-                return null;
+                if (PlanService::check_user_subject($subStep->step->subject_id)) {
+                    return $tests;
+                } else {
+                    return 10;
+                }
             }
+        } else {
+            return false;
         }
     }
 
@@ -86,17 +90,19 @@ class StepService
 
     public function refreshStepResults(int $step_id, int $user_id, int $locale_id) : void
     {
-        $user = \Auth::user();
-        $sub_steps = SubStep::with('sub_result')->where('step_id', $step_id)->get();
+        $user = auth()->guard('api')->user();
+        $sub_steps = SubStep::with( 'own_result')->where('step_id', $step_id)->get();
         $user_point = 0;
         foreach ($sub_steps as $sub_step) {
-            if ($sub_step->sub_result != null) {
-                foreach ($sub_step->sub_result as $item) {
-                    $res = $item->firstWhere('locale_id', $locale_id);
-                    $user_point += $res->user_point;
+            if ($sub_step->own_result != null) {
+                foreach ($sub_step->own_result as $item) {
+                    if ($item->locale_id == $locale_id) {
+                        $user_point += $item->user_point;
+                    }
                 }
             }
         }
+
         $point = round(($user_point/($sub_steps->count()*100))*100,1);
         $test_result = StepResult::firstWhere(['step_id' => $step_id, 'user_id' => $user_id, 'locale_id' => $locale_id]);
         if ($test_result) {

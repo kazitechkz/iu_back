@@ -82,17 +82,23 @@ class StepController extends Controller
     {
         try {
             $results = $this->stepService->getSubStepTests($sub_step_id, $locale_id);
-            if ($results != null) {
+            if (!$results) {
                 return response()->json(new ResponseJSON(
-                    status: true,
-                    data: $results
-                ), 200);
-            } else {
+                    status: false,
+                    errors: null,
+                    data: null
+                ));
+            }
+            if ($results == 10) {
                 return response()->json(new ResponseJSON(
                     status: false,
                     errors: "Недостаточно прав!"
                 ), 403);
             }
+            return response()->json(new ResponseJSON(
+                status: true,
+                data: $results
+            ));
         } catch (Exception $exception) {
             return response()->json(new ResponseJSON(status: false, errors: $exception->getMessage()), 500);
         }
@@ -112,17 +118,15 @@ class StepController extends Controller
                         $data['is_right'] += 1;
                     }
                 }
-            }
-            if ($results != null) {
                 return response()->json(new ResponseJSON(
                     status: true,
                     data: $data
-                ), 200);
+                ));
             } else {
                 return response()->json(new ResponseJSON(
                     status: false,
-                    errors: "Недостаточно прав!"
-                ), 403);
+                    errors: "Неизвестная ошибка!"
+                ));
             }
         } catch (Exception $exception) {
             return response()->json(new ResponseJSON(status: false, errors: $exception->getMessage()), 500);
@@ -134,7 +138,7 @@ class StepController extends Controller
         try {
             if ($request->all()) {
                 foreach ($request->all() as $item) {
-                    $this->stepService->check($item['sub_step_id'], $item['answer'], auth()->guard('api')->id(), $item['locale_id']);
+                    $this->stepService->check($item['sub_step_test_id'], $item['answer'], auth()->guard('api')->id(), $item['locale_id']);
                 }
 //                $results = SubStepContentTest::where()
                 return response()->json(new ResponseJSON(

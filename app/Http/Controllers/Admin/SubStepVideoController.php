@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SubStepVideo\SubStepVideoCreate;
+use App\Models\SubStep;
 use App\Models\SubStepVideo;
 use Illuminate\Http\Request;
 
@@ -75,7 +76,26 @@ class SubStepVideoController extends Controller
      */
     public function show(string $id)
     {
-        //
+        try{
+            if(auth()->user()->can("subStepVideo show") ){
+                $sub_step = SubStep::find($id);
+                if($sub_step){
+                    return view("admin.sub-step-video.show",compact("sub_step"));
+                }
+                else{
+                    toastr()->warning(__("message.not_found"));
+                    return redirect()->back();
+                }
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 
     /**

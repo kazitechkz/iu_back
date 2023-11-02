@@ -51,20 +51,37 @@ class SubStepTable extends DataTableComponent
         $this->setPrimaryKey('id');
         $this->setPerPageAccepted([20, 50, 100]);
         $this->setPerPage(20);
+        $this->setBulkActions([
+            'deleteSelected' => 'Удалить'
+        ]);
         $this->setPrimaryKey('id')
             ->setTableRowUrl(function ($row) {
                 return route('sub-step.edit', $row);
             });
     }
 
+    public function bulkActions(): array
+    {
+        return [
+            'deleteSelected' => 'Удалить'
+        ];
+    }
+
+    public function deleteSelected(): void
+    {
+        $subSteps = $this->getSelected();
+        foreach ($subSteps as $key => $value) {
+            $sub = SubStep::find($value);
+            $sub?->delete();
+        }
+        $this->clearSelected();
+    }
     public function query()
     {
         if($this->step != null){
             return SubStep::query()->where('step_id', $this->step->id);
         }
     }
-
-
 
     public function columns(): array
     {
@@ -73,8 +90,8 @@ class SubStepTable extends DataTableComponent
                 ->sortable(),
             Column::make("Наименование", StrHelper::getTitleAttribute())
                 ->searchable(),
-            Column::make("Степ", "step.".StrHelper::getTitleAttribute())
-                ->sortable(),
+//            Column::make("Степ", "step.".StrHelper::getTitleAttribute())
+//                ->sortable(),
             Column::make("Субстеп", "sub_category.".StrHelper::getTitleAttribute())
                 ->sortable(),
             Column::make("Уровень", "level")
@@ -104,6 +121,14 @@ class SubStepTable extends DataTableComponent
                         ->attributes(function($row) {
                             return [
                                 'class' => 'fas fa-k btn btn-primary btn-rounded btn-icon flex align-center justify-center items-center',
+                            ];
+                        }),
+                    LinkColumn::make('View') // make() has no effect in this case but needs to be set anyway
+                    ->title(fn($row) => '')
+                        ->location(fn($row) => route('sub-step-video.show', $row))
+                        ->attributes(function($row) {
+                            return [
+                                'class' => 'fas fa-b btn btn-primary btn-rounded btn-icon flex align-center justify-center items-center',
                             ];
                         }),
                     LinkColumn::make('Edit')

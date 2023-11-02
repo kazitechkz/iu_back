@@ -5,6 +5,7 @@ namespace App\Http\Livewire\SubStepContent;
 use App\Helpers\StrHelper;
 use App\Models\SubStep;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
+use Rappasoft\LaravelLivewireTables\Exceptions\DataTableConfigurationException;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Models\SubStepContent;
 use Rappasoft\LaravelLivewireTables\Views\Columns\BooleanColumn;
@@ -14,18 +15,24 @@ class SubStepContentTable extends DataTableComponent
     protected $model = SubStepContent::class;
     protected $sub_step;
 
-    public function mount($sub_step = null)
+    public function mount($sub_step = null): void
     {
         if($this->sub_step){
             $this->sub_step = $sub_step;
         }
     }
 
+    /**
+     * @throws DataTableConfigurationException
+     */
     public function configure(): void
     {
         $this->setPrimaryKey('id');
         $this->setPerPageAccepted([20, 50, 100]);
         $this->setPerPage(20);
+        $this->setBulkActions([
+            'deleteSelected' => 'Удалить'
+        ]);
         $this->setPrimaryKey('id')
             ->setTableRowUrl(function ($row) {
                 return route('sub-step-content.edit', $row);
@@ -37,7 +44,22 @@ class SubStepContentTable extends DataTableComponent
             return SubStepContent::query()->where('sub_step_id', $this->sub_step->id);
         }
     }
+    public function bulkActions(): array
+    {
+        return [
+            'deleteSelected' => 'Удалить'
+        ];
+    }
 
+    public function deleteSelected(): void
+    {
+        $subStepVideos = $this->getSelected();
+        foreach ($subStepVideos as $key => $value) {
+            $sub = SubStepContent::find($value);
+            $sub?->delete();
+        }
+        $this->clearSelected();
+    }
     public function columns(): array
     {
         return [
