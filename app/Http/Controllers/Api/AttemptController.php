@@ -171,7 +171,8 @@ class AttemptController extends Controller
         if($attempt->user_id != $user->id){
             return response()->json(new ResponseJSON(status: false,message: "Forbidden"),403);
         }
-        $attempt->update(["end_at" => Carbon::now()]);
+
+        $attempt->update(["end_at" => Carbon::now(),'time_left'=>$attempt->time - Carbon::now()->diffInMilliseconds($attempt->start_at)]);
         return response()->json(new ResponseJSON(status: true,data: $attempt_id),200);
     }
 

@@ -71,7 +71,7 @@ class StatisticsService
         $user = auth()->guard("api")->user();
         $result = [];
         $subject = Subject::with("image")->firstWhere(["id"=>$subject_id]);
-        $attempt_subjects = AttemptSubject::where(["attempt_id" => $subject_id])
+        $attempt_subjects = AttemptSubject::where(["subject_id" => $subject_id])
             ->whereHas("attempt",function ($query) use ($user) {
                 $query->where(["user_id" => $user->id])->where("end_at","!=",null);
             })
