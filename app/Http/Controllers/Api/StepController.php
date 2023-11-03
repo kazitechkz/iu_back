@@ -89,7 +89,7 @@ class StepController extends Controller
                     data: null
                 ));
             }
-            if ($results == 10) {
+            if (!$results->count()) {
                 return response()->json(new ResponseJSON(
                     status: false,
                     errors: "Недостаточно прав!"

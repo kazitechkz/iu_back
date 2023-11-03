@@ -16,7 +16,7 @@ class StepService
     /**
      * @param int $sub_step_id = SubStepId айди Субраздела
      */
-    public function getSubStepTests(int $sub_step_id, int $locale_id): bool|array
+    public function getSubStepTests(int $sub_step_id, int $locale_id): \Illuminate\Database\Eloquent\Collection|bool|array
     {
         $subStep = SubStep::with('step')->findOrFail($sub_step_id);
         $tests = SubStepTest::with(['result', 'question' => function($query) use ($locale_id) {
@@ -29,7 +29,7 @@ class StepService
                 if (PlanService::check_user_subject($subStep->step->subject_id)) {
                     return $tests;
                 } else {
-                    return 10;
+                    return [];
                 }
             }
         } else {
