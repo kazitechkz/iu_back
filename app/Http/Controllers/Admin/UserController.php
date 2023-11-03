@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\UserCreateRequest;
 use App\Http\Requests\UserEditRequest;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Role;
@@ -62,6 +63,9 @@ class UserController extends Controller
             if(auth()->user()->can("user create")){
                 $input = $request->except("_token","_method");
                 $input["password"] = bcrypt($request->get("password"));
+                if($request->get("birth_date")){
+                    $input["birth_date"] =  Carbon::parse($request->get("birth_date"));
+                }
                 $user = User::add($input);
                 $role = Role::findByName($input["role"]);
                 if($role){
@@ -152,6 +156,9 @@ class UserController extends Controller
                             $user->removeRole($roleName);
                         }
                         $user->assignRole($request->get("role"));
+                    }
+                    if($request->get("birth_date")){
+                        $input["birth_date"] =  Carbon::parse($request->get("birth_date"));
                     }
                     $user->edit($input);
                     return redirect()->back();

@@ -68,6 +68,34 @@
         />
     </div>
     {{--    User Phone--}}
+    {{--    Gender--}}
+    <div class="form-group">
+        <x-select
+            label="{{__('table.gender_id')}}*"
+            placeholder="{{__('table.gender_id')}}"
+            :options="$genders"
+            :option-label="'title_ru'"
+            :option-value="'id'"
+            wire:model="gender_id"
+            name="gender_id"
+        />
+    </div>
+    {{--   Gender--}}
+    {{--    Birth Date --}}
+    <div class="form-group">
+        <x-datetime-picker
+            label="{{__('table.birth_date')}}"
+            placeholder="{{__('table.birth_date')}}"
+            :without-time="true"
+            parse-format="YYYY-MM-DD"
+            wire:model.defer="birth_date"
+        />
+    </div>
+    {{--    Birth Date --}}
+    {{-- Image Url --}}
+    <label class="h-5">{{__('table.image_url')}}*</label>
+    <livewire:image-upload :file="$image_url" :folder-name="'avatars'"/>
+    {{-- Image Url --}}
     {{--    User Role--}}
 
     <div class="form-group">

@@ -13,6 +13,9 @@ class UserDTO extends ValidatedDTO
     public int $id;
     public string $role;
     public array|null $subscriptions;
+    public $birth_date;
+    public $gender;
+    public $file;
     protected function rules(): array
     {
         return [];

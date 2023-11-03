@@ -49,11 +49,13 @@ class SubTournamentWinner extends Model
 
 	public function user()
 	{
-		return $this->belongsTo(User::class)->select([
+		return $this->belongsTo(User::class)->with("file")->select([
             'id',
             "username",
             'name',
             'phone',
-            'email',]);
+            'email',
+            "file"
+            ]);
 	}
 }

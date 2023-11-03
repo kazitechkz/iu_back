@@ -13,13 +13,15 @@ class UserController extends Controller
     public function me()
     {
         try {
-            $user = auth()->guard('api')->user();
+            $user = auth()->guard('api')->user()->load(["gender","file"]);
             $data = UserDTO::fromArray([
                 'username' => $user->username,
                 'name' => $user->name,
                 'email' => $user->email,
+                'gender' => $user->gender,
+                'file' => $user->file,
+                'birth_date' => $user->birth_date,
                 'phone' => $user->phone,
-//                'id' => $user->id,
                 'role' => $user->roles[0]['name'],
                 'subscription' => $user->activeSubscriptions()->pluck('name')->toArray()
             ]);

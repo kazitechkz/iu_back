@@ -8,6 +8,7 @@ use Bavix\Wallet\Interfaces\Wallet;
 use Bavix\Wallet\Traits\HasWallet;
 use Bpuig\Subby\Traits\HasSubscriptions;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -46,6 +47,9 @@ class User extends Authenticatable implements Searchable,Wallet
         'phone',
         'email',
         'password',
+        "birth_date",
+        "image_url",
+        "gender_id"
     ];
     protected $guard_name = 'web';
     /**
@@ -77,5 +81,16 @@ class User extends Authenticatable implements Searchable,Wallet
             $this->username,
             $url
         );
+    }
+
+    public function file(): BelongsTo
+    {
+        return $this->belongsTo(File::class, 'image_url');
+    }
+
+
+    public function gender(): BelongsTo
+    {
+        return $this->belongsTo(Gender::class, 'gender_id');
     }
 }
