@@ -70,4 +70,13 @@ class MathFormulaHelper
         $text = str_replace('$$', '<pre>', $text);
         return str_replace('@@', '</pre>', $text);
     }
+
+    public static function getContent($request): array|string
+    {
+//        dd($request['text_ru']);
+        $self = new self();
+        $data['text_ru'] = $self->getReplaceStr($request['text_ru']);
+        $data['text_kk'] = $self->getReplaceStr($request['text_kk']);
+        return $data;
+    }
 }

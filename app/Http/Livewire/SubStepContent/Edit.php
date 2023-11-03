@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\SubStepContent;
 
+use App\Helpers\StrHelper;
 use App\Http\Requests\SubStepContent\SubStepContentCreateRequest;
 use App\Http\Requests\SubStepContent\SubStepContentUpdateRequest;
 use App\Models\Step;
@@ -29,9 +30,9 @@ class Edit extends Component
         $this->sub_step_id = $sub_step_content->sub_step_id;
         $this->steps = Step::where('is_active', true)->get();
         $this->sub_steps = SubStep::where(['step_id' => $this->step_id, 'is_active' => true])->get();
-        $this->text_ru = $sub_step_content->text_ru ?? "";
-        $this->text_kk = $sub_step_content->text_kk ?? "";
-        $this->text_en = $sub_step_content->text_en ?? null;
+        $this->text_ru = StrHelper::convertLatex($sub_step_content->text_ru) ?? "";
+        $this->text_kk = StrHelper::convertLatex($sub_step_content->text_kk) ?? "";
+        $this->text_en = StrHelper::convertLatex($sub_step_content->text_en) ?? null;
         $this->is_active = $sub_step_content->is_active ?? false;
     }
     public function updatedStepId(): void
