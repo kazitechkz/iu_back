@@ -79,6 +79,8 @@ Route::group(['middleware' => 'API'], function() {
     Route::get("/statistics/subject-stats/{subject_id}",[ApiStatisticsController::class,"statsBySubjectId"]);
 
 
+
+
 });
 Route::post('/auth/login', [ApiAuthController::class, 'loginUser']);
 Route::post("/auth/register",[ApiAuthController::class,"register"]);
@@ -87,5 +89,7 @@ Route::post("/auth/reset",[ApiAuthController::class,"resetPassword"]);
 Route::get("/test",[\App\Http\Controllers\Api\TestController::class,"test"]);
 
 
-
+//Plan
+Route::get("/plan/unt",[ApiPlanController::class,"getUNTPlan"]);
+Route::get("/plan/learning",[ApiPlanController::class,"getLearningPlan"]);
 
