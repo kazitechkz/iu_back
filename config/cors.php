@@ -20,7 +20,7 @@ return [
     'allowed_methods' => ['*'],
 
 //    'allowed_origins' => ['*'],
-    'allowed_origins' => ['http://localhost:4200', 'https://i-union.kz/'],
+    'allowed_origins' => ['http://localhost:4200', 'https://front.i-union.kz'],
 
     'allowed_origins_patterns' => [],
 
