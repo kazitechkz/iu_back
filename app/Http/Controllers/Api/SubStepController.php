@@ -22,8 +22,14 @@ class SubStepController extends Controller
     public function getSubStepsByStepId(int $id)
     {
         try {
-            $subSteps = SubStep::with('sub_result', 'own_result')->where('step_id', $id)->orderBy('level', 'asc')->get();
+            $subSteps = SubStep::with('sub_result', 'own_result', 'step')->where('step_id', $id)->orderBy('level', 'asc')->get();
             foreach ($subSteps as $key => $subStep) {
+                $accept = $this->stepService->checkStepAccept($subStep->step);
+                if ($accept) {
+                    $subSteps[$key]['is_free'] = true;
+                } else {
+                    $subSteps[$key]['is_free'] = false;
+                }
                 if ($subStep->sub_result) {
                     $resKk = $subStep->own_result->firstWhere('locale_id', 1);
                     $resRu = $subStep->own_result->firstWhere('locale_id', 2);
