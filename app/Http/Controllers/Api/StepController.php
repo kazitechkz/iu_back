@@ -22,18 +22,22 @@ class StepController extends Controller
         $this->stepService = $stepService;
     }
 
-    public function getSteps()
+    public function getSteps($locale_id)
     {
         try {
-            $steps = Subject::with('image')->withCount(['steps', 'subSteps'])->get();
+            $steps = Subject::with('image', 'steps.own_result')->withCount(['steps', 'subSteps'])->get();
             foreach ($steps as $key => $step) {
-                $result = StepResult::firstWhere(['user_id' => auth()->guard('api')->id(), 'step_id' => $step->id]);
-                if ($result) {
-                    $steps[$key]['progress'] = $result->user_point;
-                } else {
-                    $steps[$key]['progress'] = 0;
+                $steps[$key]['progress'] = 0;
+                if ($step->steps) {
+                    foreach ($step->steps as $item) {
+                        $res = $item->own_result->where('locale_id', $locale_id)->first();
+                        if ($res) {
+                            $steps[$key]['progress'] = round($res->user_point / $step->steps->count());
+                        }
+                    }
                 }
             }
+
             return response()->json(new ResponseJSON(
                 status: true, data: $steps
             ));
