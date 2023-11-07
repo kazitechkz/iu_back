@@ -5,11 +5,16 @@ namespace App\Http\Controllers\Api;
 use App\DTOs\ForumCreateDTO;
 use App\Http\Controllers\Controller;
 use App\Models\Forum;
+use App\Services\ForumService;
 use App\Traits\ResponseJSON;
 use Illuminate\Http\Request;
 
 class ForumController extends Controller
 {
+    private ForumService $_forumService;
+    public function __construct(ForumService $forumService){
+        $this->_forumService = $forumService;
+    }
     public function index(Request $request){
         try {
             $query = Forum::query()->withCount(["discusses","discuss_rating"]);
@@ -37,7 +42,8 @@ class ForumController extends Controller
     public function createForum(Request $request){
         try {
             $forum_dto = ForumCreateDTO::fromRequest($request);
-
+            $forum = $this->_forumService->createForum($forum_dto);
+            return response()->json(new ResponseJSON(status: true,data: $forum),200);
         }
         catch (\Exception $exception){
             return response()->json(new ResponseJSON(status: false,message: $exception->getMessage()),500);

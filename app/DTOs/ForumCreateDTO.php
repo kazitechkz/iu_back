@@ -2,6 +2,7 @@
 
 namespace App\DTOs;
 
+use App\Exceptions\ApiValidationException;
 use WendellAdriel\ValidatedDTO\ValidatedDTO;
 
 class ForumCreateDTO extends ValidatedDTO
@@ -17,8 +18,6 @@ class ForumCreateDTO extends ValidatedDTO
             "text"=>"required|max:255",
             "attachment"=>"required|max:5000",
             "subject_id"=>"required|exists:subjects,id",
-            "files"=>"sometimes|nullable",
-            "files.*"=>"nullable|sometimes|image|max:5000",
         ];
     }
 
@@ -30,5 +29,9 @@ class ForumCreateDTO extends ValidatedDTO
     protected function casts(): array
     {
         return [];
+    }
+    protected function failedValidation(): void
+    {
+        throw new ApiValidationException($this->validator->errors());
     }
 }

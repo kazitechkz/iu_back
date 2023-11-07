@@ -80,6 +80,12 @@ Route::group(['middleware' => 'API'], function() {
     //Plan
     Route::get("/plan/unt",[ApiPlanController::class,"getUNTPlan"]);
     Route::get("/plan/learning",[ApiPlanController::class,"getLearningPlan"]);
+    //Forum
+    Route::post("/forum/create",[ApiForumController::class,"createForum"]);
+    Route::get("/forum/index",[ApiForumController::class,"index"]);
+
+    Route::post("/upload-image",[\App\Http\Controllers\Api\FileUploadController::class,"uploadImage"]);
+
 
 
 

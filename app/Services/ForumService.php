@@ -3,7 +3,9 @@
 namespace App\Services;
 
 use App\DTOs\ForumCreateDTO;
+use App\Models\File;
 use App\Models\Forum;
+use App\Models\ForumFile;
 
 class ForumService
 {
@@ -12,11 +14,7 @@ class ForumService
         $forumDTO = $forumDTO->toArray();
         $forumDTO["user_id"] = $user->id;
         $forum = Forum::add($forumDTO);
-        if ($forumDTO["files"]){
-            foreach ($forumDTO["files"] as $file){
-
-            }
-        }
+        return $forum;
 
 
     }

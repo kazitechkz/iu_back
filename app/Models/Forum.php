@@ -67,4 +67,8 @@ class Forum extends Model
     {
         return $this->hasMany(DiscussRating::class);
     }
+    public function files()
+    {
+        return $this->hasMany(ForumFile::class);
+    }
 }

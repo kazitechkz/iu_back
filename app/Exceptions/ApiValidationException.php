@@ -11,9 +11,9 @@ class ApiValidationException extends Exception
 {
     public function render($request)
     {
-        if(gettype($this->getMessage())) {
+        if(gettype($this->getMessage()) == "string") {
             $request = json_decode($this->getMessage());
         }
-        return response()->json(new ResponseJSON(status: false,message: "Validation Error",data: null,errors: $request), 400);
+        return response()->json(new ResponseJSON(status: false,message: "Validation Error",data: null,errors: gettype($this->getMessage())), 400);
     }
 }
