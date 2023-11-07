@@ -11,6 +11,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Spatie\Permission\Models\Role;
 
 class AuthController extends Controller
 {
@@ -50,7 +51,15 @@ class AuthController extends Controller
             }
             $input = $request->all();
             $input["password"] = bcrypt($input["password"]);
-            User::add($input);
+            $input['username'] = $input['email'];
+            if ($input['role'] != 'teacher' || $input['role'] != 'student') {
+                $input['role'] = 'student';
+            }
+            $user = User::add($input);
+            $role = Role::findByName($input['role']);
+            if ($role) {
+                $user->assignRole($input['role']);
+            }
             return response()->json(new ResponseJSON(status: true, message: "User registered successfully"), 200);
         } catch (\Throwable $th) {
             return response()->json(new ResponseJSON(status: false, message: $th->getMessage()), 500);
