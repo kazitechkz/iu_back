@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Question\CreateRequest;
 use App\Imports\QuestionsImport;
 use App\Models\File;
+use App\Models\MethodistQuestion;
 use App\Models\Question;
 use App\Models\Subject;
 use Illuminate\Http\Request;
@@ -143,7 +144,8 @@ class QuestionController extends Controller
                 $input = $request;
                 $input['correct_answers'] = implode(',', json_decode($request['correct_answers']));
                 $data = MathFormulaHelper::replace($input);
-                Question::add($data);
+                $question = Question::add($data);
+                MethodistQuestion::add(["user_id"=>auth()->id(),"question_id"=>$question->id]);
                 return redirect(route('questions.index'));
             }
             else{
