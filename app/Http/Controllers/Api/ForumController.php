@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\DTOs\ForumCreateDTO;
 use App\Http\Controllers\Controller;
 use App\Models\Forum;
 use App\Traits\ResponseJSON;
@@ -24,11 +25,25 @@ class ForumController extends Controller
                 $query = $query->orderBy('created_at', 'desc');
             }
             $forums = $query->paginate(15);
-            return response()->json(new ResponseJSON(status: true,data: $forums),500);
+            return response()->json(new ResponseJSON(status: true,data: $forums),200);
 
         }
         catch (\Exception $exception){
             return response()->json(new ResponseJSON(status: false,message: $exception->getMessage()),500);
         }
     }
+
+
+    public function createForum(Request $request){
+        try {
+            $forum_dto = ForumCreateDTO::fromRequest($request);
+
+        }
+        catch (\Exception $exception){
+            return response()->json(new ResponseJSON(status: false,message: $exception->getMessage()),500);
+        }
+
+
+    }
+
 }

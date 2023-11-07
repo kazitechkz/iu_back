@@ -77,7 +77,9 @@ Route::group(['middleware' => 'API'], function() {
     Route::get("/statistics/attempt-result/{attempt_id}",[ApiStatisticsController::class,"resultByAttemptId"]);
     Route::get("/statistics/attempt-stats/{attempt_id}",[ApiStatisticsController::class,"statsByAttemptId"]);
     Route::get("/statistics/subject-stats/{subject_id}",[ApiStatisticsController::class,"statsBySubjectId"]);
-
+    //Plan
+    Route::get("/plan/unt",[ApiPlanController::class,"getUNTPlan"]);
+    Route::get("/plan/learning",[ApiPlanController::class,"getLearningPlan"]);
 
 
 
@@ -89,7 +91,5 @@ Route::post("/auth/reset",[ApiAuthController::class,"resetPassword"]);
 Route::get("/test",[\App\Http\Controllers\Api\TestController::class,"test"]);
 
 
-//Plan
-Route::get("/plan/unt",[ApiPlanController::class,"getUNTPlan"]);
-Route::get("/plan/learning",[ApiPlanController::class,"getLearningPlan"]);
+
 
