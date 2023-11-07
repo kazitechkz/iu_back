@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\StepController as ApiStepController;
 use App\Http\Controllers\Api\SubStepController as ApiSubStepController;
 use App\Http\Controllers\Api\SubjectController as ApiSubjectController;
 use App\Http\Controllers\Api\QuestionController as ApiQuestionController;
+use App\Http\Controllers\Api\Teacher\ClassroomGroupController;
 use App\Http\Controllers\Api\UserController as ApiUserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -88,6 +89,10 @@ Route::group(['middleware' => 'API'], function() {
 
 
 
+    //TEACHER_ROUTES
+    Route::group(['prefix' => 'teacher'], function () {
+        Route::resource('classrooms', ClassroomGroupController::class);
+    });
 
 });
 Route::post('/auth/login', [ApiAuthController::class, 'loginUser']);
