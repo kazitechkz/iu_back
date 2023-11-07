@@ -13,7 +13,7 @@ class UserController extends Controller
     public function me()
     {
         try {
-            $user = auth()->guard('api')->user()->load(["gender","file"]);
+            $user = auth()->guard('api')->user()->load(['gender', 'file', 'roles']);
             $data = UserDTO::fromArray([
                 'username' => $user->username,
                 'name' => $user->name,
@@ -22,7 +22,7 @@ class UserController extends Controller
                 'file' => $user->file,
                 'birth_date' => $user->birth_date,
                 'phone' => $user->phone,
-                'role' => $user->roles[0]['name'],
+                'role' => $user->roles->count() ? $user->roles[0]['name'] : '',
                 'subscription' => $user->activeSubscriptions()->pluck('name')->toArray()
             ]);
             return response()->json(new ResponseJSON(
