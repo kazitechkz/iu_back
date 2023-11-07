@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\DTOs\AuthDTO;
+use App\DTOs\UserDTO;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserCreateRequest;
 use App\Models\User;
 use App\Models\UserResetToken;
+use App\Services\AuthService;
 use App\Traits\ResponseJSON;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -32,10 +35,11 @@ class AuthController extends Controller
                 return response()->json(new ResponseJSON(status: false, message: "Validation Error", errors: $validateUser->errors()), 400);
             }
             if (!Auth::attempt($request->only(['email', 'password']))) {
-                return response()->json(new ResponseJSON(status: false, message: "Email & Password does not match with our record."), 401);
+                return response()->json(new ResponseJSON(status: false, message: "Email & Password does not match with our record."), 400);
             }
             $user = User::with('roles')->where('email', $request->email)->first();
-            return response()->json(new ResponseJSON(status: true, message: "User Logged In Successfully", data: $user->createToken("API TOKEN")->plainTextToken));
+            $data = AuthService::initialAuthDTO($user);
+            return response()->json(new ResponseJSON(status: true, message: "User Logged In Successfully", data: $data->data));
 
         } catch (\Throwable $th) {
             return response()->json(new ResponseJSON(status: false, errors: $th->getMessage()), 500);
@@ -52,7 +56,9 @@ class AuthController extends Controller
             $input = $request->all();
             $input["password"] = bcrypt($input["password"]);
             $input['username'] = $input['email'];
-            if ($input['role'] != 'teacher' || $input['role'] != 'student') {
+            if ($input['role'] == 'teacher') {
+                $input['role'] = 'teacher';
+            } else {
                 $input['role'] = 'student';
             }
             $user = User::add($input);
