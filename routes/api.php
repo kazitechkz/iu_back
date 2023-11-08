@@ -85,6 +85,11 @@ Route::group(['middleware' => 'API'], function() {
     Route::post("/forum/create",[ApiForumController::class,"createForum"]);
     Route::get("/forum/index",[ApiForumController::class,"index"]);
 
+    Route::post("/forum/rating",[ApiForumController::class,"ratingForumOrDiscuss"]);
+    Route::get("/forum/show/{id}",[ApiForumController::class,"show"]);
+    Route::get("/forum/discuss/{forum_id}",[ApiForumController::class,"forumDiscuss"]);
+    //Forum
+
     Route::post("/upload-image",[\App\Http\Controllers\Api\FileUploadController::class,"uploadImage"]);
 
 

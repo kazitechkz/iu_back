@@ -52,13 +52,13 @@ class SubTournamentParticipant extends Model
 
 	public function user()
 	{
-		return $this->belongsTo(User::class,"user_id","id")->with("file")->select([
+		return $this->belongsTo(User::class,"user_id","id")->select([
             'id',
             "username",
             'name',
             'phone',
             'email',
-            "file"
-        ]);
+            'image_url'
+        ])->with("file");
 	}
 }

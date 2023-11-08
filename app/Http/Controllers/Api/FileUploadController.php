@@ -12,7 +12,8 @@ class FileUploadController extends Controller
         if($request->exists("upload")){
             $file = $request->file("upload");
           $file_id = File::uploadFileAWS($file,$request->get("folder"));
-          return response()->json(File::getFileFromAWS((File::find($file_id))->url),200) ;
+          $file = File::getFileFromAWS(File::find($file_id)->url);
+          return response()->json($file,200) ;
         }
         return response()->json("",200) ;
     }

@@ -69,6 +69,8 @@ class SubTournamentResult extends Model
             "username",
             'name',
             'phone',
-            'email',]);
+            'email',
+            'image_url'
+        ])->with("file");
 	}
 }

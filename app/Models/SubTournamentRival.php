@@ -62,36 +62,36 @@ class SubTournamentRival extends Model
 
 	public function winner_user()
 	{
-		return $this->belongsTo(User::class, 'winner',"id")->with("file")->select([
+		return $this->belongsTo(User::class, 'winner',"id")->select([
             'id',
             "username",
             'name',
             'phone',
             'email',
-            "file"
-        ]);
+            'image_url'
+        ])->with("file");
 	}
     public function rival_one_user()
     {
-        return $this->belongsTo(User::class, 'rival_one',"id")->with("file")->select([
+        return $this->belongsTo(User::class, 'rival_one',"id")->select([
             'id',
             "username",
             'name',
             'phone',
             'email',
-            "file"
-        ]);
+            'image_url'
+        ])->with("file");
     }
     public function rival_two_user()
     {
-        return $this->belongsTo(User::class, 'rival_two',"id")->with("file")->select([
+        return $this->belongsTo(User::class, 'rival_two',"id")->select([
             'id',
             "username",
             'name',
             'phone',
             'email',
-            "file"
-        ]);
+            'image_url'
+        ])->with("file");
     }
 	public function sub_tournament()
 	{

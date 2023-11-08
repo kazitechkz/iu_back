@@ -62,7 +62,8 @@ class Forum extends Model
             'name',
             'phone',
             'email',
-        ]);
+            'image_url'
+        ])->with("file");
 	}
 
 	public function discusses()
