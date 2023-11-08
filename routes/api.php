@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController as ApiAuthController;
+use App\Http\Controllers\Api\ClassroomController;
 use App\Http\Controllers\Api\StepController as ApiStepController;
 use App\Http\Controllers\Api\SubStepController as ApiSubStepController;
 use App\Http\Controllers\Api\SubjectController as ApiSubjectController;
@@ -93,7 +94,7 @@ Route::group(['middleware' => 'API'], function() {
     Route::post("/upload-image",[\App\Http\Controllers\Api\FileUploadController::class,"uploadImage"]);
 
 
-
+    Route::resource('classrooms', ClassroomController::class)->only(['index', 'show', 'destroy', 'store']);
     //TEACHER_ROUTES
     Route::group(['prefix' => 'teacher'], function () {
         Route::resource('classrooms', ClassroomGroupController::class);
