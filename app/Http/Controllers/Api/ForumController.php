@@ -21,6 +21,9 @@ class ForumController extends Controller
             if($request->get("subject_id")){
                 $query = $query->where(["subject_id"=>$request->get("subject_id")]);
             }
+            if($request->get("search")){
+                $query = $query->where('text', 'LIKE', "%{$request->get("search")}%")->orWhere('attachment', 'LIKE', "%{$request->get("search")}%");
+            }
             if($request->hasAny("type")){
                 if ($request->get("type") == "popular"){
                     $query = $query->orderBy('discuss_rating_count', 'desc');
