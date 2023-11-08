@@ -51,6 +51,19 @@ class ClassroomGroupController extends Controller
         }
     }
 
+    public function show($id)
+    {
+        try {
+            $classroomGroup = ClassroomGroup::findOrFail($id);
+            return response()->json(new ResponseJSON(status: true, data: $classroomGroup));
+        } catch (ValidationException $exception) {
+            return response()->json(new ResponseJSON(
+                status: false,
+                errors: $exception->errors()
+            ), 400);
+        }
+    }
+
     public function update(Request $request, $id)
     {
         try {
