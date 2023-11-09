@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\DTOs\DiscussCreateDTO;
 use App\DTOs\ForumCreateDTO;
 use App\Exceptions\NotFoundException;
 use App\Http\Controllers\Controller;
@@ -78,8 +79,7 @@ class ForumController extends Controller
 
     public function forumDiscuss(Request $request,$forum_id){
         try {
-            $discusses = Discuss::query()->where(["forum_id" => $forum_id])->with(["user"])->
-            withSum(["discuss_ratings"=>fn ($query) => $query->where('discuss_id', null)],"rating");
+            $discusses = Discuss::query()->where(["forum_id" => $forum_id])->with(["user"])->withSum("discuss_ratings","rating");
             if ($request->get("type") == "popular"){
                 $discusses = $discusses->orderBy('discuss_rating_sum_ratings', 'desc');
             }
@@ -95,13 +95,31 @@ class ForumController extends Controller
         }
     }
 
+    public function createDiscuss(Request $request){
+        try {
+            $discussDTO = DiscussCreateDTO::fromRequest($request);
+            $input = $discussDTO->toArray();
+            $input["user_id"] = auth()->guard("api")->id();
+            $forum = Forum::find($request->get("forum_id"));
+            if(!$forum){
+                throw new NotFoundException();
+            }
+            $discuss = Discuss::add($input);
+            $discuss->load(["user"])->loadSum("discuss_ratings","rating");
+            return response()->json(new ResponseJSON(status: true,data: $discuss),200);
+        }
+        catch (\Exception $exception){
+            return response()->json(new ResponseJSON(status: false,message: $exception->getMessage()),500);
+        }
+    }
+
     public function ratingForumOrDiscuss(Request $request){
         try {
             $user_rating = $request->get("rating") ?? 0;
             if($user_rating < -1 || $user_rating > 1){
                 $user_rating = 0;
             }
-            if($request->get("forum_id")){
+            if($request->get("forum_id") && !$request->get("discuss_id")){
                 $forum = Forum::find($request->get("forum_id"));
                 if(!$forum){
                     throw new NotFoundException();
@@ -114,17 +132,17 @@ class ForumController extends Controller
                     $rating = DiscussRating::add(["forum_id" => $request->get("forum_id"),"discuss_id" => null,"user_id" => auth()->guard("api")->id(),"rating"=>$user_rating]);
                 }
             }
-            if($request->get("discuss_id")){
+            if($request->get("discuss_id") && !$request->get("forum_id")){
                 $discuss = Discuss::find($request->get("discuss_id"));
                 if(!$discuss){
                     throw new NotFoundException();
                 }
-                $rating = DiscussRating::where(["forum_id" => $request->get("forum_id"),"discuss_id" => $discuss->id,"user_id" => auth()->guard("api")->id()])->first();
+                $rating = DiscussRating::where(["forum_id" => null,"discuss_id" => $discuss->id,"user_id" => auth()->guard("api")->id()])->first();
                 if($rating){
                     $rating->update(["rating"=>$user_rating]);
                 }
                 else{
-                    $rating = DiscussRating::add(["forum_id" => $request->get("forum_id"),"discuss_id" => $discuss->id,"user_id" => auth()->guard("api")->id(),"rating"=>$user_rating]);
+                    $rating = DiscussRating::add(["forum_id" => null,"discuss_id" => $discuss->id,"user_id" => auth()->guard("api")->id(),"rating"=>$user_rating]);
                 }
             }
             return response()->json(new ResponseJSON(status: true,data: $rating),200);

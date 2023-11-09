@@ -55,6 +55,7 @@ Route::group(['middleware' => 'API'], function() {
     Route::post('check-sub-step-result', [ApiSubStepController::class, 'checkSubStepResultByUser']);
     //Get UNT Exam
     Route::post("/attempt",[AttemptController::class,"attempt"]);
+    Route::post("/attempt-custom",[AttemptController::class,"attempt"]);
     Route::get("/attempt_by/{id}",[AttemptController::class,"attemptById"]);
     Route::get("/user-attempts",[AttemptController::class,"userAttempts"]);
     Route::get("/user-unt-statistics",[AttemptController::class,"userUntStat"]);
@@ -89,6 +90,7 @@ Route::group(['middleware' => 'API'], function() {
     Route::post("/forum/rating",[ApiForumController::class,"ratingForumOrDiscuss"]);
     Route::get("/forum/show/{id}",[ApiForumController::class,"show"]);
     Route::get("/forum/discuss/{forum_id}",[ApiForumController::class,"forumDiscuss"]);
+    Route::post("/discuss/create",[ApiForumController::class,"createDiscuss"]);
     //Forum
 
     Route::post("/upload-image",[\App\Http\Controllers\Api\FileUploadController::class,"uploadImage"]);

@@ -25,5 +25,9 @@ class QuestionTypeSeeder extends Seeder
             'title_ru' => 'Вопрос с несколькими ответами',
             'title_kk' => 'Көп жауап беретін сұрақ',
         ]);
+        DB::table('question_types')->insert([
+        'title_ru' => 'Настраиваемый тест для одного предмета',
+        'title_kk' => 'Бір пән үшін теңшелетін мәтін',
+    ]);
     }
 }
