@@ -53,10 +53,13 @@ Route::group(['middleware' => 'API'], function() {
     Route::get('get-step-tests/{sub_step_test_id}/{locale_id}', [ApiStepController::class, 'getStepTests']);
     Route::get('get-result-step-tests/{sub_step_id}/{locale_id}', [ApiStepController::class, 'getStepResultExam']);
     Route::post('check-sub-step-result', [ApiSubStepController::class, 'checkSubStepResultByUser']);
+    Route::post('get-step-by-forum', [ApiSubStepController::class, 'checkSubStepResultByUser']);
     //Get UNT Exam
     Route::post("/attempt",[AttemptController::class,"attempt"]);
-    Route::post("/attempt-custom",[AttemptController::class,"attempt"]);
+
     Route::get("/attempt_by/{id}",[AttemptController::class,"attemptById"]);
+    Route::post("/create-attempt-settings",[AttemptController::class,"createAttemptSettings"]);
+    Route::get("/attempt_by_promo_code/{promo_code}",[AttemptController::class,"attemptByPromoCode"]);
     Route::get("/user-attempts",[AttemptController::class,"userAttempts"]);
     Route::get("/user-unt-statistics",[AttemptController::class,"userUntStat"]);
     Route::get("/statistics-attempt-by/{id}",[AttemptController::class,"statAttemptById"]);
@@ -101,6 +104,7 @@ Route::group(['middleware' => 'API'], function() {
     Route::group(['prefix' => 'teacher'], function () {
         Route::resource('classrooms', ClassroomGroupController::class);
         Route::get('detail-classroom/{id}', [ClassroomGroupController::class, 'getDetailClassroom']);
+    Route::resource('classrooms', ClassroomGroupController::class);
     });
 
 });
@@ -109,6 +113,7 @@ Route::post("/auth/register",[ApiAuthController::class,"register"]);
 Route::post("/auth/send-reset-token",[ApiAuthController::class,"sendResetToken"]);
 Route::post("/auth/reset",[ApiAuthController::class,"resetPassword"]);
 Route::get("/test",[\App\Http\Controllers\Api\TestController::class,"test"]);
+
 
 
 

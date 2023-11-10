@@ -4,11 +4,14 @@ namespace App\Http\Controllers\Api;
 
 use App\DTOs\AnswerDTO;
 use App\DTOs\AttemptCreateDTO;
+use App\DTOs\AttemptCustomizeCreateDTO;
 use App\DTOs\AttemptDTO;
+use App\DTOs\AttemptSettingsCreateDTO;
 use App\DTOs\SubjectQuestionDTO;
 use App\Http\Controllers\Controller;
 use App\Models\Attempt;
 use App\Models\AttemptQuestion;
+use App\Models\AttemptSetting;
 use App\Models\AttemptSubject;
 use App\Models\CommercialGroupPlan;
 use App\Models\Question;
@@ -21,6 +24,7 @@ use App\Traits\ResponseJSON;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class AttemptController extends Controller
 {
@@ -47,14 +51,38 @@ class AttemptController extends Controller
         return response()->json(new ResponseJSON(status: true,data: $attempt),200);
     }
 
-    public function custom_attempt(Request $request){
-        $attempt = AttemptCreateDTO::fromRequest($request);
-        $user = auth()->guard("api")->user();
-        $questions = $this->questionService->get_questions_with_subjects($attempt->subjects,$attempt->locale_id,$attempt->attempt_type_id);
-        $max_points = $this->questionService->get_questions_max_point($questions);
-        $max_time = $this->questionService->get_max_time_in_ms($questions);
-        $attempt = $this->attemptService->create_attempt($user->id,$attempt->attempt_type_id,$attempt->locale_id,$max_points,$questions,$max_time);
-        return response()->json(new ResponseJSON(status: true,data: $attempt),200);
+    public function attemptByPromoCode($promo_code){
+        try{
+            $attempt_setting = AttemptSetting::firstWhere(["promo_code"=>$promo_code]);
+            if(!$attempt_setting){
+                return response()->json(new ResponseJSON(status: true,message: "По промокоду ничего не найдено"),404);
+            }
+            $user = auth()->guard("api")->user();
+            $questions = $this->questionService->getQuestionBySettingsId($attempt_setting->id);
+            $max_points = $this->questionService->get_questions_max_point($questions);
+            $max_time = $this->questionService->get_max_time_in_ms($questions);
+            $attempt = $this->attemptService->create_attempt($user->id,2,$attempt_setting->locale_id,$max_points,$questions,$max_time);
+            return response()->json(new ResponseJSON(status: true,data: $attempt),200);
+        }
+        catch (\Exception $exception){
+            return response()->json(new ResponseJSON(status: false,message: $exception->getMessage()),500);
+        }
+
+
+    }
+
+    public function createAttemptSettings(Request $request){
+        try{
+            $input = $request->all();
+            $input["point"] = 0;
+            $input["promo_code"] = Str::random(10);
+            $attemptDto = AttemptSettingsCreateDTO::fromArray($input);
+            $setting = AttemptSetting::add($attemptDto->toArray());
+            return response()->json(new ResponseJSON(status: true,data: $setting),200);
+        }
+        catch (\Exception $exception){
+            return response()->json(new ResponseJSON(status: false,message: $exception->getMessage()),500);
+        }
     }
 
 
