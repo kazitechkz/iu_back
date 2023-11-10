@@ -100,6 +100,7 @@ Route::group(['middleware' => 'API'], function() {
     //TEACHER_ROUTES
     Route::group(['prefix' => 'teacher'], function () {
         Route::resource('classrooms', ClassroomGroupController::class);
+        Route::get('detail-classroom/{id}', [ClassroomGroupController::class, 'getDetailClassroom']);
     });
 
 });

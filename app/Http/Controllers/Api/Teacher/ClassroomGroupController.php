@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Teacher;
 
 use App\Http\Controllers\Controller;
+use App\Models\Classroom;
 use App\Models\ClassroomGroup;
 use App\Traits\ResponseJSON;
 use Illuminate\Http\Request;
@@ -18,6 +19,22 @@ class ClassroomGroupController extends Controller
             return response()->json(new ResponseJSON(
                 status: true,
                 data: $groups
+            ));
+        } catch (ValidationException $exception) {
+            return response()->json(new ResponseJSON(
+                status: false,
+                errors: $exception->errors()
+            ), 400);
+        }
+    }
+
+    public function getDetailClassroom($id)
+    {
+        try {
+            $classroom = Classroom::with('user', 'classroom_group')->where('class_id', $id)->get();
+            return response()->json(new ResponseJSON(
+                status: true,
+                data: $classroom
             ));
         } catch (ValidationException $exception) {
             return response()->json(new ResponseJSON(
