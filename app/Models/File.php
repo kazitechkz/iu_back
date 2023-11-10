@@ -69,7 +69,7 @@ class File extends Model
         $s3 = AWS::getS3();
         if ($filePath && $filePath != '') {
             return $s3->getObjectUrl(
-                env('AWS_BUCKET'),
+                'iunion',
                 $filePath
             );
 //            return $s3->createPresignedRequest(
@@ -94,7 +94,7 @@ class File extends Model
         if ($fileId) {
             $path = File::find($fileId);
             $s3->deleteObject([
-                'Bucket' => env('AWS_BUCKET'),
+                'Bucket' => 'iunion',
                 'Key' => $path->url,
             ]);
         }
