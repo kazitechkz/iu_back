@@ -58,7 +58,6 @@ class SubStepContentController extends Controller
         try {
             if (auth()->user()->can("sub-step-content create")) {
                 $input = MathFormulaHelper::getContent($request);
-                $input["is_active"] = $request->boolean("is_active");
                 SubStepContent::add($input);
                 return redirect()->back();
             } else {

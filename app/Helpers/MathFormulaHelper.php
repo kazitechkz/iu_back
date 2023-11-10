@@ -73,8 +73,9 @@ class MathFormulaHelper
 
     public static function getContent($request): array|string
     {
-//        dd($request['text_ru']);
         $self = new self();
+        $data = $request->all();
+        $data["is_active"] = $request->boolean("is_active");
         $data['text_ru'] = $self->getReplaceStr($request['text_ru']);
         $data['text_kk'] = $self->getReplaceStr($request['text_kk']);
         return $data;
