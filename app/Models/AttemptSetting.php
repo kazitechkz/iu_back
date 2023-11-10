@@ -41,11 +41,13 @@ class AttemptSetting extends Model
 		'user_id' => 'int',
 		'settings' => 'json',
 		'locale_id' => 'int',
+		'subject_id' => 'int',
 		'time' => 'int',
 		'point' => 'int'
 	];
 
 	protected $fillable = [
+        "subject_id",
 		'promo_code',
 		'class_id',
 		'user_id',
@@ -70,4 +72,8 @@ class AttemptSetting extends Model
 	{
 		return $this->belongsTo(User::class);
 	}
+    public function subject()
+    {
+        return $this->belongsTo(Subject::class);
+    }
 }

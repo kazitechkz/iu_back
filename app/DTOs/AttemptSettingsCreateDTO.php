@@ -6,14 +6,26 @@ use WendellAdriel\ValidatedDTO\ValidatedDTO;
 
 class AttemptSettingsCreateDTO extends ValidatedDTO
 {
+    public $settings;
+    public $locale_id;
+    public $subject_id;
+    public $time;
+    public $hidden_fields;
+    public $user_id;
+    public $point;
+    public $promo_code;
+
     protected function rules(): array
     {
         return [
             'settings' => 'required',
             'locale_id' => 'required|exists:locales,id',
-            'time' => 'required|number|max:300|min:1',
+            'subject_id' => 'required|exists:subjects,id',
+            'time' => 'required|integer|max:300|min:1',
             'hidden_fields' => 'required',
-            'point' => 'required|number'
+            'user_id' => '',
+            'promo_code' => '',
+            'point' => '',
         ];
     }
 

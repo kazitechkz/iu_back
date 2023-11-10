@@ -28,5 +28,10 @@ class AttemptTypeSeeder extends Seeder
             'title_kk' => 'Турнир пәнін тапсыру',
             'title_en' => 'Pass Tournament Subject',
         ]);
+        AttemptType::create([
+            'title_ru' => 'Сдача предмета по заданным настройкам',
+            'title_kk' => 'Берілген параметрлер бойынша пән тестінен өту',
+            'title_en' => 'Passing the test of the subject according to the specified settings',
+        ]);
     }
 }

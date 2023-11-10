@@ -2,11 +2,14 @@
 
 namespace App\Services;
 
+use App\Exceptions\NotFoundException;
 use App\Exceptions\QuestionException;
 use App\Http\Livewire\SingleSubjectTest\SingleSubjectTestTable;
+use App\Models\AttemptSetting;
 use App\Models\GroupPlan;
 use App\Models\Question;
 use App\Models\SingleSubjectTest;
+use App\Models\SubCategory;
 use App\Models\Subject;
 use Illuminate\Support\Facades\DB;
 
@@ -124,30 +127,72 @@ class QuestionService
     }
 
 
-    protected function get_single_questions($locale_id,$compulsory_subject,$count,$hidden){
-        $single_question_query = Question::with("context")->where(["subject_id" => $compulsory_subject->id,"type_id" => self::SINGLE_QUESTION_ID,"locale_id" => $locale_id])->inRandomOrder();
+    protected function get_single_questions($locale_id,$compulsory_subject,$count,$hidden,$category_id=null,$sub_category_id=null){
+        $condition = ["subject_id" => $compulsory_subject->id,"type_id" => self::SINGLE_QUESTION_ID,"locale_id" => $locale_id];
+        $query = Question::query();
+        if($category_id && !$sub_category_id){
+            $sub_category_ids = SubCategory::where(["category_id" => $category_id])->pluck("id","id")->toArray();
+            $query->whereIn("sub_category_id",$sub_category_ids)->with("context")->where($condition);
+        }
+        elseif (!$category_id && $sub_category_id){
+            $condition["sub_category_id"] = $sub_category_id;
+            $query->with("context")->where($condition);
+        }
+        else{
+            $query->with("context")->where($condition);
+        }
+        $single_question_query = $query->inRandomOrder();
         $questions_one = $single_question_query->take($count)->get()->makeHidden($hidden)->toArray();
         return $questions_one;
     }
 
-    protected function get_context_questions($locale_id,$compulsory_subject,$rand_int,$hidden){
-        $questions = Question::where(["type_id"=>self::CONTEXT_QUESTION_ID,"subject_id" => $compulsory_subject->id,"locale_id" => $locale_id])->select("context_id",DB::raw('COUNT(questions.context_id) as context_qty'))->groupBy("context_id")->having(DB::raw('count(context_id)'), '=', 5)->pluck("context_qty","context_id")->toArray();
+    protected function get_context_questions($locale_id,$compulsory_subject,$rand_int,$hidden,$category_id=null,$sub_category_id=null){
+        $condition = ["type_id"=>self::CONTEXT_QUESTION_ID,"subject_id" => $compulsory_subject->id,"locale_id" => $locale_id];
+        $query = Question::query();
         $context_questions = [];
-        if(count($questions)>=$rand_int){
+        if($category_id && !$sub_category_id){
+            $sub_category_ids = SubCategory::where(["category_id" => $category_id])->pluck("id","id")->toArray();
+            $context_question = $query->whereIn("sub_category_id",$sub_category_ids)->where($condition)->with("context")->get()->take($rand_int * self::CONTEXT_QUESTION_NUMBER)->makeHidden($hidden)->toArray();
+            array_push($context_questions, ...$context_question);
+        }
+        elseif (!$category_id && $sub_category_id){
+            $condition["sub_category_id"] = $sub_category_id;
+            $context_question =$query->where($condition)->with("context")->get()->take($rand_int * self::CONTEXT_QUESTION_NUMBER)->makeHidden($hidden)->toArray();;
+            array_push($context_questions, ...$context_question);
+        }
+        else{
+            $query->where($condition);
+            $questions = $query->select("context_id",DB::raw('COUNT(questions.context_id) as context_qty'))->groupBy("context_id")->having(DB::raw('count(context_id)'), '=', 5)->pluck("context_qty","context_id")->toArray();
+            if(count($questions)>=$rand_int){
                 $ids = array_rand($questions,$rand_int);
                 $ids = is_array($ids) ? $ids : [$ids];
                 foreach ($ids as $id){
                     $context_question = Question::whereIn("context_id",[$id])->with("context")->get()->take(5)->makeHidden($hidden)->toArray();
                     array_push($context_questions, ...$context_question);
                 }
-                return $context_questions;
+            }
+            else{
+                throw new QuestionException("Вопросов в дисциплине {$compulsory_subject->title_ru} недостаточно");
+            }
+        }
+        return $context_questions;
+
+    }
+    protected function get_multiple_questions($locale_id,$compulsory_subject,$count,$hidden,$category_id=null,$sub_category_id=null){
+        $condition = ["subject_id" => $compulsory_subject->id,"type_id" => self::MULTI_QUESTION_ID,"locale_id" => $locale_id];
+        $query = Question::query();
+        if($category_id && !$sub_category_id){
+            $sub_category_ids = SubCategory::where(["category_id" => $category_id])->pluck("id","id")->toArray();
+            $query->with("context")->whereIn("sub_category_id",$sub_category_ids)->where($condition);
+        }
+        elseif (!$category_id && $sub_category_id){
+            $condition["sub_category_id"] = $sub_category_id;
+            $query->with("context")->where($condition);
         }
         else{
-            throw new QuestionException("Вопросов в дисциплине {$compulsory_subject->title_ru} недостаточно");
+            $query->with("context")->where($condition);
         }
-    }
-    protected function get_multiple_questions($locale_id,$compulsory_subject,$count,$hidden){
-        $multiple_question_query = Question::with("context")->where(["subject_id" => $compulsory_subject->id,"type_id" => self::MULTI_QUESTION_ID,"locale_id" => $locale_id])->inRandomOrder();
+        $multiple_question_query = $query->inRandomOrder();
         $multiple_question = $multiple_question_query->take($count)->get()->makeHidden($hidden)->toArray();
         return $multiple_question;
     }
@@ -214,4 +259,66 @@ class QuestionService
         }
         return  $hidden;
     }
+
+
+
+    public function getQuestionBySettingsId($setting_id){
+        $attempt_settings = AttemptSetting::with("subject")->find($setting_id);
+        if(!$attempt_settings){
+            throw new NotFoundException("Не найдены настройки");
+        }
+        $hidden_fields = explode(",",$attempt_settings->hidden_fields);
+        $hidden = ["correct_answers","explanation","explanation_image",...$hidden_fields];
+        $questions[$attempt_settings->subject_id] = [];
+        $settings = json_decode($attempt_settings->settings,true);
+        foreach ($settings as $category_id => $setting){
+            if($settings[$category_id]){
+                //Есть ли Суб Категория
+                if(key_exists("sub_category_ids",$setting)){
+                    foreach ($setting["sub_category_ids"] as $sub_category_id => $question_quantity){
+                        $s_questions = key_exists("s_questions",$question_quantity) ? $question_quantity["s_questions"] : 0;
+                        if($s_questions){
+                            $questions_one = $this->get_single_questions($attempt_settings->locale_id,$attempt_settings->subject,$s_questions,$hidden,null,$sub_category_id);
+                            array_push( $questions[$attempt_settings->subject_id],...$questions_one);
+                        }
+                        $c_questions = key_exists("c_questions",$question_quantity) ? $question_quantity["c_questions"] : 0;
+                        if($c_questions){
+                            $context_questions = $this->get_context_questions($attempt_settings->locale_id,$attempt_settings->subject,$c_questions/self::CONTEXT_QUESTION_NUMBER,$hidden,null,$sub_category_id);
+                            array_push($questions[$attempt_settings->subject_id],...$context_questions);
+                        }
+                        $m_questions = key_exists("m_questions",$question_quantity) ? $question_quantity["m_questions"] : 0;
+                        if($m_questions){
+                            $multiple_question = $this->get_multiple_questions($attempt_settings->locale_id,$attempt_settings->subject,$m_questions,$hidden,null,$sub_category_id);
+                            array_push($questions[$attempt_settings->subject_id],...$multiple_question);
+                        }
+                    }
+                }
+                //Только Категория
+                else{
+                    $s_questions = key_exists("s_questions",$setting) ? $setting["s_questions"] : 0 ;
+                    $c_questions = key_exists("c_questions",$setting) ? $setting["c_questions"] : 0;
+                    $m_questions =  key_exists("m_questions",$setting) ? $setting["m_questions"] : 0;
+                    if($s_questions){
+                        $questions_one = $this->get_single_questions($attempt_settings->locale_id,$attempt_settings->subject,$s_questions,$hidden,$category_id,);
+                        array_push( $questions[$attempt_settings->subject_id],...$questions_one);
+                    }
+                    if($c_questions){
+                        $context_questions = $this->get_context_questions($attempt_settings->locale_id,$attempt_settings->subject,$c_questions/self::CONTEXT_QUESTION_NUMBER,$hidden,$category_id);
+                        array_push($questions[$attempt_settings->subject_id],...$context_questions);
+                    }
+                    if($m_questions){
+                        $multiple_question = $this->get_multiple_questions($attempt_settings->locale_id,$attempt_settings->subject,$m_questions,$hidden,$category_id);
+                        array_push($questions[$attempt_settings->subject_id],...$multiple_question);
+                    }
+                }
+            }
+            else{
+                throw new \Exception("Выберите верное количество");
+            }
+        }
+        return $questions;
+    }
+
+
+
 }
