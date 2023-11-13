@@ -20,6 +20,7 @@ use App\Models\Subject;
 use App\Models\UserQuestion;
 use App\Services\AnswerService;
 use App\Services\AttemptService;
+use App\Services\PlanService;
 use App\Services\QuestionService;
 use App\Services\RoleServices;
 use App\Traits\ResponseJSON;
@@ -33,12 +34,14 @@ class AttemptController extends Controller
     private readonly AttemptService $attemptService;
     private readonly QuestionService $questionService;
     private readonly AnswerService $answerService;
+    private readonly PlanService $planService;
 
-    public function __construct(AttemptService $attemptService,QuestionService $questionService,AnswerService $answerService)
+    public function __construct(AttemptService $attemptService,QuestionService $questionService,AnswerService $answerService,PlanService $planService)
     {
         $this->attemptService = $attemptService;
         $this->questionService = $questionService;
         $this->answerService = $answerService;
+        $this->planService = $planService;
     }
 
 
@@ -93,7 +96,7 @@ class AttemptController extends Controller
             $user = auth()->guard("api")->user();
             $input = $request->all();
             if($user->hasRole(RoleServices::STUDENT_ROLE_NAME)){
-                if(!$user->activeSubscriptions()->has($input["subject_id"])){
+                if(!$this->planService->check_user_subject($request->get("subject_id"))){
                     return response()->json(new ResponseJSON(status: true,message: "У вас нет прав"),403);
                 }
                 $input["class_id"] = null;
