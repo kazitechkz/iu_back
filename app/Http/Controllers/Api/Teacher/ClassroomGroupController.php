@@ -31,7 +31,7 @@ class ClassroomGroupController extends Controller
     public function getDetailClassroom($id)
     {
         try {
-            $classroom = Classroom::with('user', 'classroom_group')->where('class_id', $id)->get();
+            $classroom = Classroom::with('user', 'classroom_group', 'user.gender')->where('class_id', $id)->get();
             return response()->json(new ResponseJSON(
                 status: true,
                 data: $classroom

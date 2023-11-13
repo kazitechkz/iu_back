@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController as ApiAuthController;
+use App\Http\Controllers\Api\CategoryController as ApiCategoryController;
 use App\Http\Controllers\Api\ClassroomController;
 use App\Http\Controllers\Api\StepController as ApiStepController;
 use App\Http\Controllers\Api\SubStepController as ApiSubStepController;
@@ -38,6 +39,7 @@ Route::group(['middleware' => 'API'], function() {
     Route::get("important-news",[ApiNewsController::class,"importantNews"]);
     Route::get("news",[ApiNewsController::class,"news"]);
     Route::get('subjects', [ApiSubjectController::class, 'index']);
+    Route::get('categories/{id}', [ApiCategoryController::class, 'getCategoriesBySubjectID']);
     Route::get('steps/{locale_id}', [ApiStepController::class, 'getSteps']);
     Route::get('step-detail/{id}', [ApiStepController::class, 'getStepDetail']);
     Route::get('sub-steps/{id}', [ApiSubStepController::class, 'getSubStepsByStepId']);
