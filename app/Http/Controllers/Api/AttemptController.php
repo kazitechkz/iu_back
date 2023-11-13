@@ -90,7 +90,15 @@ class AttemptController extends Controller
 
     public function createAttemptSettings(Request $request){
         try{
+            $user = auth()->guard("api")->user();
             $input = $request->all();
+            if($user->hasRole(RoleServices::STUDENT_ROLE_NAME)){
+                if(!$user->activeSubscriptions()->has($input["subject_id"])){
+                    return response()->json(new ResponseJSON(status: true,message: "У вас нет прав"),403);
+                }
+                $input["class_id"] = null;
+                $input["users"] = [$user->id];
+            }
             $input["point"] = 0;
             $input["promo_code"] = Str::random(10);
             $input["owner_id"] = auth()->guard("api")->id();
