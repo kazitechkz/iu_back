@@ -3,18 +3,33 @@
 namespace App\Http\Controllers\API;
 
 use App\DTOs\AppealQuestionDTO;
+use App\DTOs\CategoryQuestionCountDTO;
+use App\DTOs\SubCategoryQuestionCountDTO;
 use App\Http\Controllers\Controller;
 use App\Models\Appeal;
+use App\Models\Category;
 use App\Models\CommercialGroupPlan;
 use App\Models\GroupPlan;
 use App\Models\Question;
+use App\Models\Step;
+use App\Models\SubCategory;
+use App\Models\SubStep;
 use App\Models\UserQuestion;
+use App\Services\AnswerService;
+use App\Services\AttemptService;
+use App\Services\QuestionService;
 use App\Traits\ResponseJSON;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 
 class QuestionController extends Controller
 {
+    private readonly QuestionService $questionService;
+
+    public function __construct(QuestionService $questionService)
+    {
+        $this->questionService = $questionService;
+    }
     public function getSingleSubjectTest(Request $request)
     {
         try {
@@ -91,29 +106,7 @@ class QuestionController extends Controller
             $groupIds = CommercialGroupPlan::whereIn("plan_id",$planIds)->pluck("group_id")->toArray();
             if($groupIds){
                 if(in_array($question->group_id,$groupIds)){
-                    $all_answer = ['answer_a',
-                        'answer_b',
-                        'answer_c',
-                        'answer_d',
-                        'answer_e',
-                        'answer_f',
-                        'answer_g',
-                        'answer_h',];
-                    $correct_answers = explode(",",$question->correct_answers);
-                    $answers = [];
-                    foreach ($correct_answers as $key=>$correct_answer){
-                        array_push($answers,"answer_".$correct_answer);
-                    }
-                    $correct_one = array_rand($answers);
-                    $all_answer = array_diff($all_answer,$answers);
-                    $proposal_answer = [];
-                    foreach ($all_answer as $answer_value){
-                        if($question[$answer_value]){
-                            array_push($proposal_answer,$answer_value);
-                        }
-                    }
-                    $incorrect_one = array_rand($proposal_answer);
-                    $correct_answer = [$answers[$correct_one],$proposal_answer[$incorrect_one]];
+                    $correct_answer = $this->questionService->getFiftyFifty($question);
                     return response()->json(new ResponseJSON(status: true,message: "Вам дан шанс 50% на 50%",data: [$question->id=>$correct_answer]),200);
                 }
             }
@@ -141,7 +134,35 @@ class QuestionController extends Controller
         catch (\Exception $exception){
             return response()->json(new ResponseJSON(status: false,message: $exception->getMessage()),500);
         }
+    }
 
+    public function getSubCategoryQuestion(Request $request){
+        try {
+            $subCategoryQuestionCountDTO = SubCategoryQuestionCountDTO::fromRequest($request);
+            $sub_category = SubCategory::firstWhere(["id"=>$subCategoryQuestionCountDTO->sub_category_id]);
+            if(!$sub_category){
+                return response()->json(new ResponseJSON(status: false,message: "Суб категория не найдена"),400);
+            }
+            $result = $this->questionService->getSubCategoryQuestionNumber($subCategoryQuestionCountDTO->sub_category_id,$subCategoryQuestionCountDTO->locale_id);
+            return response()->json(new ResponseJSON(status: true,data: $result),200);
+        }
+        catch (\Exception $exception){
+            return response()->json(new ResponseJSON(status: false,message: $exception->getMessage()),500);
+        }
+    }
 
+    public function getCategoryQuestion(Request $request){
+        try {
+            $categoryQuestionCountDTO = CategoryQuestionCountDTO::fromRequest($request);
+            $category = Category::firstWhere(["id"=>$categoryQuestionCountDTO->category_id]);
+            if(!$category){
+                return response()->json(new ResponseJSON(status: false,message: "Категория не найдена"),400);
+            }
+            $result = $this->questionService->getCategoryQuestionNumber($categoryQuestionCountDTO->category_id,$categoryQuestionCountDTO->locale_id);
+            return response()->json(new ResponseJSON(status: true,data: $result),200);
+        }
+        catch (\Exception $exception){
+            return response()->json(new ResponseJSON(status: false,message: $exception->getMessage()),500);
+        }
     }
 }

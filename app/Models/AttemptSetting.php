@@ -9,6 +9,7 @@ namespace App\Models;
 use App\Traits\CRUD;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * Class AttemptSetting
@@ -38,19 +39,21 @@ class AttemptSetting extends Model
 
 	protected $casts = [
 		'class_id' => 'int',
-		'user_id' => 'int',
+		'owner_id' => 'int',
 		'settings' => 'json',
 		'locale_id' => 'int',
 		'subject_id' => 'int',
 		'time' => 'int',
-		'point' => 'int'
+		'point' => 'int',
+        'users' => 'array',
 	];
 
 	protected $fillable = [
         "subject_id",
 		'promo_code',
 		'class_id',
-		'user_id',
+		'users',
+		'owner',
 		'settings',
 		'locale_id',
 		'time',
@@ -68,12 +71,31 @@ class AttemptSetting extends Model
 		return $this->belongsTo(Locale::class);
 	}
 
-	public function user()
+	public function owner()
 	{
-		return $this->belongsTo(User::class);
+		return $this->belongsTo(User::class,"owner_id","id")->select([
+            'id',
+            "username",
+            'name',
+            'phone',
+            'email',
+            'image_url'
+        ])->with("file");
 	}
     public function subject()
     {
         return $this->belongsTo(Subject::class);
+    }
+
+    public function isUserIncluded(){
+        if ($this->users){
+            $users = json_decode($this->users,true);
+            return in_array(auth()->guard("api")->id(),$users);
+        }
+        return false;
+    }
+
+    public function attempt_settings_results():HasMany{
+        return $this->hasMany(AttemptSettingsResult::class,"setting_id","id");
     }
 }

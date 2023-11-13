@@ -9,6 +9,7 @@ use Bavix\Wallet\Traits\HasWallet;
 use Bpuig\Subby\Traits\HasSubscriptions;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -92,5 +93,13 @@ class User extends Authenticatable implements Searchable,Wallet
     public function gender(): BelongsTo
     {
         return $this->belongsTo(Gender::class, 'gender_id');
+    }
+
+    public function classRooms():HasMany{
+        return $this->hasMany(Classroom::class, 'student_id',"id");
+    }
+
+    public function inIsClassroom($class_id) : bool{
+        return $this->hasMany(Classroom::class, 'student_id',"id")->where(["class_id" => $class_id])->exists();
     }
 }

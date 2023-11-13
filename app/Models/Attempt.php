@@ -78,10 +78,17 @@ class Attempt extends Model
 		return $this->belongsTo(AttemptType::class, 'type_id');
 	}
 
-	public function user()
-	{
-		return $this->belongsTo(User::class);
-	}
+    public function user()
+    {
+        return $this->belongsTo(User::class)->select([
+            'id',
+            "username",
+            'name',
+            'phone',
+            'email',
+            'image_url'
+        ])->with("file");
+    }
 
 	public function subjects()
 	{

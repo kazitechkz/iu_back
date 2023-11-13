@@ -6,6 +6,7 @@ use App\Exceptions\NotFoundException;
 use App\Exceptions\QuestionException;
 use App\Http\Livewire\SingleSubjectTest\SingleSubjectTestTable;
 use App\Models\AttemptSetting;
+use App\Models\AttemptSettingsResult;
 use App\Models\GroupPlan;
 use App\Models\Question;
 use App\Models\SingleSubjectTest;
@@ -28,6 +29,7 @@ class QuestionService
     const UNT_TYPE = 1;
     const CASUAL_TYPE = 2;
     const TOURNAMENT_TYPE=3;
+    const SETTINGS_TYPE=4;
 
     public function get_questions_with_subjects($subjects,$locale_id,$attempt_type_id,$single_q_count =0, $contextual_q_count =0, $multiple_q_count = 0){
         try {
@@ -249,13 +251,28 @@ class QuestionService
         return $subjects;
     }
 
-    public static function getHidden($type_id):array{
+    public static function getHidden($type_id,$attempt_id = null):array{
         $hidden = [];
         if($type_id == QuestionService::UNT_TYPE || $type_id == QuestionService::CASUAL_TYPE){
             $hidden = ["correct_answers","explanation","explanation_image",];
         }
         else if($type_id == QuestionService::TOURNAMENT_TYPE){
             $hidden = ["correct_answers","explanation","prompt","explanation_image"];
+        }
+        else if($type_id == QuestionService::SETTINGS_TYPE){
+            if($attempt_id){
+                $attempts_res = AttemptSettingsResult::where(["attempt_id" => $attempt_id])->first();
+                if($attempts_res){
+                    $attempt_settings = AttemptSetting::firstWhere(["id"=>$attempts_res]);
+                    $hidden = ["correct_answers","explanation","explanation_image",...explode(",",$attempt_settings->hidden)];
+                }
+                else{
+                    $hidden = ["correct_answers","explanation","prompt","explanation_image"];
+                }
+            }
+            else{
+                $hidden = ["correct_answers","explanation","prompt","explanation_image"];
+            }
         }
         return  $hidden;
     }
@@ -319,6 +336,65 @@ class QuestionService
         return $questions;
     }
 
+    public function getFiftyFifty($question){
+        $all_answer = ['answer_a',
+            'answer_b',
+            'answer_c',
+            'answer_d',
+            'answer_e',
+            'answer_f',
+            'answer_g',
+            'answer_h',];
+        $correct_answers = explode(",",$question->correct_answers);
+        $answers = [];
+        foreach ($correct_answers as $key=>$correct_answer){
+            array_push($answers,"answer_".$correct_answer);
+        }
+        $correct_one = array_rand($answers);
+        $all_answer = array_diff($all_answer,$answers);
+        $proposal_answer = [];
+        foreach ($all_answer as $answer_value){
+            if($question[$answer_value]){
+                array_push($proposal_answer,$answer_value);
+            }
+        }
+        $incorrect_one = array_rand($proposal_answer);
+        $correct_answer = [$answers[$correct_one],$proposal_answer[$incorrect_one]];
+        return $correct_answer;
+    }
+
+    public function getSubCategoryQuestionNumber($sub_category_id,$locale_id){
+        //disable ONLY_FULL_GROUP_BY
+        DB::statement("SET sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));");
+        $count = Question::where(["sub_category_id" => $sub_category_id,"locale_id" => $locale_id])
+                            ->select("id","type_id",DB::raw('count(*) as question_total'))
+                            ->groupBy(["type_id"])->pluck("question_total","type_id")->toArray();
+        //re-enable ONLY_FULL_GROUP_BY
+        DB::statement("SET sql_mode=(SELECT CONCAT(@@sql_mode, ',ONLY_FULL_GROUP_BY'));");
+        $result = [$sub_category_id => [
+            "single_count"=>key_exists(self::SINGLE_QUESTION_ID,$count) ? $count[self::SINGLE_QUESTION_ID] : 0,
+            "context_count"=>key_exists(self::CONTEXT_QUESTION_ID,$count) ? $count[self::CONTEXT_QUESTION_ID] : 0,
+            "multiple_count"=>key_exists(self::MULTI_QUESTION_ID,$count) ? $count[self::MULTI_QUESTION_ID] : 0,
+        ]];
+        return $result;
+    }
+
+    public function getCategoryQuestionNumber($category_id,$locale_id){
+        //disable ONLY_FULL_GROUP_BY
+        DB::statement("SET sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));");
+        $sub_category_ids = SubCategory::where(["category_id" => $category_id])->pluck("id","id")->toArray();
+        $count = Question::whereIn("sub_category_id",$sub_category_ids)->where(["locale_id" => $locale_id])
+            ->select("id","type_id",DB::raw('count(*) as question_total'))
+            ->groupBy(["type_id"])->pluck("question_total","type_id")->toArray();
+        //re-enable ONLY_FULL_GROUP_BY
+        DB::statement("SET sql_mode=(SELECT CONCAT(@@sql_mode, ',ONLY_FULL_GROUP_BY'));");
+        $result = [$category_id => [
+            "single_count"=>key_exists(self::SINGLE_QUESTION_ID,$count) ? $count[self::SINGLE_QUESTION_ID] : 0,
+            "context_count"=>key_exists(self::CONTEXT_QUESTION_ID,$count) ? $count[self::CONTEXT_QUESTION_ID] : 0,
+            "multiple_count"=>key_exists(self::MULTI_QUESTION_ID,$count) ? $count[self::MULTI_QUESTION_ID] : 0,
+        ]];
+        return $result;
+    }
 
 
 }

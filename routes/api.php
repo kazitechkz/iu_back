@@ -42,7 +42,7 @@ Route::group(['middleware' => 'API'], function() {
     Route::get('step-detail/{id}', [ApiStepController::class, 'getStepDetail']);
     Route::get('sub-steps/{id}', [ApiSubStepController::class, 'getSubStepsByStepId']);
     Route::get('sub-step/{id}', [ApiSubStepController::class, 'getSubStepById']);
-    Route::post('get-single-subject-test', [ApiQuestionController::class, 'getSingleSubjectTest']);
+
     Route::get('locales', [ApiLocaleController::class, 'index']);
     Route::get('faq', [ApiFaqController::class, 'index']);
     Route::get('forum', [ApiForumController::class, 'index']);
@@ -56,17 +56,22 @@ Route::group(['middleware' => 'API'], function() {
     Route::post('get-step-by-forum', [ApiSubStepController::class, 'checkSubStepResultByUser']);
     //Get UNT Exam
     Route::post("/attempt",[AttemptController::class,"attempt"]);
-
     Route::get("/attempt_by/{id}",[AttemptController::class,"attemptById"]);
     Route::post("/create-attempt-settings",[AttemptController::class,"createAttemptSettings"]);
-    Route::get("/attempt_by_promo_code/{promo_code}",[AttemptController::class,"attemptByPromoCode"]);
+    Route::get("/my-attempt-settings",[AttemptController::class,"myAttemptSettings"]);
+    Route::get("/attempt-by-promo-code/{promo_code}",[AttemptController::class,"attemptByPromoCode"]);
     Route::get("/user-attempts",[AttemptController::class,"userAttempts"]);
     Route::get("/user-unt-statistics",[AttemptController::class,"userUntStat"]);
     Route::get("/statistics-attempt-by/{id}",[AttemptController::class,"statAttemptById"]);
     Route::get("/finish/{attempt_id}",[AttemptController::class,"finish"]);
+    //Question
+    Route::post('get-single-subject-test', [ApiQuestionController::class, 'getSingleSubjectTest']);
     Route::get("/save-question/{questionId}",[ApiQuestionController::class,"saveQuestion"]);
     Route::get("/get-fifty-fifty/{questionId}",[ApiQuestionController::class,"getFiftyFifty"]);
     Route::post("/create-appeal-question",[ApiQuestionController::class,"appealQuestion"]);
+    Route::post("/get-sub-category-question-count",[ApiQuestionController::class,"getSubCategoryQuestion"]);
+    Route::post("/get-category-question-count",[ApiQuestionController::class,"getCategoryQuestion"]);
+    //Question
     //Check Answer
     Route::post("/answer",[AttemptController::class,"answer"]);
     Route::get("/answer-result/{attempt_subject_id}",[AttemptController::class,"answerResult"]);

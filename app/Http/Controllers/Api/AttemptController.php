@@ -12,6 +12,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Attempt;
 use App\Models\AttemptQuestion;
 use App\Models\AttemptSetting;
+use App\Models\AttemptSettingsResult;
 use App\Models\AttemptSubject;
 use App\Models\CommercialGroupPlan;
 use App\Models\Question;
@@ -20,6 +21,7 @@ use App\Models\UserQuestion;
 use App\Services\AnswerService;
 use App\Services\AttemptService;
 use App\Services\QuestionService;
+use App\Services\RoleServices;
 use App\Traits\ResponseJSON;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -58,10 +60,25 @@ class AttemptController extends Controller
                 return response()->json(new ResponseJSON(status: true,message: "По промокоду ничего не найдено"),404);
             }
             $user = auth()->guard("api")->user();
+            if($attempt_setting->users){
+                if(!$attempt_setting->isUserIncluded()){
+                    return response()->json(new ResponseJSON(status: true,message: "У вас нет прав"),403);
+                }
+            }
+            if($attempt_setting->class_id){
+                if($user->inIsClassroom($attempt_setting->class_id)){
+                    return response()->json(new ResponseJSON(status: true,message: "У вас нет прав"),403);
+                }
+            }
+            if(AttemptSettingsResult::where(["setting_id"=>$attempt_setting->id,"user_id"=>$user->id])->exists()){
+                return response()->json(new ResponseJSON(status: true,message: "Вы уже проходили данный тест"),400);
+            }
             $questions = $this->questionService->getQuestionBySettingsId($attempt_setting->id);
             $max_points = $this->questionService->get_questions_max_point($questions);
             $max_time = $this->questionService->get_max_time_in_ms($questions);
-            $attempt = $this->attemptService->create_attempt($user->id,2,$attempt_setting->locale_id,$max_points,$questions,$max_time);
+            $attempt_setting->edit(["point"=>$max_points]);
+            $attempt = $this->attemptService->create_attempt($user->id,QuestionService::SETTINGS_TYPE,$attempt_setting->locale_id,$max_points,$questions,$max_time);
+            AttemptSettingsResult::add(["attempt_id"=>$attempt["attempt_id"],"setting_id"=>$attempt_setting->id,"user_id"=>$user->id]);
             return response()->json(new ResponseJSON(status: true,data: $attempt),200);
         }
         catch (\Exception $exception){
@@ -76,9 +93,32 @@ class AttemptController extends Controller
             $input = $request->all();
             $input["point"] = 0;
             $input["promo_code"] = Str::random(10);
+            $input["owner_id"] = auth()->guard("api")->id();
             $attemptDto = AttemptSettingsCreateDTO::fromArray($input);
-            $setting = AttemptSetting::add($attemptDto->toArray());
+            $resultDTO = $attemptDto->toArray();
+            if($input["users"]){
+                $resultDTO["users"] = json_encode($resultDTO["users"]);
+            }
+            $setting = AttemptSetting::add($resultDTO);
             return response()->json(new ResponseJSON(status: true,data: $setting),200);
+        }
+        catch (\Exception $exception){
+            return response()->json(new ResponseJSON(status: false,message: $exception->getMessage()),500);
+        }
+    }
+
+    public function myAttemptSettings(Request $request){
+        try {
+            $user = auth()->guard()->user();
+            if($user->hasRole(RoleServices::TEACHER_ROLE_NAME)){
+                $attempt_settings = AttemptSetting::where(["owner_id"=>$user->id])
+                    ->with(["classroom_group","locale","owner","subject"])
+                    ->paginate(20);
+                return response()->json(new ResponseJSON(status: true,data: $attempt_settings),200);
+            }
+            else{
+                return response()->json(new ResponseJSON(status: false,message: "У вас нет доступа"),403);
+            }
         }
         catch (\Exception $exception){
             return response()->json(new ResponseJSON(status: false,message: $exception->getMessage()),500);
