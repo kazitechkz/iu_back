@@ -9,16 +9,16 @@ use App\Models\Subject;
 class PlanService
 {
     public function get_subjects(){
-        $subject_plans = auth()->user()->activeSubscriptions()->pluck("tag");
+        $subject_plans = auth()->guard("api")->user()->activeSubscriptions()->pluck("tag");
         if(count($subject_plans) == 0){
             return null;
         }
-        return Subject::whereIn("id",$subject_plans)->get();
+        return Subject::whereIn("id",$subject_plans)->with("image")->get();
     }
 
 
     public function get_closed_subjects(){
-        $subject_plans = auth()->user()->activeSubscriptions()->pluck("tag");
+        $subject_plans = auth()->guard("api")->user()->activeSubscriptions()->pluck("tag");
         if(count($subject_plans) == 0){
             return null;
         }
