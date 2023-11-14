@@ -61,4 +61,19 @@ class SubCategory extends Model
     {
 		return $this->hasMany(Question::class);
 	}
+
+    public function s_questions(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->questions()->where('type_id', 1);
+    }
+
+    public function c_questions(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->questions()->where('type_id', 2);
+    }
+
+    public function m_questions(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->questions()->where('type_id', 3);
+    }
 }

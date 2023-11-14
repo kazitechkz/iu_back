@@ -51,4 +51,24 @@ class Category extends Model
     {
         return $this->hasMany(SubCategory::class, 'category_id', 'id');
     }
+
+    public function questions(): \Illuminate\Database\Eloquent\Relations\HasManyThrough
+    {
+        return $this->hasManyThrough(Question::class, SubCategory::class);
+    }
+
+    public function s_questions(): \Illuminate\Database\Eloquent\Relations\HasManyThrough
+    {
+        return $this->questions()->where('type_id', 1);
+    }
+
+    public function c_questions(): \Illuminate\Database\Eloquent\Relations\HasManyThrough
+    {
+        return $this->questions()->where('type_id', 2);
+    }
+
+    public function m_questions(): \Illuminate\Database\Eloquent\Relations\HasManyThrough
+    {
+        return $this->questions()->where('type_id', 3);
+    }
 }
