@@ -17,6 +17,7 @@ use App\Http\Controllers\Api\LocaleController as ApiLocaleController;
 use App\Http\Controllers\Api\FaqController as ApiFaqController;
 use App\Http\Controllers\Api\ForumController as ApiForumController;
 use App\Http\Controllers\Api\PlanController as ApiPlanController;
+use App\Http\Controllers\Api\WalletController as ApiWalletController;
 use App\Http\Controllers\Api\AppealTypeController as ApiAppealTypeController;
 use App\Http\Controllers\Api\TournamentController as ApiTournamentController;
 use App\Http\Controllers\Api\StatisticsController as ApiStatisticsController;
@@ -104,8 +105,11 @@ Route::group(['middleware' => 'API'], function() {
     Route::get("/forum/show/{id}",[ApiForumController::class,"show"]);
     Route::get("/forum/discuss/{forum_id}",[ApiForumController::class,"forumDiscuss"]);
     Route::post("/discuss/create",[ApiForumController::class,"createDiscuss"]);
-    //Forum
+    //Route
+    Route::get("/wallet",[ApiWalletController::class,"index"]);
 
+
+    //Forum
     Route::post("/upload-image",[\App\Http\Controllers\Api\FileUploadController::class,"uploadImage"]);
 
 
