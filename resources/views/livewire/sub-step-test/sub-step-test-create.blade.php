@@ -46,27 +46,31 @@
     <div class="flex p-3 w-full">
         <div class="w-1/2 px-1">
             @foreach($questions as $question)
-                <div
-                    class="mb-3 inline-flex w-full items-center justify-content-between rounded-lg bg-neutral-50 px-6 py-2 text-base text-neutral-600"
-                    role="alert">
-                    {{$loop->iteration}}. {!! \App\Helpers\StrHelper::latexToHTML($question->text) !!}
-                    <span wire:click="addQuestion({{$question->id}})"
-                        class="cursor-pointer ml-2 inline-block whitespace-nowrap rounded-[0.27rem] bg-primary-100 px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-primary-700"
-                    >+</span>
-                </div>
+                @if($question->question)
+                    <div
+                        class="mb-3 inline-flex w-full items-center justify-content-between rounded-lg bg-neutral-50 px-6 py-2 text-base text-neutral-600"
+                        role="alert">
+                        {{$loop->iteration}}. {!! \App\Helpers\StrHelper::latexToHTML($question->text) !!}
+                        <span wire:click="addQuestion({{$question->id}})"
+                              class="cursor-pointer ml-2 inline-block whitespace-nowrap rounded-[0.27rem] bg-primary-100 px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-primary-700"
+                        >+</span>
+                    </div>
+                @endif
             @endforeach
 
         </div>
         <div class="w-1/2 px-1">
             @foreach($stepQuestions as $question)
-                <div
-                    class="mb-3 inline-flex w-full items-center justify-content-between rounded-lg bg-neutral-50 px-6 py-2 text-base text-neutral-600"
-                    role="alert">
-                    {{$loop->iteration}}. {!! \App\Helpers\StrHelper::latexToHTML($question->question->text) !!}
-                    <span wire:click="removeQuestion({{$question->question->id}})"
-                        class="cursor-pointer inline-block whitespace-nowrap rounded-[0.27rem] bg-primary-100 px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-danger"
-                    ><i class="fa fa-trash" aria-hidden="true"></i></span>
-                </div>
+                @if($question->question)
+                    <div
+                        class="mb-3 inline-flex w-full items-center justify-content-between rounded-lg bg-neutral-50 px-6 py-2 text-base text-neutral-600"
+                        role="alert">
+                        {{$loop->iteration}}. {!! \App\Helpers\StrHelper::latexToHTML($question->question->text) !!}
+                        <span wire:click="removeQuestion({{$question->question->id}})"
+                              class="cursor-pointer inline-block whitespace-nowrap rounded-[0.27rem] bg-primary-100 px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-danger"
+                        ><i class="fa fa-trash" aria-hidden="true"></i></span>
+                    </div>
+                @endif
             @endforeach
 
         </div>
