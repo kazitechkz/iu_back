@@ -123,4 +123,9 @@ class Question extends Model implements Searchable
             $this->text
         );
     }
+
+    public function sub_step_test(): BelongsTo
+    {
+        return $this->belongsTo(SubStepTest::class, 'id', 'question_id');
+    }
 }
