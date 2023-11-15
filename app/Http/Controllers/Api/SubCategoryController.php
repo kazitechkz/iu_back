@@ -10,10 +10,20 @@ use Illuminate\Validation\ValidationException;
 
 class SubCategoryController extends Controller
 {
-    public function getSubCategoriesByCategoryID($id)
+    public function getSubCategoriesByCategoryID($id, $locale_id)
     {
         try {
-            $subCategories = SubCategory::withCount(['s_questions', 'c_questions', 'm_questions'])->where('category_id', $id)->get();
+            $subCategories = SubCategory::withCount([
+                's_questions' => function($query) use ($locale_id) {
+                    $query->where('locale_id', $locale_id);
+                },
+                'c_questions' => function($query) use ($locale_id) {
+                    $query->where('locale_id', $locale_id);
+                },
+                'm_questions' => function($query) use ($locale_id) {
+                    $query->where('locale_id', $locale_id);
+                }
+            ])->where('category_id', $id)->get();
             return response()->json(new ResponseJSON(
                 status: true,
                 data: $subCategories
