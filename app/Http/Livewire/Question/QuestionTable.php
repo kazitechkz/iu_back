@@ -82,6 +82,7 @@ class QuestionTable extends DataTableComponent
         $questions = $this->getSelected();
         foreach ($questions as $key => $value) {
             $question = Question::find($value);
+            $question->sub_step_test?->delete();
             $question?->delete();
         }
         $this->clearSelected();

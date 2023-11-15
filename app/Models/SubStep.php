@@ -98,11 +98,11 @@ class SubStep extends Model
 
     public function getTotalTestKkAttribute(): int
     {
-        return $this->hasMany(SubStepTest::class, 'sub_step_id', 'id')->where('locale_id', 1)->whereNotNull('deleted_at')->count();
+        return $this->hasMany(SubStepTest::class, 'sub_step_id', 'id')->where('locale_id', 1)->count();
     }
 
     public function getTotalTestRuAttribute(): int
     {
-        return $this->hasMany(SubStepTest::class, 'sub_step_id', 'id')->where('locale_id', 2)->whereNotNull('deleted_at')->count();
+        return $this->hasMany(SubStepTest::class, 'sub_step_id', 'id')->where('locale_id', 2)->count();
     }
 }
