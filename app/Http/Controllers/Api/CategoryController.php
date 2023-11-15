@@ -10,10 +10,21 @@ use Illuminate\Validation\ValidationException;
 
 class CategoryController extends Controller
 {
-    public function getCategoriesBySubjectID($id)
+    public function getCategoriesBySubjectID($id, $locale_id)
     {
         try {
-            $categories = Category::withCount(['s_questions', 'c_questions', 'm_questions'])->where('subject_id', $id)->get();
+            $categories = Category::withCount([
+                's_questions' => function($query) use ($locale_id) {
+                    $query->where('locale_id', $locale_id);
+                },
+                'c_questions' => function($query) use ($locale_id) {
+                    $query->where('locale_id', $locale_id);
+                },
+                'm_questions' => function($query) use ($locale_id) {
+                    $query->where('locale_id', $locale_id);
+                }
+            ])
+                ->where('subject_id', $id)->get();
             return response()->json(new ResponseJSON(
                 status: true,
                 data: $categories
