@@ -105,9 +105,13 @@ Route::group(['middleware' => 'API'], function() {
     Route::get("/forum/show/{id}",[ApiForumController::class,"show"]);
     Route::get("/forum/discuss/{forum_id}",[ApiForumController::class,"forumDiscuss"]);
     Route::post("/discuss/create",[ApiForumController::class,"createDiscuss"]);
-    //Route
+    //Wallet
     Route::get("/wallet",[ApiWalletController::class,"index"]);
-
+    Route::get("/my-balance",[ApiWalletController::class,"myBalance"]);
+    Route::post("/wallet-transfer",[ApiWalletController::class,"transfer"]);
+    //User
+    Route::post("/find-user-by-email",[ApiUserController::class,"userEmail"]);
+    //User
 
     //Forum
     Route::post("/upload-image",[\App\Http\Controllers\Api\FileUploadController::class,"uploadImage"]);

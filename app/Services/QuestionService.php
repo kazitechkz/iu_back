@@ -91,6 +91,9 @@ class QuestionService
         return $time;
     }
 
+    public function get_time_in_ms($time){
+        return $time * 60000;
+    }
 
 
     protected function get_questions($compulsory_subjects,
@@ -263,8 +266,8 @@ class QuestionService
             if($attempt_id){
                 $attempts_res = AttemptSettingsResult::where(["attempt_id" => $attempt_id])->first();
                 if($attempts_res){
-                    $attempt_settings = AttemptSetting::firstWhere(["id"=>$attempts_res]);
-                    $hidden = ["correct_answers","explanation","explanation_image",...explode(",",$attempt_settings->hidden)];
+                    $attempt_settings = AttemptSetting::where(["id"=>$attempts_res->setting_id])->first();
+                    $hidden = ["correct_answers","explanation","explanation_image",...explode(",",$attempt_settings->hidden_fields)];
                 }
                 else{
                     $hidden = ["correct_answers","explanation","prompt","explanation_image"];
@@ -393,6 +396,36 @@ class QuestionService
             "context_count"=>key_exists(self::CONTEXT_QUESTION_ID,$count) ? $count[self::CONTEXT_QUESTION_ID] : 0,
             "multiple_count"=>key_exists(self::MULTI_QUESTION_ID,$count) ? $count[self::MULTI_QUESTION_ID] : 0,
         ]];
+        return $result;
+    }
+
+    public function isValidSettings($settings){
+        $settings = json_decode($settings,true);
+        $result = false;
+        foreach ($settings as $category_id => $setting){
+            if($settings[$category_id]){
+                //Есть ли Суб Категория
+                if(key_exists("sub_category_ids",$setting)){
+                    foreach ($setting["sub_category_ids"] as $sub_category_id => $question_quantity){
+                        $s_questions = key_exists("s_questions",$question_quantity) ? $question_quantity["s_questions"] : 0;
+                        $c_questions = key_exists("c_questions",$question_quantity) ? $question_quantity["c_questions"] : 0;
+                        $m_questions = key_exists("m_questions",$question_quantity) ? $question_quantity["m_questions"] : 0;
+                        if($s_questions > 0 || $c_questions > 0 || $m_questions > 0){
+                            $result = true;
+                        }
+                    }
+                }
+                //Только Категория
+                else{
+                    $s_questions = key_exists("s_questions",$setting) ? $setting["s_questions"] : 0 ;
+                    $c_questions = key_exists("c_questions",$setting) ? $setting["c_questions"] : 0;
+                    $m_questions =  key_exists("m_questions",$setting) ? $setting["m_questions"] : 0;
+                    if($s_questions > 0 || $c_questions > 0 || $m_questions > 0){
+                        $result = true;
+                    }
+                }
+            }
+        }
         return $result;
     }
 
