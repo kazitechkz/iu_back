@@ -9,6 +9,7 @@ use App\Services\AuthService;
 use App\Services\RoleServices;
 use App\Services\WalletService;
 use App\Traits\ResponseJSON;
+use Bavix\Wallet\Models\Wallet;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -49,6 +50,19 @@ class WalletController extends Controller
         }
     }
 
+    public function myWallet(){
+        try{
+            $user = auth()->guard("api")->user();
+            $wallet = $user->wallet()->with("holder:id,email,username,name,phone")->first();
+            return response()->json(new ResponseJSON(
+                status: true, data: $wallet
+            ),200);
+        }
+        catch (\Exception $exception){
+            return response()->json(new ResponseJSON(status: false,message: $exception->getMessage()),500);
+        }
+    }
+
     public function transfer(Request $request){
         try{
             $transferDTO = WalletTransferDTO::fromRequest($request);
@@ -72,4 +86,14 @@ class WalletController extends Controller
             return response()->json(new ResponseJSON(status: false,message: $exception->getMessage()),500);
         }
     }
+
+    public function getTransactionStats(Request $request){
+
+
+
+
+
+    }
+
+
 }
