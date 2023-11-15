@@ -55,6 +55,7 @@ class AuthController extends Controller
             }
             $input = $request->all();
             $input["password"] = bcrypt($input["password"]);
+            $input["email"] = strtolower($input["email"]);
             $input['username'] = $input['email'];
             if ($input['role'] == 'teacher') {
                 $input['role'] = 'teacher';

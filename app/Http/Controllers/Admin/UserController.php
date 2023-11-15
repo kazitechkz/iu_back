@@ -62,6 +62,7 @@ class UserController extends Controller
         try{
             if(auth()->user()->can("user create")){
                 $input = $request->except("_token","_method");
+                $input["email"] = strtolower($input["email"]);
                 $input["password"] = bcrypt($request->get("password"));
                 if($request->get("birth_date")){
                     $input["birth_date"] =  Carbon::parse($request->get("birth_date"));
@@ -160,6 +161,7 @@ class UserController extends Controller
                     if($request->get("birth_date")){
                         $input["birth_date"] =  Carbon::parse($request->get("birth_date"));
                     }
+                    $input["email"] = strtolower($input["email"]);
                     $user->edit($input);
                     return redirect()->back();
                 }
