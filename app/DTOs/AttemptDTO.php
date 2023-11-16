@@ -35,5 +35,6 @@ class AttemptDTO extends ValidatedDTO
     }
     protected function failedValidation(): void
     {
+        throw new ApiValidationException($this->validator);
     }
 }

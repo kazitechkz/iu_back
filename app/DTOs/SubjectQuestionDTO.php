@@ -2,6 +2,7 @@
 
 namespace App\DTOs;
 
+use App\Exceptions\ApiValidationException;
 use WendellAdriel\ValidatedDTO\ValidatedDTO;
 
 class SubjectQuestionDTO extends ValidatedDTO
@@ -25,6 +26,10 @@ class SubjectQuestionDTO extends ValidatedDTO
     protected function casts(): array
     {
         return [];
+    }
+    protected function failedValidation(): void
+    {
+        throw new ApiValidationException($this->validator);
     }
 
 

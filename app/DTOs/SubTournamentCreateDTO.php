@@ -2,6 +2,7 @@
 
 namespace App\DTOs;
 
+use App\Exceptions\ApiValidationException;
 use WendellAdriel\ValidatedDTO\ValidatedDTO;
 
 class SubTournamentCreateDTO extends ValidatedDTO
@@ -24,5 +25,9 @@ class SubTournamentCreateDTO extends ValidatedDTO
     protected function casts(): array
     {
         return [];
+    }
+    protected function failedValidation(): void
+    {
+        throw new ApiValidationException($this->validator);
     }
 }

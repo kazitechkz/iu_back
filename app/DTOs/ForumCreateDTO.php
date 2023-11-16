@@ -32,6 +32,6 @@ class ForumCreateDTO extends ValidatedDTO
     }
     protected function failedValidation(): void
     {
-        throw new ApiValidationException($this->validator->errors());
+        throw new ApiValidationException($this->validator);
     }
 }

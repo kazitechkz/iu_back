@@ -2,6 +2,7 @@
 
 namespace App\DTOs;
 
+use App\Exceptions\ApiValidationException;
 use WendellAdriel\ValidatedDTO\ValidatedDTO;
 
 class AttemptSettingsCreateDTO extends ValidatedDTO
@@ -40,5 +41,9 @@ class AttemptSettingsCreateDTO extends ValidatedDTO
     protected function casts(): array
     {
         return [];
+    }
+    protected function failedValidation(): void
+    {
+        throw new ApiValidationException($this->validator);
     }
 }

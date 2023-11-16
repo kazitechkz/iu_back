@@ -2,6 +2,7 @@
 
 namespace App\DTOs;
 
+use App\Exceptions\ApiValidationException;
 use WendellAdriel\ValidatedDTO\ValidatedDTO;
 
 class CategoryQuestionCountDTO extends ValidatedDTO
@@ -26,5 +27,10 @@ class CategoryQuestionCountDTO extends ValidatedDTO
     protected function casts(): array
     {
         return [];
+    }
+
+    protected function failedValidation(): void
+    {
+        throw new ApiValidationException($this->validator);
     }
 }
