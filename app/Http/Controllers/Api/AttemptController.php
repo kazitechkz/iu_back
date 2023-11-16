@@ -130,7 +130,7 @@ class AttemptController extends Controller
 
     public function myAttemptSettings(Request $request){
         try {
-            $user = auth()->guard()->user();
+            $user = auth()->guard('api')->user();
             if($user->hasRole(RoleServices::TEACHER_ROLE_NAME)){
                 $attempt_settings = AttemptSetting::where(["owner_id"=>$user->id])
                     ->with(["classroom_group","locale","owner","subject"])

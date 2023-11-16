@@ -44,6 +44,23 @@ class ClassroomGroupController extends Controller
         }
     }
 
+    public function deleteUserFromClass($classroom_id)
+    {
+        try {
+            $classroom = Classroom::findOrFail($classroom_id);
+            $classroom->delete();
+            return response()->json(new ResponseJSON(
+                status: true,
+                data: true
+            ));
+        } catch (ValidationException $exception) {
+            return response()->json(new ResponseJSON(
+                status: false,
+                errors: $exception->errors()
+            ), 400);
+        }
+    }
+
     public function store(Request $request)
     {
         try {
@@ -105,6 +122,11 @@ class ClassroomGroupController extends Controller
     {
         try {
             $class = ClassroomGroup::findOrFail($id);
+            if ($class->classrooms) {
+                foreach ($class->classrooms as $classroom) {
+                    $classroom->delete();
+                }
+            }
             $class->delete();
             return response()->json(new ResponseJSON(status: true, data: true));
         } catch (ValidationException $exception) {

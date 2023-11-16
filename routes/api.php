@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\SubStepController as ApiSubStepController;
 use App\Http\Controllers\Api\SubjectController as ApiSubjectController;
 use App\Http\Controllers\Api\QuestionController as ApiQuestionController;
 use App\Http\Controllers\Api\Teacher\ClassroomGroupController;
+use App\Http\Controllers\Api\Teacher\ExamController;
 use App\Http\Controllers\Api\UserController as ApiUserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -64,7 +65,6 @@ Route::group(['middleware' => 'API'], function() {
     Route::post("/attempt",[AttemptController::class,"attempt"]);
     Route::get("/attempt_by/{id}",[AttemptController::class,"attemptById"]);
     Route::post("/create-attempt-settings",[AttemptController::class,"createAttemptSettings"]);
-    Route::get("/my-attempt-settings",[AttemptController::class,"myAttemptSettings"]);
     Route::get("/attempt-by-promo-code/{promo_code}",[AttemptController::class,"attemptByPromoCode"]);
     Route::get("/user-attempts",[AttemptController::class,"userAttempts"]);
     Route::get("/user-unt-statistics",[AttemptController::class,"userUntStat"]);
@@ -124,9 +124,9 @@ Route::group(['middleware' => 'API'], function() {
     Route::group(['prefix' => 'teacher'], function () {
         Route::resource('classrooms', ClassroomGroupController::class);
         Route::get('detail-classroom/{id}', [ClassroomGroupController::class, 'getDetailClassroom']);
-    Route::resource('classrooms', ClassroomGroupController::class);
+        Route::delete('detail-classroom/{classroom_id}', [ClassroomGroupController::class, 'deleteUserFromClass']);
+        Route::get("/my-attempt-settings",[AttemptController::class,"myAttemptSettings"]);
     });
-
 });
 Route::post('/auth/login', [ApiAuthController::class, 'loginUser']);
 Route::post("/auth/register",[ApiAuthController::class,"register"]);

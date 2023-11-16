@@ -8,6 +8,7 @@ namespace App\Models;
 
 use App\Traits\CRUD;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
@@ -60,7 +61,20 @@ class AttemptSetting extends Model
 		'hidden_fields',
 		'point'
 	];
-
+//    protected function users(): Attribute {
+//        return Attribute::make(
+//            get: function($value){
+//                $ids = json_decode($value);
+//                $t1 = str_replace('[', '', $ids);
+//                $t2 = str_replace(']', '', $t1);
+//                $dataIDS = explode(',', $t2);
+//                if(!is_array($dataIDS)){
+//                    return [];
+//                }
+//                return User::whereIn('id', $dataIDS)->get();
+//            },
+//        );
+//    }
 	public function classroom_group()
 	{
 		return $this->belongsTo(ClassroomGroup::class, 'class_id');
@@ -87,7 +101,8 @@ class AttemptSetting extends Model
         return $this->belongsTo(Subject::class);
     }
 
-    public function isUserIncluded(){
+    public function isUserIncluded(): bool
+    {
         if ($this->users){
             $users = json_decode($this->users,true);
             return in_array(auth()->guard("api")->id(),$users);
