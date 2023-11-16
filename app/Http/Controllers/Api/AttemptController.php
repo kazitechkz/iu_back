@@ -73,7 +73,7 @@ class AttemptController extends Controller
                     return response()->json(new ResponseJSON(status: true,message: "У вас нет прав"),403);
                 }
             }
-            if($attempt_setting_existed = AttemptSettingsResult::where(["setting_id"=>$attempt_setting->id,"user_id"=>$user->id])->exists()){
+            if($attempt_setting_existed = AttemptSettingsResult::where(["setting_id"=>$attempt_setting->id,"user_id"=>$user->id])->first()){
                 $attempt = Attempt::find($attempt_setting_existed->attempt_id);
                 return response()->json(new ResponseJSON(status: true,data: $attempt),200);
             }
