@@ -80,8 +80,9 @@ class AttemptController extends Controller
             $max_points = $this->questionService->get_questions_max_point($questions);
             $max_time = $this->questionService->get_time_in_ms($attempt_setting->time);
             $attempt_setting->edit(["point"=>$max_points]);
-            $attempt = $this->attemptService->create_attempt($user->id,QuestionService::SETTINGS_TYPE,$attempt_setting->locale_id,$max_points,$questions,$max_time);
-            AttemptSettingsResult::add(["attempt_id"=>$attempt["attempt_id"],"setting_id"=>$attempt_setting->id,"user_id"=>$user->id]);
+            $attemptDTO = $this->attemptService->create_attempt($user->id,QuestionService::SETTINGS_TYPE,$attempt_setting->locale_id,$max_points,$questions,$max_time);
+            AttemptSettingsResult::add(["attempt_id"=>$attemptDTO["attempt_id"],"setting_id"=>$attempt_setting->id,"user_id"=>$user->id]);
+            $attempt = Attempt::first($attemptDTO["attempt_id"]);
             return response()->json(new ResponseJSON(status: true,data: $attempt),200);
         }
         catch (\Exception $exception){
