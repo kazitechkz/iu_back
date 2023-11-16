@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Classroom;
 use App\Models\ClassroomGroup;
 use App\Services\ClassroomService;
+use App\Services\ResponseService;
 use App\Traits\ResponseJSON;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
@@ -23,11 +24,8 @@ class ClassroomController extends Controller
                 status: true,
                 data: $classrooms
             ));
-        } catch (ValidationException $exception) {
-            return response()->json(new ResponseJSON(
-                status: false,
-                errors: $exception->errors()
-            ), 400);
+        } catch (\Exception $exception) {
+            return ResponseService::DefineException($exception);
         }
     }
 
@@ -49,11 +47,8 @@ class ClassroomController extends Controller
                'promo_code' => 'required'
             ]);
             return ClassroomService::addClassroomForStudent($request);
-        } catch (ValidationException $exception) {
-            return response()->json(new ResponseJSON(
-                status: false,
-                errors: $exception->errors()
-            ), 400);
+        } catch (\Exception $exception) {
+            return ResponseService::DefineException($exception);
         }
     }
 
@@ -93,11 +88,8 @@ class ClassroomController extends Controller
                 status: true,
                 data: true
             ));
-        } catch (ValidationException $exception) {
-            return response()->json(new ResponseJSON(
-                status: false,
-                errors: $exception->errors()
-            ), 400);
+        } catch (\Exception $exception) {
+            return ResponseService::DefineException($exception);
         }
     }
 }

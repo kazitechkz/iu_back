@@ -110,6 +110,7 @@ Route::group(['middleware' => 'API'], function() {
     Route::get("/my-balance",[ApiWalletController::class,"myBalance"]);
     Route::get("/my-wallet",[ApiWalletController::class,"myWallet"]);
     Route::post("/wallet-transfer",[ApiWalletController::class,"transfer"]);
+    Route::get("/my-wallet-transaction",[ApiWalletController::class,"myTransaction"]);
     //User
     Route::post("/find-user-by-email",[ApiUserController::class,"userEmail"]);
     //User

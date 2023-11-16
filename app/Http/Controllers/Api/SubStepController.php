@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\SubStep;
 use App\Models\SubStepContent;
 use App\Models\SubStepResult;
+use App\Services\ResponseService;
 use App\Services\StepService;
 use App\Traits\ResponseJSON;
 use Exception;
@@ -49,8 +50,8 @@ class SubStepController extends Controller
                 }
             }
             return  response()->json(new ResponseJSON(status: true, data: $subSteps));
-        } catch (Exception $exception) {
-            return response()->json(new ResponseJSON(status: false, errors: $exception->getMessage()), 500);
+        } catch (\Exception $exception) {
+            return ResponseService::DefineException($exception);
         }
     }
 
@@ -69,8 +70,8 @@ class SubStepController extends Controller
                 return  response()->json(new ResponseJSON(status: false, message: "Что-то пошло не так!"), 500);
             }
 
-        } catch (Exception $exception) {
-            return response()->json(new ResponseJSON(status: false, errors: $exception->getMessage()), 500);
+        } catch (\Exception $exception) {
+            return ResponseService::DefineException($exception);
         }
     }
 
@@ -87,8 +88,8 @@ class SubStepController extends Controller
             } else {
                 return  response()->json(new ResponseJSON(status: true, data: false));
             }
-        } catch (Exception $exception) {
-            return response()->json(new ResponseJSON(status: false, errors: $exception->getMessage()), 500);
+        } catch (\Exception $exception) {
+            return ResponseService::DefineException($exception);
         }
     }
 

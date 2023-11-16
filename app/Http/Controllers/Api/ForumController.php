@@ -10,6 +10,7 @@ use App\Models\Discuss;
 use App\Models\DiscussRating;
 use App\Models\Forum;
 use App\Services\ForumService;
+use App\Services\ResponseService;
 use App\Traits\ResponseJSON;
 use Illuminate\Http\Request;
 
@@ -46,8 +47,8 @@ class ForumController extends Controller
             return response()->json(new ResponseJSON(status: true,data: $forums),200);
 
         }
-        catch (\Exception $exception){
-            return response()->json(new ResponseJSON(status: false,message: $exception->getMessage()),500);
+        catch (\Exception $exception) {
+            return ResponseService::DefineException($exception);
         }
     }
 
@@ -58,8 +59,8 @@ class ForumController extends Controller
             $forum = $this->_forumService->createForum($forum_dto);
             return response()->json(new ResponseJSON(status: true,data: $forum),200);
         }
-        catch (\Exception $exception){
-            return response()->json(new ResponseJSON(status: false,message: $exception->getMessage()),500);
+        catch (\Exception $exception) {
+            return ResponseService::DefineException($exception);
         }
     }
 
@@ -72,8 +73,8 @@ class ForumController extends Controller
             $rating = DiscussRating::where(["forum_id" => $id,"discuss_id" => null,"user_id" => auth()->guard("api")->id()])->first();
             return response()->json(new ResponseJSON(status: true,data: ['forum'=>$forum,"rating"=>$rating]),200);
         }
-        catch (\Exception $exception){
-            return response()->json(new ResponseJSON(status: false,message: $exception->getMessage()),500);
+        catch (\Exception $exception) {
+            return ResponseService::DefineException($exception);
         }
     }
 
@@ -90,8 +91,8 @@ class ForumController extends Controller
             $ratings = DiscussRating::where(["forum_id" => $forum_id,"user_id" => auth()->guard("api")->id()])->get();
             return response()->json(new ResponseJSON(status: true,data: ["discusses"=>$discusses,"ratings"=>$ratings]),200);
         }
-        catch (\Exception $exception){
-            return response()->json(new ResponseJSON(status: false,message: $exception->getMessage()),500);
+        catch (\Exception $exception) {
+            return ResponseService::DefineException($exception);
         }
     }
 
@@ -108,8 +109,8 @@ class ForumController extends Controller
             $discuss->load(["user"])->loadSum("discuss_ratings","rating");
             return response()->json(new ResponseJSON(status: true,data: $discuss),200);
         }
-        catch (\Exception $exception){
-            return response()->json(new ResponseJSON(status: false,message: $exception->getMessage()),500);
+        catch (\Exception $exception) {
+            return ResponseService::DefineException($exception);
         }
     }
 
@@ -147,8 +148,8 @@ class ForumController extends Controller
             }
             return response()->json(new ResponseJSON(status: true,data: $rating),200);
         }
-        catch (\Exception $exception){
-            return response()->json(new ResponseJSON(status: false,message: $exception->getMessage()),500);
+        catch (\Exception $exception) {
+            return ResponseService::DefineException($exception);
         }
     }
 

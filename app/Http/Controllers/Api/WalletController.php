@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\DTOs\MyTransactionDTO;
 use App\DTOs\WalletTransferDTO;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Services\AuthService;
+use App\Services\ResponseService;
 use App\Services\RoleServices;
 use App\Services\WalletService;
 use App\Traits\ResponseJSON;
@@ -13,6 +15,7 @@ use Bavix\Wallet\Models\Wallet;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 
 class WalletController extends Controller
 {
@@ -33,8 +36,8 @@ class WalletController extends Controller
                 status: true, data: $result
             ),200);
         }
-        catch (\Exception $exception){
-            return response()->json(new ResponseJSON(status: false,message: $exception->getMessage()),500);
+        catch (\Exception $exception) {
+            return ResponseService::DefineException($exception);
         }
     }
 
@@ -45,8 +48,8 @@ class WalletController extends Controller
                 status: true, data: $user->balanceInt
             ),200);
         }
-        catch (\Exception $exception){
-            return response()->json(new ResponseJSON(status: false,message: $exception->getMessage()),500);
+        catch (\Exception $exception) {
+            return ResponseService::DefineException($exception);
         }
     }
 
@@ -58,9 +61,22 @@ class WalletController extends Controller
                 status: true, data: $wallet
             ),200);
         }
-        catch (\Exception $exception){
-            return response()->json(new ResponseJSON(status: false,message: $exception->getMessage()),500);
+        catch (\Exception $exception) {
+            return ResponseService::DefineException($exception);
         }
+    }
+
+    public function myTransaction(Request $request){
+        try{
+            $user = auth()->guard("api")->user();
+            $myTransactionDTO = MyTransactionDTO::fromRequest($request);
+            throw new \Exception("123");
+
+        }
+        catch (\Exception $exception) {
+            return ResponseService::DefineException($exception);
+        }
+
     }
 
     public function transfer(Request $request){
@@ -82,8 +98,8 @@ class WalletController extends Controller
                 status: true, data: true
             ),200);
         }
-        catch (\Exception $exception){
-            return response()->json(new ResponseJSON(status: false,message: $exception->getMessage()),500);
+        catch (\Exception $exception) {
+            return ResponseService::DefineException($exception);
         }
     }
 

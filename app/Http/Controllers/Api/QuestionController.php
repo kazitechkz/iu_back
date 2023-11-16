@@ -18,6 +18,7 @@ use App\Models\UserQuestion;
 use App\Services\AnswerService;
 use App\Services\AttemptService;
 use App\Services\QuestionService;
+use App\Services\ResponseService;
 use App\Traits\ResponseJSON;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
@@ -161,8 +162,8 @@ class QuestionController extends Controller
             $result = $this->questionService->getCategoryQuestionNumber($categoryQuestionCountDTO->category_id,$categoryQuestionCountDTO->locale_id);
             return response()->json(new ResponseJSON(status: true,data: $result),200);
         }
-        catch (\Exception $exception){
-            return response()->json(new ResponseJSON(status: false,message: $exception->getMessage()),500);
+        catch (\Exception $exception) {
+            return ResponseService::DefineException($exception);
         }
     }
 }

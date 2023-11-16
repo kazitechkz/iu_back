@@ -7,6 +7,7 @@ use App\Models\Step;
 use App\Models\StepResult;
 use App\Models\Subject;
 use App\Models\SubStepContentTest;
+use App\Services\ResponseService;
 use App\Services\StepService;
 use App\Traits\ResponseJSON;
 use Exception;
@@ -41,8 +42,8 @@ class StepController extends Controller
             return response()->json(new ResponseJSON(
                 status: true, data: $steps
             ));
-        } catch (Exception $exception) {
-            return response()->json(new ResponseJSON(status: false, errors: $exception->getMessage()), 500);
+        } catch (\Exception $exception) {
+            return ResponseService::DefineException($exception);
         }
     }
 
@@ -72,8 +73,8 @@ class StepController extends Controller
             return response()->json(new ResponseJSON(
                 status: true, data: $steps
             ));
-        } catch (Exception $exception) {
-            return response()->json(new ResponseJSON(status: false, errors: $exception->getMessage()), 500);
+        } catch (\Exception $exception) {
+            return ResponseService::DefineException($exception);
         }
     }
 
@@ -103,8 +104,8 @@ class StepController extends Controller
                 status: true,
                 data: $results
             ));
-        } catch (Exception $exception) {
-            return response()->json(new ResponseJSON(status: false, errors: $exception->getMessage()), 500);
+        } catch (\Exception $exception) {
+            return ResponseService::DefineException($exception);
         }
     }
 
@@ -132,8 +133,8 @@ class StepController extends Controller
                     errors: "Неизвестная ошибка!"
                 ));
             }
-        } catch (Exception $exception) {
-            return response()->json(new ResponseJSON(status: false, errors: $exception->getMessage()), 500);
+        } catch (\Exception $exception) {
+            return ResponseService::DefineException($exception);
         }
     }
 
@@ -156,11 +157,8 @@ class StepController extends Controller
                     data: null
                 ), 400);
             }
-        } catch (ValidationException $exception) {
-            return response()->json(new ResponseJSON(
-                status: false,
-                errors: $exception->errors()
-            ), 400);
+        } catch (\Exception $exception) {
+            return ResponseService::DefineException($exception);
         }
     }
 }

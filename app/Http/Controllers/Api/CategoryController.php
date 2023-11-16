@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Services\ResponseService;
 use App\Traits\ResponseJSON;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
@@ -29,11 +30,8 @@ class CategoryController extends Controller
                 status: true,
                 data: $categories
             ));
-        } catch (ValidationException $exception) {
-            return response()->json(new ResponseJSON(
-                status: false,
-                errors: $exception->errors()
-            ), 400);
+        } catch (\Exception $exception) {
+            return ResponseService::DefineException($exception);
         }
     }
 }

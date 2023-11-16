@@ -5,15 +5,12 @@ namespace App\Exceptions;
 use App\Traits\ResponseJSON;
 use Exception;
 use Illuminate\Validation\ValidationException;
-use function Laravel\Prompts\error;
 
-class ApiValidationException extends Exception
+class ApiValidationException extends ValidationException
 {
     public function render($request)
     {
-        if(gettype($this->getMessage()) == "string") {
-            $request = json_decode($this->getMessage());
-        }
-        return response()->json(new ResponseJSON(status: false,message: "Validation Error",data: null,errors: gettype($this->getMessage())), 400);
+        return response()->json(new ResponseJSON(status: false,message: "Validation Error",data: null,errors: $this->validator->errors()->all()), 400);
     }
+
 }

@@ -7,6 +7,7 @@ use App\DTOs\UserDTO;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Services\AuthService;
+use App\Services\ResponseService;
 use App\Services\RoleServices;
 use App\Traits\ResponseJSON;
 use Exception;
@@ -23,8 +24,8 @@ class UserController extends Controller
                 status: true,
                 data: $data->data
             ),200);
-        } catch (Exception $exception) {
-            return response()->json(new ResponseJSON(status: false, errors: $exception->getMessage()), 500);
+        } catch (\Exception $exception) {
+            return ResponseService::DefineException($exception);
         }
     }
 
@@ -50,8 +51,8 @@ class UserController extends Controller
                 status: true,
                 data: $user
             ),200);
-        } catch (Exception $exception) {
-            return response()->json(new ResponseJSON(status: false, errors: $exception->getMessage()), 500);
+        } catch (\Exception $exception) {
+            return ResponseService::DefineException($exception);
         }
     }
 }

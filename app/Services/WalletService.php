@@ -47,7 +47,6 @@ class WalletService
             })
             ->with(["payable:id,email,username,name,phone"])
            ->get();
-
         return $data_transactions;
     }
 

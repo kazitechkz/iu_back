@@ -9,6 +9,7 @@ use App\Services\AnswerService;
 use App\Services\AttemptService;
 use App\Services\PlanService;
 use App\Services\QuestionService;
+use App\Services\ResponseService;
 use App\Traits\ResponseJSON;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
@@ -44,8 +45,8 @@ class SubjectController extends Controller
                 status: true, data: $subjects
             ),200);
         }
-        catch (\Exception $exception){
-            return response()->json(new ResponseJSON(status: false,message: $exception->getMessage()),500);
+        catch (\Exception $exception) {
+            return ResponseService::DefineException($exception);
         }
     }
 }
