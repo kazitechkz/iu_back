@@ -11,6 +11,7 @@ class AuthService
     public static function initialUserDTO(User $user): \WendellAdriel\ValidatedDTO\SimpleDTO
     {
         return UserDTO::fromArray([
+            'id'=>$user->id,
             'username' => $user->username,
             'name' => $user->name,
             'email' => $user->email,

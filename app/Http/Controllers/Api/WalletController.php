@@ -11,6 +11,7 @@ use App\Services\ResponseService;
 use App\Services\RoleServices;
 use App\Services\WalletService;
 use App\Traits\ResponseJSON;
+use Bavix\Wallet\Models\Transfer;
 use Bavix\Wallet\Models\Wallet;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -68,11 +69,17 @@ class WalletController extends Controller
 
     public function myTransaction(Request $request){
         try{
-            $user = auth()->guard("api")->user();
             $myTransactionDTO = MyTransactionDTO::fromRequest($request);
+            $myTransactionDTO = $myTransactionDTO->toArray();
             $result = [];
-            $result["week_transaction_stats"] =  $this->walletService->getWithDrawAndStat(Carbon::now()->addDays(-7),Carbon::now());
-            $result["week_transaction"] =  $this->walletService->getStatsByDate(Carbon::now()->addDays(-2),Carbon::now())->take(5);
+            $from_date = Carbon::createFromFormat('d/m/Y',$myTransactionDTO["from_date"]);
+            $to_date = Carbon::createFromFormat('d/m/Y',$myTransactionDTO["to_date"]);
+            $result["date"] = "{$myTransactionDTO["from_date"]} - {$myTransactionDTO["to_date"]}";
+            $result["week_transaction_stats"] =  $this->walletService->getWithDrawAndStat($from_date,$to_date);
+            $result["week_transaction"] =  $this->walletService->getStatsByDate($from_date,$to_date);
+            return response()->json(new ResponseJSON(
+                status: true, data: $result
+            ),200);
         }
         catch (\Exception $exception) {
             return ResponseService::DefineException($exception);
@@ -102,14 +109,6 @@ class WalletController extends Controller
         catch (\Exception $exception) {
             return ResponseService::DefineException($exception);
         }
-    }
-
-    public function getTransactionStats(Request $request){
-
-
-
-
-
     }
 
 

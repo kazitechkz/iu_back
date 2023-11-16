@@ -43,7 +43,8 @@ class WalletService
             ->where("created_at","<=",$to)
             ->orderBy("created_at","desc")
             ->with("wallet",function ($q){
-                $q->select("id","holder_id","uuid","holder_type")->with("holder:id,email,username,name,phone");
+                $q->select("id","holder_id","uuid","holder_type")
+                    ->with("holder:id,email,username,name,phone");
             })
             ->with(["payable:id,email,username,name,phone"])
            ->get();
