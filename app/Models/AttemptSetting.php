@@ -53,7 +53,7 @@ class AttemptSetting extends Model
 		'promo_code',
 		'class_id',
 		'users',
-		'owner',
+		'owner_id',
 		'settings',
 		'locale_id',
 		'time',

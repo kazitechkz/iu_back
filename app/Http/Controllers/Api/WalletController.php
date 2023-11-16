@@ -70,8 +70,9 @@ class WalletController extends Controller
         try{
             $user = auth()->guard("api")->user();
             $myTransactionDTO = MyTransactionDTO::fromRequest($request);
-            throw new \Exception("123");
-
+            $result = [];
+            $result["week_transaction_stats"] =  $this->walletService->getWithDrawAndStat(Carbon::now()->addDays(-7),Carbon::now());
+            $result["week_transaction"] =  $this->walletService->getStatsByDate(Carbon::now()->addDays(-2),Carbon::now())->take(5);
         }
         catch (\Exception $exception) {
             return ResponseService::DefineException($exception);
