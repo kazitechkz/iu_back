@@ -299,7 +299,4 @@ class AttemptController extends Controller
         }
 
     }
-
-
-
 }

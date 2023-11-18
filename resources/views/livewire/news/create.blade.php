@@ -39,13 +39,13 @@
     {{--    Subtitle--}}
     {{--    Description--}}
     <div class="form-group">
-        <x-textarea
-            wire:model="description"
-            label="{{__('table.description')}}*"
-            placeholder="{{__('table.description')}}"
-            hint="{{__('table.description')}}"
-        />
+        <div class="md:flex lg:flex justify-between my-3">
+            <div wire:ignore class="w-full">
+                <x-ckeditor :description="$description" :input-name="'description'" :title="'Описание'"/>
+            </div>
+        </div>
     </div>
+
     {{--    Description --}}
 
     {{-- Poster --}}

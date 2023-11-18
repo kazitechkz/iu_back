@@ -80,6 +80,13 @@ class News extends Model
 
 	public function user()
 	{
-		return $this->belongsTo(User::class, 'published_by');
+		return $this->belongsTo(User::class, 'published_by')->select([
+            'id',
+            "username",
+            'name',
+            'phone',
+            'email',
+            'image_url'
+        ])->with("file");
 	}
 }

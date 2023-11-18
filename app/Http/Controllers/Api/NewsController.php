@@ -12,7 +12,7 @@ class NewsController extends Controller
 {
     public function importantNews(){
         try{
-            $news = News::where(["is_important" => true,"is_active" => true])->with(["image","poster"])->orderBy('published_at', 'DESC')->get();
+            $news = News::where(["is_important" => true,"is_active" => true])->with(["image","poster","locale","user"])->orderBy('published_at', 'DESC')->first();
             return response()->json(new ResponseJSON(status: true,data: $news),200);
         }
         catch (\Exception $exception) {
@@ -21,9 +21,9 @@ class NewsController extends Controller
     }
 
 
-    public function news(){
+    public function news(Request $request){
         try{
-            $news = News::where(["is_active" => true])->with(["image","poster"])->orderBy('published_at', 'DESC')->paginate(12);
+            $news = News::where(["is_active" => true])->with(["image","poster","locale","user"])->orderBy('published_at', 'DESC')->paginate(12);
             return response()->json(new ResponseJSON(status: true,data: $news),200);
         }
         catch (\Exception $exception) {
