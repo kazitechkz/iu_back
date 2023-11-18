@@ -40,6 +40,7 @@ use App\Http\Controllers\Api\AttemptController;
 Route::group(['middleware' => 'API'], function() {
     Route::get('me', [ApiUserController::class, 'me']);
     Route::get("important-news",[ApiNewsController::class,"importantNews"]);
+    Route::get("single-news/{id}",[ApiNewsController::class,"singleNews"]);
     Route::get("all-news",[ApiNewsController::class,"news"]);
     Route::get('subjects', [ApiSubjectController::class, 'index']);
     Route::get('get-my-subjects', [ApiSubjectController::class, 'getMySubjects']);

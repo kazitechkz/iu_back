@@ -20,10 +20,21 @@ class NewsController extends Controller
         }
     }
 
+    public function singleNews($id){
+        try{
+            $news = News::where(["id"=>$id])->with(["image","poster","locale","user"])->first();
+            return response()->json(new ResponseJSON(status: true,data: $news),200);
+        }
+        catch (\Exception $exception) {
+            return ResponseService::DefineException($exception);
+        }
+    }
+
 
     public function news(Request $request){
         try{
-            $news = News::where(["is_active" => true])->with(["image","poster","locale","user"])->orderBy('published_at', 'DESC')->paginate(12);
+            $important =  News::where(["is_important" => true,"is_active" => true])->with(["image","poster","locale","user"])->orderBy('published_at', 'DESC')->first();
+            $news = News::where(["is_active" => true,])->where("id","!=",$important->id)->with(["image","poster","locale","user"])->orderBy('published_at', 'DESC')->paginate(12);
             return response()->json(new ResponseJSON(status: true,data: $news),200);
         }
         catch (\Exception $exception) {
