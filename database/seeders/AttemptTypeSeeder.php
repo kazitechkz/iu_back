@@ -33,5 +33,10 @@ class AttemptTypeSeeder extends Seeder
             'title_kk' => 'Берілген параметрлер бойынша пән тестінен өту',
             'title_en' => 'Passing the test of the subject according to the specified settings',
         ]);
+        AttemptType::create([
+            'title_ru' => 'Сдача ЕНТ по заданным настройкам',
+            'title_kk' => 'Берілген параметрлер бойынша ҰБТ тестінен өту',
+            'title_en' => 'Passing the UNT according to the specified settings',
+        ]);
     }
 }

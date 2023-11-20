@@ -46,7 +46,7 @@ class AttemptSetting extends Model
 		'subject_id' => 'int',
 		'time' => 'int',
 		'point' => 'int',
-        'users' => 'array',
+        'users' => 'json',
 	];
 
 	protected $fillable = [
@@ -104,8 +104,7 @@ class AttemptSetting extends Model
     public function isUserIncluded(): bool
     {
         if ($this->users){
-            $users = json_decode($this->users,true);
-            return in_array(auth()->guard("api")->id(),$users);
+            return in_array(auth()->guard("api")->id(),$this->users);
         }
         return false;
     }

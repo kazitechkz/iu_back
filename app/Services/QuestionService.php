@@ -7,6 +7,8 @@ use App\Exceptions\QuestionException;
 use App\Http\Livewire\SingleSubjectTest\SingleSubjectTestTable;
 use App\Models\AttemptSetting;
 use App\Models\AttemptSettingsResult;
+use App\Models\AttemptSettingsResultsUnt;
+use App\Models\AttemptSettingsUnt;
 use App\Models\GroupPlan;
 use App\Models\Question;
 use App\Models\SingleSubjectTest;
@@ -30,6 +32,7 @@ class QuestionService
     const CASUAL_TYPE = 2;
     const TOURNAMENT_TYPE=3;
     const SETTINGS_TYPE=4;
+    const SETTINGS_TYPE_UNT =5;
 
     public function get_questions_with_subjects($subjects,$locale_id,$attempt_type_id,$single_q_count =0, $contextual_q_count =0, $multiple_q_count = 0){
         try {
@@ -104,7 +107,7 @@ class QuestionService
                                   $contextual_q_count,
                                   $multiple_q_count){
         foreach ($compulsory_subjects as $compulsory_subject){
-            if($type_id == self::UNT_TYPE || $type_id == self::CASUAL_TYPE){
+            if($type_id == self::UNT_TYPE || $type_id == self::CASUAL_TYPE || $type_id == self::SETTINGS_TYPE_UNT){
                 $single_subject_test = SingleSubjectTest::where(["subject_id" => $compulsory_subject->id])->first();
                 $single_q_count = $single_subject_test->single_answer_questions_quantity;
                 $contextual_q_count = $single_subject_test->contextual_questions_quantity;
@@ -237,7 +240,7 @@ class QuestionService
             throw new QuestionException("Выберите предметы для сдачи тестирования!");
         }
         $subject_ids = [];
-        if($attempt_type_id == QuestionService::UNT_TYPE){
+        if($attempt_type_id == QuestionService::UNT_TYPE || QuestionService::SETTINGS_TYPE_UNT){
             $compulsory_subjects = Subject::where(["is_compulsory"=>true])->pluck("id","id");
             array_push($subject_ids,...$compulsory_subjects);
         }
@@ -267,6 +270,21 @@ class QuestionService
                 $attempts_res = AttemptSettingsResult::where(["attempt_id" => $attempt_id])->first();
                 if($attempts_res){
                     $attempt_settings = AttemptSetting::where(["id"=>$attempts_res->setting_id])->first();
+                    $hidden = ["correct_answers","explanation","explanation_image",...explode(",",$attempt_settings->hidden_fields)];
+                }
+                else{
+                    $hidden = ["correct_answers","explanation","prompt","explanation_image"];
+                }
+            }
+            else{
+                $hidden = ["correct_answers","explanation","prompt","explanation_image"];
+            }
+        }
+        else if($type_id == QuestionService::SETTINGS_TYPE_UNT){
+            if($attempt_id){
+                $attempts_res = AttemptSettingsResultsUnt::where(["attempt_id" => $attempt_id])->first();
+                if($attempts_res){
+                    $attempt_settings = AttemptSettingsUnt::where(["id"=>$attempts_res->setting_id])->first();
                     $hidden = ["correct_answers","explanation","explanation_image",...explode(",",$attempt_settings->hidden_fields)];
                 }
                 else{

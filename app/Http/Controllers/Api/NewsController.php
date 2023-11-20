@@ -34,7 +34,11 @@ class NewsController extends Controller
     public function news(Request $request){
         try{
             $important =  News::where(["is_important" => true,"is_active" => true])->with(["image","poster","locale","user"])->orderBy('published_at', 'DESC')->first();
-            $news = News::where(["is_active" => true,])->where("id","!=",$important->id)->with(["image","poster","locale","user"])->orderBy('published_at', 'DESC')->paginate(12);
+            $news = News::where(["is_active" => true,]);
+            if($important){
+                $news = $news->where("id","!=",$important->id);
+            }
+            $news = $news->with(["image","poster","locale","user"])->orderBy('published_at', 'DESC')->paginate(12);
             return response()->json(new ResponseJSON(status: true,data: $news),200);
         }
         catch (\Exception $exception) {

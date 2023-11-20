@@ -7,12 +7,15 @@ use App\DTOs\AttemptCreateDTO;
 use App\DTOs\AttemptCustomizeCreateDTO;
 use App\DTOs\AttemptDTO;
 use App\DTOs\AttemptSettingsCreateDTO;
+use App\DTOs\AttemptSettingsUNTCreateDTO;
 use App\DTOs\SubjectQuestionDTO;
 use App\Http\Controllers\Controller;
 use App\Models\Attempt;
 use App\Models\AttemptQuestion;
 use App\Models\AttemptSetting;
 use App\Models\AttemptSettingsResult;
+use App\Models\AttemptSettingsResultsUnt;
+use App\Models\AttemptSettingsUnt;
 use App\Models\AttemptSubject;
 use App\Models\CommercialGroupPlan;
 use App\Models\Question;
@@ -65,31 +68,62 @@ class AttemptController extends Controller
     public function attemptByPromoCode($promo_code){
         try{
             $attempt_setting = AttemptSetting::firstWhere(["promo_code"=>$promo_code]);
-            if(!$attempt_setting){
-                return response()->json(new ResponseJSON(status: true,message: "По промокоду ничего не найдено"),404);
-            }
-            $user = auth()->guard("api")->user();
-            if($attempt_setting->users){
-                if(!$attempt_setting->isUserIncluded()){
-                    return response()->json(new ResponseJSON(status: true,message: "У вас нет прав"),403);
+            if($attempt_setting){
+                $user = auth()->guard("api")->user();
+                if($attempt_setting->users){
+                    if(!$attempt_setting->isUserIncluded()){
+                        return response()->json(new ResponseJSON(status: true,message: "У вас нет прав"),403);
+                    }
                 }
-            }
-            if($attempt_setting->class_id){
-                if($user->inIsClassroom($attempt_setting->class_id)){
-                    return response()->json(new ResponseJSON(status: true,message: "У вас нет прав"),403);
+                if($attempt_setting->class_id){
+                    if($user->inIsClassroom($attempt_setting->class_id)){
+                        return response()->json(new ResponseJSON(status: true,message: "У вас нет прав"),403);
+                    }
                 }
+                if(AttemptSettingsResult::where(["setting_id"=>$attempt_setting->id,"user_id"=>$user->id])->exists()){
+                    return response()->json(new ResponseJSON(status: true,message: "Вы уже проходили данный тест"),400);
+                }
+                $questions = $this->questionService->getQuestionBySettingsId($attempt_setting->id);
+                $max_points = $this->questionService->get_questions_max_point($questions);
+                $max_time = $this->questionService->get_time_in_ms($attempt_setting->time);
+                $attempt_setting->edit(["point"=>$max_points]);
+                $attemptDTO = $this->attemptService->create_attempt($user->id,QuestionService::SETTINGS_TYPE,$attempt_setting->locale_id,$max_points,$questions,$max_time);
+                AttemptSettingsResult::add(["attempt_id"=>$attemptDTO["attempt_id"],"setting_id"=>$attempt_setting->id,"user_id"=>$user->id]);
+                $attempt = Attempt::find($attemptDTO["attempt_id"]);
+                return response()->json(new ResponseJSON(status: true,data: $attempt),200);
             }
-            if(AttemptSettingsResult::where(["setting_id"=>$attempt_setting->id,"user_id"=>$user->id])->exists()){
-                return response()->json(new ResponseJSON(status: true,message: "Вы уже проходили данный тест"),400);
+            //UNT
+            $attempt_setting = AttemptSettingsUnt::firstWhere(["promo_code"=>$promo_code]);
+            if($attempt_setting){
+                $user = auth()->guard("api")->user();
+                if($attempt_setting->users){
+                    if(!$attempt_setting->isUserIncluded()){
+                        return response()->json(new ResponseJSON(status: true,message: "У вас нет прав"),403);
+                    }
+                }
+                if($attempt_setting->class_id){
+                    if($user->inIsClassroom($attempt_setting->class_id)){
+                        return response()->json(new ResponseJSON(status: true,message: "У вас нет прав"),403);
+                    }
+                }
+                if(AttemptSettingsResultsUnt::where(["setting_id"=>$attempt_setting->id,"user_id"=>$user->id])->exists()){
+                    return response()->json(new ResponseJSON(status: true,message: "Вы уже проходили данный тест"),400);
+                }
+                $questions = $this->questionService->get_questions_with_subjects(
+                    subjects: $attempt_setting->subjects,
+                    locale_id: $attempt_setting->locale_id,
+                    attempt_type_id: QuestionService::SETTINGS_TYPE_UNT
+                );
+                $max_points = $this->questionService->get_questions_max_point($questions);
+                $max_time = $this->questionService->get_time_in_ms($attempt_setting->time);
+                $attempt_setting->edit(["point"=>$max_points]);
+                $attemptDTO = $this->attemptService->create_attempt($user->id,QuestionService::SETTINGS_TYPE_UNT,$attempt_setting->locale_id,$max_points,$questions,$max_time);
+                AttemptSettingsResultsUnt::add(["attempt_id"=>$attemptDTO["attempt_id"],"setting_id"=>$attempt_setting->id,"user_id"=>$user->id]);
+                $attempt = Attempt::find($attemptDTO["attempt_id"]);
+                return response()->json(new ResponseJSON(status: true,data: $attempt),200);
             }
-            $questions = $this->questionService->getQuestionBySettingsId($attempt_setting->id);
-            $max_points = $this->questionService->get_questions_max_point($questions);
-            $max_time = $this->questionService->get_time_in_ms($attempt_setting->time);
-            $attempt_setting->edit(["point"=>$max_points]);
-            $attemptDTO = $this->attemptService->create_attempt($user->id,QuestionService::SETTINGS_TYPE,$attempt_setting->locale_id,$max_points,$questions,$max_time);
-            AttemptSettingsResult::add(["attempt_id"=>$attemptDTO["attempt_id"],"setting_id"=>$attempt_setting->id,"user_id"=>$user->id]);
-            $attempt = Attempt::find($attemptDTO["attempt_id"]);
-            return response()->json(new ResponseJSON(status: true,data: $attempt),200);
+            return response()->json(new ResponseJSON(status: true,message: "По промокоду ничего не найдено"),404);
+
         }
         catch (\Exception $exception) {
             return ResponseService::DefineException($exception);
@@ -117,9 +151,6 @@ class AttemptController extends Controller
             $input["owner_id"] = auth()->guard("api")->id();
             $attemptDto = AttemptSettingsCreateDTO::fromArray($input);
             $resultDTO = $attemptDto->toArray();
-            if($input["users"]){
-                $resultDTO["users"] = json_encode($resultDTO["users"]);
-            }
             $setting = AttemptSetting::add($resultDTO);
             return response()->json(new ResponseJSON(status: true,data: $setting),200);
         }
@@ -127,6 +158,23 @@ class AttemptController extends Controller
             return ResponseService::DefineException($exception);
         }
     }
+
+    public function createAttemptSettingsUNT(Request $request){
+        try{
+            $user = auth()->guard("api")->user();
+            $input = $request->all();
+            $input["promo_code"] = Str::random(10);
+            $input["sender_id"] = $user->id;
+            $attemptDto = AttemptSettingsUNTCreateDTO::fromArray($input);
+            $resultDTO = $attemptDto->toArray();
+            $setting = AttemptSettingsUnt::add($resultDTO);
+            return response()->json(new ResponseJSON(status: true,data: $setting),200);
+        }
+        catch (\Exception $exception) {
+            return ResponseService::DefineException($exception);
+        }
+    }
+
 
     public function myAttemptSettings(Request $request){
         try {

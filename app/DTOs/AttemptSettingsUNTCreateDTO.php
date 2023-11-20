@@ -5,33 +5,35 @@ namespace App\DTOs;
 use App\Exceptions\ApiValidationException;
 use WendellAdriel\ValidatedDTO\ValidatedDTO;
 
-class AttemptSettingsCreateDTO extends ValidatedDTO
+class AttemptSettingsUNTCreateDTO extends ValidatedDTO
 {
-    public $settings;
+    public $promo_code;
     public $locale_id;
-    public $subject_id;
+    public $sender_id;
+    public $class_id;
+    public $users;
+    public $subjects;
+    public $settings;
     public $time;
     public $hidden_fields;
-    public $users;
-    public $point;
-    public $promo_code;
-    public $owner_id;
-    public $class_id;
+
+
+
 
     protected function rules(): array
     {
         return [
-            'settings' => 'required',
+            'settings' => '',
             'locale_id' => 'required|exists:locales,id',
-            'owner_id' => 'required|exists:users,id',
+            'sender_id' => 'required|exists:users,id',
             'class_id' => 'sometimes|nullable|exists:classroom_groups,id',
-            'subject_id' => 'required|exists:subjects,id',
-            'time' => 'required|integer|max:300|min:1',
+            'subjects' => 'required|array|between:1,3',
+            'subjects.*' => 'required|exists:subjects,id',
+            'time' => 'required|integer|max:500|min:1',
             'hidden_fields' => 'sometimes|nullable|max:255',
             'users' => 'sometimes|nullable|array',
             "users.*"=>"exists:users,id",
             'promo_code' => '',
-            'point' => '',
         ];
     }
 

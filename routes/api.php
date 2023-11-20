@@ -66,6 +66,7 @@ Route::group(['middleware' => 'API'], function() {
     Route::post("/attempt",[AttemptController::class,"attempt"]);
     Route::get("/attempt_by/{id}",[AttemptController::class,"attemptById"]);
     Route::post("/create-attempt-settings",[AttemptController::class,"createAttemptSettings"]);
+    Route::post("/create-attempt-settings-unt",[AttemptController::class,"createAttemptSettingsUNT"]);
     Route::get("/attempt-by-promo-code/{promo_code}",[AttemptController::class,"attemptByPromoCode"]);
     Route::get("/user-attempts",[AttemptController::class,"userAttempts"]);
     Route::get("/user-unt-statistics",[AttemptController::class,"userUntStat"]);
