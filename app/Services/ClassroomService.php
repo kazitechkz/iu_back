@@ -11,6 +11,7 @@ class ClassroomService
     public static function addClassroomForStudent($request): \Illuminate\Http\JsonResponse
     {
         $input = $request->all();
+        $input['subjects'] = [$request['subject_first'], $request['subject_second']];
         $input['student_id'] = auth()->guard('api')->id();
         $promo = ClassroomGroup::firstWhere('promo_code', $input['promo_code']);
         if ($promo) {

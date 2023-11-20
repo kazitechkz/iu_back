@@ -43,6 +43,7 @@ Route::group(['middleware' => 'API'], function() {
     Route::get("single-news/{id}",[ApiNewsController::class,"singleNews"]);
     Route::get("all-news",[ApiNewsController::class,"news"]);
     Route::get('subjects', [ApiSubjectController::class, 'index']);
+    Route::get('subjects-without-required', [ApiSubjectController::class, 'getSubjectsWithoutRequired']);
     Route::get('get-my-subjects', [ApiSubjectController::class, 'getMySubjects']);
     Route::get('categories/{id}/{locale_id}', [ApiCategoryController::class, 'getCategoriesBySubjectID']);
     Route::get('sub-categories/{id}/{locale_id}', [ApiSubCategoryController::class, 'getSubCategoriesByCategoryID']);
@@ -128,6 +129,7 @@ Route::group(['middleware' => 'API'], function() {
         Route::get('detail-classroom/{id}', [ClassroomGroupController::class, 'getDetailClassroom']);
         Route::delete('detail-classroom/{classroom_id}', [ClassroomGroupController::class, 'deleteUserFromClass']);
         Route::get("/my-attempt-settings",[AttemptController::class,"myAttemptSettings"]);
+        Route::delete("/delete-attempt-settings/{id}",[AttemptController::class,"deleteAttemptSettingsById"]);
     });
 });
 Route::post('/auth/login', [ApiAuthController::class, 'loginUser']);

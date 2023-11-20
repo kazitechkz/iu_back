@@ -31,12 +31,14 @@ class Classroom extends Model
 
 	protected $casts = [
 		'class_id' => 'int',
-		'student_id' => 'int'
+		'student_id' => 'int',
+        'subjects' => 'json'
 	];
 
 	protected $fillable = [
 		'class_id',
-		'student_id'
+		'student_id',
+        'subjects'
 	];
 
 	public function classroom_group(): \Illuminate\Database\Eloquent\Relations\BelongsTo

@@ -21,31 +21,46 @@ class SubjectController extends Controller
     private readonly AnswerService $answerService;
     private readonly PlanService $planService;
 
-    public function __construct(AttemptService $attemptService,QuestionService $questionService,AnswerService $answerService,PlanService $planService)
+    public function __construct(AttemptService $attemptService, QuestionService $questionService, AnswerService $answerService, PlanService $planService)
     {
         $this->attemptService = $attemptService;
         $this->questionService = $questionService;
         $this->answerService = $answerService;
         $this->planService = $planService;
     }
+
     public function index()
     {
-
+        try {
             $subjects = Subject::with('image')->get();
             return response()->json(new ResponseJSON(
                 status: true, data: $subjects
-            ),200);
-
+            ));
+        } catch (\Exception $exception) {
+            return ResponseService::DefineException($exception);
+        }
     }
 
-    public function getMySubjects(){
-        try{
+    public function getSubjectsWithoutRequired()
+    {
+        try {
+            $subjects = Subject::where('is_compulsory', 0)->get();
+            return response()->json(new ResponseJSON(
+                status: true, data: $subjects
+            ));
+        } catch (\Exception $exception) {
+            return ResponseService::DefineException($exception);
+        }
+    }
+
+    public function getMySubjects()
+    {
+        try {
             $subjects = $this->planService->get_subjects();
             return response()->json(new ResponseJSON(
                 status: true, data: $subjects
-            ),200);
-        }
-        catch (\Exception $exception) {
+            ));
+        } catch (\Exception $exception) {
             return ResponseService::DefineException($exception);
         }
     }

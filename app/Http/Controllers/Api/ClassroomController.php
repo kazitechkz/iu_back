@@ -44,7 +44,9 @@ class ClassroomController extends Controller
     {
         try {
             $this->validate($request, [
-               'promo_code' => 'required'
+               'promo_code' => 'required',
+               'subject_first' => 'required',
+               'subject_second' => 'required'
             ]);
             return ClassroomService::addClassroomForStudent($request);
         } catch (\Exception $exception) {
