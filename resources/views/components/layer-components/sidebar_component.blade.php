@@ -178,6 +178,23 @@
                 @endcan
             </x-shared.sidebar-menu>
         @endcan
+        @can('announcement management')
+            <x-shared.sidebar-menu :element-id="'announcement'" :name="__('sidebar.content')" :icon="'fas fa-bullhorn'">
+                @can("announcement index")
+                    <x-shared.sub-sidebar-menu
+                        :icon="'fas fa-bullhorn'"
+                        :link="'announcement-type.index'"
+                        :name="__('sidebar.announcement-type')"/>
+                @endcan
+                    @can("announcement index")
+                        <x-shared.sub-sidebar-menu
+                            :icon="'fas fa-bullhorn'"
+                            :link="'announcement-group.index'"
+                            :name="__('sidebar.announcement-group')"/>
+                    @endcan
+
+            </x-shared.sidebar-menu>
+        @endcan
         @can("step management")
         <x-shared.sidebar-menu :element-id="'step-content'" :name="__('sidebar.step')" :icon="'fas fa-stairs'">
                 @can('step index')

@@ -94,7 +94,7 @@
     {{--    Birth Date --}}
     {{-- Image Url --}}
     <label class="h-5">{{__('table.image_url')}}*</label>
-    <livewire:image-upload :file="$image_url" :folder-name="'avatars'"/>
+    <livewire:image-upload :file="$image_url" :folder-name="'avatars'" :id="$user->image_url != null ? $user->image_url : 0"/>
     {{-- Image Url --}}
     {{--    User Role--}}
 

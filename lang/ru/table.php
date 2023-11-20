@@ -408,7 +408,27 @@ return [
     "lesson_complaint_edit_title" => "Изменить жалобу ",
     "lesson_complaint_create_subtitle" => "Блок создания жалоб",
     "lesson_complaint_edit_subtitle" => "Блок редактирования жалоб",
-
+    //Announcement-Type
+    "announcement_type_lists" => "Список Типов Статусов",
+    "announcement_type_management" => "Управление Типами Статусов",
+    "announcement_type_create_title" => "Создать типы статусов",
+    "announcement_type_edit_title" => "Изменить типы статусов ",
+    "announcement_type_create_subtitle" => "Блок создания типов статусов",
+    "announcement_type_edit_subtitle" => "Блок редактирования типов статусов",
+    //Announcement-Group
+    "announcement_group_lists" => "Список Групп Статусов",
+    "announcement_group_management" => "Управление Группами Статусов",
+    "announcement_group_create_title" => "Создать группу статусов",
+    "announcement_group_edit_title" => "Изменить группу статусов ",
+    "announcement_group_create_subtitle" => "Блок создания групп статусов",
+    "announcement_group_edit_subtitle" => "Блок редактирования групп статусов",
+    //Announcement
+    "announcement_lists" => "Список Статусов",
+    "announcement_management" => "Управление Статусами",
+    "announcement_title" => "Создать статус",
+    "announcement_edit_title" => "Изменить статус",
+    "announcement_create_subtitle" => "Блок создания статусов",
+    "announcement_edit_subtitle" => "Блок редактирования статусов",
 
 //    other
     'select_category' => 'Выберите категорию'

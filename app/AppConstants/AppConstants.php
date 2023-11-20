@@ -90,6 +90,10 @@ class AppConstants
         "statistic index", "statistic create", "statistic edit", "statistic show",
         //SubStepVideo
         "subStepVideo index", "subStepVideo create", "subStepVideo edit", "subStepVideo show",
+        //Notifications
+        "notification index", "notification create", "notification edit", "notification show",
+        //Announcement
+        "announcement index", "announcement create", "announcement edit", "announcement show",
         //Permission for main menu
         "user management",
         "locale management",
@@ -102,7 +106,9 @@ class AppConstants
         "tournament management",
         "tutor management",
         "statistic management",
-        "subStepVideo management"
+        "subStepVideo management",
+        "notification management",
+        "announcement management",
     ];
 
     public const ADMIN_PERMISSIONS = self::all_permissions;

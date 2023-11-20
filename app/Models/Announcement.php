@@ -56,14 +56,14 @@ class Announcement extends Model
 		'url'
 	];
 
-	public function file()
+	public function image()
 	{
 		return $this->belongsTo(File::class, 'background');
 	}
 
 	public function group()
 	{
-		return $this->belongsTo(Group::class);
+		return $this->belongsTo(AnnouncementGroup::class,"group_id","id");
 	}
 
 	public function announcement_type()
