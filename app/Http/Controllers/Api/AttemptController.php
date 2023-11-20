@@ -193,6 +193,16 @@ class AttemptController extends Controller
             return ResponseService::DefineException($exception);
         }
     }
+    public function deleteAttemptSettingsById($id){
+        try {
+            $attempt_settings = AttemptSetting::findOrFail($id);
+            $attempt_settings->delete();
+            return response()->json(new ResponseJSON(status: true, data: true));
+        }
+        catch (\Exception $exception) {
+            return ResponseService::DefineException($exception);
+        }
+    }
 
 
 

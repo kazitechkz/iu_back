@@ -21,8 +21,10 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('attempt_settings', function (Blueprint $table) {
-            $table->dropForeign("owner_id");
-        });
+        if (Schema::hasColumn('attempt_settings', 'owner_id')) {
+            Schema::table('attempt_settings', function (Blueprint $table) {
+                $table->dropColumn("owner_id");
+            });
+        }
     }
 };
