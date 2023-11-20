@@ -186,13 +186,18 @@
                         :link="'announcement-type.index'"
                         :name="__('sidebar.announcement-type')"/>
                 @endcan
-                    @can("announcement index")
+                @can("announcement index")
                         <x-shared.sub-sidebar-menu
                             :icon="'fas fa-bullhorn'"
                             :link="'announcement-group.index'"
                             :name="__('sidebar.announcement-group')"/>
-                    @endcan
-
+                @endcan
+                    @can("announcement index")
+                        <x-shared.sub-sidebar-menu
+                            :icon="'fas fa-bullhorn'"
+                            :link="'announcement.index'"
+                            :name="__('sidebar.announcement')"/>
+                @endcan
             </x-shared.sidebar-menu>
         @endcan
         @can("step management")

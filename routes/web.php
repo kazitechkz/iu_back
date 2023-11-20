@@ -46,6 +46,7 @@ use App\Http\Controllers\Admin\LessonComplaintController as AdminLessonComplaint
 use App\Http\Controllers\Admin\SubStepVideoController as AdminSubStepVideoController;
 use App\Http\Controllers\Admin\AnnouncementTypeController as AdminAnnouncementTypeController;
 use App\Http\Controllers\Admin\AnnouncementGroupController as AdminAnnouncementGroupController;
+use App\Http\Controllers\Admin\AnnouncementController as AdminAnnouncementController;
 use App\Http\Controllers\Admin\TestController;
 use App\Http\Controllers\TestController as Testing;
 use Illuminate\Support\Facades\Route;
@@ -140,6 +141,8 @@ Route::group([
         Route::resource("announcement-type",AdminAnnouncementTypeController::class);
         //Announcement Group
         Route::resource("announcement-group",AdminAnnouncementGroupController::class);
+        //Announcement
+        Route::resource("announcement",AdminAnnouncementController::class);
 
         //Statistics
         Route::get('stats-on-questions', [AdminStatisticController::class, 'statsOnQuestions'])->name('stats-on-questions');

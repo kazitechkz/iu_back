@@ -425,7 +425,7 @@ return [
     //Announcement
     "announcement_lists" => "Список Статусов",
     "announcement_management" => "Управление Статусами",
-    "announcement_title" => "Создать статус",
+    "announcement_create_title" => "Создать статус",
     "announcement_edit_title" => "Изменить статус",
     "announcement_create_subtitle" => "Блок создания статусов",
     "announcement_edit_subtitle" => "Блок редактирования статусов",

@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Announcement;
 
+use App\Models\AnnouncementGroup;
 use App\Models\File;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
@@ -16,6 +17,26 @@ class AnnouncementTable extends DataTableComponent
     public function configure(): void
     {
         $this->setPrimaryKey('id');
+        $this->setPrimaryKey('id')
+            ->setTableRowUrl(function ($row) {
+                return route('announcement.edit', $row);
+            });
+    }
+    public function deleteSelected()
+    {
+        $model = $this->getSelected();
+        foreach ($model as $key => $value) {
+            $entity = Announcement::find($value);
+            $entity?->delete();
+        }
+        $this->clearSelected();
+    }
+
+    public function bulkActions(): array
+    {
+        return [
+            'deleteSelected' => 'Удалить'
+        ];
     }
 
     public function columns(): array
@@ -23,50 +44,26 @@ class AnnouncementTable extends DataTableComponent
         return [
             Column::make("Id", "id")
                 ->sortable(),
-            Column::make("Type id", "type_id")
+            Column::make("Type id", "announcement_type.title_".\Mcamara\LaravelLocalization\Facades\LaravelLocalization::getCurrentLocale())
                 ->sortable(),
             Column::make("Group id", "group.title_".\Mcamara\LaravelLocalization\Facades\LaravelLocalization::getCurrentLocale())
-                ->sortable(),
+                ->searchable(),
             Column::make("Background", "image.url")
                 ->format(fn($val) => '<img class="w-50" src="'.File::getFileFromAWS($val).'" />')
                 ->html(),
-            Column::make("Title", "title_".\Mcamara\LaravelLocalization\Facades\LaravelLocalization::getCurrentLocale())
-                ->sortable(),
+            Column::make("Title", "title")
+                ->searchable(),
             Column::make("Sub title", "sub_title")
                 ->sortable(),
             Column::make("Description", "description")
-                ->sortable(),
+                ->html()
+                ->searchable(),
             Column::make("Time in sec", "time_in_sec")
                 ->sortable(),
             Column::make("Url text", "url_text")
                 ->sortable(),
             Column::make("Url", "url")
                 ->sortable(),
-            ButtonGroupColumn::make('Действие')
-                ->attributes(function($row) {
-                    return [
-                        'class' => 'space-x-2 flex',
-                    ];
-                })
-                ->buttons([
-                    LinkColumn::make('View') // make() has no effect in this case but needs to be set anyway
-                    ->title(fn($row) => '')
-                        ->location(fn($row) => route('step.show', $row))
-                        ->attributes(function($row) {
-                            return [
-                                'class' => 'fas fa-plus btn btn-primary btn-rounded btn-icon flex align-center justify-center items-center',
-                            ];
-                        }),
-                    LinkColumn::make('Edit')
-                        ->title(fn($row) => "")
-                        ->location(fn($row) => route('step.edit', $row))
-                        ->attributes(function($row) {
-                            return [
-                                'target' => '_blank',
-                                'class' => 'fas fa-pencil btn btn-danger btn-rounded btn-icon flex align-center justify-center items-center',
-                            ];
-                        }),
-                ]),
         ];
     }
 }
