@@ -55,9 +55,16 @@ class Notification extends Model
 		return $this->belongsTo(ClassroomGroup::class, 'class_id');
 	}
 
-	public function user()
+	public function owner()
 	{
-		return $this->belongsTo(User::class, 'owner_id');
+		return $this->belongsTo(User::class, 'owner_id')->select([
+            'id',
+            "username",
+            'name',
+            'phone',
+            'email',
+            'image_url'
+        ])->with("file");
 	}
 
 	public function notification_type()

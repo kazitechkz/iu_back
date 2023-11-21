@@ -429,6 +429,20 @@ return [
     "announcement_edit_title" => "Изменить статус",
     "announcement_create_subtitle" => "Блок создания статусов",
     "announcement_edit_subtitle" => "Блок редактирования статусов",
+    //Notification Type
+    "notification_type_lists" => "Список Типов Нотификаций",
+    "notification_type_management" => "Управление Типами Нотификаций",
+    "notification_type_create_title" => "Создать Тип Нотификаций",
+    "notification_type_edit_title" => "Изменить Тип Нотификаций",
+    "notification_type_create_subtitle" => "Блок Создания Типа Нотификаций",
+    "notification_type_edit_subtitle" => "Блок Создания Типа Нотификаций",
+    //Notification
+    "notification_lists" => "Список Нотификаций",
+    "notification_management" => "Управление Нотификаций",
+    "notification_create_title" => "Создать Нотификацию",
+    "notification_edit_title" => "Изменить Нотификацию",
+    "notification_create_subtitle" => "Блок Создания Нотификаций",
+    "notification_edit_subtitle" => "Блок Создания Нотификаций",
 
 //    other
     'select_category' => 'Выберите категорию'

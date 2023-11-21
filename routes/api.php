@@ -22,6 +22,8 @@ use App\Http\Controllers\Api\WalletController as ApiWalletController;
 use App\Http\Controllers\Api\AppealTypeController as ApiAppealTypeController;
 use App\Http\Controllers\Api\TournamentController as ApiTournamentController;
 use App\Http\Controllers\Api\StatisticsController as ApiStatisticsController;
+use App\Http\Controllers\Api\NotificationController as ApiNotificationController;
+use App\Http\Controllers\Api\AnnouncementController as ApiAnnouncementController;
 use App\Http\Controllers\Api\AttemptController;
 /*
 |--------------------------------------------------------------------------
@@ -117,7 +119,15 @@ Route::group(['middleware' => 'API'], function() {
     //User
     Route::post("/find-user-by-email",[ApiUserController::class,"userEmail"]);
     //User
-
+    //Notification
+    Route::get("/notification/unread-count",[ApiNotificationController::class,"getNewMessageCount"]);
+    Route::get("/notification/all",[ApiNotificationController::class,"getNotifications"]);
+    Route::get("/notification/my-notification-ids",[ApiNotificationController::class,"getUserReadMessagesIds"]);
+    Route::get("/notification/check-notification/{id}",[ApiNotificationController::class,"checkNotification"]);
+    //Notification
+    //Announcement
+    Route::get("/announcement",[ApiAnnouncementController::class,"index"]);
+    //Announcement
     //Forum
     Route::post("/upload-image",[\App\Http\Controllers\Api\FileUploadController::class,"uploadImage"]);
 

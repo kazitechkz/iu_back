@@ -53,4 +53,6 @@ return [
     "announcement-type"=>"Тип статуса",
     "announcement-group"=>"Группа статуса",
     "announcement"=>"Статусы",
+    "notification"=>"Нотификации",
+    "notification-type"=>"Тип Нотификации",
 ];

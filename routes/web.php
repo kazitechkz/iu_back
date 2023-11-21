@@ -45,6 +45,8 @@ use App\Http\Controllers\Admin\ParticipantRatingController as AdminParticipantRa
 use App\Http\Controllers\Admin\LessonComplaintController as AdminLessonComplaintController;
 use App\Http\Controllers\Admin\SubStepVideoController as AdminSubStepVideoController;
 use App\Http\Controllers\Admin\AnnouncementTypeController as AdminAnnouncementTypeController;
+use App\Http\Controllers\Admin\NotificationTypeController as AdminNotificationTypeController;
+use App\Http\Controllers\Admin\NotificationController as AdminNotificationController;
 use App\Http\Controllers\Admin\AnnouncementGroupController as AdminAnnouncementGroupController;
 use App\Http\Controllers\Admin\AnnouncementController as AdminAnnouncementController;
 use App\Http\Controllers\Admin\TestController;
@@ -143,7 +145,10 @@ Route::group([
         Route::resource("announcement-group",AdminAnnouncementGroupController::class);
         //Announcement
         Route::resource("announcement",AdminAnnouncementController::class);
-
+        //Notification Type
+        Route::resource("notification-type",AdminNotificationTypeController::class);
+        //Notification
+        Route::resource("notification",AdminNotificationController::class);
         //Statistics
         Route::get('stats-on-questions', [AdminStatisticController::class, 'statsOnQuestions'])->name('stats-on-questions');
     });

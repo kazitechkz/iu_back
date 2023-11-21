@@ -23,6 +23,7 @@ use App\Models\Subject;
 use App\Models\UserQuestion;
 use App\Services\AnswerService;
 use App\Services\AttemptService;
+use App\Services\NotificationService;
 use App\Services\PlanService;
 use App\Services\QuestionService;
 use App\Services\ResponseService;
@@ -152,6 +153,9 @@ class AttemptController extends Controller
             $attemptDto = AttemptSettingsCreateDTO::fromArray($input);
             $resultDTO = $attemptDto->toArray();
             $setting = AttemptSetting::add($resultDTO);
+            if($user->hasRole(RoleServices::TEACHER_ROLE_NAME)){
+                NotificationService::createNotification($setting);
+            }
             return response()->json(new ResponseJSON(status: true,data: $setting),200);
         }
         catch (\Exception $exception) {
@@ -162,12 +166,18 @@ class AttemptController extends Controller
     public function createAttemptSettingsUNT(Request $request){
         try{
             $user = auth()->guard("api")->user();
-            $input = $request->all();
-            $input["promo_code"] = Str::random(10);
-            $input["sender_id"] = $user->id;
-            $attemptDto = AttemptSettingsUNTCreateDTO::fromArray($input);
-            $resultDTO = $attemptDto->toArray();
-            $setting = AttemptSettingsUnt::add($resultDTO);
+            $data = json_decode($request->get("data"));
+            foreach ($data as $dataItem){
+                $input = $dataItem;
+                $input["promo_code"] = Str::random(10);
+                $input["sender_id"] = $user->id;
+                $attemptDto = AttemptSettingsUNTCreateDTO::fromArray($input);
+                $resultDTO = $attemptDto->toArray();
+                $setting = AttemptSettingsUnt::add($resultDTO);
+                if($user->hasRole(RoleServices::TEACHER_ROLE_NAME)){
+                    NotificationService::createUNTNotification($setting);
+                }
+            }
             return response()->json(new ResponseJSON(status: true,data: $setting),200);
         }
         catch (\Exception $exception) {

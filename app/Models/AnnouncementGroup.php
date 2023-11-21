@@ -57,4 +57,8 @@ class AnnouncementGroup extends Model
 	{
 		return $this->belongsTo(File::class, 'thumbnail');
 	}
+
+    public function announcements(){
+        return $this->hasMany(Announcement::class,"group_id","id")->with(["image","announcement_type"]);
+    }
 }
