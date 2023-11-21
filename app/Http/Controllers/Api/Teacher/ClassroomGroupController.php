@@ -61,6 +61,31 @@ class ClassroomGroupController extends Controller
         }
     }
 
+    public function getSubjectsArrayByUserIDS(Request $request)
+    {
+        try {
+            $data = [];
+            $newArr = [];
+
+            $tests = Classroom::where('class_id', $request['class_id'])->whereIn('student_id', $request['users'])->pluck('subjects', 'student_id')->toArray();
+            foreach ($tests as $key => $test) {
+                $data[$test][] = $key;
+            }
+            foreach ($data as $key => $value) {
+                $newArr[str_replace('"', '', $key)] = $value;
+            }
+            return response()->json(new ResponseJSON(
+                status: true,
+                data: $newArr
+            ));
+        } catch (ValidationException $exception) {
+            return response()->json(new ResponseJSON(
+                status: false,
+                errors: $exception->errors()
+            ), 400);
+        }
+    }
+
     public function store(Request $request)
     {
         try {

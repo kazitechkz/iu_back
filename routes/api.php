@@ -140,6 +140,7 @@ Route::group(['middleware' => 'API'], function() {
         Route::delete('detail-classroom/{classroom_id}', [ClassroomGroupController::class, 'deleteUserFromClass']);
         Route::get("/my-attempt-settings",[AttemptController::class,"myAttemptSettings"]);
         Route::delete("/delete-attempt-settings/{id}",[AttemptController::class,"deleteAttemptSettingsById"]);
+        Route::post('get-subjects-array-by-user-ids', [ClassroomGroupController::class, 'getSubjectsArrayByUserIDS']);
     });
 });
 Route::post('/auth/login', [ApiAuthController::class, 'loginUser']);
