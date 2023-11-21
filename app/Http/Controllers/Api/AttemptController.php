@@ -166,7 +166,7 @@ class AttemptController extends Controller
     public function createAttemptSettingsUNT(Request $request){
         try{
             $user = auth()->guard("api")->user();
-            $data = json_decode($request->get("data"));
+            $data = json_decode($request->get("data"),true);
             foreach ($data as $dataItem){
                 $input = $dataItem;
                 $input["promo_code"] = Str::random(10);
