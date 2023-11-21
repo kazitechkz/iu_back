@@ -124,6 +124,7 @@ Route::group(['middleware' => 'API'], function() {
     Route::get("/notification/all",[ApiNotificationController::class,"getNotifications"]);
     Route::get("/notification/my-notification-ids",[ApiNotificationController::class,"getUserReadMessagesIds"]);
     Route::get("/notification/check-notification/{id}",[ApiNotificationController::class,"checkNotification"]);
+    Route::get("/notification/notification-types",[ApiNotificationController::class,"getNotificationTypes"]);
     //Notification
     //Announcement
     Route::get("/announcement",[ApiAnnouncementController::class,"index"]);
