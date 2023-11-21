@@ -177,8 +177,10 @@ class AttemptController extends Controller
                 if($user->hasRole(RoleServices::TEACHER_ROLE_NAME)){
                     NotificationService::createUNTNotification($setting);
                 }
+                return response()->json(new ResponseJSON(status: true,data: $setting),200);
             }
-            return response()->json(new ResponseJSON(status: true,data: $setting),200);
+            return response()->json(new ResponseJSON(status: false,message: "Неверные данные"),400);
+
         }
         catch (\Exception $exception) {
             return ResponseService::DefineException($exception);
