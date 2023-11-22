@@ -19,7 +19,9 @@ class StepService
     public function getSubStepTests(int $sub_step_id, int $locale_id): \Illuminate\Database\Eloquent\Collection|bool|array
     {
         $subStep = SubStep::with('step')->findOrFail($sub_step_id);
-        $tests = SubStepTest::with(['result', 'question' => function($query) use ($locale_id) {
+        $tests = SubStepTest::with(['result' => function($query) {
+            $query->where('user_id', auth()->guard('api')->id());
+        }, 'question' => function($query) use ($locale_id) {
             $query->where(['locale_id' => $locale_id])->with('context');
         } ])->where(['sub_step_id' => $sub_step_id, 'locale_id' => $locale_id])->get();
         if ($tests->count()) {
@@ -36,7 +38,6 @@ class StepService
             return false;
         }
     }
-
     /**
      * @param int $sub_step_test_id = SubStepTestId айди вопроса
      * @param $user_answer = UserAnswer ответ пользователя
@@ -46,7 +47,7 @@ class StepService
     {
         $subStepTest = SubStepTest::with('sub_step')->findOrFail($sub_step_test_id);
         $is_right = $this->checkAnswer($subStepTest->question_id, $user_answer);
-        $test_result = SubStepContentTest::firstWhere('test_id', $sub_step_test_id);
+        $test_result = SubStepContentTest::firstWhere(['test_id' => $sub_step_test_id, 'user_id' => $user_id]);
         if ($test_result) {
             $test_result->is_right = $is_right;
             $test_result->user_answer = $user_answer;
