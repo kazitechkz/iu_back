@@ -240,7 +240,7 @@ class QuestionService
             throw new QuestionException("Выберите предметы для сдачи тестирования!");
         }
         $subject_ids = [];
-        if($attempt_type_id == QuestionService::UNT_TYPE || QuestionService::SETTINGS_TYPE_UNT){
+        if($attempt_type_id == QuestionService::UNT_TYPE || $attempt_type_id == QuestionService::SETTINGS_TYPE_UNT){
             $compulsory_subjects = Subject::where(["is_compulsory"=>true])->pluck("id","id");
             array_push($subject_ids,...$compulsory_subjects);
         }
