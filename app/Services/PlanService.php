@@ -25,7 +25,12 @@ class PlanService
         return Subject::whereNotIn("id",$subject_plans)->get();
     }
 
-    public function check_user_subject(int $subject_id): bool
+    public static function check_user_subject(int $subject_id): bool
+    {
+        $subject_plans = auth()->guard('api')->user()->activeSubscriptions()->pluck("tag")->toArray();
+        return in_array($subject_id, $subject_plans);
+    }
+    public function check_user_subject_for_attempt_settings(int $subject_id): bool
     {
         $subject_plans = auth()->guard('api')->user()->activeSubscriptions()->pluck("tag")->toArray();
         return in_array($subject_id, $subject_plans);

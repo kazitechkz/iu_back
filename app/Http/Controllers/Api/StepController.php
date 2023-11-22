@@ -87,6 +87,7 @@ class StepController extends Controller
     {
         try {
             $results = $this->stepService->getSubStepTests($sub_step_id, $locale_id);
+
             if (!$results) {
                 return response()->json(new ResponseJSON(
                     status: false,
@@ -114,13 +115,15 @@ class StepController extends Controller
         try {
             $results = $this->stepService->getSubStepTests($sub_step_id, $locale_id);
             $data = [];
+            $data['is_right'] = 0;
             if ($results) {
-                $data['is_right'] = 0;
                 $data['count'] = $results->count();
                 $data['questions'] = $results;
                 foreach ($results as $item) {
-                    if ($item->result->is_right) {
-                        $data['is_right'] += 1;
+                    if ($item->result) {
+                        if ($item->result->is_right) {
+                            $data['is_right'] += 1;
+                        }
                     }
                 }
                 return response()->json(new ResponseJSON(
