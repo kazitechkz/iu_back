@@ -102,4 +102,9 @@ class User extends Authenticatable implements Searchable,Wallet
     public function inIsClassroom($class_id) : bool{
         return $this->hasMany(Classroom::class, 'student_id',"id")->where(["class_id" => $class_id])->exists();
     }
+
+    public function attempt_settings_result(): BelongsTo
+    {
+        return $this->belongsTo(AttemptSettingsResult::class, 'id', 'user_id');
+    }
 }

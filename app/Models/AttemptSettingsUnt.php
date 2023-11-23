@@ -8,6 +8,7 @@ namespace App\Models;
 
 use App\Traits\CRUD;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
@@ -48,6 +49,18 @@ class AttemptSettingsUnt extends Model
 		'settings' => 'json',
 		'time' => 'int'
 	];
+
+    protected function subjects(): Attribute {
+        return Attribute::make(
+            get: function($value){
+                $ids = json_decode($value);
+                if(!is_array($ids)){
+                    return [];
+                }
+                return Subject::whereIn('id', $ids)->get();
+            },
+        );
+    }
 
 	protected $fillable = [
 		'promo_code',

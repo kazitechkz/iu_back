@@ -6,6 +6,7 @@
 
 namespace App\Models;
 
+use App\Helpers\HasManyJSON;
 use App\Traits\CRUD;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -30,64 +31,70 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property ClassroomGroup|null $classroom_group
  * @property Locale $locale
  * @property User|null $user
+ * @property AttemptSettingsResult|null $attempt_settings_results
  *
  * @package App\Models
  */
 class AttemptSetting extends Model
 {
     use CRUD;
-	protected $table = 'attempt_settings';
+    use \Staudenmeir\EloquentJsonRelations\HasJsonRelationships;
+    protected $table = 'attempt_settings';
 
-	protected $casts = [
-		'class_id' => 'int',
-		'owner_id' => 'int',
-		'settings' => 'json',
-		'locale_id' => 'int',
-		'subject_id' => 'int',
-		'time' => 'int',
-		'point' => 'int',
+    protected $casts = [
+        'class_id' => 'int',
+        'owner_id' => 'int',
+        'settings' => 'json',
+        'locale_id' => 'int',
+        'subject_id' => 'int',
+        'time' => 'int',
+        'point' => 'int',
         'users' => 'json',
-	];
+    ];
 
-	protected $fillable = [
+    protected $fillable = [
         "subject_id",
-		'promo_code',
-		'class_id',
-		'users',
-		'owner_id',
-		'settings',
-		'locale_id',
-		'time',
-		'hidden_fields',
-		'point'
-	];
-//    protected function users(): Attribute {
-//        return Attribute::make(
-//            get: function($value){
-//                $ids = json_decode($value);
-//                $t1 = str_replace('[', '', $ids);
-//                $t2 = str_replace(']', '', $t1);
-//                $dataIDS = explode(',', $t2);
-//                if(!is_array($dataIDS)){
-//                    return [];
-//                }
-//                return User::whereIn('id', $dataIDS)->get();
-//            },
-//        );
-//    }
-	public function classroom_group()
-	{
-		return $this->belongsTo(ClassroomGroup::class, 'class_id');
-	}
+        'promo_code',
+        'class_id',
+        'users',
+        'owner_id',
+        'settings',
+        'locale_id',
+        'time',
+        'hidden_fields',
+        'point'
+    ];
+    protected function users(): Attribute {
+        return Attribute::make(
+            get: function($value){
+                $ids = json_decode($value);
+                if(!is_array($ids)){
+                    return [];
+                }
+                return User::with('attempt_settings_result')->whereIn('id', $ids)->get();
+            },
+        );
+    }
 
-	public function locale()
-	{
-		return $this->belongsTo(Locale::class);
-	}
+    public function getUsers($attempt_id)
+    {
+        return User::with(['attempt_settings_result' => function ($query) use ($attempt_id) {
+            return $query->where('setting_id', $attempt_id);
+        }])->whereIn('id', $this->users->pluck('id')->toArray())->get();
+    }
+    public function classroom_group()
+    {
+        return $this->belongsTo(ClassroomGroup::class, 'class_id', 'id');
+    }
 
-	public function owner()
-	{
-		return $this->belongsTo(User::class,"owner_id","id")->select([
+    public function locale()
+    {
+        return $this->belongsTo(Locale::class);
+    }
+
+    public function owner()
+    {
+        return $this->belongsTo(User::class, "owner_id", "id")->select([
             'id',
             "username",
             'name',
@@ -95,7 +102,8 @@ class AttemptSetting extends Model
             'email',
             'image_url'
         ])->with("file");
-	}
+    }
+
     public function subject()
     {
         return $this->belongsTo(Subject::class);
@@ -103,13 +111,15 @@ class AttemptSetting extends Model
 
     public function isUserIncluded(): bool
     {
-        if ($this->users){
-            return in_array(auth()->guard("api")->id(),$this->users);
+        if ($this->users) {
+            return in_array(auth()->guard("api")->id(), $this->users->pluck('id')->toArray());
         }
         return false;
     }
 
-    public function attempt_settings_results():HasMany{
-        return $this->hasMany(AttemptSettingsResult::class,"setting_id","id");
+    public function attempt_settings_results(): HasMany
+    {
+        return $this->hasMany(AttemptSettingsResult::class, "setting_id", "id");
     }
+
 }

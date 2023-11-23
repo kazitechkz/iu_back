@@ -167,20 +167,22 @@ class AttemptController extends Controller
         try {
             $user = auth()->guard("api")->user();
             $data = json_decode($request->get("data"), true);
-            foreach ($data as $dataItem) {
-                $input = $dataItem;
-                $input["promo_code"] = Str::random(10);
-                $input["sender_id"] = $user->id;
-                $attemptDto = AttemptSettingsUNTCreateDTO::fromArray($input);
-                $resultDTO = $attemptDto->toArray();
-                $setting = AttemptSettingsUnt::add($resultDTO);
-                if ($user->hasRole(RoleServices::TEACHER_ROLE_NAME)) {
-                    NotificationService::createUNTNotification($setting);
+            if ($data) {
+                foreach ($data as $dataItem) {
+                    $input = $dataItem;
+                    $input["promo_code"] = Str::random(10);
+                    $input["sender_id"] = $user->id;
+                    $attemptDto = AttemptSettingsUNTCreateDTO::fromArray($input);
+                    $resultDTO = $attemptDto->toArray();
+                    $setting = AttemptSettingsUnt::add($resultDTO);
+                    if ($user->hasRole(RoleServices::TEACHER_ROLE_NAME)) {
+                        NotificationService::createUNTNotification($setting);
+                    }
                 }
-                return response()->json(new ResponseJSON(status: true, data: $setting), 200);
+                return response()->json(new ResponseJSON(status: true, data: true));
+            } else {
+                return response()->json(new ResponseJSON(status: false, message: "Неверные данные"), 400);
             }
-            return response()->json(new ResponseJSON(status: false, message: "Неверные данные"), 400);
-
         } catch (\Exception $exception) {
             return ResponseService::DefineException($exception);
         }

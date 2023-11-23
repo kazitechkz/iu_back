@@ -21,6 +21,7 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @property Attempt $attempt
  * @property AttemptSetting $attempt_setting
+ * @property User $user
  *
  * @package App\Models
  */

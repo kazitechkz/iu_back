@@ -67,6 +67,35 @@ class StatisticsService
         return $result;
     }
 
+    public function getStatByAttemptIdForTeacher($attempt_id, $user_id): array
+    {
+        $result = [];
+        $attempt = Attempt::where(["id" => $attempt_id, "user_id" => $user_id])->where("end_at", "!=", null)->with(["locale", "attempt_type", "user"])->first();
+        if (!$attempt) {
+            throw new NotFoundException("Попытка сдачи не найдена");
+        }
+        $result = ["attempt" => $attempt];
+        $attempt_subjects = AttemptSubject::where(["attempt_id" => $attempt->id])->with(["subject.image"])->get();
+        if (!$attempt_subjects->count()) {
+            throw new NotFoundException("Попытка сдачи не найдена");
+        }
+        $subject_iterator = 0;
+        foreach ($attempt_subjects as $attempt_subject) {
+            $result["subjects"][$subject_iterator] = $attempt_subject->subject;
+            $attempt_questions_ids = AttemptQuestion::where(["attempt_subject_id" => $attempt_subject->id])->pluck("question_id", "question_id")->toArray();
+            $subcategory_ids = Question::whereIn("id", $attempt_questions_ids)->pluck("sub_category_id", "sub_category_id")->toArray();
+            foreach ($subcategory_ids as $subcategory_id) {
+                $question_ids = Question::whereIn("id", $attempt_questions_ids)->where(["sub_category_id" => $subcategory_id])->pluck("id", "id")->toArray();
+                $subcategory = SubCategory::with("category")->firstWhere(["id" => $subcategory_id]);
+                $right = AttemptQuestion::whereIn("question_id", $question_ids)->where(["attempt_subject_id" => $attempt_subject->id, "is_right" => true])->count();
+                $not_right = AttemptQuestion::whereIn("question_id", $question_ids)->where(["attempt_subject_id" => $attempt_subject->id, "is_right" => false])->count();
+                $result["stat_by_attempt"][] = ["sub_category" => $subcategory, "total" => $right + $not_right, "right" => $right, "not_right" => $not_right, "subject_id" => $attempt_subject->subject_id];
+            }
+            $subject_iterator++;
+        }
+        return $result;
+    }
+
     public function getStatBySubjectId($subject_id){
         $user = auth()->guard("api")->user();
         $result = [];

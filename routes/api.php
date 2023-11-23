@@ -144,6 +144,8 @@ Route::group(['middleware' => 'API'], function() {
         Route::delete("/delete-attempt-settings/{id}",[AttemptController::class,"deleteAttemptSettingsById"]);
         Route::delete("/delete-attempt-settings-unt/{id}",[AttemptController::class,"deleteAttemptSettingsUNTById"]);
         Route::post('get-subjects-array-by-user-ids', [ClassroomGroupController::class, 'getSubjectsArrayByUserIDS']);
+        Route::get('get-single-test-statistics/{id}', [ExamController::class, 'getSingleTestByID']);
+        Route::get('statistics/attempt-stats/{attempt_id}/{user_id}', [ExamController::class, 'statsByAttemptId']);
     });
 });
 Route::post('/auth/login', [ApiAuthController::class, 'loginUser']);
