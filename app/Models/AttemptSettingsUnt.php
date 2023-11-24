@@ -31,7 +31,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property ClassroomGroup|null $classroom_group
  * @property Locale $locale
  * @property User|null $user
- * @property Collection|AttemptSettingsResultsUnt[] $attempt_settings_results_unts
+ * @property Collection|AttemptSettingsResultsUnt[] $attempt_settings_results_unt
  *
  * @package App\Models
  */
@@ -74,6 +74,12 @@ class AttemptSettingsUnt extends Model
 		'hidden_fields'
 	];
 
+    public function getUsers($attempt_id)
+    {
+        return User::with(['attempt_settings_unt_result' => function ($query) use ($attempt_id) {
+            return $query->where('setting_id', $attempt_id);
+        }])->whereIn('id', $this->users)->get();
+    }
 	public function classroom_group()
 	{
 		return $this->belongsTo(ClassroomGroup::class, 'class_id');
@@ -102,8 +108,8 @@ class AttemptSettingsUnt extends Model
         }
         return false;
     }
-	public function attempt_settings_results_unts()
-	{
+	public function attempt_settings_results_unt(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
 		return $this->hasMany(AttemptSettingsResultsUnt::class, 'setting_id');
 	}
 }

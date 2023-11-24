@@ -7,6 +7,7 @@ use App\Traits\CRUD;
 use Bavix\Wallet\Interfaces\Wallet;
 use Bavix\Wallet\Traits\HasWallet;
 use Bpuig\Subby\Traits\HasSubscriptions;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -24,7 +25,13 @@ use Spatie\Permission\Traits\HasRoles;
 use Spatie\Searchable\Searchable;
 use Spatie\Searchable\SearchResult;
 use Zorb\Promocodes\Traits\AppliesPromocode;
-
+/**
+ * Class User
+ * @property Collection|AttemptSettingsResult[] $attempt_settings_result
+ * @property Collection|AttemptSettingsResultsUnt[] $attempt_settings_unt_result
+ *
+ * @package App\Models
+ */
 class User extends Authenticatable implements Searchable,Wallet
 {
     use HasApiTokens, HasFactory, Notifiable, HasRoles;
@@ -106,5 +113,10 @@ class User extends Authenticatable implements Searchable,Wallet
     public function attempt_settings_result(): BelongsTo
     {
         return $this->belongsTo(AttemptSettingsResult::class, 'id', 'user_id');
+    }
+
+    public function attempt_settings_unt_result(): BelongsTo
+    {
+        return $this->belongsTo(AttemptSettingsResultsUnt::class, 'id', 'user_id');
     }
 }

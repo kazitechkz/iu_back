@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\SubStepController as ApiSubStepController;
 use App\Http\Controllers\Api\SubjectController as ApiSubjectController;
 use App\Http\Controllers\Api\QuestionController as ApiQuestionController;
 use App\Http\Controllers\Api\Teacher\ClassroomGroupController;
+use App\Http\Controllers\Api\Teacher\DashboardController;
 use App\Http\Controllers\Api\Teacher\ExamController;
 use App\Http\Controllers\Api\UserController as ApiUserController;
 use Illuminate\Http\Request;
@@ -136,6 +137,7 @@ Route::group(['middleware' => 'API'], function() {
     Route::resource('classrooms', ClassroomController::class)->only(['index', 'show', 'destroy', 'store']);
     //TEACHER_ROUTES
     Route::group(['prefix' => 'teacher'], function () {
+        Route::get('dashboard', [DashboardController::class, 'index']);
         Route::resource('classrooms', ClassroomGroupController::class);
         Route::get('detail-classroom/{id}', [ClassroomGroupController::class, 'getDetailClassroom']);
         Route::delete('detail-classroom/{classroom_id}', [ClassroomGroupController::class, 'deleteUserFromClass']);
@@ -145,6 +147,7 @@ Route::group(['middleware' => 'API'], function() {
         Route::delete("/delete-attempt-settings-unt/{id}",[AttemptController::class,"deleteAttemptSettingsUNTById"]);
         Route::post('get-subjects-array-by-user-ids', [ClassroomGroupController::class, 'getSubjectsArrayByUserIDS']);
         Route::get('get-single-test-statistics/{id}', [ExamController::class, 'getSingleTestByID']);
+        Route::get('get-unt-test-statistics/{id}', [ExamController::class, 'getUNTTestByID']);
         Route::get('statistics/attempt-stats/{attempt_id}/{user_id}', [ExamController::class, 'statsByAttemptId']);
     });
 });
