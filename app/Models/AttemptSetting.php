@@ -38,7 +38,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class AttemptSetting extends Model
 {
     use CRUD;
-    use \Staudenmeir\EloquentJsonRelations\HasJsonRelationships;
+
     protected $table = 'attempt_settings';
 
     protected $casts = [

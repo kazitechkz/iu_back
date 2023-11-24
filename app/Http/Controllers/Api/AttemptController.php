@@ -111,7 +111,7 @@ class AttemptController extends Controller
                     return response()->json(new ResponseJSON(status: true, message: "Вы уже проходили данный тест"), 400);
                 }
                 $questions = $this->questionService->get_questions_with_subjects(
-                    subjects: $attempt_setting->subjects,
+                    subjects: $attempt_setting->subjects->pluck("id")->toArray(),
                     locale_id: $attempt_setting->locale_id,
                     attempt_type_id: QuestionService::SETTINGS_TYPE_UNT
                 );

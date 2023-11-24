@@ -245,7 +245,7 @@ class QuestionService
             array_push($subject_ids,...$compulsory_subjects);
         }
         array_push($subject_ids,...$subjects);
-        if($attempt_type_id == QuestionService::UNT_TYPE){
+        if($attempt_type_id == QuestionService::UNT_TYPE || $attempt_type_id == QuestionService::SETTINGS_TYPE_UNT){
             if(count($subject_ids) != 5){
                 throw new QuestionException("Недостаточно предметов для сдачи тестирования!");
             }
