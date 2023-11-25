@@ -30,10 +30,20 @@ class NotificationController extends Controller
 
     public function getNotifications(Request $request){
         try{
+            $condition = [];
             $user = auth()->guard("api")->user();
             $notifications = Notification::query();
+            if($request->get("notification_type")){
+                if($request->get('notification_type') == "all"){
+                    $notifications = $notifications->where(["users"=>null,"class_id"=>null]);
+                }
+            }
+            else{
+               $notifications = $notifications->whereJsonContains("users",$user->id);
+            }
+
             if($request->get("type_id")){
-                $notifications = $notifications->where(["type_id"=>$request->get("type_id")]);
+               $condition = [...$condition,"type_id"=>$request->get("type_id")];
             }
             if($request->get("status") == "new"){
                 $read_ids = NotificationUserStatus::where(["user_id" =>$user->id])->pluck("notification_id")->toArray();
@@ -41,9 +51,10 @@ class NotificationController extends Controller
                     $notifications = $notifications->whereNotIn("id",$read_ids);
                 }
             }
-            $notifications = $notifications->whereJsonContains("users",$user->id)
-                ->where("title","LIKE","%" . ($request->get("search")??""). "%")
-                ->orWhere("message","LIKE","%" .($request->get("search")??""). "%")
+            if($request->get("search")){
+                $notifications = $notifications->where('title',"LIKE","%" . $request->get("search") ."%")->orWhere("message","LIKE","%" . $request->get("search") ."%");
+            }
+            $notifications = $notifications->where($condition)
                 ->with(["owner","notification_type"])
                 ->orderBy("created_at","desc")
                 ->paginate(20);
