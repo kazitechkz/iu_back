@@ -17,21 +17,23 @@ class RolePermissionSeeder extends Seeder
      */
     public function run(): void
     {
-        if(DB::table("role_has_permissions")->count() == 0){
             $permissions = Permission::all();
             foreach ($permissions as $permission) {
-                DB::table("role_has_permissions")->insert([
-                    "permission_id" => $permission->id,
-                    "role_id" => 1
-                ]);
-                if (in_array($permission->name, AppConstants::METHOD_PERMISSIONS)) {
+                if(!DB::table("role_has_permissions")->where(["permission_id" => $permission->id, "role_id" => 1])->exists()){
                     DB::table("role_has_permissions")->insert([
                         "permission_id" => $permission->id,
-                        "role_id" => 2
+                        "role_id" => 1
                     ]);
                 }
-
+                if (in_array($permission->name, AppConstants::METHOD_PERMISSIONS)) {
+                    if(!DB::table("role_has_permissions")->where(["permission_id" => $permission->id, "role_id" => 2])->exists()){
+                        DB::table("role_has_permissions")->insert([
+                            "permission_id" => $permission->id,
+                            "role_id" => 2
+                        ]);
+                    }
+                }
             }
-        }
+
     }
 }

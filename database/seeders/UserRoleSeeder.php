@@ -16,17 +16,17 @@ class UserRoleSeeder extends Seeder
      */
     public function run(): void
     {
-        if(DB::table("model_has_roles")->count() == 0){
-            DB::table("model_has_roles")->insert([
-                "role_id" => 1,
-                "model_type" => User::class,
-                "model_id" => 1
-            ]);
-            DB::table("model_has_roles")->insert([
-                "role_id" => 2,
-                "model_type" => User::class,
-                "model_id" => 2
-            ]);
-        }
+//        if(DB::table("model_has_roles")->count() == 0){
+//            DB::table("model_has_roles")->insert([
+//                "role_id" => 1,
+//                "model_type" => User::class,
+//                "model_id" => 1
+//            ]);
+//            DB::table("model_has_roles")->insert([
+//                "role_id" => 2,
+//                "model_type" => User::class,
+//                "model_id" => 2
+//            ]);
+//        }
     }
 }

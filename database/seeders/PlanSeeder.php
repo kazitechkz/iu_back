@@ -14,7 +14,7 @@ class PlanSeeder extends Seeder
     public function run(): void
     {
         //UNT START
-        Plan::create([
+        $plan_raw = [[
             'tag'=>"free",
             'name'=>"Free Plan",
             'description'=>"Free Plan",
@@ -29,8 +29,8 @@ class PlanSeeder extends Seeder
             'grace_interval'=>"hour",
             'invoice_period'=>12,
             'invoice_interval'=>"month",
-        ]);
-        Plan::create([
+        ],
+        [
             'tag'=>"basic",
             'name'=>"Basic Plan",
             'description'=>"Basic Plan for 1 month",
@@ -45,8 +45,8 @@ class PlanSeeder extends Seeder
             'grace_interval'=>"hour",
             'invoice_period'=>1,
             'invoice_interval'=>"month",
-        ]);
-        Plan::create([
+        ],
+        [
             'tag'=>"standart",
             'name'=>"Standart Plan",
             'description'=>"Standart Plan for 3 months",
@@ -61,8 +61,8 @@ class PlanSeeder extends Seeder
             'grace_interval'=>"hour",
             'invoice_period'=>3,
             'invoice_interval'=>"month",
-        ]);
-        Plan::create([
+        ],
+        [
             'tag'=>"pro",
             'name'=>"Pro Plan",
             'description'=>"Pro Plan for 6 months",
@@ -77,8 +77,8 @@ class PlanSeeder extends Seeder
             'grace_interval'=>"hour",
             'invoice_period'=>6,
             'invoice_interval'=>"month",
-        ]);
-        Plan::create([
+        ],
+        [
             'tag'=>"premium",
             'name'=>"Premium Plan",
             'description'=>"Premium Plan for 12 months",
@@ -93,11 +93,11 @@ class PlanSeeder extends Seeder
             'grace_interval'=>"hour",
             'invoice_period'=>12,
             'invoice_interval'=>"month",
-        ]);
+        ],
         //UNT ENDS
 
         //CONTENT START
-        Plan::create([
+        [
             'tag'=>"1",
             'name'=>"Математикалық сауаттылық/Математическая грамотность",
             'description'=>"Математикалық сауаттылық/Математическая грамотность",
@@ -112,8 +112,8 @@ class PlanSeeder extends Seeder
             'grace_interval'=>"hour",
             'invoice_period'=>1,
             'invoice_interval'=>"month",
-        ]);
-        Plan::create([
+        ],
+       [
             'tag'=>"2",
             'name'=>"Қазақстан тарихы/История Казахстана",
             'description'=>"Қазақстан тарихы/История Казахстана",
@@ -128,8 +128,8 @@ class PlanSeeder extends Seeder
             'grace_interval'=>"hour",
             'invoice_period'=>1,
             'invoice_interval'=>"month",
-        ]);
-        Plan::create([
+        ],
+        [
             'tag'=>"3",
             'name'=>"Оқу сауаттылығы/Грамотность чтения",
             'description'=>"Оқу сауаттылығы/Грамотность чтения",
@@ -144,8 +144,8 @@ class PlanSeeder extends Seeder
             'grace_interval'=>"hour",
             'invoice_period'=>1,
             'invoice_interval'=>"month",
-        ]);
-        Plan::create([
+        ],
+        [
             'tag'=>"4",
             'name'=>"Математика/Математика",
             'description'=>"Математика/Математика",
@@ -160,8 +160,8 @@ class PlanSeeder extends Seeder
             'grace_interval'=>"hour",
             'invoice_period'=>1,
             'invoice_interval'=>"month",
-        ]);
-        Plan::create([
+        ],
+        [
             'tag'=>"5",
             'name'=>"Физика/Физика",
             'description'=>"Физика/Физика",
@@ -176,8 +176,8 @@ class PlanSeeder extends Seeder
             'grace_interval'=>"hour",
             'invoice_period'=>1,
             'invoice_interval'=>"month",
-        ]);
-        Plan::create([
+        ],
+        [
             'tag'=>"6",
             'name'=>"Химия/Химия",
             'description'=>"Химия/Химия",
@@ -192,8 +192,8 @@ class PlanSeeder extends Seeder
             'grace_interval'=>"hour",
             'invoice_period'=>1,
             'invoice_interval'=>"month",
-        ]);
-        Plan::create([
+        ],
+        [
             'tag'=>"7",
             'name'=>"Биология/Биология",
             'description'=>"Биология/Биология",
@@ -208,8 +208,8 @@ class PlanSeeder extends Seeder
             'grace_interval'=>"hour",
             'invoice_period'=>1,
             'invoice_interval'=>"month",
-        ]);
-        Plan::create([
+        ],
+        [
             'tag'=>"8",
             'name'=>"География/География",
             'description'=>"География/География",
@@ -224,8 +224,8 @@ class PlanSeeder extends Seeder
             'grace_interval'=>"hour",
             'invoice_period'=>1,
             'invoice_interval'=>"month",
-        ]);
-        Plan::create([
+        ],
+        [
             'tag'=>"9",
             'name'=>"Дүниежүзі тарихы/Всемирная история",
             'description'=>"Дүниежүзі тарихы/Всемирная история",
@@ -240,8 +240,8 @@ class PlanSeeder extends Seeder
             'grace_interval'=>"hour",
             'invoice_period'=>1,
             'invoice_interval'=>"month",
-        ]);
-        Plan::create([
+        ],
+        [
             'tag'=>"10",
             'name'=>"Құқық/Основы права",
             'description'=>"Құқық/Основы права",
@@ -256,8 +256,8 @@ class PlanSeeder extends Seeder
             'grace_interval'=>"hour",
             'invoice_period'=>1,
             'invoice_interval'=>"month",
-        ]);
-        Plan::create([
+        ],
+        [
             'tag'=>"11",
             'name'=>"Ағылшын тілі/Английский язык",
             'description'=>"Ағылшын тілі/Английский язык",
@@ -272,8 +272,8 @@ class PlanSeeder extends Seeder
             'grace_interval'=>"hour",
             'invoice_period'=>1,
             'invoice_interval'=>"month",
-        ]);
-        Plan::create([
+        ],
+        [
             'tag'=>"12",
             'name'=>"Қазақ тілі/Казахский язык",
             'description'=>"Қазақ тілі/Казахский язык",
@@ -288,8 +288,8 @@ class PlanSeeder extends Seeder
             'grace_interval'=>"hour",
             'invoice_period'=>1,
             'invoice_interval'=>"month",
-        ]);
-        Plan::create([
+        ],
+        [
             'tag'=>"13",
             'name'=>"Қазақ әдебиеті/Казахская литература",
             'description'=>"Қазақ әдебиеті/Казахская литература",
@@ -304,8 +304,8 @@ class PlanSeeder extends Seeder
             'grace_interval'=>"hour",
             'invoice_period'=>1,
             'invoice_interval'=>"month",
-        ]);
-        Plan::create([
+        ],
+        [
             'tag'=>"14",
             'name'=>"Орыс тілі/Русский язык",
             'description'=>"Орыс тілі/Русский язык",
@@ -320,8 +320,8 @@ class PlanSeeder extends Seeder
             'grace_interval'=>"hour",
             'invoice_period'=>1,
             'invoice_interval'=>"month",
-        ]);
-        Plan::create([
+        ],
+        [
             'tag'=>"15",
             'name'=>"Орыс әдебиеті/Русская литература",
             'description'=>"Орыс әдебиеті/Русская литература",
@@ -336,8 +336,8 @@ class PlanSeeder extends Seeder
             'grace_interval'=>"hour",
             'invoice_period'=>1,
             'invoice_interval'=>"month",
-        ]);
-        Plan::create([
+        ],
+        [
             'tag'=>"16",
             'name'=>"Информатика/Информатика",
             'description'=>"Информатика/Информатика",
@@ -352,7 +352,13 @@ class PlanSeeder extends Seeder
             'grace_interval'=>"hour",
             'invoice_period'=>1,
             'invoice_interval'=>"month",
-        ]);
+        ]];
         //CONTENT END
+
+        foreach ($plan_raw as $value){
+            if(!Plan::whereTag($value["tag"])->exists()){
+                Plan::create($value);
+            }
+        }
     }
 }

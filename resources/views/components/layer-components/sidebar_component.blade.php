@@ -217,6 +217,23 @@
 
             </x-shared.sidebar-menu>
         @endcan
+        @can('tech-support management')
+            <x-shared.sidebar-menu :element-id="'tech-support'" :name="__('sidebar.tech-support')" :icon="'fas fa-toolbox'">
+                @can("tech-support index")
+                    <x-shared.sub-sidebar-menu
+                        :icon="'fas fa-toolbox'"
+                        :link="'tech-support-type.index'"
+                        :name="__('sidebar.tech-support-type')"/>
+                @endcan
+                    @can("tech-support index")
+                        <x-shared.sub-sidebar-menu
+                            :icon="'fas fa-toolbox'"
+                            :link="'tech-support-category.index'"
+                            :name="__('sidebar.tech-support-category')"/>
+                    @endcan
+
+            </x-shared.sidebar-menu>
+        @endcan
         @can("step management")
         <x-shared.sidebar-menu :element-id="'step-content'" :name="__('sidebar.step')" :icon="'fas fa-stairs'">
                 @can('step index')

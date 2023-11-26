@@ -443,6 +443,18 @@ return [
     "notification_edit_title" => "Изменить Нотификацию",
     "notification_create_subtitle" => "Блок Создания Нотификаций",
     "notification_edit_subtitle" => "Блок Создания Нотификаций",
+    //Tech Support Type
+    "tech_support_type_lists" => "Список Типов Поддержки",
+    "tech_support_type_management" => "Управление Типами Поддержок",
+    "tech_support_type_create_title" => "Создать Тип Поддержки",
+    "tech_support_type_edit_title" => "Изменить Тип Поддержки",
+    "tech_support_type_create_subtitle" => "Блок Создания Типа Поддержок",
+    //Tech Support Category
+    "tech_support_category_lists" => "Список Категорий Поддержки",
+    "tech_support_category_management" => "Управление Категориями Поддержок",
+    "tech_support_category_create_title" => "Создать Категорию Поддержки",
+    "tech_support_category_edit_title" => "Изменить Категорию Поддержки",
+    "tech_support_category_create_subtitle" => "Блок Создания Категорий Поддержок",
 
 //    other
     'select_category' => 'Выберите категорию'

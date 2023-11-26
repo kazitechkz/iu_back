@@ -17,4 +17,8 @@ class ResponseService
         }
         return response()->json(new ResponseJSON(status: false,message: $exception->getMessage()),500);
     }
+
+    public static function NotFound($message){
+        return response()->json(new ResponseJSON(status: false,message: $message),404);
+    }
 }

@@ -13,17 +13,25 @@ class CommercialGroupSeeder extends Seeder
      */
     public function run(): void
     {
-        CommercialGroup::create([
-            'title_ru'=>"Тренажер для ЕНТ",
-            'title_kk'=>"Тренажер для ЕНТ",
-            'tag'=>"unt",
-            'is_active'=>true,
-        ]);
-        CommercialGroup::create([
-            'title_ru'=>"Учебный материал",
-            'title_kk'=>"Учебный материал",
-            'tag'=>"content",
-            'is_active'=>true
-        ]);
+        $commercial_group_raw = [
+            [
+                'title_ru'=>"Тренажер для ЕНТ",
+                'title_kk'=>"Тренажер для ЕНТ",
+                'tag'=>"unt",
+                'is_active'=>true,
+            ],
+            [
+                'title_ru'=>"Учебный материал",
+                'title_kk'=>"Учебный материал",
+                'tag'=>"content",
+                'is_active'=>true
+            ]
+
+        ];
+        foreach ($commercial_group_raw as $value){
+            if(!CommercialGroup::where(["title_ru"=>$value["title_ru"]])->exists()){
+                CommercialGroup::create($value);
+            }
+        }
     }
 }

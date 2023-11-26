@@ -55,4 +55,7 @@ return [
     "announcement"=>"Статусы",
     "notification"=>"Нотификации",
     "notification-type"=>"Тип Нотификации",
+    "tech-support"=>"Техподдержка",
+    "tech-support-type"=>"Тип Саппорта",
+    "tech-support-category"=>"Категория Саппорта",
 ];

@@ -49,6 +49,8 @@ use App\Http\Controllers\Admin\NotificationTypeController as AdminNotificationTy
 use App\Http\Controllers\Admin\NotificationController as AdminNotificationController;
 use App\Http\Controllers\Admin\AnnouncementGroupController as AdminAnnouncementGroupController;
 use App\Http\Controllers\Admin\AnnouncementController as AdminAnnouncementController;
+use App\Http\Controllers\Admin\TechSupportTypeController as AdminTechSupportTypeController;
+use App\Http\Controllers\Admin\TechSupportCategoryController as AdminTechSupportCategoryController;
 use App\Http\Controllers\Admin\TestController;
 use App\Http\Controllers\TestController as Testing;
 use Illuminate\Support\Facades\Route;
@@ -151,6 +153,10 @@ Route::group([
         Route::resource("notification",AdminNotificationController::class);
         //Statistics
         Route::get('stats-on-questions', [AdminStatisticController::class, 'statsOnQuestions'])->name('stats-on-questions');
+        //Tech Support Type
+        Route::resource("tech-support-type",AdminTechSupportTypeController::class);
+        //Tech Support Category
+        Route::resource("tech-support-category",AdminTechSupportCategoryController::class);
     });
 });
 

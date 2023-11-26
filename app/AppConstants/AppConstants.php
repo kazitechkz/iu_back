@@ -94,6 +94,8 @@ class AppConstants
         "notification index", "notification create", "notification edit", "notification show",
         //Announcement
         "announcement index", "announcement create", "announcement edit", "announcement show",
+        //Notifications
+        "tech-support index", "tech-support create", "tech-support edit", "tech-support show",
         //Permission for main menu
         "user management",
         "locale management",
@@ -109,6 +111,7 @@ class AppConstants
         "subStepVideo management",
         "notification management",
         "announcement management",
+        "tech-support management",
     ];
 
     public const ADMIN_PERMISSIONS = self::all_permissions;

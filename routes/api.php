@@ -25,6 +25,7 @@ use App\Http\Controllers\Api\TournamentController as ApiTournamentController;
 use App\Http\Controllers\Api\StatisticsController as ApiStatisticsController;
 use App\Http\Controllers\Api\NotificationController as ApiNotificationController;
 use App\Http\Controllers\Api\AnnouncementController as ApiAnnouncementController;
+use App\Http\Controllers\Api\TechSupportController as ApiTechSupportController;
 use App\Http\Controllers\Api\AttemptController;
 /*
 |--------------------------------------------------------------------------
@@ -130,6 +131,17 @@ Route::group(['middleware' => 'API'], function() {
     //Announcement
     Route::get("/announcement",[ApiAnnouncementController::class,"index"]);
     //Announcement
+    //Tech Support Type
+    Route::get("/tech-support-types",[ApiTechSupportController::class,"getTechSupportTypes"]);
+    Route::get("/tech-support-categories",[ApiTechSupportController::class,"getTechSupportCategories"]);
+    Route::get("/my-tech-support-tickets",[ApiTechSupportController::class,"myTechSupportTickets"]);
+    Route::get("/get-tech-support-ticket-detail/{id}",[ApiTechSupportController::class,"getTicketById"]);
+    Route::post("/tech-support-create-ticket",[ApiTechSupportController::class,"createTechSupportTickets"]);
+    Route::post("/tech-support-create-ticket",[ApiTechSupportController::class,"createTechSupportTickets"]);
+    Route::post("/tech-support-close-ticket",[ApiTechSupportController::class,"closeTechSupportTickets"]);
+    Route::post("/tech-support-create-message",[ApiTechSupportController::class,"createTechSupportMessage"]);
+
+    //Tech Support Type
     //Forum
     Route::post("/upload-image",[\App\Http\Controllers\Api\FileUploadController::class,"uploadImage"]);
 

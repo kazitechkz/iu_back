@@ -13,15 +13,22 @@ class LocaleSeeder extends Seeder
      */
     public function run(): void
     {
-        Locale::create([
-           'code' => 'kk',
-           'title' => 'Қазақ тілі',
-           'isActive' => 1
-        ]);
-        Locale::create([
-            'code' => 'ru',
-            'title' => 'Русский язык',
-            'isActive' => 1
-        ]);
+        $locale_raw = [
+            [
+                'code' => 'kk',
+                'title' => 'Қазақ тілі',
+                'isActive' => 1
+            ],
+            [
+                'code' => 'ru',
+                'title' => 'Русский язык',
+                'isActive' => 1
+            ]
+        ];
+        foreach ($locale_raw as $value){
+            if(!Locale::where(["code"=>$value["code"]])->exists()){
+                Locale::create($value);
+            }
+        }
     }
 }
