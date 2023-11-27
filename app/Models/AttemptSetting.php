@@ -11,6 +11,7 @@ use App\Traits\CRUD;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
@@ -19,12 +20,14 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property int $id
  * @property string $promo_code
  * @property int|null $class_id
- * @property int|null $user_id
+ * @property array $users
  * @property array $settings
  * @property int $locale_id
+ * @property int $owner_id
  * @property int $time
  * @property string|null $hidden_fields
  * @property int $point
+ * @property int $subject_id
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  *
@@ -76,23 +79,24 @@ class AttemptSetting extends Model
         );
     }
 
-    public function getUsers($attempt_id)
+    public function getUsers($attempt_id): \Illuminate\Database\Eloquent\Collection|array|\LaravelIdea\Helper\App\Models\_IH_User_C
     {
         return User::with(['attempt_settings_result' => function ($query) use ($attempt_id) {
             return $query->where('setting_id', $attempt_id);
         }])->whereIn('id', $this->users->pluck('id')->toArray())->get();
     }
-    public function classroom_group()
+
+    public function classroom_group(): BelongsTo
     {
         return $this->belongsTo(ClassroomGroup::class, 'class_id', 'id');
     }
 
-    public function locale()
+    public function locale(): BelongsTo
     {
         return $this->belongsTo(Locale::class);
     }
 
-    public function owner()
+    public function owner(): BelongsTo
     {
         return $this->belongsTo(User::class, "owner_id", "id")->select([
             'id',
@@ -104,7 +108,7 @@ class AttemptSetting extends Model
         ])->with("file");
     }
 
-    public function subject()
+    public function subject(): BelongsTo
     {
         return $this->belongsTo(Subject::class);
     }
