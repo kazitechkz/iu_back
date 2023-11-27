@@ -32,6 +32,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *
  * @property Locale $locale
  * @property AttemptType $attempt_type
+ * @property AttemptSetting $attempt_setting_result
  * @property User $user
  * @property Collection|Subject[] $subjects
  * @property Collection|SubTournamentResult[] $sub_tournament_results
@@ -106,5 +107,10 @@ class Attempt extends Model
             'phone',
             'email',]);
 	}
+
+    public function attempt_setting_result(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(AttemptSettingsResult::class, 'id', 'setting_id');
+    }
 
 }
