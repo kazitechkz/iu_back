@@ -43,6 +43,9 @@ class TechSupportController extends Controller
             $user = auth()->guard("api")->user();
             $condition = ["user_id"=>$user->id];
             $myTechSupportTickets = TechSupportTicket::query();
+            if($request->exists("is_answered")){
+                $condition["is_closed"] = $request->boolean("is_closed");
+            }
             if($request->exists("is_closed")){
                 $condition["is_closed"] = $request->boolean("is_closed");
             }
@@ -61,7 +64,9 @@ class TechSupportController extends Controller
                 where("title","LIKE","%".$request->get("search")."%");
             }
             $myTechSupportTickets = $myTechSupportTickets->with(["tech_support_category","tech_support_type"])
-                                                            ->withCount("tech_support_messages")->paginate(12);
+                                                            ->withCount("tech_support_messages")
+                                                            ->orderBy("created_at","desc")
+                                                            ->paginate(12);
             return response()->json(new ResponseJSON(status: true,data: $myTechSupportTickets),200);
         }
         catch (\Exception $exception) {

@@ -74,13 +74,14 @@
     <div class="form-group">
         <x-input class="my-2"
                  wire:model="url"
-                 label="{{__('table.url')}}
+                 label="{{__('table.url')}}"
                  placeholder="{{__('table.url')}}"
                  icon="pencil"
                  hint="{{__('table.url')}}"
         />
     </div>
     {{--     URL  --}}
+
     {{-- Image Url --}}
     <label class="h-5">{{__('table.image_url')}}*</label>
     <livewire:image-upload :output_name="'background'" :folder-name="'announcement'" :id="$background != null ? $background : 0"/>

@@ -75,7 +75,7 @@
     <div class="form-group">
         <x-input class="my-2"
                  wire:model="url"
-                 label="{{__('table.url')}}
+                 label="{{__('table.url')}}"
                  placeholder="{{__('table.url')}}"
         icon="pencil"
         hint="{{__('table.url')}}"

@@ -10,7 +10,7 @@ class CreateTechSupportTicketDTO extends ValidatedDTO
     public $type_id;
     public $category_id;
     public $title;
-    public $messages;
+    public $message;
     public $files;
 
     protected function rules(): array
@@ -19,6 +19,7 @@ class CreateTechSupportTicketDTO extends ValidatedDTO
             "type_id"=>"required|exists:tech_support_types,id",
             "category_id"=>"required|exists:tech_support_categories,id",
             'title'=>"required|max:255",
+            'message'=>"required",
             "files"=>"sometimes|nullable|array|max:5",
             "files.*"=>"exists:files,id",
         ];

@@ -6,7 +6,7 @@ use WendellAdriel\ValidatedDTO\ValidatedDTO;
 
 class CloseTechSupportTicketDTO extends ValidatedDTO
 {
-    public $type_id;
+    public $ticket_id;
     public $is_closed;
     public $is_resolved;
     protected function rules(): array

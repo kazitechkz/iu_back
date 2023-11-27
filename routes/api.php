@@ -137,7 +137,6 @@ Route::group(['middleware' => 'API'], function() {
     Route::get("/my-tech-support-tickets",[ApiTechSupportController::class,"myTechSupportTickets"]);
     Route::get("/get-tech-support-ticket-detail/{id}",[ApiTechSupportController::class,"getTicketById"]);
     Route::post("/tech-support-create-ticket",[ApiTechSupportController::class,"createTechSupportTickets"]);
-    Route::post("/tech-support-create-ticket",[ApiTechSupportController::class,"createTechSupportTickets"]);
     Route::post("/tech-support-close-ticket",[ApiTechSupportController::class,"closeTechSupportTickets"]);
     Route::post("/tech-support-create-message",[ApiTechSupportController::class,"createTechSupportMessage"]);
 
