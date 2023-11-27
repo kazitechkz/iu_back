@@ -76,7 +76,7 @@ class TechSupportController extends Controller
     public function getTicketById(Request $request,$id){
         try{
             $user = auth()->guard("api")->user();
-            $ticket = TechSupportTicket::where(["user_id"=>$user->id,"id"=>$id])->with(["tech_support_category","tech_support_type"])->first();
+            $ticket = TechSupportTicket::where(["user_id"=>$user->id,"id"=>$id])->with(["tech_support_category","tech_support_type","user"])->first();
             if(!$ticket){
                 return ResponseService::NotFound("Не найден тикет");
             }
