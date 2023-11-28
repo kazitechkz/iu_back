@@ -196,6 +196,7 @@ class AttemptController extends Controller
             if ($user->hasRole(RoleServices::TEACHER_ROLE_NAME)) {
                 $attempt_settings = AttemptSetting::where(["owner_id" => $user->id])
                     ->with(["classroom_group", "locale", "owner", "subject"])
+                    ->latest()
                     ->paginate(5);
                 return response()->json(new ResponseJSON(status: true, data: $attempt_settings), 200);
             } else {
@@ -213,6 +214,7 @@ class AttemptController extends Controller
             if ($user->hasRole(RoleServices::TEACHER_ROLE_NAME)) {
                 $attempt_settings = AttemptSettingsUnt::where(["sender_id" => $user->id])
                     ->with(["classroom_group", "locale", "sender"])
+                    ->latest()
                     ->paginate(5);
                 return response()->json(new ResponseJSON(status: true, data: $attempt_settings));
             } else {

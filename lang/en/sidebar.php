@@ -18,6 +18,7 @@ return [
     "subscription" => "Subscription",
     'questions' => 'Questions',
     "faq" => "FAQ",
+    "fact" => "Facts",
     "wallet" => "Wallet",
     "group" => "Group of questions",
     "appeal_type" => "Appeal question types",

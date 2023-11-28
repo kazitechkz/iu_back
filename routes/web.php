@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AppealController as AdminAppealController;
 use App\Http\Controllers\Admin\AppealTypeController as AdminAppealTypeController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
+use App\Http\Controllers\Admin\FactController as AdminFactController;
 use App\Http\Controllers\Admin\StatisticController as AdminStatisticController;
 use App\Http\Controllers\Admin\SubCategoryController as AdminSubCategoryController;
 use App\Http\Controllers\Admin\FaqController as AdminFaqController;
@@ -106,6 +107,7 @@ Route::group([
         Route::resource("subscription",AdminSubscriptionController::class);
         Route::resource("promocode",AdminPromocodeController::class);
         Route::resource("news",AdminNewsController::class);
+        Route::resource("fact",AdminFactController::class);
         Route::resource("wallet",AdminWalletController::class);
         Route::resource("faq",AdminFaqController::class);
         Route::resource("questions",AdminQuestionController::class);

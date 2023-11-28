@@ -29,7 +29,12 @@ class TeacherDashboardService
             $mergedArray = array_merge($mergedArray, $numbers);
         }
         $uniqueArray = array_values(array_unique($mergedArray, SORT_NUMERIC));
-        $top_single_tests = AttemptSettingsResult::with('attempt', 'user', 'attempt_setting')->whereIn('setting_id', $settingsIDS)->whereIn('user_id', $uniqueArray)->orderBy('created_at', 'DESC')->take(5)->get();
+        $top_single_tests = AttemptSettingsResult::with('attempt', 'user', 'attempt_setting')
+            ->whereIn('setting_id', $settingsIDS)
+            ->whereIn('user_id', $uniqueArray)
+            ->orderBy('created_at', 'DESC')
+            ->take(7)
+            ->get();
 //        dd($top_single_tests);
         foreach ($top_single_tests as $top_single_test) {
             $data[$top_single_test->user->name][] = [
@@ -66,9 +71,12 @@ class TeacherDashboardService
             $mergedArray = array_merge($mergedArray, $array);
         }
         $uniqueArray = array_values(array_unique($mergedArray, SORT_NUMERIC));
-        $top_unt_tests = AttemptSettingsResultsUnt::with('attempt', 'user')->whereBetween('created_at',
-            [Carbon::now()->subWeek()->startOfWeek(), Carbon::now()->subWeek()->endOfWeek()]
-        )->whereIn('setting_id', $settingsIDS)->whereIn('user_id', $uniqueArray)->orderByDesc('created_at')->get();
+        $top_unt_tests = AttemptSettingsResultsUnt::with('attempt', 'user')
+            ->whereIn('setting_id', $settingsIDS)
+            ->whereIn('user_id', $uniqueArray)
+            ->orderBy('created_at', 'DESC')
+            ->take(7)
+            ->get();
         foreach ($top_unt_tests as $top_unt_test) {
             $data[$top_unt_test->user->name][] = [
                 'percentage' => round(($top_unt_test->attempt->points/$top_unt_test->attempt->max_points)*100),
