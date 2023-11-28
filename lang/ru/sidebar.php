@@ -58,4 +58,5 @@ return [
     "tech-support"=>"Техподдержка",
     "tech-support-type"=>"Тип Саппорта",
     "tech-support-category"=>"Категория Саппорта",
+    "tech-support-ticket"=>"Тикет",
 ];

@@ -455,7 +455,12 @@ return [
     "tech_support_category_create_title" => "Создать Категорию Поддержки",
     "tech_support_category_edit_title" => "Изменить Категорию Поддержки",
     "tech_support_category_create_subtitle" => "Блок Создания Категорий Поддержок",
-
+//Tech Support Ticket
+    "tech_support_ticket_lists" => "Список Тикетов",
+    "tech_support_ticket_management" => "Управление Тикетами",
+    "tech_support_ticket_create_title" => "Создать Тикеты",
+    "tech_support_ticket_edit_title" => "Изменить Тикет",
+    "tech_support_ticket_edit_subtitle" => "Блок Изменения Тикета",
 //    other
     'select_category' => 'Выберите категорию'
 ];

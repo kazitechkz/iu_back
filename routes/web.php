@@ -51,6 +51,7 @@ use App\Http\Controllers\Admin\AnnouncementGroupController as AdminAnnouncementG
 use App\Http\Controllers\Admin\AnnouncementController as AdminAnnouncementController;
 use App\Http\Controllers\Admin\TechSupportTypeController as AdminTechSupportTypeController;
 use App\Http\Controllers\Admin\TechSupportCategoryController as AdminTechSupportCategoryController;
+use App\Http\Controllers\Admin\TechSupportController as AdminTechSupportController;
 use App\Http\Controllers\Admin\TestController;
 use App\Http\Controllers\TestController as Testing;
 use Illuminate\Support\Facades\Route;
@@ -157,6 +158,8 @@ Route::group([
         Route::resource("tech-support-type",AdminTechSupportTypeController::class);
         //Tech Support Category
         Route::resource("tech-support-category",AdminTechSupportCategoryController::class);
+        //Tech Support
+        Route::resource("tech-support-ticket",AdminTechSupportController::class);
     });
 });
 

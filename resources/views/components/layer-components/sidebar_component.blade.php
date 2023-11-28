@@ -231,6 +231,12 @@
                             :link="'tech-support-category.index'"
                             :name="__('sidebar.tech-support-category')"/>
                     @endcan
+                    @can("tech-support index")
+                        <x-shared.sub-sidebar-menu
+                            :icon="'fas fa-toolbox'"
+                            :link="'tech-support-ticket.index'"
+                            :name="__('sidebar.tech-support-ticket')"/>
+                    @endcan
 
             </x-shared.sidebar-menu>
         @endcan
