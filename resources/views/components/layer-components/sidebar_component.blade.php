@@ -344,5 +344,13 @@
                     :name="__('sidebar.stats-on-questions')"/>
             </x-shared.sidebar-menu>
         @endcan
+        @can("fact management")
+            <x-shared.sidebar-menu :element-id="'fact-content'" :name="__('sidebar.fact')" :icon="'fa-regular fa-face-laugh-squint'">
+                <x-shared.sub-sidebar-menu
+                    :icon="'fa-regular fa-face-grin-squint-tears'"
+                    :link="'fact.index'"
+                    :name="__('sidebar.fact')"/>
+            </x-shared.sidebar-menu>
+        @endcan
     </ul>
 </nav>

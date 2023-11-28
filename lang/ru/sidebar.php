@@ -18,6 +18,7 @@ return [
     "subscription" => "Подписки",
     'questions' => 'Вопросы',
     "faq" => "FAQ",
+    "fact" => "Факты",
     "wallet" => "Кошелек",
     "group" => "Группа вопросов",
     "appeal_type" => "Типы аппеляционных вопросов",

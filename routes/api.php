@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AuthController as ApiAuthController;
 use App\Http\Controllers\Api\CategoryController as ApiCategoryController;
+use App\Http\Controllers\Api\FactController as ApiFactController;
 use App\Http\Controllers\Api\SubCategoryController as ApiSubCategoryController;
 use App\Http\Controllers\Api\ClassroomController;
 use App\Http\Controllers\Api\StepController as ApiStepController;
@@ -55,6 +56,7 @@ Route::group(['middleware' => 'API'], function() {
     Route::get('step-detail/{id}', [ApiStepController::class, 'getStepDetail']);
     Route::get('sub-steps/{id}', [ApiSubStepController::class, 'getSubStepsByStepId']);
     Route::get('sub-step/{id}', [ApiSubStepController::class, 'getSubStepById']);
+    Route::get('facts/{subject_id}', [ApiFactController::class, 'getFactsBySubjectID']);
 
     Route::get('locales', [ApiLocaleController::class, 'index']);
     Route::get('faq', [ApiFaqController::class, 'index']);
