@@ -128,4 +128,9 @@ class Question extends Model implements Searchable
     {
         return $this->belongsTo(SubStepTest::class, 'id', 'question_id');
     }
+
+    public function attempt_questions(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(AttemptQuestion::class, 'question_id', 'id');
+    }
 }
