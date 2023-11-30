@@ -197,7 +197,7 @@ class AttemptController extends Controller
                 $attempt_settings = AttemptSetting::where(["owner_id" => $user->id])
                     ->with(["classroom_group", "locale", "owner", "subject"])
                     ->latest()
-                    ->paginate(5);
+                    ->paginate(20);
                 return response()->json(new ResponseJSON(status: true, data: $attempt_settings), 200);
             } else {
                 return response()->json(new ResponseJSON(status: false, message: "У вас нет доступа"), 403);
@@ -215,7 +215,7 @@ class AttemptController extends Controller
                 $attempt_settings = AttemptSettingsUnt::where(["sender_id" => $user->id])
                     ->with(["classroom_group", "locale", "sender"])
                     ->latest()
-                    ->paginate(5);
+                    ->paginate(20);
                 return response()->json(new ResponseJSON(status: true, data: $attempt_settings));
             } else {
                 return response()->json(new ResponseJSON(status: false, message: "У вас нет доступа"), 403);
