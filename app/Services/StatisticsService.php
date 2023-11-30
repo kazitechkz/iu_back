@@ -85,11 +85,14 @@ class StatisticsService
             $attempt_questions_ids = AttemptQuestion::where(["attempt_subject_id" => $attempt_subject->id])->pluck("question_id", "question_id")->toArray();
             $subcategory_ids = Question::whereIn("id", $attempt_questions_ids)->pluck("sub_category_id", "sub_category_id")->toArray();
             foreach ($subcategory_ids as $subcategory_id) {
-                $question_ids = Question::whereIn("id", $attempt_questions_ids)->where(["sub_category_id" => $subcategory_id])->pluck("id", "id")->toArray();
+                $questions = Question::with(['attempt_questions' => function($query) use ($attempt_subject){
+                    $query->where('attempt_subject_id', $attempt_subject->id);
+                }])->whereIn("id", $attempt_questions_ids)->where(["sub_category_id" => $subcategory_id])->get();
+                $question_ids = $questions->pluck("id", "id")->toArray();
                 $subcategory = SubCategory::with("category")->firstWhere(["id" => $subcategory_id]);
-                $right = AttemptQuestion::whereIn("question_id", $question_ids)->where(["attempt_subject_id" => $attempt_subject->id, "is_right" => true])->count();
-                $not_right = AttemptQuestion::whereIn("question_id", $question_ids)->where(["attempt_subject_id" => $attempt_subject->id, "is_right" => false])->count();
-                $result["stat_by_attempt"][] = ["sub_category" => $subcategory, "total" => $right + $not_right, "right" => $right, "not_right" => $not_right, "subject_id" => $attempt_subject->subject_id];
+                $right = AttemptQuestion::whereIn("question_id", $question_ids)->where(["attempt_subject_id" => $attempt_subject->id, "is_right" => 1])->count();
+                $not_right = AttemptQuestion::whereIn("question_id", $question_ids)->where(["attempt_subject_id" => $attempt_subject->id, "is_right" => 0])->count();
+                $result["stat_by_attempt"][] = ["sub_category" => $subcategory, "total" => $right + $not_right, "right" => $right, "not_right" => $not_right, "subject_id" => $attempt_subject->subject_id, 'questions' => $questions];
             }
             $subject_iterator++;
         }
