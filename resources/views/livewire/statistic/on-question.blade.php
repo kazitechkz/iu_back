@@ -10,15 +10,17 @@
             {{--            class="hover:bg-primary-500"--}}
         />
         <div class="mx-2"></div>
-        <x-select
-            label="Язык"
-            wire:model="locale_id"
-            placeholder="Выберите язык"
-            :options="$locales"
-            option-label="title"
-            option-value="id"
-            {{--            class="hover:bg-primary-500"--}}
-        />
+        @if($this->subject_id != 0)
+            <x-select
+                label="Язык"
+                wire:model="locale_id"
+                placeholder="Выберите язык"
+                :options="$locales"
+                option-label="title"
+                option-value="id"
+                {{--            class="hover:bg-primary-500"--}}
+            />
+        @endif
 
     </div>
     <x-loading-indicator />
@@ -31,8 +33,11 @@
 
             <div class="flex flex-col justify-start p-6 w-full">
                 <div class="flex">
-                    <div class="w-[60%] p-5 break-all">
+                    <div class="w-[45%] p-5 break-all">
                         <strong>Субкатегория</strong>
+                    </div>
+                    <div class="w-[15%] p-3 break-all flex justify-start items-center">
+                        Конспекты
                     </div>
                     <div class="w-[20%] p-3 break-all flex justify-start items-center">
 
@@ -63,8 +68,18 @@
                             @if($category->subcategories)
                                 @foreach($category->subcategories as $item)
                                     <div class="flex">
-                                        <div class="w-[60%] p-3 break-all">
+                                        <div class="w-[45%] p-3 break-all">
                                             {{$item[\App\Services\LanguageService::getTitleByLocale($this->locale_id)]}}
+                                        </div>
+                                        <div class="w-[15%] p-3 break-all flex">
+                                            @if($item->sub_step)
+                                                @if($item->sub_step->sub_step_content)
+                                                    <span class="text-green-500">+</span>
+                                                @else
+                                                    <span class="text-red-500">-</span>
+                                                @endif
+                                            @endif
+
                                         </div>
                                         <div class="w-[20%] p-3 break-all flex">
                                             @if($item->questions->where('locale_id', $locale_id)->count() >= 20)

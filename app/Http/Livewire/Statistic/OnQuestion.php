@@ -16,9 +16,9 @@ class OnQuestion extends Component
     public $subjects;
     public $questions;
     public $locales;
-    public int|null $locale_id = 2;
+    public int|null $locale_id = 1;
     public $subject;
-    public int|null $subject_id;
+    public int|null $subject_id = 0;
 
     public $categories;
     public int|null $category_id;
@@ -35,7 +35,7 @@ class OnQuestion extends Component
             $this->show = true;
             $this->subject = Subject::find($this->subject_id);
             $this->questions = Question::where(['subject_id' => $this->subject_id, 'locale_id' => $this->locale_id])->get();
-            $this->categories = Category::with('subcategories')->where('subject_id', $this->subject_id)->get();
+            $this->categories = Category::with('subcategories.sub_step.sub_step_content')->where('subject_id', $this->subject_id)->get();
         } else {
             $this->show = false;
         }

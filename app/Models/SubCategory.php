@@ -76,4 +76,9 @@ class SubCategory extends Model
     {
         return $this->questions()->where('type_id', 3);
     }
+
+    public function sub_step()
+    {
+        return $this->hasOne(SubStep::class, 'sub_category_id', 'id');
+    }
 }
