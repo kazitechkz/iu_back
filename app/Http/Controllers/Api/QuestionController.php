@@ -76,9 +76,9 @@ class QuestionController extends Controller
 //            if(!$planIds){
 //                return response()->json(new ResponseJSON(status: false,message: "Вопрос не найден"),400);
 //            }
-//            if(UserQuestion::where(["user_id"=>$user->id,"question_id"=>$question->id])->first()){
-//                return response()->json(new ResponseJSON(status: false,message: "Вы уже сохранили вопрос"),400);
-//            }
+            if(UserQuestion::where(["user_id"=>$user->id,"question_id"=>$question->id])->first()){
+                return response()->json(new ResponseJSON(status: false,message: "Вы уже сохранили вопрос"),400);
+            }
 //            $groupIds = CommercialGroupPlan::whereIn("plan_id",$planIds)->pluck("group_id")->toArray();
 //            if($groupIds){
 //                if(in_array($question->group_id,$groupIds)){
