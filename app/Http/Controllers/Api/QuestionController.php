@@ -72,24 +72,21 @@ class QuestionController extends Controller
             if(!$question){
                 return response()->json(new ResponseJSON(status: false,message: "Вопрос не найден"),400);
             }
-//            $planIds = $user->activeSubscriptions()->pluck("plan_id")->toArray();
-//            if(!$planIds){
-//                return response()->json(new ResponseJSON(status: false,message: "Вопрос не найден"),400);
-//            }
-//            if(UserQuestion::where(["user_id"=>$user->id,"question_id"=>$question->id])->first()){
-//                return response()->json(new ResponseJSON(status: false,message: "Вы уже сохранили вопрос"),400);
-//            }
-//            $groupIds = CommercialGroupPlan::whereIn("plan_id",$planIds)->pluck("group_id")->toArray();
-//            if($groupIds){
-//                if(in_array($question->group_id,$groupIds)){
-//                    UserQuestion::add(["user_id"=>$user->id,"question_id"=>$question->id]);
-//                    return response()->json(new ResponseJSON(status: true,message: "Вопрос успешно сохранен",data: true),200);
-//                }
-//            }
-            //return response()->json(new ResponseJSON(status: false,message: "Вопрос не найден"),400);
-            UserQuestion::add(["user_id"=>$user->id,"question_id"=>$question->id]);
-            return response()->json(new ResponseJSON(status: true,message: "Вопрос успешно сохранен",data: true),200);
-
+            $planIds = $user->activeSubscriptions()->pluck("plan_id")->toArray();
+            if(!$planIds){
+                return response()->json(new ResponseJSON(status: false,message: "Вопрос не найден"),400);
+            }
+            if(UserQuestion::where(["user_id"=>$user->id,"question_id"=>$question->id])->first()){
+                return response()->json(new ResponseJSON(status: false,message: "Вы уже сохранили вопрос"),400);
+            }
+            $groupIds = CommercialGroupPlan::whereIn("plan_id",$planIds)->pluck("group_id")->toArray();
+            if($groupIds){
+                if(in_array($question->group_id,$groupIds)){
+                    UserQuestion::add(["user_id"=>$user->id,"question_id"=>$question->id]);
+                    return response()->json(new ResponseJSON(status: true,message: "Вопрос успешно сохранен",data: true),200);
+                }
+            }
+            return response()->json(new ResponseJSON(status: false,message: "Вопрос не найден"),400);
         }
         catch (\Exception $exception){
             return response()->json(new ResponseJSON(status: false,message: $exception->getMessage()),500);
@@ -103,19 +100,18 @@ class QuestionController extends Controller
             if(!$question){
                 return response()->json(new ResponseJSON(status: false,message: "Вопрос не найден"),400);
             }
-//            $planIds = $user->activeSubscriptions()->pluck("plan_id")->toArray();
-//            if(!$planIds){
-//                return response()->json(new ResponseJSON(status: false,message: "Вопрос не найден"),400);
-//            }
-//            $groupIds = CommercialGroupPlan::whereIn("plan_id",$planIds)->pluck("group_id")->toArray();
-//            if($groupIds){
-//                if(in_array($question->group_id,$groupIds)){
-//
-//                }
-//            }
-//            return response()->json(new ResponseJSON(status: false,message: "Вопрос не найден"),400);
-            $correct_answer = $this->questionService->getFiftyFifty($question);
-            return response()->json(new ResponseJSON(status: true,message: "Вам дан шанс 50% на 50%",data: [$question->id=>$correct_answer]),200);
+            $planIds = $user->activeSubscriptions()->pluck("plan_id")->toArray();
+            if(!$planIds){
+                return response()->json(new ResponseJSON(status: false,message: "Вопрос не найден"),400);
+            }
+            $groupIds = CommercialGroupPlan::whereIn("plan_id",$planIds)->pluck("group_id")->toArray();
+            if($groupIds){
+                if(in_array($question->group_id,$groupIds)){
+                    $correct_answer = $this->questionService->getFiftyFifty($question);
+                    return response()->json(new ResponseJSON(status: true,message: "Вам дан шанс 50% на 50%",data: [$question->id=>$correct_answer]),200);
+                }
+            }
+            return response()->json(new ResponseJSON(status: false,message: "Вопрос не найден"),400);
         }
         catch (\Exception $exception){
             return response()->json(new ResponseJSON(status: false,message: $exception->getMessage()),500);
