@@ -17,6 +17,7 @@ use App\Models\AttemptSettingsResult;
 use App\Models\AttemptSettingsResultsUnt;
 use App\Models\AttemptSettingsUnt;
 use App\Models\AttemptSubject;
+use App\Models\AttemptType;
 use App\Models\CommercialGroupPlan;
 use App\Models\Question;
 use App\Models\Subject;
@@ -60,6 +61,16 @@ class AttemptController extends Controller
             $max_time = $this->questionService->get_max_time_in_ms($questions);
             $attempt = $this->attemptService->create_attempt($user->id, $attempt->attempt_type_id, $attempt->locale_id, $max_points, $questions, $max_time);
             return response()->json(new ResponseJSON(status: true, data: $attempt), 200);
+        } catch (\Exception $exception) {
+            return ResponseService::DefineException($exception);
+        }
+    }
+
+    public function attemptTypes()
+    {
+        try {
+            $attemptTypes = AttemptType::all();
+            return response()->json(new ResponseJSON(status: true, data: $attemptTypes), 200);
         } catch (\Exception $exception) {
             return ResponseService::DefineException($exception);
         }

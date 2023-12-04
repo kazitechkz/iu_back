@@ -71,6 +71,7 @@ Route::group(['middleware' => 'API'], function() {
     Route::post('get-step-by-forum', [ApiSubStepController::class, 'checkSubStepResultByUser']);
     //Get UNT Exam
     Route::post("/attempt",[AttemptController::class,"attempt"]);
+    Route::get("/attempt-types",[AttemptController::class,"attemptTypes"]);
     Route::get("/attempt_by/{id}",[AttemptController::class,"attemptById"]);
     Route::post("/create-attempt-settings",[AttemptController::class,"createAttemptSettings"]);
     Route::post("/create-attempt-settings-unt",[AttemptController::class,"createAttemptSettingsUNT"]);
@@ -103,6 +104,7 @@ Route::group(['middleware' => 'API'], function() {
     Route::get("/statistics/attempt-result/{attempt_id}",[ApiStatisticsController::class,"resultByAttemptId"]);
     Route::get("/statistics/attempt-stats/{attempt_id}",[ApiStatisticsController::class,"statsByAttemptId"]);
     Route::get("/statistics/subject-stats/{subject_id}",[ApiStatisticsController::class,"statsBySubjectId"]);
+    Route::get("/statistics/full-stats",[ApiStatisticsController::class,"fullStatistics"]);
     //Plan
     Route::get("/plan/unt",[ApiPlanController::class,"getUNTPlan"]);
     Route::get("/plan/learning",[ApiPlanController::class,"getLearningPlan"]);

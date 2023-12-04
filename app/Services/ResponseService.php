@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Traits\ResponseJSON;
 use Illuminate\Validation\ValidationException;
+use function Laravel\Prompts\error;
 
 class ResponseService
 {
@@ -15,6 +16,7 @@ class ResponseService
                 'errors' => $exception->errors(),
             ], 400);
         }
+        error($exception);
         return response()->json(new ResponseJSON(status: false,message: $exception->getMessage()),500);
     }
 

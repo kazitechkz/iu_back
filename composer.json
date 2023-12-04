@@ -18,6 +18,7 @@
         "doctrine/dbal": "^3.6",
         "guzzlehttp/guzzle": "^7.2",
         "laravel-at/laravel-image-sanitize": "^2.1",
+        "laravel-notification-channels/telegram": "^4.0",
         "laravel/fortify": "^1.17",
         "laravel/framework": "^10.10",
         "laravel/sanctum": "^3.2",

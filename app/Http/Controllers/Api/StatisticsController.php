@@ -46,4 +46,19 @@ class StatisticsController extends Controller
             return ResponseService::DefineException($exception);
         }
     }
+
+    public function fullStatistics(Request $request){
+        try{
+            $result = $this->_statisticsService->getFullStatByUser(
+                $request->get("type_id"),
+                $request->get("start_at"),
+                $request->get("end_at"),
+                $request->get("subject_id")
+            );
+            return response()->json(new ResponseJSON(status: true,data: $result),200);
+        }
+        catch (\Exception $exception) {
+            return ResponseService::DefineException($exception);
+        }
+    }
 }

@@ -11,6 +11,7 @@ use App\Traits\Language;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -98,6 +99,12 @@ class Attempt extends Model
 					->withTimestamps();
 	}
 
+
+    public function attempt_subjects()
+    {
+        return $this->hasMany(AttemptSubject::class,"attempt_id","id");
+    }
+
 	public function sub_tournament_results()
 	{
 		return $this->hasMany(SubTournamentResult::class)->select([
@@ -107,6 +114,10 @@ class Attempt extends Model
             'phone',
             'email',]);
 	}
+
+    public function attempt_subject_questions():HasManyThrough{
+        return $this->hasManyThrough(AttemptQuestion::class,AttemptSubject::class,"attempt_id","attempt_subject_id","id");
+    }
 
     public function attempt_setting_result(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {

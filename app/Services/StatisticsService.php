@@ -126,4 +126,54 @@ class StatisticsService
         return $result;
     }
 
+
+    public function getFullStatByUser($type_id = null, $start_at = null, $end_at = null,$subject_id = null){
+        $user = auth()->guard("api")->user();
+        $attempt_condition = ["user_id"=>$user->id];
+        $attempt_query = Attempt::where("end_at","!=",null);
+        if($type_id){
+            $attempt_condition["type_id"] = $type_id;
+        }
+        $attempt_query = $attempt_query->where($attempt_condition);
+        if($subject_id){
+            $attempt_query = $attempt_query->whereHas("attempt_subjects",function ($query) use ($subject_id){
+               $query->where("subject_id","=",$subject_id);
+            });
+        }
+        $local_start_at = $start_at ? Carbon::createFromFormat('d/m/Y',$start_at) : Carbon::now()->addDays(-7);
+        $local_end_at = $end_at ? Carbon::createFromFormat('d/m/Y',$end_at) : Carbon::now();
+        $attempt_query = $attempt_query->where("start_at",">=",$local_start_at)->where("start_at","<=",$local_end_at);
+        $attempt_query = $attempt_query->with(["attempt_subject_questions.question.subcategory","attempt_subjects"]);
+        $attempts = $attempt_query->get();
+        $result = [];
+        $result["subjects"] = [];
+        foreach ($attempts as $attempt){
+            $data = collect($attempt->attempt_subject_questions->groupBy(["question.subject_id","question.sub_category_id"])->toArray());
+            foreach ($data as $subject_id => $subjectQuestionItem){
+                $result["subjects"][$subject_id] = [];
+                foreach ($subjectQuestionItem as $sub_category_id => $subCategoryItems){
+                    $result["subjects"][$subject_id][$sub_category_id]["sub_category"] = $subCategoryItems[0]["question"]["subcategory"];
+                    $right = 0;
+                    $not_right = 0;
+                    foreach ($subCategoryItems as $subCategoryItem){
+                        if ($subCategoryItem["is_right"]){
+                            $right++;
+                        }
+                        else{
+                            $not_right++;
+                        }
+                    }
+                    $result["subjects"][$subject_id][$sub_category_id]["right"] = $right;
+                    $result["subjects"][$subject_id][$sub_category_id]["not_right"] = $not_right;
+                }
+            }
+        }
+        $result["count"] = $attempt_query->count();
+        $result["average"] = $attempt_query->avg("points");
+        $result["min"] = $attempt_query->min("points");
+        $result["max"] = $attempt_query->max("points");
+        $result["question_quantity"] = collect($attempt_query->withCount("attempt_subject_questions")->get()->toArray())->sum("attempt_subject_questions_count");
+        return  $result;
+    }
+
 }
