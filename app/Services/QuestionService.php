@@ -213,7 +213,9 @@ class QuestionService
         //2 Define Group Id for plan
         $groups = [];
         //If UNT OR CASUAL PASS
-        if($attempt_type_id == self::UNT_TYPE || $attempt_type_id == self::CASUAL_TYPE){
+        if($attempt_type_id == self::UNT_TYPE || $attempt_type_id == self::CASUAL_TYPE || $attempt_type_id == self::TOURNAMENT_TYPE ||
+            $attempt_type_id == self::SETTINGS_TYPE || $attempt_type_id == self::SETTINGS_TYPE_UNT
+        ){
             if(count($plan_ids) != 0){
                 //Get Groups from GROUP
                 $available_groups = GroupPlan::whereIn("plan_id",$plan_ids)->pluck("group_id","group_id");
@@ -229,7 +231,7 @@ class QuestionService
             }
         }
         else{
-            array_push($groups,1);
+            array_push($groups,self::FREE_GROUP_ID);
         }
         return $groups;
     }

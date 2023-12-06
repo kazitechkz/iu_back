@@ -143,7 +143,6 @@ Route::group(['middleware' => 'API'], function() {
     Route::post("/tech-support-create-ticket",[ApiTechSupportController::class,"createTechSupportTickets"]);
     Route::post("/tech-support-close-ticket",[ApiTechSupportController::class,"closeTechSupportTickets"]);
     Route::post("/tech-support-create-message",[ApiTechSupportController::class,"createTechSupportMessage"]);
-
     //Tech Support Type
     //Forum
     Route::post("/upload-image",[\App\Http\Controllers\Api\FileUploadController::class,"uploadImage"]);
