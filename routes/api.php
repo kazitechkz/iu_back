@@ -113,6 +113,7 @@ Route::group(['middleware' => 'API'], function() {
     //Plan
     Route::get("/plan/unt",[ApiPlanController::class,"getUNTPlan"]);
     Route::get("/plan/learning",[ApiPlanController::class,"getLearningPlan"]);
+    Route::get("/plan/check-unt-plan",[ApiPlanController::class,"checkPlanUNT"]);
     //Forum
     Route::post("/forum/create",[ApiForumController::class,"createForum"]);
     Route::get("/forum/index",[ApiForumController::class,"index"]);

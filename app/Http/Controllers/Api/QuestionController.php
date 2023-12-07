@@ -20,6 +20,7 @@ use App\Services\AttemptService;
 use App\Services\QuestionService;
 use App\Services\ResponseService;
 use App\Traits\ResponseJSON;
+use Dflydev\DotAccessData\Data;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 
@@ -175,7 +176,7 @@ class QuestionController extends Controller
         try {
             $user = auth()->guard("api")->user();
             $savedQuestionIDS = UserQuestion::where(["user_id" => $user->id])->pluck("question_id","question_id")->toArray();
-            $result = Question::whereIn("id",$savedQuestionIDS)->with(["subject.image","subcategory","context"])->paginate(20);
+            $result = tap(Question::whereIn("id",$savedQuestionIDS)->with(["subject.image","subcategory","context"])->paginate(20))->makeHidden("correct_answers");
             return response()->json(new ResponseJSON(status: true,data: $result),200);
         }
         catch (\Exception $exception) {
@@ -197,8 +198,8 @@ class QuestionController extends Controller
     public function getSavedQuestionById($id){
         try {
             $user = auth()->guard("api")->user();
-            $savedQuestionIDS = UserQuestion::where(["user_id" => $user->id,"id"=>$id])->pluck("user_id","user_id")->toArray();
-            $result = Question::whereIn("id",$savedQuestionIDS)->with(["subject.image","subcategory","context"])->first();
+            $savedQuestionIDS = UserQuestion::where(["user_id" => $user->id,"question_id"=>$id])->pluck("question_id","question_id")->toArray();
+            $result = Question::whereIn("id",$savedQuestionIDS)->with(["subject.image","subcategory","context"])->first()->makeHidden("correct_answers");
             if(!$result){
                 return ResponseService::NotFound("Не найдено");
             }
@@ -216,6 +217,7 @@ class QuestionController extends Controller
             if(!$result){
                 return ResponseService::NotFound("Не найдено");
             }
+            $result->question = $result->question->makeHidden("correct_answers");
             return response()->json(new ResponseJSON(status: true,data: $result),200);
         }
         catch (\Exception $exception) {
