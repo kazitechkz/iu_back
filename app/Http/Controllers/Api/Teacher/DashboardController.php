@@ -7,7 +7,9 @@ use App\Models\Attempt;
 use App\Models\AttemptSetting;
 use App\Models\AttemptSettingsResult;
 use App\Models\AttemptSettingsUnt;
+use App\Models\Classroom;
 use App\Models\ClassroomGroup;
+use App\Models\User;
 use App\Services\ResponseService;
 use App\Services\TeacherDashboardService;
 use App\Traits\ResponseJSON;
@@ -30,7 +32,7 @@ class DashboardController extends Controller
             $userID = auth()->guard('api')->id();
             $data = [];
             $classrooms = ClassroomGroup::withCount('classrooms')->where('teacher_id', $userID)->get();
-            $attemptSettings = AttemptSetting::where('owner_id', $userID)->get();
+            $attemptSettings = AttemptSetting::where(['owner_id' => auth()->guard('api')->id()]);
             $attemptSettingsUNT = AttemptSettingsUnt::where('sender_id', $userID)->get();
             $data['single_tests'] = $attemptSettings->count();
             $data['classrooms'] = $classrooms->count();
@@ -46,4 +48,35 @@ class DashboardController extends Controller
             return ResponseService::DefineException($exception);
         }
     }
+
+    public function getStatsBySubjectID(Request $request)
+    {
+        try {
+            if ($request['subject_id'] != 0) {
+                $querySt = AttemptSetting::where(['subject_id' => $request['subject_id'], 'owner_id' => auth()->guard('api')->id()]);
+            } else {
+                $querySt = AttemptSetting::where('owner_id', auth()->guard('api')->id());
+            }
+            $query = $this->service->getByDate($querySt, $request);
+            $attemptSettings = $query->get();
+            $data = $this->service->getTopSingleTestUsers($attemptSettings);
+            return response()->json(new ResponseJSON(status: true, data: $data));
+        } catch (\Exception $exception) {
+            return ResponseService::DefineException($exception);
+        }
+    }
+    public function getStatsByUNT(Request $request)
+    {
+        try {
+            $querySt = AttemptSettingsUnt::where('sender_id', auth()->guard('api')->id());
+            $query = $this->service->getByDate($querySt, $request);
+            $attemptSettingsUNT = $query->get();
+            $data = $this->service->getTopUNTTestUsers($attemptSettingsUNT);
+            return response()->json(new ResponseJSON(status: true, data: $data));
+        } catch (\Exception $exception) {
+            return ResponseService::DefineException($exception);
+        }
+    }
+
+
 }

@@ -12,6 +12,7 @@ use App\Http\Controllers\Api\QuestionController as ApiQuestionController;
 use App\Http\Controllers\Api\Teacher\ClassroomGroupController;
 use App\Http\Controllers\Api\Teacher\DashboardController;
 use App\Http\Controllers\Api\Teacher\ExamController;
+use App\Http\Controllers\Api\Teacher\StudentController;
 use App\Http\Controllers\Api\UserController as ApiUserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -153,6 +154,10 @@ Route::group(['middleware' => 'API'], function() {
     //TEACHER_ROUTES
     Route::group(['prefix' => 'teacher'], function () {
         Route::get('dashboard', [DashboardController::class, 'index']);
+        Route::post('get-stats-by-subject', [DashboardController::class, 'getStatsBySubjectID']);
+        Route::post('get-stats-by-unt', [DashboardController::class, 'getStatsByUNT']);
+        Route::get('get-own-students', [StudentController::class, 'getOwnStudents']);
+        Route::get('get-stats-by-user/{id}', [StudentController::class, 'getStats']);
         Route::resource('classrooms', ClassroomGroupController::class);
         Route::get('detail-classroom/{id}', [ClassroomGroupController::class, 'getDetailClassroom']);
         Route::delete('detail-classroom/{classroom_id}', [ClassroomGroupController::class, 'deleteUserFromClass']);

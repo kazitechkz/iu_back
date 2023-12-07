@@ -7,6 +7,8 @@ use App\Models\AttemptSettingsResult;
 use App\Models\AttemptSettingsResultsUnt;
 use App\Models\AttemptSettingsUnt;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 
 class TeacherDashboardService
@@ -35,16 +37,15 @@ class TeacherDashboardService
             ->orderBy('created_at', 'DESC')
             ->take(7)
             ->get();
-//        dd($top_single_tests);
         foreach ($top_single_tests as $top_single_test) {
             $data[$top_single_test->user->name][] = [
                 'percentage' => round(($top_single_test->attempt->points/$top_single_test->attempt->max_points)*100),
                 'points' => $top_single_test->attempt->points,
                 'max_points' => $top_single_test->attempt->max_points,
-                'subject' => $top_single_test->attempt_setting->subject->title_kk
+                'subject' => $top_single_test->attempt_setting->subject->title_kk,
+                'created_at' => $top_single_test->created_at
             ];
         }
-
         foreach ($data as &$datum) {
             rsort($datum);
         }
@@ -81,7 +82,8 @@ class TeacherDashboardService
             $data[$top_unt_test->user->name][] = [
                 'percentage' => round(($top_unt_test->attempt->points/$top_unt_test->attempt->max_points)*100),
                 'points' => $top_unt_test->attempt->points,
-                'max_points' => $top_unt_test->attempt->max_points
+                'max_points' => $top_unt_test->attempt->max_points,
+                'created_at' => $top_unt_test->created_at
             ];
         }
         foreach ($data as &$datum) {
@@ -92,5 +94,16 @@ class TeacherDashboardService
         }
         arsort($data);
         return $data;
+    }
+
+    public function getByDate(Builder $query, Request $request): Builder
+    {
+        $to_date = Carbon::now();
+        if ($request['from_date'] && !$request['to_date']) {
+            $query->whereBetween('created_at', [Carbon::parse($request['from_date'])->startOfDay(), $to_date]);
+        } else if ($request['from_date'] && $request['to_date']) {
+            $query->whereBetween('created_at', [Carbon::parse($request['from_date'])->startOfDay(), Carbon::parse($request['to_date'])->endOfDay()]);
+        }
+        return $query;
     }
 }
