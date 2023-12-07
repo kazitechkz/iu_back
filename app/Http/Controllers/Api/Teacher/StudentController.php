@@ -8,6 +8,7 @@ use App\Models\AttemptQuestion;
 use App\Models\Classroom;
 use App\Models\ClassroomGroup;
 use App\Models\User;
+use App\Services\QuestionService;
 use App\Services\ResponseService;
 use App\Traits\ResponseJSON;
 use Carbon\Carbon;
@@ -40,8 +41,9 @@ class StudentController extends Controller
             $attempt_question_count = AttemptQuestion::whereHas("attempt_subject", function ($q) use ($attempt_ids) {
                 $q->whereIn('attempt_id', $attempt_ids);
             })->pluck("question_id", "question_id")->count();
-            $average_unt_count = Attempt::where(["user_id" => $user->id, "type_id" => 2])->avg("points");
-            $stat_by_week = Attempt::whereBetween("start_at", [Carbon::now()->addDays(-7), Carbon::now()])
+            $average_unt_count = Attempt::where(["user_id" => $user->id, "type_id" => QuestionService::UNT_TYPE])->avg("points");
+            $stat_by_week = Attempt::where(["user_id" => $user->id])
+                ->whereBetween("start_at", [Carbon::now()->subWeek()->startOfDay(), Carbon::now()->endOfDay()])
                 ->select(DB::raw('DATE(start_at) as date'), DB::raw('avg(points) as points'))
                 ->groupBy('date')
                 ->pluck("points", "date")->toArray();
@@ -63,7 +65,7 @@ class StudentController extends Controller
                 "stat_by_week" => $stat_by_week,
                 "results" => $results
             ];
-            return response()->json(new ResponseJSON(status: true, data: $data), 200);
+            return response()->json(new ResponseJSON(status: true, data: $data));
         } catch (\Exception $exception) {
             return ResponseService::DefineException($exception);
         }
