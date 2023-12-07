@@ -35,6 +35,7 @@ class DatabaseSeeder extends Seeder
                 NotificationTypeSeeder::class,
                 TechSupportTypeSeeder::class,
                 TechSupportCategorySeeder::class,
+                AppealTypeSeeder::class,
             ]
         );
     }

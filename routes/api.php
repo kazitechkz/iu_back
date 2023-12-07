@@ -88,6 +88,10 @@ Route::group(['middleware' => 'API'], function() {
     Route::post("/create-appeal-question",[ApiQuestionController::class,"appealQuestion"]);
     Route::post("/get-sub-category-question-count",[ApiQuestionController::class,"getSubCategoryQuestion"]);
     Route::post("/get-category-question-count",[ApiQuestionController::class,"getCategoryQuestion"]);
+    Route::get("/my-saved-questions",[ApiQuestionController::class,"getMySavedQuestion"]);
+    Route::get("/my-appeals-questions",[ApiQuestionController::class,"getMyAppealQuestion"]);
+    Route::get("/my-appeal-question-by/{appealId}",[ApiQuestionController::class,"getAppealedQuestion"]);
+    Route::get("/my-saved-question-by/{questionId}",[ApiQuestionController::class,"getSavedQuestionById"]);
     //Question
     //Check Answer
     Route::post("/answer",[AttemptController::class,"answer"]);

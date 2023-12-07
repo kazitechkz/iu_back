@@ -377,11 +377,11 @@ class AttemptController extends Controller
             $attempt_question_count = AttemptQuestion::whereHas("attempt_subject", function ($q) use ($attempt_ids) {
                 $q->whereIn('attempt_id', $attempt_ids);
             })->pluck("question_id", "question_id")->count();
-            $average_unt_count = Attempt::where(["user_id" => $user->id, "type_id" => 2])->avg("points");
-            $stat_by_week = Attempt::whereBetween("start_at", [Carbon::now()->addDays(-7), Carbon::now()])
-                ->select(DB::raw('DATE(start_at) as date'), DB::raw('avg(points) as points'))
-                ->groupBy('date')
-                ->pluck("points", "date")->toArray();
+            $average_unt_count = Attempt::where(["user_id" => $user->id, "type_id" => QuestionService::UNT_TYPE])->avg("points");
+            $stat_by_week = Attempt::where(["user_id" => $user->id,"type_id" => QuestionService::UNT_TYPE])
+                ->whereBetween("end_at", [Carbon::now()->subWeek()->startOfDay(), Carbon::now()->endOfDay()])
+                ->select([DB::raw('DATE(start_at) as date'), DB::raw('avg(points) as points')])
+                ->groupBy('date')->pluck("points","date")->toArray();
             $data = ["attempt_count" => $attempt_count, "attempt_count_unfinished" => $attempt_count_unfinished, "attempt_question_count" => $attempt_question_count, "average" => round($average_unt_count), "stat_by_week" => $stat_by_week];
             return response()->json(new ResponseJSON(status: true, data: $data), 200);
         } catch (\Exception $exception) {

@@ -170,4 +170,56 @@ class QuestionController extends Controller
             return ResponseService::DefineException($exception);
         }
     }
+
+    public function getMySavedQuestion(Request $request){
+        try {
+            $user = auth()->guard("api")->user();
+            $savedQuestionIDS = UserQuestion::where(["user_id" => $user->id])->pluck("question_id","question_id")->toArray();
+            $result = Question::whereIn("id",$savedQuestionIDS)->with(["subject.image","subcategory","context"])->paginate(20);
+            return response()->json(new ResponseJSON(status: true,data: $result),200);
+        }
+        catch (\Exception $exception) {
+            return ResponseService::DefineException($exception);
+        }
+    }
+
+    public function getMyAppealQuestion(Request $request){
+        try {
+            $user = auth()->guard("api")->user();
+            $result = Appeal::where(["user_id" => $user->id])->with(["appeal_type","question.subject.image","question.subcategory","question.context"])->paginate(20);
+            return response()->json(new ResponseJSON(status: true,data: $result),200);
+        }
+        catch (\Exception $exception) {
+            return ResponseService::DefineException($exception);
+        }
+    }
+
+    public function getSavedQuestionById($id){
+        try {
+            $user = auth()->guard("api")->user();
+            $savedQuestionIDS = UserQuestion::where(["user_id" => $user->id,"id"=>$id])->pluck("user_id","user_id")->toArray();
+            $result = Question::whereIn("id",$savedQuestionIDS)->with(["subject.image","subcategory","context"])->first();
+            if(!$result){
+                return ResponseService::NotFound("Не найдено");
+            }
+            return response()->json(new ResponseJSON(status: true,data: $result),200);
+        }
+        catch (\Exception $exception) {
+            return ResponseService::DefineException($exception);
+        }
+    }
+
+    public function getAppealedQuestion($id){
+        try {
+            $user = auth()->guard("api")->user();
+            $result = Appeal::where(["user_id" => $user->id,"id"=>$id])->with(["appeal_type","question.subject.image","question.subcategory","question.context"])->first();
+            if(!$result){
+                return ResponseService::NotFound("Не найдено");
+            }
+            return response()->json(new ResponseJSON(status: true,data: $result),200);
+        }
+        catch (\Exception $exception) {
+            return ResponseService::DefineException($exception);
+        }
+    }
 }
