@@ -3,12 +3,14 @@
 namespace App\Http\Livewire\SubStepContent;
 
 use App\Helpers\StrHelper;
+use App\Models\Subject;
 use App\Models\SubStep;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Exceptions\DataTableConfigurationException;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Models\SubStepContent;
 use Rappasoft\LaravelLivewireTables\Views\Columns\BooleanColumn;
+use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 
 class SubStepContentTable extends DataTableComponent
 {
@@ -21,7 +23,6 @@ class SubStepContentTable extends DataTableComponent
             $this->sub_step = $sub_step;
         }
     }
-
     /**
      * @throws DataTableConfigurationException
      */
