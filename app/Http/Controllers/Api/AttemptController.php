@@ -148,6 +148,9 @@ class AttemptController extends Controller
         try {
             $user = auth()->guard("api")->user();
             $input = $request->all();
+            if(count($input["users"]) == 1){
+                $input["users"][0] = intval($input["users"][0]);
+            }
             if ($user->hasRole(RoleServices::STUDENT_ROLE_NAME)) {
                 if (!$this->planService->check_user_subject_for_attempt_settings($request->get("subject_id"))) {
                     return response()->json(new ResponseJSON(status: true, message: "У вас нет прав"), 403);
