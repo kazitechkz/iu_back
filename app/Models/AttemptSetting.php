@@ -74,7 +74,14 @@ class AttemptSetting extends Model
                 if(!is_array($ids)){
                     return [];
                 }
-                return User::with('attempt_settings_result')->whereIn('id', $ids)->get();
+                return User::whereIn('id', $ids)->select([
+                    'id',
+                    "username",
+                    'name',
+                    'phone',
+                    'email',
+                    'image_url'
+                ])->with(["file","attempt_settings_result"])->get();
             },
         );
     }

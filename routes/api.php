@@ -29,6 +29,7 @@ use App\Http\Controllers\Api\NotificationController as ApiNotificationController
 use App\Http\Controllers\Api\AnnouncementController as ApiAnnouncementController;
 use App\Http\Controllers\Api\TechSupportController as ApiTechSupportController;
 use App\Http\Controllers\Api\AttemptController;
+use App\Http\Controllers\Api\AttemptSettingsController as ApiAttemptSettingsController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -81,6 +82,11 @@ Route::group(['middleware' => 'API'], function() {
     Route::get("/user-unt-statistics",[AttemptController::class,"userUntStat"]);
     Route::get("/statistics-attempt-by/{id}",[AttemptController::class,"statAttemptById"]);
     Route::get("/finish/{attempt_id}",[AttemptController::class,"finish"]);
+    //AttemptSettings
+    Route::get("/my-attempt-settings-single",[ApiAttemptSettingsController::class ,"myAttemptSettingsSingle"]);
+    Route::get("/my-attempt-settings-unt",[ApiAttemptSettingsController::class ,"myAttemptSettingsUNT"]);
+
+    //AttemptSettings
     //Question
     Route::post('get-single-subject-test', [ApiQuestionController::class, 'getSingleSubjectTest']);
     Route::get("/save-question/{questionId}",[ApiQuestionController::class,"saveQuestion"]);
@@ -117,7 +123,6 @@ Route::group(['middleware' => 'API'], function() {
     //Forum
     Route::post("/forum/create",[ApiForumController::class,"createForum"]);
     Route::get("/forum/index",[ApiForumController::class,"index"]);
-
     Route::post("/forum/rating",[ApiForumController::class,"ratingForumOrDiscuss"]);
     Route::get("/forum/show/{id}",[ApiForumController::class,"show"]);
     Route::get("/forum/discuss/{forum_id}",[ApiForumController::class,"forumDiscuss"]);
@@ -150,6 +155,7 @@ Route::group(['middleware' => 'API'], function() {
     Route::post("/tech-support-close-ticket",[ApiTechSupportController::class,"closeTechSupportTickets"]);
     Route::post("/tech-support-create-message",[ApiTechSupportController::class,"createTechSupportMessage"]);
     //Tech Support Type
+
     //Forum
     Route::post("/upload-image",[\App\Http\Controllers\Api\FileUploadController::class,"uploadImage"]);
 
