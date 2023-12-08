@@ -105,4 +105,14 @@ class SubStep extends Model
     {
         return $this->hasMany(SubStepTest::class, 'sub_step_id', 'id')->where('locale_id', 2)->count();
     }
+
+    public function getContentAttribute(): bool
+    {
+        $content = $this->sub_step_content()->first();
+        if ($content) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

@@ -29,7 +29,6 @@ class SubStepTable extends DataTableComponent
     }
 
     public function filters(): array
-
     {
         return [
             SelectFilter::make('Предмет')
@@ -79,7 +78,7 @@ class SubStepTable extends DataTableComponent
     public function query()
     {
         if($this->step != null){
-            return SubStep::query()->where('step_id', $this->step->id);
+            return SubStep::query()->where(['step_id' => $this->step->id, 'deleted_at' => null]);
         }
     }
 
@@ -87,7 +86,8 @@ class SubStepTable extends DataTableComponent
     {
         return [
             Column::make("Id", "id")
-                ->sortable(),
+                ->sortable()
+                ->searchable(),
             Column::make("Наименование", StrHelper::getTitleAttribute())
                 ->searchable(),
 //            Column::make("Степ", "step.".StrHelper::getTitleAttribute())
@@ -96,10 +96,13 @@ class SubStepTable extends DataTableComponent
                 ->sortable(),
             Column::make("Уровень", "level")
                 ->sortable(),
-            Column::make("На каз")
+            Column::make("ТЕСТ")
                 ->label(fn($val) => $val->total_test_kk),
-            Column::make("На рус")
-                ->label(fn($val) => $val->total_test_ru),
+            Column::make("Контент")
+                ->label(fn($val) => $val->content ? '<span class="text-green-500">+</span>' : '<span class="text-red-500">-</span>')
+            ->html(),
+//            Column::make("На рус")
+//                ->label(fn($val) => $val->total_test_ru),
             ButtonGroupColumn::make('Действие')
                 ->attributes(function($row) {
                     return [

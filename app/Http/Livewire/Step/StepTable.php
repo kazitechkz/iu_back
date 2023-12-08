@@ -49,7 +49,12 @@ class StepTable extends DataTableComponent
     {
         $steps = $this->getSelected();
         foreach ($steps as $key => $value) {
-            $step = Step::find($value);
+            $step = Step::with('sub_steps')->find($value);
+            if ($step->sub_steps) {
+                foreach ($step->sub_steps as $sub_step) {
+                    $sub_step->delete();
+                }
+            }
             $step?->delete();
         }
         $this->clearSelected();
