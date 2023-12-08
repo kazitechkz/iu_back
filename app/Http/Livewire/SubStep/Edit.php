@@ -30,7 +30,7 @@ class Edit extends Component
     public function mount($sub_step): void
     {
         $this->subjects = Subject::all();
-        $this->subject_id = $sub_step->step->subject_id;
+        $this->subject_id = $sub_step->step ? $sub_step->step->subject_id : null;
         $this->sub_step = $sub_step;
         $this->steps = Step::where(["id" => $sub_step->step_id])->with("subject")->get();
         $this->sub_categories = SubCategory::where(['category_id' => $sub_step->sub_category_id, 'deleted_at' => !null])->get();
@@ -81,7 +81,7 @@ class Edit extends Component
     {
         if ($this->step_id) {
             $this->step = Step::find($this->step_id);
-            $this->sub_categories = SubCategory::where(["category_id" => $this->step->category_id])->get();
+            $this->sub_categories = $this->step ? SubCategory::where(["category_id" => $this->step->category_id])->get() : [];
         }
         return view('livewire.sub-step.edit');
     }
