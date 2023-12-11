@@ -180,4 +180,6 @@ class TournamentController extends Controller
             return redirect()->route("home");
         }
     }
+
+
 }

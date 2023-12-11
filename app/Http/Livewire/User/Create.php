@@ -19,7 +19,7 @@ class Create extends Component
     public $image_url;
     public $gender_id;
     public $genders;
-    public $birth_date;
+    public $birth_date = "";
 
     protected function rules(){
         return (new UserCreateRequest())->rules();

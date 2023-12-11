@@ -125,10 +125,6 @@ class TournamentService{
                 ]);
             }
         }
-
-
-
-
     }
 
 
@@ -194,8 +190,6 @@ class TournamentService{
             'attempt_id' => $attempt["attempt_id"]
         ]);
         return $attempt;
-
-
     }
 
 

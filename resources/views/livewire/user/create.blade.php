@@ -56,8 +56,9 @@
             label="{{__('table.phone')}}*"
             placeholder="{{__('table.phone_placeholder')}}"
             hint="{{__('table.phone_hint')}}"
-            wire:model="phone"
+            wire:model.lazy="phone"
             icon="phone"
+            mask="['+###########']"
         />
     </div>
     {{--    User Phone--}}
@@ -81,7 +82,7 @@
             placeholder="{{__('table.birth_date')}}"
             :without-time="true"
             parse-format="YYYY-MM-DD"
-            wire:model.defer="birth_date"
+            wire:model="birth_date"
         />
     </div>
     {{--    Birth Date --}}
@@ -103,3 +104,4 @@
     </div>
     {{--    User Role--}}
 </x-form-component.form-component>
+
