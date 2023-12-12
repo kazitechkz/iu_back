@@ -8,13 +8,6 @@
     <div class="col-lg-12 grid-margin stretch-card">
         <div class="card">
             <div class="card-body">
-                <livewire:sub-step-content.sub-step-content-table :sub_step="$sub_step"/>
-            </div>
-        </div>
-    </div>
-    <div class="col-lg-12 grid-margin stretch-card">
-        <div class="card">
-            <div class="card-body">
                 <livewire:sub-step-content.create :sub_step="$sub_step"/>
             </div>
         </div>
