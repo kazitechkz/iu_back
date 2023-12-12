@@ -164,25 +164,21 @@
     </div>
     {{--    Status --}}
     {{-- Start At --}}
-    <x-datetime-picker
-        label="{{__('table.start_at')}} *"
-        time-format="24"
-        parse-format="DD-MM-YYYY HH:mm"
-        :min="now()"
-        :max="now()->addYear(2)"
-        wire:model="start_at"
-        hint="{{__('table.start_at')}}"
-    />
+    <div class="form-group">
+        <x-datepicker
+            label="{{__('table.start_at')}} *" wire:model="start_at"
+            :config="['altFormat' => 'd.m.Y, H:i','enableTime'=>true,'time_24hr'=>true]"
+            name="start_at"
+            class="placeholder-secondary-400 dark:bg-secondary-800 dark:text-secondary-400 dark:placeholder-secondary-500 border border-secondary-300 focus:ring-primary-500 focus:border-primary-500 dark:border-secondary-600 form-input block w-full sm:text-sm rounded-md transition ease-in-out duration-100 focus:outline-none shadow-sm pl-8 my-2" />
+    </div>
     {{--Start At --}}
     {{-- End At --}}
-    <x-datetime-picker
-        label="{{__('table.end_at')}} *"
-        time-format="24"
-        parse-format="DD-MM-YYYY HH:mm"
-        :min="now()"
-        :max="now()->addYear(2)"
-        wire:model="end_at"
-        hint="{{__('table.end_at')}}"
-    />
+    <div class="form-group">
+        <x-datepicker
+            label="{{__('table.end_at')}} *" wire:model="end_at"
+            :config="['altFormat' => 'd.m.Y, H:i','enableTime'=>true,'time_24hr'=>true]"
+            name="end_at"
+            class="placeholder-secondary-400 dark:bg-secondary-800 dark:text-secondary-400 dark:placeholder-secondary-500 border border-secondary-300 focus:ring-primary-500 focus:border-primary-500 dark:border-secondary-600 form-input block w-full sm:text-sm rounded-md transition ease-in-out duration-100 focus:outline-none shadow-sm pl-8 my-2" />
+    </div>
     {{--End At --}}
 </x-form-component.form-component>

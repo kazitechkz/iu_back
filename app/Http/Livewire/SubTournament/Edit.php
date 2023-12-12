@@ -34,8 +34,8 @@ class Edit extends Component
         $this->single_question_quantity = $this->subTournament->single_question_quantity;
         $this->multiple_question_quantity = $this->subTournament->multiple_question_quantity;
         $this->context_question_quantity = $this->subTournament->context_question_quantity;
-        $this->start_at = $this->subTournament->start_at->format("DD-MM-YYYY HH:mm");
-        $this->end_at = $this->subTournament->end_at->format("DD-MM-YYYY HH:mm");
+        $this->start_at = $this->subTournament->start_at;
+        $this->end_at = $this->subTournament->end_at;
     }
     protected function rules(){
         return (new SubTournamentUpdateRequest())->rules();

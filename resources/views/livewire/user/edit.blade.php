@@ -83,13 +83,11 @@
     {{--   Gender--}}
     {{--    Birth Date --}}
     <div class="form-group">
-        <x-datetime-picker
-            label="{{__('table.birth_date')}}"
-            placeholder="{{__('table.birth_date')}}"
-            :without-time="true"
-            parse-format="YYYY-MM-DD"
-            wire:model.defer="birth_date"
-        />
+            <x-datepicker
+                label="{{__('table.birth_date')}}" wire:model="birth_date"
+                :config="['altFormat' => 'd.m.Y','enableTime'=>false,'time_24hr'=>true]"
+                name="birth_date"
+                class="placeholder-secondary-400 dark:bg-secondary-800 dark:text-secondary-400 dark:placeholder-secondary-500 border border-secondary-300 focus:ring-primary-500 focus:border-primary-500 dark:border-secondary-600 form-input block w-full sm:text-sm rounded-md transition ease-in-out duration-100 focus:outline-none shadow-sm pl-8 my-2" />
     </div>
     {{--    Birth Date --}}
     {{-- Image Url --}}

@@ -4,6 +4,7 @@ namespace App\Http\Livewire\User;
 
 use App\Http\Requests\UserCreateRequest;
 use App\Models\Gender;
+use Illuminate\Support\Carbon;
 use Livewire\Component;
 use Spatie\Permission\Models\Role;
 
@@ -19,7 +20,7 @@ class Create extends Component
     public $image_url;
     public $gender_id;
     public $genders;
-    public $birth_date = "";
+    public $birth_date;
 
     protected function rules(){
         return (new UserCreateRequest())->rules();
@@ -31,6 +32,7 @@ class Create extends Component
     }
     public function mount()
     {
+        $this->birth_date = Carbon::now();
         $this->genders = Gender::all();
         $this->roles = Role::all()->toArray();
     }

@@ -79,15 +79,13 @@
     </div>
     {{-- Is Important --}}
     {{-- Published At* --}}
-    <x-datetime-picker
-        label="Published Date"
-        time-format="24"
-        parse-format="DD-MM-YYYY HH:mm"
-        :min="now()"
-        :max="now()->addYear(2)"
-        wire:model="published_at"
-        hint="Published Date"
-    />
+    <div class="form-group">
+        <x-datepicker
+            label="{{__('table.published_at')}}" wire:model="published_at"
+            :config="['altFormat' => 'd.m.Y, H:i','enableTime'=>true,'time_24hr'=>true]"
+            name="published_at"
+            class="placeholder-secondary-400 dark:bg-secondary-800 dark:text-secondary-400 dark:placeholder-secondary-500 border border-secondary-300 focus:ring-primary-500 focus:border-primary-500 dark:border-secondary-600 form-input block w-full sm:text-sm rounded-md transition ease-in-out duration-100 focus:outline-none shadow-sm pl-8 my-2" />
+    </div>
     {{--Published At --}}
 </x-form-component.form-component>
 

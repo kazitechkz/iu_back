@@ -77,6 +77,7 @@ class User extends Authenticatable implements Searchable,Wallet
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'birth_date' => 'datetime',
         'password' => 'hashed',
     ];
 
