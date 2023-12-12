@@ -58,7 +58,12 @@ class SubStepContentController extends Controller
         try {
             if (auth()->user()->can("sub-step-content create")) {
                 $input = MathFormulaHelper::getContent($request);
-                SubStepContent::add($input);
+                if ($input['content_id']) {
+                    $content = SubStepContent::findOrFail($input['content_id']);
+                    $content->edit($input);
+                } else {
+                    SubStepContent::add($input);
+                }
                 return redirect()->back();
             } else {
                 toastr()->warning(__("message.not_allowed"));
@@ -77,7 +82,7 @@ class SubStepContentController extends Controller
     {
         try {
             if (auth()->user()->can("sub-step-content show")) {
-                $sub_step = SubStep::find($id);
+                $sub_step = SubStep::with('sub_step_content')->find($id);
                 if ($sub_step) {
                     return view("admin.sub-step-content.show", compact("sub_step"));
                 } else {

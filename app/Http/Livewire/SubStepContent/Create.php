@@ -20,6 +20,7 @@ class Create extends Component
     public $sub_step_id;
     public $sub_steps;
     public $sub_step;
+    public int|null $content_id;
 
     public function mount($sub_step = null): void
     {
@@ -27,13 +28,17 @@ class Create extends Component
             $this->sub_step_id = $sub_step->id;
             $this->sub_steps = SubStep::where(["id" => $sub_step->id])->get();
             $this->sub_step = $sub_step;
+            $this->text_ru = $sub_step->sub_step_content ? $sub_step->sub_step_content->text_ru : null;
+            $this->text_kk = $sub_step->sub_step_content ? $sub_step->sub_step_content->text_kk : null;
+            $this->is_active = $sub_step->sub_step_content ? $sub_step->sub_step_content->is_active : null;
+            $this->content_id = $sub_step->sub_step_content ? $sub_step->sub_step_content->id : null;
         } else {
             $this->steps = Step::where('is_active', true)->get();
+            $this->text_ru = old("text_ru") ?? "";
+            $this->text_kk = old("title_kk") ?? "";
+            $this->text_en = old("text_en") ?? null;
+            $this->is_active = old("is_active") ?? false;
         }
-        $this->text_ru = old("text_ru") ?? "";
-        $this->text_kk = old("title_kk") ?? "";
-        $this->text_en = old("text_en") ?? null;
-        $this->is_active = old("is_active") ?? false;
     }
 
     protected function rules(): array

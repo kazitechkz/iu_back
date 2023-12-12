@@ -4,27 +4,30 @@
     :element-id="'sub-step-content-create'"
 >
     {{--    Steps --}}
-    <div class="form-group">
-        <x-select
-            label="Cтепы*"
-            :options="$steps"
-            option-label="title"
-            option-value="id"
-            wire:model="step_id"
-        />
-    </div>
+{{--    <div class="form-group">--}}
+{{--        <x-select--}}
+{{--            label="Cтепы*"--}}
+{{--            :options="$steps"--}}
+{{--            option-label="title"--}}
+{{--            option-value="id"--}}
+{{--            wire:model="step_id"--}}
+{{--        />--}}
+{{--    </div>--}}
     {{--    Steps --}}
     {{--    Sub-Steps --}}
-    <div class="form-group">
-        <x-select
-            label="Субстепы*"
-            :options="$sub_steps"
-            option-label="title"
-            option-value="id"
-            wire:model="sub_step_id"
-            name="sub_step_id"
-        />
-    </div>
+{{--    <div class="form-group">--}}
+{{--        <x-select--}}
+{{--            label="Субстепы*"--}}
+{{--            :options="$sub_steps"--}}
+{{--            option-label="title"--}}
+{{--            option-value="id"--}}
+{{--            wire:model="sub_step_id"--}}
+{{--            name="sub_step_id"--}}
+{{--        />--}}
+{{--    </div>--}}
+    <input type="hidden" wire:model="step_id" name="step_id">
+    <input type="hidden" wire:model="sub_step_id" name="sub_step_id">
+    <input type="hidden" wire:model="content_id" name="content_id">
     {{--    Sub-Steps --}}
     {{--    CkEditor --}}
     <div class="form-group" wire:ignore>
