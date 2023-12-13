@@ -160,6 +160,12 @@
                         :link="'questions.index'"
                         :name="__('sidebar.questions')"/>
                 @endcan
+                @can("translation index")
+                    <x-shared.sub-sidebar-menu
+                        :icon="'mdi mdi-google-translate'"
+                        :link="'translations.index'"
+                        :name="__('sidebar.translations')"/>
+                @endcan
             </x-shared.sidebar-menu>
         @endcan
         @can('content management')

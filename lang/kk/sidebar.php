@@ -16,6 +16,7 @@ return [
     'plan-combination' => 'Локализация жоспары',
     "subscription" => "Жазылымдар",
     'questions' => 'Сұрақтар',
+    'translations' => 'Аудармалар',
     "promocode" => "Промокод",
     "news" => "Жаналыктар",
     "faq" => "FAQ",

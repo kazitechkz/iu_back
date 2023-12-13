@@ -22,6 +22,7 @@ use App\Http\Controllers\Admin\SingleSubjectTestController as AdminSingleSubject
 use App\Http\Controllers\Admin\SubjectContextController as AdminSubjectContextController;
 use App\Http\Controllers\Admin\SubjectController as AdminSubjectController;
 use App\Http\Controllers\Admin\SubscriptionController as AdminSubscriptionController;
+use App\Http\Controllers\Admin\TranslationController as AdminTranslationController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Admin\WalletController as AdminWalletController;
 use App\Http\Controllers\Admin\DiscussController as AdminDiscussController;
@@ -162,6 +163,10 @@ Route::group([
         Route::resource("tech-support-category",AdminTechSupportCategoryController::class);
         //Tech Support
         Route::resource("tech-support-ticket",AdminTechSupportController::class);
+        //Translation
+        Route::resource('translations', AdminTranslationController::class);
+        Route::any('search-translations', [AdminTranslationController::class, 'search'])->name('search-translations');
+        Route::post('delete-translations', [AdminTranslationController::class, 'forceDelete'])->name('delete-translations');
     });
 });
 

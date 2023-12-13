@@ -17,6 +17,7 @@ return [
     "news" => "Новости",
     "subscription" => "Подписки",
     'questions' => 'Вопросы',
+    'translations' => 'Переводы',
     "faq" => "FAQ",
     "fact" => "Факты",
     "wallet" => "Кошелек",

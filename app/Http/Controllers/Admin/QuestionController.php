@@ -237,6 +237,7 @@ class QuestionController extends Controller
             if(auth()->user()->can("questions edit") ){
                 $question = Question::findOrFail($id);
                 $question->sub_step_test?->delete();
+                $question->translationQuestionRU?->delete();
                 $question->delete();
                 return redirect()->back();
             }

@@ -133,4 +133,13 @@ class Question extends Model implements Searchable
     {
         return $this->hasMany(AttemptQuestion::class, 'question_id', 'id');
     }
+
+    public function translationQuestion(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(QuestionTranslation::class, 'question_kk');
+    }
+    public function translationQuestionRU(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(QuestionTranslation::class, 'question_ru');
+    }
 }

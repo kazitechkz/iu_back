@@ -55,4 +55,12 @@ class StrHelper
     {
         return "text_".\Mcamara\LaravelLocalization\Facades\LaravelLocalization::getCurrentLocale();
     }
+
+    public static function getFormattedTextForTranslateService($str): array|string
+    {
+        $text = str_replace('<предварительно>', '<pre>', $str);
+        $scriptText = str_replace('</ предварительно>', '</pre>', $text);
+        $preFinalText = str_replace('< ', '<', $scriptText);
+        return str_replace('</ ', '</', str_replace(' >', '>', $preFinalText));
+    }
 }

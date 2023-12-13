@@ -98,6 +98,8 @@ class AppConstants
         "tech-support index", "tech-support create", "tech-support edit", "tech-support show",
         //Facts
         "fact index", "fact create", "fact edit", "fact show",
+        //Translation
+        "translation index", "translation create", "translation edit", "translation show",
         //Permission for main menu
         "user management",
         "locale management",
@@ -115,6 +117,7 @@ class AppConstants
         "announcement management",
         "tech-support management",
         "fact management",
+        "translation management",
     ];
 
     public const ADMIN_PERMISSIONS = self::all_permissions;

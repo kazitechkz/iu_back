@@ -17,6 +17,7 @@ return [
     "news" => "News",
     "subscription" => "Subscription",
     'questions' => 'Questions',
+    'translations' => 'Translations',
     "faq" => "FAQ",
     "fact" => "Facts",
     "wallet" => "Wallet",

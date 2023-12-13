@@ -3,10 +3,12 @@
 namespace App\Http\Livewire\Question;
 
 use App\Helpers\StrHelper;
+use App\Models\Group;
 use App\Models\Locale;
 use App\Models\QuestionType;
 use App\Models\Subject;
 use App\Services\LanguageService;
+use App\Services\TranslateService;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Exceptions\DataTableConfigurationException;
 use Rappasoft\LaravelLivewireTables\Views\Column;
@@ -60,6 +62,11 @@ class QuestionTable extends DataTableComponent
                 ->options(QuestionType::pluck(LanguageService::getTitleByLocaleAuto(), 'id')->toArray())
                 ->filter(function ($builder, string $value){
                     $builder->where(['type_id' => $value]);
+                }),
+            SelectFilter::make('Группа')
+                ->options(Group::pluck(LanguageService::getTitleByLocaleAuto(), 'id')->toArray())
+                ->filter(function ($builder, string $value){
+                    $builder->where(['group_id' => $value]);
                 }),
         ];
     }

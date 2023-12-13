@@ -79,7 +79,6 @@ class Create extends Component
         $this->sub_category_id = null;
         $this->context_id = null;
     }
-
     public function updatedCategoryId(): void
     {
         $this->subcategories = SubCategory::where('category_id', $this->category_id)->get();
