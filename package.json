@@ -19,6 +19,8 @@
         "vite": "^4.0.0"
     },
     "dependencies": {
-        "mathquill": "^0.10.1-a"
+        "laravel-echo": "^1.15.3",
+        "mathquill": "^0.10.1-a",
+        "pusher-js": "^8.4.0-rc2"
     }
 }
