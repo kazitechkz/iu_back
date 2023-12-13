@@ -11,13 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('battle_step_questions', function (Blueprint $table) {
+        Schema::create('battle_step_results', function (Blueprint $table) {
             $table->bigIncrements("id");
             $table->foreignId("step_id")->references("id")->on("battle_steps")->cascadeOnDelete()->cascadeOnUpdate();
-            $table->foreignId("question_id")->references("id")->on("questions")->cascadeOnDelete()->cascadeOnUpdate();
-            $table->string("answer");
-            $table->boolean("is_right");
-            $table->integer("point")->default(0);
+            $table->foreignId("answered_user")->nullable()->references("id")->on("users")->nullOnDelete();
+            $table->datetime("start_at");
+            $table->datetime("end_at")->nullable();
+            $table->boolean("is_finished")->default(false);
+            $table->integer("result")->default(0);
             $table->timestamps();
         });
     }
@@ -27,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('battle_step_questions');
+        Schema::dropIfExists('battle_step_results');
     }
 };

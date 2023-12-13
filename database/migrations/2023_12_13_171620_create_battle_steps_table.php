@@ -13,16 +13,19 @@ return new class extends Migration
     {
         Schema::create('battle_steps', function (Blueprint $table) {
             $table->bigIncrements("id");
+            $table->string("promo_code");
+            //Это Айди Битвы
             $table->foreignId("battle_id")->references("id")->on("battles")->cascadeOnDelete()->cascadeOnUpdate();
-            $table->foreignId("subject_id")->references("id")->on("subjects")->cascadeOnDelete()->cascadeOnUpdate();
-            $table->foreignId("started_id")->nullable()->references("id")->on("users")->cascadeOnDelete();
-            $table->foreignId("finished_id")->nullable()->references("id")->on("users")->cascadeOnDelete();
-            $table->integer("order");
+            //Это Айди Предмета
+            $table->foreignId("subject_id")->nullable()->references("id")->on("subjects")->cascadeOnDelete()->cascadeOnUpdate();
+            //Чья очередь
+            $table->foreignId("current_user")->nullable()->references("id")->on("users")->cascadeOnDelete();
+            //Завершился ли текущий этап
             $table->boolean("is_finished")->default(false);
+            //Текущий ли этап
             $table->boolean("is_current")->default(false);
+            //Последний ли этап
             $table->boolean("is_last")->default(false);
-            $table->datetime("start_at");
-            $table->datetime("end_at")->nullable();
             $table->timestamps();
         });
     }
