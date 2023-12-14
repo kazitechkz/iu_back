@@ -54,6 +54,7 @@ class BattleStep extends Model
 		'current_user',
 		'is_finished',
 		'is_current',
+        'order',
 		'is_last'
 	];
 
