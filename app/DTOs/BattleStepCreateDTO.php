@@ -11,7 +11,10 @@ class BattleStepCreateDTO extends ValidatedDTO
 
     protected function rules(): array
     {
-        return [];
+        return [
+            "battle_step_id"=>"required|exists:battle_steps,id",
+            "subject_id"=>"sometimes|nullable|exists:subjects,id",
+        ];
     }
 
     protected function defaults(): array

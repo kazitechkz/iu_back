@@ -15,9 +15,10 @@ return new class extends Migration
             $table->bigIncrements("id");
             $table->foreignId("step_id")->references("id")->on("battle_steps")->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId("question_id")->references("id")->on("questions")->cascadeOnDelete()->cascadeOnUpdate();
-            $table->string("answer");
-            $table->boolean("is_right");
+            $table->string("answer")->nullable();
+            $table->boolean("is_right")->default(false);
             $table->integer("point")->default(0);
+            $table->boolean("is_answered")->default(false);
             $table->timestamps();
         });
     }

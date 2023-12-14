@@ -17,7 +17,7 @@ class ResponseService
                 'errors' => $exception->errors(),
             ], 400);
         }
-        Log::channel('telegram')->error($exception);
+        //Log::channel('telegram')->error($exception);
         return response()->json(new ResponseJSON(status: false,message: $exception->getMessage()),500);
     }
 

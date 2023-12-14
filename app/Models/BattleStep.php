@@ -63,7 +63,7 @@ class BattleStep extends Model
 		return $this->belongsTo(Battle::class);
 	}
 
-	public function current()
+	public function currentUser()
 	{
         return $this->belongsTo(User::class, 'current_user',"id")->select([
             'id',
@@ -86,6 +86,11 @@ class BattleStep extends Model
 					->withPivot('id', 'answer', 'is_right', 'point')
 					->withTimestamps();
 	}
+
+    public function battle_step_questions()
+    {
+        return $this->hasMany(BattleStepQuestion::class, 'step_id');
+    }
 
 	public function battle_step_results()
 	{

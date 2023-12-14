@@ -35,15 +35,19 @@ class BattleStepQuestion extends Model
 	protected $casts = [
 		'step_id' => 'int',
 		'question_id' => 'int',
+		'user_id' => 'int',
 		'is_right' => 'bool',
+		'is_answered' => 'bool',
 		'point' => 'int'
 	];
 
 	protected $fillable = [
 		'step_id',
 		'question_id',
+		'user_id',
 		'answer',
 		'is_right',
+		'is_answered',
 		'point'
 	];
 
@@ -51,7 +55,17 @@ class BattleStepQuestion extends Model
 	{
 		return $this->belongsTo(Question::class);
 	}
-
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id',"id")->select([
+            'id',
+            "username",
+            'name',
+            'phone',
+            'email',
+            'image_url'
+        ])->with("file");
+    }
 	public function battle_step()
 	{
 		return $this->belongsTo(BattleStep::class, 'step_id');

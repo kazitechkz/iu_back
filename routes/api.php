@@ -28,6 +28,7 @@ use App\Http\Controllers\Api\StatisticsController as ApiStatisticsController;
 use App\Http\Controllers\Api\NotificationController as ApiNotificationController;
 use App\Http\Controllers\Api\AnnouncementController as ApiAnnouncementController;
 use App\Http\Controllers\Api\TechSupportController as ApiTechSupportController;
+use App\Http\Controllers\Api\BattleController as ApiBattleController;
 use App\Http\Controllers\Api\AttemptController;
 use App\Http\Controllers\Api\AttemptSettingsController as ApiAttemptSettingsController;
 /*
@@ -155,6 +156,12 @@ Route::group(['middleware' => 'API'], function() {
     Route::post("/tech-support-close-ticket",[ApiTechSupportController::class,"closeTechSupportTickets"]);
     Route::post("/tech-support-create-message",[ApiTechSupportController::class,"createTechSupportMessage"]);
     //Tech Support Type
+    //Battle
+    Route::post("/battle-create",[ApiBattleController::class,"createBattle"]);
+    Route::post("/battle-step-create",[ApiBattleController::class,"createBattleStep"]);
+    Route::get("/battle-subjects",[ApiBattleController::class,"proposeSubjects"]);
+    Route::get("/battle-by-step/{id}",[ApiBattleController::class,"getBattleStepById"]);
+    //Battle
 
     //Forum
     Route::post("/upload-image",[\App\Http\Controllers\Api\FileUploadController::class,"uploadImage"]);

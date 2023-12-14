@@ -66,7 +66,7 @@ class AnswerService
         }
 
 
-        protected function check_answer($question_id,string $answer){
+        public function check_answer($question_id,string $answer){
             //"a,b,c"=>["a","b","c"]
             $user_answer = array_unique(explode(",",$answer));
             if($question = Question::find($question_id)){

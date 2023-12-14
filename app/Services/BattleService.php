@@ -21,14 +21,14 @@ class BattleService
     public const FIRST_STEP = 1;
     public const LAST_STEP = 4;
     public const HIDDEN_FIELDS = ["correct_answers","explanation","prompt","explanation_image"];
-    public function createBattle(BattleCreateDTO $battleCreateDTO){
+    public function createBattle(BattleCreateDTO $battleCreateDTO) : Battle{
         $user = auth()->guard("api")->user();
         $input = $battleCreateDTO->toArray();
         $input["owner_id"] = $user->id;
         $input["promo_code"] = self::generatePromoCode("battle");
         $input["is_open"] = true;
         $input["start_at"] = Carbon::now();
-        $input["must_finished"] = Carbon::now()->addHour();
+        $input["must_finished_at"] = Carbon::now()->addHour();
         if($input["pass_code"]){
             $input["pass_code"] = bcrypt($input["pass_code"]);
         }
@@ -79,7 +79,14 @@ class BattleService
         //Проверяем его ли очередь на текущий момент
         $battleStep = BattleStep::where(["id"=>$input["battle_step_id"],"is_current" => true,"current_user"=>$user->id])->with(["battle","battle_step_results"])->first();
         //Проверяем есть ли текущий раунд
+
         if($battleStep){
+            if($old_questions = BattleStepQuestion::where(["step_id" => $battleStep->id,"user_id"=>$user->id])->pluck("question_id","question_id")->toArray()){
+                if(count($old_questions)){
+                    return self::getBattleStepQuestions($user,$old_questions,$battleStep);
+                }
+            }
+
             //Проверяем кто он гость или владелец
             $battle = $battleStep->battle;
             //Если владелец
@@ -91,7 +98,7 @@ class BattleService
                     $battleStep->update(["subject_id"=>$input["subject_id"]]);
                     //Вопросы
                     $questions = Question::where(["subject_id"=>$input["subject_id"],"type_id" => QuestionService::SINGLE_QUESTION_ID,"locale_id" => $battle->locale_id])
-                        ->inRandomOrder()->take(3)->get()->pluck("question_id","question_id")->toArray();
+                        ->inRandomOrder()->take(3)->get()->pluck("id","id")->toArray();
                     return self::getBattleStepQuestions($user,$questions,$battleStep);
 
                 }
@@ -111,7 +118,7 @@ class BattleService
                     $battleStep->update(["subject_id"=>$input["subject_id"]]);
                     //Вопросы
                     $questions = Question::where(["subject_id"=>$input["subject_id"],"type_id" => QuestionService::SINGLE_QUESTION_ID,"locale_id" => $battle->locale_id])
-                        ->inRandomOrder()->take(3)->get()->pluck("question_id","question_id")->toArray();
+                        ->inRandomOrder()->take(3)->get()->pluck("id","id")->toArray();
                     return self::getBattleStepQuestions($user,$questions,$battleStep);
 
                 }
@@ -132,8 +139,28 @@ class BattleService
     }
 
     //Check Answer
-    public function checkAnswer(AnswerBattleQuestion $answer){
+    public function checkAnswer(AnswerBattleQuestion $answer,BattleStepResult $battleStepResult){
+        $user = auth()->guard("api")->user();
+        $input = $answer->toArray(); //$battle_step_id $answer $question_id;
+        $answers = strtolower($input["answer"]);
+        $service = new AnswerService();
+        $result = $service->check_answer($input["question_id"],$answers);
+        //После проверки баллов необходимо
+        //Засчитать его
+        $battleStepQuestion = BattleStepQuestion::where(["user_id"=>$user->id,"question_id" => $input["question_id"],"step_id" => $input["battle_step_id"]])->with(["question"])->first();
+        //Подсчитаем баллы
+        $battleStepQuestion->edit([...$result,"is_answered"=>true]);
+        //Подсчитаем баллы
 
+    }
+
+
+    public static function countPointsByBattleStepId($step_id,$user){
+        $battleStep = BattleStep::where(["id"=>$step_id])->with(["battle","battle_step_questions"])->first();
+        $battle = $battleStep->battle;
+        $battleResult = BattleStepResult::where(["step_id" => $step_id,"answered_user" => $user->id])->first();
+        $battleQuestions = $battleStep->battle_step_questions->where(["user_id"=>$user->id])->get();
+        $is_finished = false;
     }
 
 
@@ -142,21 +169,26 @@ class BattleService
     public static function getBattleStepQuestions($user,$questions,$battleStep){
         $battle_questions = [];
         foreach ($questions as $question){
-            $battleStepQuestion = BattleStepQuestion::add([
-                    'step_id' => $battleStep->id,
-                    'question_id' => $question,
-                ]
-            );
+            if(!BattleStepQuestion::where(["question_id" => $question,"user_id"=>$user->id,"step_id" => $battleStep->id])->exists()){
+                $battleStepQuestion = BattleStepQuestion::add([
+                        'step_id' => $battleStep->id,
+                        'question_id' => $question,
+                        'user_id'=>$user->id
+                    ]
+                );
+            }
             array_push($battle_questions,$question);
         }
         //Создаем результат
-        $battleResult = BattleStepResult::add([
-            'step_id'=>$battleStep->id,
-            'answered_user'=>$user->id,
-            'start_at'=>Carbon::now(),
-            'is_finished'=>false,
-        ]);
-        $questions = Question::whereIn("id",$battle_questions)->makeHidden(self::HIDDEN_FIELDS)->toArray();
+        if(!BattleStepResult::where(["step_id" => $battleStep->id,"answered_user" => $user->id])->exists()){
+            $battleResult = BattleStepResult::add([
+                'step_id'=>$battleStep->id,
+                'answered_user'=>$user->id,
+                'start_at'=>Carbon::now(),
+                'is_finished'=>false,
+            ]);
+        }
+        $questions = Question::whereIn("id",$battle_questions)->get()->makeHidden(self::HIDDEN_FIELDS)->toArray();
         $result = ["battle_step_id"=>$battleStep->id,"questions"=>[...$questions]];
         return $result;
     }
