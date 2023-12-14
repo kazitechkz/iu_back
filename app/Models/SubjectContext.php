@@ -63,4 +63,13 @@ class SubjectContext extends Model
         $color = $count == 5 ? 'success' : 'danger';
         return $this['context'] . ' <span class="text-'.$color.'">(' . $count . ')</span>';
     }
+
+    public function translationContextKK(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(SubjectContextTranslation::class, 'context_kk');
+    }
+    public function translationContextRU(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(SubjectContextTranslation::class, 'context_ru');
+    }
 }

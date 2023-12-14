@@ -74,10 +74,17 @@ class QuestionTranslation extends Model
         if ($isIndexPage) {
             $questions = [];
         } else {
-            $questions = Question::where(['subject_id' => $request['subject_id'], 'type_id' => $request['type_id'], 'locale_id' => 1, 'group_id' => $request['group_id']])
-                ->with('translationQuestion')
-                ->latest()
-                ->paginate(20);
+            $query = Question::where(['subject_id' => $request['subject_id'], 'type_id' => $request['type_id'], 'locale_id' => 1]);
+            if ($request['group_id']) {
+                $questions = $query->where('group_id', $request['group_id'])
+                    ->with('translationQuestion')
+                    ->latest()
+                    ->paginate(20);;
+            } else {
+                $questions = $query->with('translationQuestion')
+                    ->latest()
+                    ->paginate(20);
+            }
         }
         return compact('subjects', 'types', 'groups', 'questions');
     }

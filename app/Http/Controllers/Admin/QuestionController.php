@@ -236,6 +236,8 @@ class QuestionController extends Controller
         try{
             if(auth()->user()->can("questions edit") ){
                 $question = Question::findOrFail($id);
+                $question->translationQuestion?->questionRU?->delete();
+                $question->translationQuestion?->delete();
                 $question->sub_step_test?->delete();
                 $question->translationQuestionRU?->delete();
                 $question->delete();

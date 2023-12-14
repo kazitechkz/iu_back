@@ -35,11 +35,13 @@ class TranslationController extends Controller
             if (auth()->user()->can("translation index")) {
                 $this->validate($request, [
                    'subject_id' => 'required',
-                   'type_id' => 'required',
-                   'group_id' => 'required'
+                   'type_id' => 'required'
                 ]);
-                if ($request['question'] && $request['type_id'] == 1) {
+                if ($request['question'] && $request['type_id'] == 1 || $request['type_id'] == 3) {
                     TranslateService::saveOneAnswerQuestion($request['question']);
+                }
+                if ($request['question'] && $request['type_id'] == 2) {
+                    TranslateService::saveContextQuestion($request['question']);
                 }
                 $data = QuestionTranslation::searchableData($request, false);
                 return view("admin.translation.index", compact('data'));
@@ -103,11 +105,12 @@ class TranslationController extends Controller
             $this->validate($request, [
                 'subject_id' => 'required',
                 'type_id' => 'required',
-                'group_id' => 'required',
                 'delete_id' => 'required'
             ]);
             if ($request['delete_id']) {
-                $tr = QuestionTranslation::with('questionRU')->where('question_ru', $request['delete_id'])->first();
+                $tr = QuestionTranslation::with('questionRU.context.translationContextRU')->where('question_ru', $request['delete_id'])->first();
+                $tr->questionRU?->context?->translationContextRU?->delete();
+                $tr->questionRU?->context?->delete();
                 $tr->questionRU?->delete();
                 $tr->delete();
             }

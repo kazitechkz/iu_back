@@ -11,13 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('question_translations', function (Blueprint $table) {
+        Schema::create('subject_context_translations', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->foreignId('question_kk')->references('id')->on('questions')->cascadeOnDelete();
-            $table->foreignId('question_ru')->references('id')->on('questions')->cascadeOnDelete();
+            $table->foreignId('context_kk')->references('id')->on('subject_contexts')->cascadeOnDelete();
+            $table->foreignId('context_ru')->references('id')->on('subject_contexts')->cascadeOnDelete();
             $table->foreignId('subject_id')->references('id')->on('subjects')->cascadeOnDelete();
-            $table->foreignId('type_id')->references('id')->on('question_types')->cascadeOnDelete();
-            $table->foreignId('group_id')->references('id')->on('groups')->cascadeOnDelete();
             $table->timestamps();
         });
     }
@@ -27,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('question_translations');
+        Schema::dropIfExists('subject_context_translations');
     }
 };

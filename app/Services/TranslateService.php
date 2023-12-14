@@ -5,11 +5,14 @@ namespace App\Services;
 use App\Helpers\StrHelper;
 use App\Models\Question;
 use App\Models\QuestionTranslation;
+use App\Models\SubjectContext;
+use App\Models\SubjectContextTranslation;
+use App\Models\UserQuestion;
 
 class TranslateService
 {
-    private const IAM_TOKEN = '';
-    private const FOLDER_ID = '';
+    private const IAM_TOKEN = 'AQVN3U-7Xim1Vxz1hVeirOskh3m_K7aQLAui5XTL';
+    private const FOLDER_ID = 'b1go8o67uis9r9bknad2';
     private const TARGET_LANGUAGE = 'ru';
     private const SOURCE_LANGUAGE = 'kk';
     private const URL = 'https://translate.api.cloud.yandex.net/translate/v2/translate';
@@ -18,7 +21,7 @@ class TranslateService
     {
         $headers = [
             'Content-Type: application/json',
-            "Authorization: Api-Key ".self::IAM_TOKEN
+            "Authorization: Api-Key " . self::IAM_TOKEN
         ];
         $post_data = [
             "sourceLanguageCode" => self::SOURCE_LANGUAGE,
@@ -41,10 +44,45 @@ class TranslateService
 
     public static function saveOneAnswerQuestion($question): void
     {
-        $question = json_decode($question,1);
+        $question = json_decode($question, 1);
         $trn = QuestionTranslation::where('question_kk', $question['id'])->first();
         if ($trn) {
             return;
+        }
+        $data = self::initialData($question);
+        self::saveData($data, $question);
+    }
+
+    public static function saveContextQuestion($question): void
+    {
+        $question = json_decode($question, 1);
+        $trn = QuestionTranslation::where('question_kk', $question['id'])->first();
+        if ($trn) {
+            return;
+        }
+        $contextTrn = SubjectContextTranslation::where('context_kk', $question['context_id'])->first();
+        if ($contextTrn) {
+            $contextID = $contextTrn->context_ru;
+        } else {
+            $context = SubjectContext::create([
+                'subject_id' => $question['subject_id'],
+                'context' => StrHelper::getFormattedTextForTranslateService(TranslateService::translate($question['context']['context']))
+            ]);
+            SubjectContextTranslation::create([
+                'subject_id' => $question['subject_id'],
+                'context_kk' => $question['context_id'],
+                'context_ru' => $context->id
+            ]);
+            $contextID = $context->id;
+        }
+        $data = self::initialData($question, $contextID);
+        self::saveData($data, $question);
+    }
+
+    protected static function initialData($question, $context_id = null): array
+    {
+        if ($context_id) {
+            $data['context_id'] = $context_id;
         }
         $data['text'] = StrHelper::getFormattedTextForTranslateService(TranslateService::translate($question['text']));
         $data['answer_a'] = StrHelper::getFormattedTextForTranslateService(TranslateService::translate($question['answer_a']));
@@ -75,7 +113,16 @@ class TranslateService
         $data['type_id'] = $question['type_id'];
         $data['group_id'] = $question['group_id'];
         $data['sub_category_id'] = $question['sub_category_id'];
+        return $data;
+    }
+
+    protected static function saveData($data, $question): void
+    {
         $questionRu = Question::add($data);
+        UserQuestion::create([
+            'question_id' => $questionRu->id,
+            'user_id' => auth()->guard('web')->id()
+        ]);
         QuestionTranslation::create([
             'subject_id' => $question['subject_id'],
             'type_id' => $question['type_id'],
