@@ -8,26 +8,27 @@ use App\Models\QuestionTranslation;
 use App\Models\SubjectContext;
 use App\Models\SubjectContextTranslation;
 use App\Models\UserQuestion;
+use Illuminate\Support\Facades\Config;
 
 class TranslateService
 {
-    private const IAM_TOKEN = 'AQVN3U-7Xim1Vxz1hVeirOskh3m_K7aQLAui5XTL';
-    private const FOLDER_ID = 'b1go8o67uis9r9bknad2';
     private const TARGET_LANGUAGE = 'ru';
     private const SOURCE_LANGUAGE = 'kk';
     private const URL = 'https://translate.api.cloud.yandex.net/translate/v2/translate';
 
     public static function translate($text)
     {
+        $IAM_TOKEN = env('YANDEX_TRANSLATE_API_TOKEN');
+        $FOLDER_ID = env('YANDEX_TRANSLATE_FOLDER_ID');
         $headers = [
             'Content-Type: application/json',
-            "Authorization: Api-Key " . self::IAM_TOKEN
+            "Authorization: Api-Key " . $IAM_TOKEN
         ];
         $post_data = [
             "sourceLanguageCode" => self::SOURCE_LANGUAGE,
             "targetLanguageCode" => self::TARGET_LANGUAGE,
             "texts" => $text,
-            "folderId" => self::FOLDER_ID,
+            "folderId" => $FOLDER_ID,
         ];
         $data_json = json_encode($post_data);
         $curl = curl_init();
