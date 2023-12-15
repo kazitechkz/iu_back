@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Helpers\StrHelper;
+use App\Models\MethodistQuestion;
 use App\Models\Question;
 use App\Models\QuestionTranslation;
 use App\Models\SubjectContext;
@@ -120,7 +121,7 @@ class TranslateService
     protected static function saveData($data, $question): void
     {
         $questionRu = Question::add($data);
-        UserQuestion::create([
+        MethodistQuestion::create([
             'question_id' => $questionRu->id,
             'user_id' => auth()->guard('web')->id()
         ]);
