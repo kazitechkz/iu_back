@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Helpers\MathFormulaHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SubStepTest\SubStepTestCreateRequest;
+use App\Models\MethodistContentStat;
 use App\Models\Question;
 use App\Models\SubQuestion;
 use App\Models\SubStep;
@@ -60,7 +61,10 @@ class SubStepTestController extends Controller
     {
         try{
             if(auth()->user()->can("substeptest index") ){
-                SubStepTest::createSubStepTest($request);
+                $sub_step_test = SubStepTest::createSubStepTest($request);
+                if($sub_step_test){
+                    MethodistContentStat::add(["sub_step_tests_id"=>$sub_step_test->id,"created_user"=>auth()->id()]);
+                }
                 return redirect(route('sub-step-test.index'));
             }
             else{
@@ -125,6 +129,15 @@ class SubStepTestController extends Controller
             if(auth()->user()->can("substeptest index") ){
                 $subStepTest = SubStepTest::findOrFail($id);
                 $subStepTest->updateSubStepTest($request);
+                if($subStepTest){
+                    $stat = MethodistContentStat::where(["sub_step_tests_id"=>$subStepTest->id])->first();
+                    if($stat){
+                        $stat->edit(["updated_user"=>auth()->id()]);
+                    }
+                    else{
+                        MethodistContentStat::add(["sub_step_tests_id"=>$subStepTest->id,"updated_user"=>auth()->id()]);
+                    }
+                }
                 return redirect(route('sub-step-test.index'));
             }
             else{

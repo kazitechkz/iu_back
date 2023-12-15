@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SubStepVideo\SubStepVideoCreate;
+use App\Models\MethodistContentStat;
 use App\Models\SubStep;
 use App\Models\SubStepVideo;
 use Illuminate\Http\Request;
@@ -57,7 +58,10 @@ class SubStepVideoController extends Controller
     {
         try{
             if(auth()->user()->can("subStepVideo index") ){
-                SubStepVideo::add($request->all());
+                $sub_step_video = SubStepVideo::add($request->all());
+                if($sub_step_video){
+                    MethodistContentStat::add(["sub_step_video_id"=>$sub_step_video->id,"created_user"=>auth()->id()]);
+                }
                 return redirect(route('sub-step-video.index'));
             }
             else {
@@ -128,6 +132,15 @@ class SubStepVideoController extends Controller
             if(auth()->user()->can("subStepVideo index") ){
                 $video = SubStepVideo::findOrFail($id);
                 $video->edit($request->all());
+                if($video){
+                    $stat = MethodistContentStat::where(["sub_step_video_id"=>$video->id])->first();
+                    if($stat){
+                          $stat->edit(["updated_user"=>auth()->id()]);
+                    }
+                    else{
+                        MethodistContentStat::add(["sub_step_video_id"=>$video->id,"updated_user"=>auth()->id()]);
+                    }
+                }
                 return redirect(route('sub-step-video.index'));
             }
             else {

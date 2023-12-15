@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Subcategory\SubcategoryCreate;
+use App\Models\MethodistContentStat;
 use App\Models\SubCategory;
 use Illuminate\Http\Request;
 
@@ -57,7 +58,10 @@ class SubCategoryController extends Controller
     {
         try{
             if(auth()->user()->can("subcategories create") ){
-                SubCategory::add($request->all());
+                $sub_category = SubCategory::add($request->all());
+                if($sub_category){
+                    MethodistContentStat::add(["created_user"=>auth()->id(),"sub_category_id"=>$sub_category->id]);
+                }
                 return redirect(route('sub-categories.index'));
             }
             else{
@@ -121,6 +125,15 @@ class SubCategoryController extends Controller
             if(auth()->user()->can("subcategories edit") ){
                 $cat = SubCategory::findOrFail($id);
                 $cat->edit($request->all());
+                if($cat){
+                    $stat = MethodistContentStat::where(["sub_category_id" => $cat->id])->first();
+                    if($stat){
+                        $stat->edit(["updated_user"=>auth()->id()]);
+                    }
+                    else{
+                        MethodistContentStat::add(["updated_user"=>auth()->id(),"sub_category_id"=>$cat->id]);
+                    }
+                }
                 return redirect(route('sub-categories.index'));
             }
             else{

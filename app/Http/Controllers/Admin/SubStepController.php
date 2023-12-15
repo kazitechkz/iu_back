@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SubStep\SubStepCreateRequest;
 use App\Http\Requests\SubStep\SubStepUpdateRequest;
+use App\Models\MethodistContentStat;
 use App\Models\Step;
 use App\Models\SubCategory;
 use App\Models\Subject;
@@ -67,7 +68,10 @@ class SubStepController extends Controller
                 }
                 $input = $request->all();
                 $input["is_active"] = $request->boolean("is_active");
-                SubStep::add($input);
+                $sub_step = SubStep::add($input);
+                if($sub_step){
+                    MethodistContentStat::add(["sub_step_id"=>$sub_step->id,"created_user"=>auth()->id()]);
+                }
                 return redirect()->back();
             }
             else{
@@ -151,6 +155,15 @@ class SubStepController extends Controller
                     $input = $request->all();
                     $input["is_active"] = $request->boolean("is_active");
                     $sub_step->edit($input);
+                    if($sub_step){
+                        $stat = MethodistContentStat::where(["sub_step_id" => $sub_step->id])->first();
+                        if($stat){
+                            $stat->edit(["updated_user"=>auth()->id()]);
+                        }
+                        else{
+                            MethodistContentStat::add(["sub_step_id"=>$sub_step->id,"updated_user"=>auth()->id()]);
+                        }
+                    }
                 }
                 else{
                     toastr()->warning(__("message.not_found"));

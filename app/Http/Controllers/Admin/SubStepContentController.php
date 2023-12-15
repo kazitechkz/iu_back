@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\SubStep\SubStepUpdateRequest;
 use App\Http\Requests\SubStepContent\SubStepContentCreateRequest;
 use App\Http\Requests\SubStepContent\SubStepContentUpdateRequest;
+use App\Models\MethodistContentStat;
 use App\Models\Step;
 use App\Models\SubStep;
 use App\Models\SubStepContent;
@@ -62,7 +63,11 @@ class SubStepContentController extends Controller
                     $content = SubStepContent::findOrFail($input['content_id']);
                     $content->edit($input);
                 } else {
-                    SubStepContent::add($input);
+                   $sub_step_content = SubStepContent::add($input);
+                   if($sub_step_content){
+                        MethodistContentStat::add(["sub_step_content_id"=>$sub_step_content->id,"created_user"=>auth()->id()]);
+                   }
+
                 }
                 return redirect()->back();
             } else {
@@ -135,6 +140,15 @@ class SubStepContentController extends Controller
                     $input = MathFormulaHelper::getContent($request);
                     $input["is_active"] = $request->boolean("is_active");
                     $sub_step_content->edit($input);
+                    if($sub_step_content){
+                        $stat = MethodistContentStat::where(["sub_step_content_id"=>$sub_step_content->id])->first();
+                        if($stat){
+                            $stat->edit(["updated_user"=>auth()->id()]);
+                        }
+                        else{
+                            MethodistContentStat::add(["sub_step_content_id"=>$sub_step_content->id,"updated_user"=>auth()->id()]);
+                        }
+                    }
                     return redirect()->back();
                 } else {
                     toastr()->warning(__("message.not_found"));
