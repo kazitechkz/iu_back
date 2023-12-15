@@ -53,4 +53,5 @@ return [
     "participant-rating" => "Оқушы рейтингі",
     "lesson-complaint" => "Шағымдар",
     "stats-on-questions" => "Сұрақтар бойынша",
+    "stats-on-user-contents" => "Методисттер бойынша",
 ];
