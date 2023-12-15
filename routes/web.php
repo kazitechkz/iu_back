@@ -119,6 +119,7 @@ Route::group([
         Route::resource("group",AdminGroupController::class);
         Route::resource("appeal-type",AdminAppealTypeController::class);
         Route::resource("appeal",AdminAppealController::class);
+        Route::any('search-appeal', [AdminAppealController::class, 'search'])->name('search-appeal');
         Route::resource("page",AdminPageController::class);
         Route::resource("forum",AdminForumController::class);
         Route::resource("discuss",AdminDiscussController::class);
