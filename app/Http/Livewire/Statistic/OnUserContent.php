@@ -22,10 +22,10 @@ class OnUserContent extends Component
         $date = $this->date;
         $this->stats = User::role(['method', 'assist'])->with([
             'stats_by_questions' => function($query) use ($date){
-                $query->whereBetween('created_at', [Carbon::create($date)->startOfDay(), Carbon::today()->endOfDay()]);
+                $query->whereBetween('created_at', [Carbon::create($date)->startOfDay(), Carbon::create($date)->endOfDay()]);
             },
             'stats_by_contents' => function($query) use ($date){
-                $query->whereBetween('created_at', [Carbon::create($date)->startOfDay(), Carbon::today()->endOfDay()]);
+                $query->whereBetween('created_at', [Carbon::create($date)->startOfDay(), Carbon::create($date)->endOfDay()]);
             }
         ])->get();
     }
