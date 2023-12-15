@@ -119,6 +119,7 @@ Route::group([
         Route::resource("group",AdminGroupController::class);
         Route::resource("appeal-type",AdminAppealTypeController::class);
         Route::resource("appeal",AdminAppealController::class);
+        Route::any('search-appeal', [AdminAppealController::class, 'search'])->name('search-appeal');
         Route::resource("page",AdminPageController::class);
         Route::resource("forum",AdminForumController::class);
         Route::resource("discuss",AdminDiscussController::class);
@@ -157,6 +158,7 @@ Route::group([
         Route::resource("notification",AdminNotificationController::class);
         //Statistics
         Route::get('stats-on-questions', [AdminStatisticController::class, 'statsOnQuestions'])->name('stats-on-questions');
+        Route::get('stats-on-user-contents', [AdminStatisticController::class, 'statsOnUserContents'])->name('stats-on-user-contents');
         //Tech Support Type
         Route::resource("tech-support-type",AdminTechSupportTypeController::class);
         //Tech Support Category

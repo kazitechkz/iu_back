@@ -120,4 +120,14 @@ class User extends Authenticatable implements Searchable,Wallet
     {
         return $this->belongsTo(AttemptSettingsResultsUnt::class, 'id', 'user_id');
     }
+
+    public function stats_by_questions(): HasMany
+    {
+        return $this->hasMany(MethodistQuestion::class, 'user_id');
+    }
+
+    public function stats_by_contents(): HasMany
+    {
+        return $this->hasMany(MethodistContentStat::class, 'created_user');
+    }
 }
