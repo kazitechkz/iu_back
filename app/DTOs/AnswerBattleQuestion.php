@@ -13,7 +13,11 @@ class AnswerBattleQuestion extends ValidatedDTO
 
     protected function rules(): array
     {
-        return [];
+        return [
+            "battle_step_id"=>"exists:battle_steps,id",
+            "answer"=>"required",
+            "question_id"=>"required|exists:questions,id",
+        ];
     }
 
     protected function defaults(): array

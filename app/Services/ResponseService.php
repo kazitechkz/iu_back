@@ -25,6 +25,10 @@ class ResponseService
         return response()->json(new ResponseJSON(status: false,message: $message),404);
     }
 
+    public static function ValidationException($message){
+        return response()->json(new ResponseJSON(status: false,message: $message),400);
+    }
+
     public static function NotAllowed($content = false, $unt = false){
         if($content){
             response()->json(new ResponseJSON(status: false,message: "content"),403);

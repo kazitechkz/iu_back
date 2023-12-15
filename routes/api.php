@@ -161,6 +161,8 @@ Route::group(['middleware' => 'API'], function() {
     Route::post("/battle-step-create",[ApiBattleController::class,"createBattleStep"]);
     Route::get("/battle-subjects",[ApiBattleController::class,"proposeSubjects"]);
     Route::get("/battle-by-step/{id}",[ApiBattleController::class,"getBattleStepById"]);
+    Route::post("/battle-by-step-answer",[ApiBattleController::class,"answerQuestion"]);
+    Route::get("/join-to-battle-by-promo-code",[ApiBattleController::class,"joinToBattleByPromoCode"]);
     //Battle
 
     //Forum
