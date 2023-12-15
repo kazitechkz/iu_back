@@ -62,7 +62,7 @@ class SubStepTest extends Model
         return $this->belongsTo(SubStepContentTest::class, 'id', 'test_id');
     }
 
-    public static function createSubStepTest($request): void
+    public static function createSubStepTest($request): SubStepTest
     {
         $subStep = SubStep::findOrFail($request['sub_step_id']);
         $data = MathFormulaHelper::replace($request);
@@ -71,7 +71,7 @@ class SubStepTest extends Model
         $data['sub_step_id'] = $request['sub_step_id'];
         $data['question_id'] = $question->id;
         $data['locale_id'] = $question->locale_id;
-        SubStepTest::add($data);
+        return SubStepTest::add($data);
     }
 
     public function updateSubStepTest($request): void

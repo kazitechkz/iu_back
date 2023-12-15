@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Step\StepCreateRequest;
 use App\Http\Requests\Step\StepUpdateRequest;
 use App\Models\Category;
+use App\Models\MethodistContentStat;
 use App\Models\Step;
 use App\Models\SubStep;
 use Illuminate\Http\Request;
@@ -67,7 +68,10 @@ class StepController extends Controller
                 $input = $request->all();
                 $input["is_active"] = $request->boolean("is_active");
                 $input["is_free"] = $request->boolean("is_free");
-                Step::add($input);
+                $step = Step::add($input);
+                if($step){
+                    MethodistContentStat::add(["step_id"=>$step->id,"created_user"=>auth()->id()]);
+                }
                 return redirect()->back();
             }
             else{
@@ -155,6 +159,15 @@ class StepController extends Controller
                     $input["is_active"] = $request->boolean("is_active");
                     $input["is_free"] = $request->boolean("is_free");
                     $step->edit($input);
+                    if($step){
+                        $stat = MethodistContentStat::where(["step_id" => $step->id])->first();
+                        if($stat){
+                            $stat->edit(["updated_user"=>auth()->id()]);
+                        }
+                        else{
+                            MethodistContentStat::add(["step_id"=>$step->id,"updated_user"=>auth()->id()]);
+                        }
+                    }
                 }
                 else{
                     toastr()->warning(__("message.not_found"));

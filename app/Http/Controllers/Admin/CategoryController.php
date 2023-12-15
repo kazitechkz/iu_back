@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CategoryRequest;
 use App\Models\Category;
+use App\Models\MethodistContentStat;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
@@ -57,7 +58,10 @@ class CategoryController extends Controller
     {
         try{
             if(auth()->user()->can("categories create") ){
-                Category::add($request->all());
+                $category = Category::add($request->all());
+                if($category){
+                    MethodistContentStat::add(["created_user"=>auth()->id(),"category_id"=>$category->id]);
+                }
                 return redirect(route('categories.index'));
             }
             else{
@@ -123,6 +127,15 @@ class CategoryController extends Controller
             if(auth()->user()->can("categories edit") ){
                 $cat = Category::findOrFail($id);
                 $cat->edit($request->all());
+                if($cat){
+                    $stat = MethodistContentStat::where(["category_id" => $cat->id])->first();
+                    if($stat){
+                        $stat->edit(["updated_user"=>auth()->id()]);
+                    }
+                    else{
+                        MethodistContentStat::add(["updated_user"=>auth()->id(),"category_id"=>$cat->id]);
+                    }
+                }
                 return redirect(route('categories.index'));
             }
             else{
