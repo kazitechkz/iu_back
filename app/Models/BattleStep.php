@@ -10,6 +10,7 @@ use App\Traits\CRUD;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * Class BattleStep
@@ -87,12 +88,12 @@ class BattleStep extends Model
 					->withTimestamps();
 	}
 
-    public function battle_step_questions()
+    public function battle_step_questions() : HasMany
     {
         return $this->hasMany(BattleStepQuestion::class, 'step_id');
     }
 
-	public function battle_step_results()
+	public function battle_step_results() : HasMany
 	{
 		return $this->hasMany(BattleStepResult::class, 'step_id');
 	}
