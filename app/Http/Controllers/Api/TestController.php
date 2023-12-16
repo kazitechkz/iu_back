@@ -9,6 +9,7 @@ use App\Models\BattleStepResult;
 use App\Models\Notification;
 use App\Models\NotificationUserStatus;
 use App\Services\AttemptService;
+use App\Services\BattleService;
 use App\Services\NotificationService;
 use App\Services\QuestionService;
 use App\Services\ResponseService;
@@ -23,17 +24,19 @@ class TestController extends Controller
 {
     private QuestionService $_questionService;
     private AttemptService $_attemptService;
-    public function __construct(QuestionService $questionService,AttemptService $attemptService)
+    private BattleService $_battleService;
+    public function __construct(QuestionService $questionService,AttemptService $attemptService,BattleService $battleService)
     {
         $this->_questionService = $questionService;
         $this->_attemptService = $attemptService;
+        $this->_battleService = $battleService;
     }
 
 
 
     public function test(Request $request)
     {
-
+        BattleService::checkBattle(1);
 
 
 

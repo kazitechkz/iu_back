@@ -38,6 +38,7 @@ class BattleStepResult extends Model
 		'answered_user' => 'int',
 		'start_at' => 'datetime',
 		'end_at' => 'datetime',
+		'must_finished_at' => 'datetime',
 		'is_finished' => 'bool',
 		'result' => 'int'
 	];
@@ -47,6 +48,7 @@ class BattleStepResult extends Model
 		'answered_user',
 		'start_at',
 		'end_at',
+		'must_finished_at',
 		'is_finished',
 		'result'
 	];

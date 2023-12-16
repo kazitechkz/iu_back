@@ -157,12 +157,14 @@ Route::group(['middleware' => 'API'], function() {
     Route::post("/tech-support-create-message",[ApiTechSupportController::class,"createTechSupportMessage"]);
     //Tech Support Type
     //Battle
+    Route::get("/battles",[ApiBattleController::class,"getActiveBattles"]);
+    Route::get("/battle/{promo_code}",[ApiBattleController::class,"getBattleByPromo"]);
     Route::post("/battle-create",[ApiBattleController::class,"createBattle"]);
     Route::post("/battle-step-create",[ApiBattleController::class,"createBattleStep"]);
-    Route::get("/battle-subjects",[ApiBattleController::class,"proposeSubjects"]);
-    Route::get("/battle-by-step/{id}",[ApiBattleController::class,"getBattleStepById"]);
+    Route::get("/battle-subjects/{battle_step_id}",[ApiBattleController::class,"proposeSubjects"]);
+    Route::get("/battle-by-step/{battle_step_id}",[ApiBattleController::class,"getBattleStepById"]);
     Route::post("/battle-by-step-answer",[ApiBattleController::class,"answerQuestion"]);
-    Route::get("/join-to-battle-by-promo-code",[ApiBattleController::class,"joinToBattleByPromoCode"]);
+    Route::post("/join-to-battle-by-promo-code",[ApiBattleController::class,"joinToBattleByPromoCode"]);
     //Battle
 
     //Forum

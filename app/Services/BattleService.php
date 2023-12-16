@@ -5,6 +5,7 @@ namespace App\Services;
 use App\DTOs\AnswerBattleQuestion;
 use App\DTOs\BattleCreateDTO;
 use App\DTOs\BattleStepCreateDTO;
+use App\Exceptions\BadRequestException;
 use App\Models\Battle;
 use App\Models\BattleStep;
 use App\Models\BattleStepQuestion;
@@ -20,10 +21,14 @@ class BattleService
     public const GUEST_STEPS = [2,4];
     public const FIRST_STEP = 1;
     public const LAST_STEP = 4;
+    public const MAX_MINUTE_WAIT = 3;
     public const HIDDEN_FIELDS = ["correct_answers","explanation","prompt","explanation_image"];
     public function createBattle(BattleCreateDTO $battleCreateDTO) : Battle{
         $user = auth()->guard("api")->user();
         $input = $battleCreateDTO->toArray();
+        if($user->balanceInt < $input["price"]){
+            throw new BadRequestException("Недостаточно средств");
+        }
         $input["owner_id"] = $user->id;
         $input["promo_code"] = self::generatePromoCode("battle");
         $input["is_open"] = true;
@@ -60,9 +65,11 @@ class BattleService
     }
 
     public function joinToBattle(Battle $battle){
-
         $user = auth()->guard("api")->user();
         if($battle->owner_id !=$user->id){
+            if($user->balanceInt < $battle->price){
+                throw new BadRequestException("Недостаточно средств");
+            }
             $battle->update(["guest_id"=>$user->id,"is_open"=>false]);
             $steps = $battle->battle_steps()->get();
             foreach ($steps as $step){
@@ -73,9 +80,8 @@ class BattleService
             return $battle;
         }
         else{
-            throw new \Exception("Упс, игра не найдена");
+            throw new BadRequestException("Упс, игра не найдена");
         }
-
     }
 
 
@@ -100,7 +106,7 @@ class BattleService
                 if(in_array($battleStep->order,self::OWNER_STEPS)){
                     //Задаем этапу вопросы
                     if(!$input["subject_id"]){
-                        throw new \Exception("Выберите дисциплину!");
+                        throw new BadRequestException("Выберите дисциплину!");
                     }
                     $battleStep->subject_id = $input["subject_id"];
                     $battleStep->update(["subject_id"=>$input["subject_id"]]);
@@ -115,7 +121,7 @@ class BattleService
                     $questions = BattleStepQuestion::where(["step_id" => $battleStep->id])->pluck("question_id","question_id")->toArray();
                     return self::getBattleStepQuestions($user,$questions,$battleStep);
                 }
-                throw new \Exception("Вы не участвуете в игре");
+                throw new BadRequestException("Вы не участвуете в игре");
             }
             //Если гость
             elseif ($battle->guest_id == $user->id){
@@ -135,70 +141,72 @@ class BattleService
                     $questions = BattleStepQuestion::where(["step_id" => $battleStep->id])->pluck("question_id","question_id")->toArray();
                     return self::getBattleStepQuestions($user,$questions,$battleStep);
                 }
-                throw new \Exception("Вы не участвуете в игре");
+                throw new BadRequestException("Вы не участвуете в игре");
             }
             else{
-                throw new \Exception("Вы не участвуете в игре");
+                throw new BadRequestException("Вы не участвуете в игре");
             }
         }
         else{
-            throw new \Exception("Игра не найдена");
+            throw new BadRequestException("Игра не найдена");
         }
     }
 
     public static function checkBattle($battle_id){
         $battle = Battle::with(["battle_steps.battle_step_results","battle_steps.battle_step_questions"])->find($battle_id);
         if($battle){
-            //Баллы
-            $common_owner_point =0;
-            $common_guest_point = 0;
-            //Пользовательские айди
-            $owner_id = $battle->owner_id;
-            $guest_id = $battle->guest_id;
-            $battle_steps = $battle->battle_steps;
-            $is_ended = false;
-            $winner_id = null;
-            $current_step = 0;
-            foreach ($battle_steps as $battle_step){
-                //Баллы на каждом этапе
-                $point_owner = $battle_step->battle_step_questions->where(["user_id"=>$owner_id])->sum("point");
-                $answered_owner = $battle_step->battle_step_questions->where(["user_id"=>$owner_id,"is_answered"=>false])->count();
-                $point_guest = $battle_step->battle_step_questions->where(["user_id"=>$guest_id])->sum("point");
-                $answered_guest = $battle_step->battle_step_questions->where(["user_id"=>$guest_id,"is_answered"=>false])->count();
-                //Пересчитаем Результаты
-                //Проверяем Текущий этап
-                if($battle_step->is_current){
-                    $current_step = $battle_step->order;
-                    $owner_battle_result = BattleStepResult::where(["step_id" => $battle_step->id,"answered_user"=>$owner_id])->first();
-                    $guest_battle_result = BattleStepResult::where(["step_id" => $battle_step->id,"answered_user"=>$guest_id])->first();
-                    if($owner_battle_result){
-                        $owner_battle_result->edit(["result"=>$point_owner]);
-                        if(($answered_owner == 0 && !$owner_battle_result->is_finished) || (Carbon::parse($owner_battle_result->start_at)->addMinute(10) < Carbon::now() && !$owner_battle_result->is_finished)){
-                            $owner_battle_result->edit(["is_finished"=>true,"end_at"=>Carbon::now()]);
-                            //Значит до меня уже сдавали
-                            if($guest_battle_result){
-                                if($battle_step->order < 4){
-                                    $battle_step->edit(["is_current"=>false]);
-                                    $current_step = $battle_step->order++;
+            if(!$battle->is_finished){
+                //Баллы
+                $end_at = null;
+                $common_owner_point =0;
+                $common_guest_point = 0;
+                //Пользовательские айди
+                $owner_id = $battle->owner_id;
+                $guest_id = $battle->guest_id;
+                $battle_steps = $battle->battle_steps;
+                $is_ended = false;
+                $winner_id = null;
+                $current_step = 0;
+                foreach ($battle_steps as $battle_step){
+                    //Баллы на каждом этапе
+                    $point_owner = $battle_step->battle_step_questions()->where(["user_id"=>$owner_id])->sum("point");
+                    $answered_owner = $battle_step->battle_step_questions()->where(["user_id"=>$owner_id,"is_answered"=>false])->count();
+                    $point_guest = $battle_step->battle_step_questions()->where(["user_id"=>$guest_id])->sum("point");
+                    $answered_guest = $battle_step->battle_step_questions()->where(["user_id"=>$guest_id,"is_answered"=>false])->count();
+                    //Пересчитаем Результаты
+                    //Проверяем Текущий этап
+                    if($battle_step->is_current){
+                        $current_step = $battle_step->order;
+                        $owner_battle_result = BattleStepResult::where(["step_id" => $battle_step->id,"answered_user"=>$owner_id])->first();
+                        $guest_battle_result = BattleStepResult::where(["step_id" => $battle_step->id,"answered_user"=>$guest_id])->first();
+                        if($owner_battle_result){
+                            $owner_battle_result->edit(["result"=>$point_owner]);
+                            if(($answered_owner == 0 && !$owner_battle_result->is_finished) || (Carbon::parse($owner_battle_result->start_at)->addMinute(self::MAX_MINUTE_WAIT) < Carbon::now() && !$owner_battle_result->is_finished)){
+                                $owner_battle_result->edit(["is_finished"=>true,"end_at"=>Carbon::now()]);
+                                //Значит до меня уже сдавали
+                                if($guest_battle_result){
+                                    if($battle_step->order < 4){
+                                        $battle_step->edit(["is_current"=>false,"current_user"=>null]);
+                                        $current_step = $battle_step->order+ 1;
+                                    }
+                                    else{
+                                        $is_ended = true;
+                                    }
                                 }
+                                //До меня не сдавали
                                 else{
-                                    $is_ended = true;
+                                    $battle_step->edit(["current_user"=>$guest_id]);
                                 }
-                            }
-                            //До меня не сдавали
-                            else{
-                                $battle_step->edit(["current_user"=>$guest_id]);
                             }
                         }
-                        //Проверяем
                         if($guest_battle_result){
                             $guest_battle_result->edit(["result"=>$point_guest]);
-                            if(($answered_guest == 0 && !$guest_battle_result->is_finished) || (Carbon::parse($guest_battle_result->start_at)->addMinute(10) < Carbon::now() && !$guest_battle_result->is_finished)){
+                            if(($answered_guest == 0 && !$guest_battle_result->is_finished) || (Carbon::parse($guest_battle_result->start_at)->addMinute(self::MAX_MINUTE_WAIT) < Carbon::now() && !$guest_battle_result->is_finished)){
                                 $guest_battle_result->edit(["is_finished"=>true,"end_at"=>Carbon::now()]);
                                 if($owner_battle_result){
                                     if($battle_step->order < 4){
-                                        $battle_step->edit(["is_current"=>false]);
-                                        $current_step = $battle_step->order++;
+                                        $battle_step->edit(["is_current"=>false,"current_user"=>null]);
+                                        $current_step = $battle_step->order + 1;
                                     }
                                     else{
                                         $is_ended = true;
@@ -211,27 +219,28 @@ class BattleService
                             }
                         }
                     }
+                    if($battle_step->order == $current_step){
+                        $battle_step->edit(["is_current"=>true]);
+                    }
+                    //Battle Common Result
+                    $common_owner_point += $point_owner;
+                    $common_guest_point += $point_guest;
+                }
+                if($battle->must_finished_at < Carbon::now()){
+                    $is_ended = true;
+                }
+                if($is_ended){
+                    if($common_owner_point > $common_guest_point){
+                        $winner_id = $battle->owner_id;
+                    }
+                    if($common_owner_point < $common_guest_point){
+                        $winner_id = $battle->guest_id;
+                    }
+                    $end_at = Carbon::now();
+                }
+                $battle->edit(["owner_point"=>$common_owner_point,"guest_point"=>$common_guest_point,"winner_id"=>$winner_id,"is_finished"=>$is_ended,"end_at"=>$end_at]);
+            }
 
-                }
-                if($battle_step->order == $current_step){
-                    $battle_step->edit(["is_current"=>true]);
-                }
-                //Battle Common Result
-                $common_owner_point += $point_owner;
-                $common_guest_point += $point_guest;
-            }
-            if($battle->must_finished_at < Carbon::now()){
-                $is_ended = true;
-            }
-            if($is_ended){
-                if($common_owner_point > $common_guest_point){
-                    $winner_id = $common_owner_point;
-                }
-                if($common_owner_point < $common_guest_point){
-                    $winner_id = $common_guest_point;
-                }
-            }
-            $battle->edit(["owner_point"=>$common_owner_point,"guest_point"=>$common_guest_point,"winner_id"=>$winner_id,"is_finished"=>$is_ended,"is_open"=>!$is_ended]);
         }
     }
 
@@ -247,22 +256,25 @@ class BattleService
             //Проверяем не истекло ли время у результата
             $battleResult = BattleStepResult::where(["step_id" => $battleStep->id,"answered_user"=>$user->id,"is_finished"=>false])->first();
             if(!$battleResult){
-                throw new \Exception("Результат не найден!");
+                throw new BadRequestException("Результат не найден!");
             }
-            $battleStepQuestion = BattleStepQuestion::where(["is_answered"=>false,"user_id"=>$user->id,"question_id" => $input["question_id"],"step_id" => $input["battle_step_id"]])->with(["question"])->first();
-            $question = $battleStepQuestion->question;
-            if(Carbon::parse($battleResult->start_at)->addMinute(10) >= Carbon::now()){
-                //Засчитать его
-                if($battleStepQuestion){
+            $battleStepQuestion = BattleStepQuestion::where(["user_id"=>$user->id,"question_id" => $input["question_id"],"step_id" => $input["battle_step_id"]])->with(["question"])->first();
+            if(!$battleStepQuestion){
+                throw new BadRequestException("Вопрос не найден!");
+            }
+            $question = $battleStepQuestion->question()->first();
+            if(!$battleStepQuestion->is_answered){
                     //Подсчитаем баллы
                     $answers = strtolower($input["answer"]);
                     $service = new AnswerService();
                     $result = $service->check_answer($input["question_id"],$answers);
-                    $battleStepQuestion->edit([...$result,"is_answered"=>true]);
-                }
+                    $battleStepQuestion->edit([...$result,"is_answered"=>true,"answer"=>$answers]);
             }
             self::checkBattle($battleStep->battle_id);
-            $newBattleStep = BattleStep::where(["id"=>$battleStep->id,"answered_user"=>$user->id,])->first();
+            $newBattleResult = BattleStepResult::where(["step_id"=>$battleStep->id,"answered_user"=>$user->id,])->first();
+            if($newBattleResult){
+                $nextBattleStep = BattleStep::where(["battle_id" => $battleStep->id,"is_current" => true,"current_user" => $user->id])->whereNot("id","!=",$battleStep->id)->first();
+            }
             return [
                 ...$result,
                 "question_id"=>$input["question_id"],
@@ -270,11 +282,12 @@ class BattleService
                 "battle_step_id"=>$battleStep->id,
                 "given_answer"=>strtolower($input["answer"]),
                 "correct_answer"=>$question->correct_answers,
-                "is_finished"=> $newBattleStep ? $newBattleStep->is_finished : false,
+                "is_finished"=> $newBattleResult ? $newBattleResult->is_finished : false,
+                "next_step_id"=> $nextBattleStep->id ?? null
             ];
         }
         else{
-            throw new \Exception("Этап не найден или пройден!");
+            throw new BadRequestException("Этап не найден или пройден!");
         }
     }
 
@@ -297,16 +310,21 @@ class BattleService
             array_push($battle_questions,$question);
         }
         //Создаем результат
-        if(!BattleStepResult::where(["step_id" => $battleStep->id,"answered_user" => $user->id])->exists()){
+        $battleResult = BattleStepResult::where(["step_id" => $battleStep->id,"answered_user" => $user->id])->first();
+        if(!$battleResult){
             $battleResult = BattleStepResult::add([
                 'step_id'=>$battleStep->id,
                 'answered_user'=>$user->id,
                 'start_at'=>Carbon::now(),
                 'is_finished'=>false,
+                'must_finished_at'=>Carbon::now()->addSeconds(70)
             ]);
         }
+        $time_left = Carbon::now()->diffInSeconds($battleResult->must_finished_at);
+        $time_left_seconds = $time_left > 0 ? $time_left : 0;
+        $answered_questions = BattleStepQuestion::where(["step_id" => $battleStep->id,"user_id"=>$user->id,"is_answered"=>true])->pluck("question_id")->toArray();
         $questions = Question::whereIn("id",$battle_questions)->with(["context"])->get()->makeHidden(self::HIDDEN_FIELDS)->toArray();
-        $result = ["battle_step_id"=>$battleStep->id,"questions"=>[...$questions]];
+        $result = ["battle_step_id"=>$battleStep->id,"answered_questions"=>$answered_questions,"time_left_seconds"=>$time_left_seconds,"questions"=>[...$questions]];
         return $result;
     }
     //Генерирует Промо Код

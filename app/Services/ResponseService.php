@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Exceptions\BadRequestException;
 use App\Traits\ResponseJSON;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
@@ -15,6 +16,12 @@ class ResponseService
             return response()->json([
                 'message' => 'Validation failed',
                 'errors' => $exception->errors(),
+            ], 400);
+        }
+        if($exception instanceof  BadRequestException){
+            return response()->json([
+                'message' => 'Validation failed',
+                'errors' => $exception->getMessage(),
             ], 400);
         }
         //Log::channel('telegram')->error($exception);
