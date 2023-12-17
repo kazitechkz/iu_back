@@ -29,7 +29,7 @@
         "mcamara/laravel-localization": "^1.8",
         "multicaret/laravel-acquaintances": "^3.5",
         "okipa/laravel-table": "^5.3",
-        "pusher/pusher-php-server": "^7.2",
+        "pusher/pusher-php-server": "7.2.4",
         "rappasoft/laravel-livewire-tables": "^2.15",
         "robsontenorio/mary": "^1.8",
         "sarfraznawaz2005/loading": "^1.4",
