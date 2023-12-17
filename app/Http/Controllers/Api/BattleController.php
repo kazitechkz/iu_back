@@ -11,6 +11,7 @@ use App\Models\BattleStep;
 use App\Models\BattleStepQuestion;
 use App\Models\Subject;
 use App\Services\BattleService;
+use App\Services\QuestionService;
 use App\Services\ResponseService;
 use App\Traits\ResponseJSON;
 use Carbon\Carbon;
@@ -26,8 +27,8 @@ class BattleController extends Controller
 
     public function getBattleByPromo($promo_code){
         try {
-            $battle = Battle::where(["promo_code" =>$promo_code,"is_open" => true,"is_finished" => false])->with(
-                ["owner","guest","winner","locale","battle_steps.battle_step_results","battle_steps.battle_step_questions"]
+            $battle = Battle::where(["promo_code" =>$promo_code])->with(
+                ["owner","guest","winner","locale","battle_steps.battle_step_results","battle_steps.battle_step_questions","battle_steps.subject"]
             )->first();
             $user = auth()->guard("api")->user();
             if(!$battle){
@@ -77,7 +78,10 @@ class BattleController extends Controller
                 return ResponseService::NotFound("Не найден этап игры");
             }
             if(!$battleStep->subject_id){
-                $result["subjects"] = Subject::inRandomOrder()->take(3)->with("image")->get();
+                $result["subjects"] = Subject::whereHas('questions', function ($query) {
+                    $query->whereIn("locale_id",[1,2])->where(["type_id"=>QuestionService::SINGLE_QUESTION_ID]);
+                }, '>=', 3)->inRandomOrder()->take(3)
+                    ->with("image")->get();
             }
             else{
                 $result["chosen_subject"] = $battleStep->subject_id;
@@ -115,9 +119,11 @@ class BattleController extends Controller
                     return ResponseService::ValidationException("Не выбрана тема");
                 }
             }
-            if($battleResult->must_finished_at < Carbon::now()){
-                BattleService::checkBattle($battleStep->battle_id);
-                return ResponseService::ValidationException("Время вышло");
+            else{
+                if($battleResult->must_finished_at < Carbon::now()){
+                    BattleService::checkBattle($battleStep->battle_id);
+                    return ResponseService::ValidationException("Время вышло");
+                }
             }
             $questions = BattleStepQuestion::where(["step_id" => $battle_step_id,"user_id"=>$user->id])->pluck("question_id","question_id")->toArray();
             $result = BattleService::getBattleStepQuestions(questions:$questions,battleStep: $battleStep,user: $user);
@@ -140,9 +146,7 @@ class BattleController extends Controller
     public function joinToBattleByPromoCode(Request $request){
         try {
             $promo_code = $request["promo_code"];
-            $battle = Battle::where(["promo_code" => $promo_code,"is_open" => true])->with(
-                ["owner","guest","winner","locale","battle_steps.battle_step_results","battle_steps.battle_step_questions"]
-            )->first();
+            $battle = Battle::where(["promo_code" => $promo_code,"is_open" => true])->first();
             if(!$battle){
                 return ResponseService::ValidationException("Игра не найдена!");
             }

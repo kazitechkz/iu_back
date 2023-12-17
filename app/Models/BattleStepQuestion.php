@@ -46,6 +46,7 @@ class BattleStepQuestion extends Model
 		'question_id',
 		'user_id',
 		'answer',
+        'right_answer',
 		'is_right',
 		'is_answered',
 		'point'

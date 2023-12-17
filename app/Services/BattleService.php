@@ -5,6 +5,7 @@ namespace App\Services;
 use App\DTOs\AnswerBattleQuestion;
 use App\DTOs\BattleCreateDTO;
 use App\DTOs\BattleStepCreateDTO;
+use App\Events\BattleDetailEvent;
 use App\Exceptions\BadRequestException;
 use App\Models\Battle;
 use App\Models\BattleStep;
@@ -183,6 +184,7 @@ class BattleService
                             $owner_battle_result->edit(["result"=>$point_owner]);
                             if(($answered_owner == 0 && !$owner_battle_result->is_finished) || (Carbon::parse($owner_battle_result->start_at)->addMinute(self::MAX_MINUTE_WAIT) < Carbon::now() && !$owner_battle_result->is_finished)){
                                 $owner_battle_result->edit(["is_finished"=>true,"end_at"=>Carbon::now()]);
+                                broadcast(new BattleDetailEvent($battle->promo_code,"refresh"));
                                 //Значит до меня уже сдавали
                                 if($guest_battle_result){
                                     if($battle_step->order < 4){
@@ -203,6 +205,7 @@ class BattleService
                             $guest_battle_result->edit(["result"=>$point_guest]);
                             if(($answered_guest == 0 && !$guest_battle_result->is_finished) || (Carbon::parse($guest_battle_result->start_at)->addMinute(self::MAX_MINUTE_WAIT) < Carbon::now() && !$guest_battle_result->is_finished)){
                                 $guest_battle_result->edit(["is_finished"=>true,"end_at"=>Carbon::now()]);
+                                broadcast(new BattleDetailEvent($battle->promo_code,"refresh"));
                                 if($owner_battle_result){
                                     if($battle_step->order < 4){
                                         $battle_step->edit(["is_current"=>false,"current_user"=>null]);
@@ -230,12 +233,15 @@ class BattleService
                     $is_ended = true;
                 }
                 if($is_ended){
+
                     if($common_owner_point > $common_guest_point){
                         $winner_id = $battle->owner_id;
                     }
                     if($common_owner_point < $common_guest_point){
                         $winner_id = $battle->guest_id;
                     }
+                    $battle->battle_steps()->update(["current_user"=>null,"is_current"=>false]);
+                    broadcast(new BattleDetailEvent($battle->promo_code,"refresh_winner"));
                     $end_at = Carbon::now();
                 }
                 $battle->edit(["owner_point"=>$common_owner_point,"guest_point"=>$common_guest_point,"winner_id"=>$winner_id,"is_finished"=>$is_ended,"end_at"=>$end_at]);
@@ -268,18 +274,22 @@ class BattleService
                     $answers = strtolower($input["answer"]);
                     $service = new AnswerService();
                     $result = $service->check_answer($input["question_id"],$answers);
-                    $battleStepQuestion->edit([...$result,"is_answered"=>true,"answer"=>$answers]);
+                    $battleStepQuestion->edit([...$result,"is_answered"=>true,"answer"=>$answers,"right_answer"=>$question->correct_answers]);
             }
             self::checkBattle($battleStep->battle_id);
             $newBattleResult = BattleStepResult::where(["step_id"=>$battleStep->id,"answered_user"=>$user->id,])->first();
             if($newBattleResult){
-                $nextBattleStep = BattleStep::where(["battle_id" => $battleStep->id,"is_current" => true,"current_user" => $user->id])->whereNot("id","!=",$battleStep->id)->first();
+                $nextBattleStep = BattleStep::where(["battle_id" => $battleStep->battle_id,"is_current" => true,"current_user" => $user->id])->where("id","!=",$battleStep->id)->first();
             }
+            $battle = $battleStep->battle()->first();
+            $questions_result = BattleStepQuestion::where(["step_id" => $battleStep->id,"user_id"=>$user->id])->orderBy("question_id","ASC")->get()->toArray();
             return [
                 ...$result,
                 "question_id"=>$input["question_id"],
                 "battle_id"=>$battleStep->battle_id,
                 "battle_step_id"=>$battleStep->id,
+                "battle_promo_code"=>$battle->promo_code,
+                "result"=>$questions_result,
                 "given_answer"=>strtolower($input["answer"]),
                 "correct_answer"=>$question->correct_answers,
                 "is_finished"=> $newBattleResult ? $newBattleResult->is_finished : false,
@@ -317,14 +327,16 @@ class BattleService
                 'answered_user'=>$user->id,
                 'start_at'=>Carbon::now(),
                 'is_finished'=>false,
-                'must_finished_at'=>Carbon::now()->addSeconds(70)
+                'must_finished_at'=>Carbon::now()->addSeconds(30)
             ]);
         }
+        $battle = $battleStep->battle()->first();
         $time_left = Carbon::now()->diffInSeconds($battleResult->must_finished_at);
         $time_left_seconds = $time_left > 0 ? $time_left : 0;
         $answered_questions = BattleStepQuestion::where(["step_id" => $battleStep->id,"user_id"=>$user->id,"is_answered"=>true])->pluck("question_id")->toArray();
-        $questions = Question::whereIn("id",$battle_questions)->with(["context"])->get()->makeHidden(self::HIDDEN_FIELDS)->toArray();
-        $result = ["battle_step_id"=>$battleStep->id,"answered_questions"=>$answered_questions,"time_left_seconds"=>$time_left_seconds,"questions"=>[...$questions]];
+        $questions_result = BattleStepQuestion::where(["step_id" => $battleStep->id,"user_id"=>$user->id])->orderBy("question_id","ASC")->get()->toArray();
+        $questions = Question::whereIn("id",$battle_questions)->with(["context"])->orderBy("id","ASC")->get()->makeHidden(self::HIDDEN_FIELDS)->toArray();
+        $result = ["battle_step_id"=>$battleStep->id,"battle_id"=>$battleStep->battle_id, "battle_promo_code"=>$battle->promo_code,"result"=>$questions_result,"answered_questions"=>$answered_questions,"time_left_seconds"=>$time_left_seconds,"questions"=>[...$questions]];
         return $result;
     }
     //Генерирует Промо Код

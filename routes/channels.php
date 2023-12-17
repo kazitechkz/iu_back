@@ -13,8 +13,5 @@ use Illuminate\Support\Facades\Broadcast;
 |
 */
 
-Broadcast::channel("unt-battle-online",function ($user){
-    if(auth()->guard("api")->check()){
-        return $user->toArray();
-    }
-});
+
+

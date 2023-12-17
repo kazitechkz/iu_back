@@ -59,14 +59,14 @@ return [
             'channels' => ['single'],
             'ignore_exceptions' => false,
         ],
-        "telegram" => [
-            'driver'  => 'monolog',
-            'handler' => FilterHandler::class,
-            'level' => env('LOG_LEVEL', 'debug'),
-            'with' => [
-                'handler' => new TelegramBotHandler($apiKey = env('TELEGRAM_API_KEY'), $channel = env('TELEGRAM_CHANNEL'))
-            ],
-        ],
+//        "telegram" => [
+//            'driver'  => 'monolog',
+//            'handler' => FilterHandler::class,
+//            'level' => env('LOG_LEVEL', 'debug'),
+//            'with' => [
+//                'handler' => new TelegramBotHandler($apiKey = env('TELEGRAM_API_KEY'), $channel = env('TELEGRAM_CHANNEL'))
+//            ],
+//        ],
         'single' => [
             'driver' => 'single',
             'path' => storage_path('logs/laravel.log'),

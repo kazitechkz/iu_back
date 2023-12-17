@@ -2,23 +2,13 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Events\BattleDetailEvent;
 use App\Http\Controllers\Controller;
-use App\Models\AttemptSetting;
-use App\Models\Battle;
-use App\Models\BattleStepResult;
-use App\Models\Notification;
-use App\Models\NotificationUserStatus;
 use App\Services\AttemptService;
 use App\Services\BattleService;
-use App\Services\NotificationService;
 use App\Services\QuestionService;
-use App\Services\ResponseService;
-use App\Services\StatisticsService;
-use App\Traits\ResponseJSON;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
-use NotificationChannels\Telegram\TelegramMessage;
+
 
 class TestController extends Controller
 {
@@ -36,9 +26,8 @@ class TestController extends Controller
 
     public function test(Request $request)
     {
-        BattleService::checkBattle(1);
 
-
+        broadcast(new BattleDetailEvent("qeLeyJ5Kz3","refresh_winner"));
 
     }
 }

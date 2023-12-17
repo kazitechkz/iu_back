@@ -119,4 +119,9 @@ class Battle extends Model
 	{
 		return $this->hasMany(BattleStep::class);
 	}
+    protected $appends = array('time_left_seconds');
+    public function getTimeLeftSecondsAttribute()
+    {
+        return Carbon::now()->diffInSeconds($this->must_finished_at);
+    }
 }
