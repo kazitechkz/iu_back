@@ -13,16 +13,14 @@ class ResponseService
     public static function DefineException(\Exception $exception){
         // If validation fails, return JSON response with validation errors
         if($exception instanceof  ValidationException){
-            return response()->json([
-                'message' => 'Validation failed',
-                'errors' => $exception->errors(),
-            ], 400);
+            return response()->json(new ResponseJSON(
+                status: false,
+                message: $exception->getMessage(),
+                errors:$exception->errors(),
+            ), 400);
         }
         if($exception instanceof  BadRequestException){
-            return response()->json([
-                'message' => 'Validation failed',
-                'errors' => $exception->getMessage(),
-            ], 400);
+            return response()->json(new ResponseJSON(status: false,message: $exception->getMessage()),400);
         }
         //Log::channel('telegram')->error($exception);
         return response()->json(new ResponseJSON(status: false,message: $exception->getMessage()),500);
