@@ -11,7 +11,7 @@ use App\Traits\Language;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-
+use \Znck\Eloquent\Traits\BelongsToThrough;
 /**
  * Class SubStepContent
  *
@@ -29,6 +29,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class SubStepContent extends Model
 {
+    use \Znck\Eloquent\Traits\BelongsToThrough;
     use CRUD, Language;
 	protected $table = 'sub_step_contents';
 
@@ -48,4 +49,9 @@ class SubStepContent extends Model
     {
 		return $this->belongsTo(SubStep::class);
 	}
+
+    public function step()
+    {
+        return $this->belongsToThrough(Step::class, SubStep::class);
+    }
 }

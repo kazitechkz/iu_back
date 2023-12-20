@@ -357,7 +357,7 @@
                 @can('stats-by-user management')
                     <x-shared.sub-sidebar-menu
                         :icon="'fa fa-bar-chart'"
-                        :link="'stats-on-user-contents'"
+                        :link="'stats-on-user'"
                         :name="__('sidebar.stats-on-user-contents')"/>
                 @endcan
             </x-shared.sidebar-menu>

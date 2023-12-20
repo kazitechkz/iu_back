@@ -130,4 +130,13 @@ class User extends Authenticatable implements Searchable,Wallet
     {
         return $this->hasMany(MethodistContentStat::class, 'created_user');
     }
+
+    public function stats_by_questions_kk()
+    {
+        return $this->stats_by_questions()->whereHas('question', function ($q){$q->where('locale_id',1);});
+    }
+    public function stats_by_questions_ru()
+    {
+        return $this->stats_by_questions()->whereHas('question', function ($q){$q->where('locale_id',2);});
+    }
 }

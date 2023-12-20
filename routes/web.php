@@ -158,7 +158,10 @@ Route::group([
         Route::resource("notification",AdminNotificationController::class);
         //Statistics
         Route::get('stats-on-questions', [AdminStatisticController::class, 'statsOnQuestions'])->name('stats-on-questions');
-        Route::get('stats-on-user-contents', [AdminStatisticController::class, 'statsOnUserContents'])->name('stats-on-user-contents');
+        Route::get('stats-on-user', [AdminStatisticController::class, 'statsOnUser'])->name('stats-on-user');
+        Route::get('stats-on-user-contents/{id}', [AdminStatisticController::class, 'statsOnUserContents'])->name('stats-on-user-contents');
+        Route::get('stats-on-user-tests/{id}', [AdminStatisticController::class, 'statsOnUserTests'])->name('stats-on-user-tests');
+        Route::get('stats-on-user-translates/{id}', [AdminStatisticController::class, 'statsOnUserTranslates'])->name('stats-on-user-translates');
         //Tech Support Type
         Route::resource("tech-support-type",AdminTechSupportTypeController::class);
         //Tech Support Category

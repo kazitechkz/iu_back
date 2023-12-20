@@ -37,21 +37,21 @@
                                         <tr>
                                             <th scope="col" class="px-6 py-4">ID</th>
                                             <th scope="col" class="px-6 py-4">Предмет</th>
-                                            <th scope="col" class="px-6 py-4">Текст</th>
+                                            <th scope="col" class="px-6 py-4">Вопрос</th>
                                             <th scope="col" class="px-6 py-4">Дата создания</th>
                                             <th scope="col" class="px-6 py-4">Действие</th>
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        @foreach($contents as $stat)
-                                            @if($stat->sub_step_content)
+                                        @foreach($questions as $stat)
+                                            @if($stat->question)
                                                 <tr class="border-b dark:border-neutral-500">
-                                                    <td class="whitespace-nowrap px-6 py-4">{{$stat->sub_step_content->id}}</td>
-                                                    <td class="whitespace-nowrap px-6 py-4">{{$stat->sub_step_content->step->subject->title_kk}}</td>
-                                                    <td class="whitespace-nowrap px-6 py-4">{{$stat->sub_step_content->text_kk}}</td>
+                                                    <td class="whitespace-nowrap px-6 py-4">{{$stat->question->id}}</td>
+                                                    <td class="whitespace-nowrap px-6 py-4">{{$stat->question->subject->title_kk}}</td>
+                                                    <td class="whitespace-nowrap px-6 py-4">{{$stat->question->text}}</td>
                                                     <td class="whitespace-nowrap px-6 py-4">{{$stat->created_at->format('d.m.Y H:m')}}</td>
                                                     <td class="whitespace-nowrap px-6 py-4">
-
+                                                        <livewire:question.preview-question :question="$stat->question"/>
                                                     </td>
                                                 </tr>
                                             @else
@@ -62,9 +62,9 @@
                                         @endforeach
                                         </tbody>
                                     </table>
-                                    @if($contents)
+                                    @if($questions)
                                         <div class="my-3">
-                                            {!! $contents->links() !!}
+                                            {!! $questions->links() !!}
                                         </div>
                                     @endif
                                 </div>
@@ -96,7 +96,7 @@
         };
     </script>
 
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+{{--    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>--}}
     {{--    <script src="https://www.google.com/jsapi"></script>--}}
     {{--    <script type="text/javascript">--}}
     {{--        let dataForUser = @json($usersData);--}}

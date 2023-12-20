@@ -27,7 +27,7 @@
                 {{--                    <div id="chartUsers" class="pie-chart"></div>--}}
                 {{--                </div>--}}
                 <div>
-                    <h1>Тесты</h1>
+                    <h1>Переводы</h1>
                     <div class="flex flex-col">
                         <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
                             <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
@@ -37,21 +37,21 @@
                                         <tr>
                                             <th scope="col" class="px-6 py-4">ID</th>
                                             <th scope="col" class="px-6 py-4">Предмет</th>
-                                            <th scope="col" class="px-6 py-4">Текст</th>
+                                            <th scope="col" class="px-6 py-4">Вопрос</th>
                                             <th scope="col" class="px-6 py-4">Дата создания</th>
                                             <th scope="col" class="px-6 py-4">Действие</th>
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        @foreach($contents as $stat)
-                                            @if($stat->sub_step_content)
+                                        @foreach($translates as $stat)
+                                            @if($stat->question)
                                                 <tr class="border-b dark:border-neutral-500">
-                                                    <td class="whitespace-nowrap px-6 py-4">{{$stat->sub_step_content->id}}</td>
-                                                    <td class="whitespace-nowrap px-6 py-4">{{$stat->sub_step_content->step->subject->title_kk}}</td>
-                                                    <td class="whitespace-nowrap px-6 py-4">{{$stat->sub_step_content->text_kk}}</td>
+                                                    <td class="whitespace-nowrap px-6 py-4">{{$stat->question->id}}</td>
+                                                    <td class="whitespace-nowrap px-6 py-4">{{$stat->question->subject->title_kk}}</td>
+                                                    <td class="whitespace-nowrap px-6 py-4">{{$stat->question->text}}</td>
                                                     <td class="whitespace-nowrap px-6 py-4">{{$stat->created_at->format('d.m.Y H:m')}}</td>
                                                     <td class="whitespace-nowrap px-6 py-4">
-
+                                                        <livewire:question.preview-question :question="$stat->question" :question_ru="$stat->question->translationQuestionRU->questionKK"/>
                                                     </td>
                                                 </tr>
                                             @else
@@ -62,9 +62,9 @@
                                         @endforeach
                                         </tbody>
                                     </table>
-                                    @if($contents)
+                                    @if($translates)
                                         <div class="my-3">
-                                            {!! $contents->links() !!}
+                                            {!! $translates->links() !!}
                                         </div>
                                     @endif
                                 </div>
@@ -75,6 +75,7 @@
             </div>
         </div>
     </div>
+
 
 @endsection
 @push('js')
