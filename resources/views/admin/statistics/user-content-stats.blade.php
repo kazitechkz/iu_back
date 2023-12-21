@@ -1,20 +1,17 @@
 @extends('layouts.default')
 @push('css')
     <style>
-        .pie-chart {
-            height: 400px;
-            margin: 0 auto;
-        }
         .z-5000 {z-index: 5000!important;}
-        #text-img img {
+        .preview-content {
+            white-space: pre-line;
+        }
+        .preview-content img {
             width: 300px!important;
             height: 100%!important;
             border-radius: inherit!important;
         }
-        #preview-img img {width: 100%; max-width: 320px; height: auto; border-radius: inherit!important;}
-        #preview-img p {white-space: pre-line}
-        mjx-container {text-align: left!important; display: inline!important;}
-        #answers_math > li {margin: 20px 20px}
+        mjx-container {text-align: left!important; display: inline!important; white-space: pre-line}
+        mjx-container > mjx-math {white-space: pre-line}
         .MJXc-display {display: inline!important; text-align: center; margin: 1em 0; padding: 0}
     </style>
 @endpush
@@ -23,9 +20,21 @@
     <div class="col-lg-12 grid-margin stretch-card">
         <div class="card">
             <div class="card-body">
-                {{--                <div class="row py-4 my-2">--}}
-                {{--                    <div id="chartUsers" class="pie-chart"></div>--}}
-                {{--                </div>--}}
+                <div class="my-3">
+                    <form class="flex justify-between" action="{{route('filter-stats-on-user')}}">
+                        @csrf
+                        <input type="hidden" name="user_id" value="{{$userID}}">
+                        <input type="hidden" name="is_contents" value="1">
+                        <select name="subject_id" class="form-control mx-1">
+                            <option value="">Выберите предмет</option>
+                            @foreach($subjects as $subject)
+                                <option value="{{$subject->id}}">{{$subject->title}}</option>
+                            @endforeach
+                        </select>
+                        <input type="date" class="form-control mx-1" name="date">
+                        <button type="submit" class="btn bg-blue-400 text-white mx-1">Поиск</button>
+                    </form>
+                </div>
                 <div>
                     <h1>Тесты</h1>
                     <div class="flex flex-col">
@@ -47,11 +56,11 @@
                                             @if($stat->sub_step_content)
                                                 <tr class="border-b dark:border-neutral-500">
                                                     <td class="whitespace-nowrap px-6 py-4">{{$stat->sub_step_content->id}}</td>
-                                                    <td class="whitespace-nowrap px-6 py-4">{{$stat->sub_step_content->step->subject->title_kk}}</td>
+                                                    <td class="whitespace-nowrap px-6 py-4">{{$stat->sub_step_content->step->subject->title}}</td>
                                                     <td class="whitespace-nowrap px-6 py-4">{{$stat->sub_step_content->text_kk}}</td>
                                                     <td class="whitespace-nowrap px-6 py-4">{{$stat->created_at->format('d.m.Y H:m')}}</td>
                                                     <td class="whitespace-nowrap px-6 py-4">
-
+                                                        <livewire:sub-step-content.preview-content :content="$stat->sub_step_content" />
                                                     </td>
                                                 </tr>
                                             @else
@@ -64,7 +73,7 @@
                                     </table>
                                     @if($contents)
                                         <div class="my-3">
-                                            {!! $contents->links() !!}
+                                            {!! $contents->appends(request()->except('page'))->links() !!}
                                         </div>
                                     @endif
                                 </div>

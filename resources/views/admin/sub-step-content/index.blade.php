@@ -5,7 +5,7 @@
         :subtitle="'Управление Контентом субэтапов'"
         :breadcrumbs="['Управление Контентом субэтапов']"
     >
-        <a href="{{route("sub-step-content.create")}}" class="btn btn-primary mt-2 mt-xl-0">Добавить новый контент</a>
+{{--        <a href="{{route("sub-step-content.create")}}" class="btn btn-primary mt-2 mt-xl-0">Добавить новый контент</a>--}}
 
     </x-layer-components.content-navbar>
     <div class="col-lg-12 grid-margin stretch-card">

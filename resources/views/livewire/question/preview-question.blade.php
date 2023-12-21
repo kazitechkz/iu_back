@@ -3,7 +3,7 @@
         <x-card title="Предпросмотр" fullscreen>
             @if($question_ru)
                 <div class="p-2 grid grid-cols-2 gap-2">
-                    <div>
+                    <div class="w-full">
                         <div id="preview-img">
                             <p id="text-img" class="text-gray-700">
                                 <b>Вопрос: </b>
@@ -41,9 +41,9 @@
                         </ul>
                         </p>
                     </div>
-                    <div>
-                        <div id="preview-img">
-                            <p id="text-img" class="text-gray-700">
+                    <div class="w-full">
+                        <div id="preview-img2">
+                            <p id="text-img2" class="text-gray-700">
                                 <b>Вопрос: </b>
                                 {!! \App\Helpers\StrHelper::latexToHTML($question->text) !!}
                             </p>
@@ -57,7 +57,7 @@
                         </div>
                         <p class="text-gray-600">
                             <b>Ответы: </b>
-                        <ul id="answers_math">
+                        <ul id="answers_math2">
                             <li class="{{in_array('a', $correct_answers) ? 'text-green-500' : ''}}">
                                 <b>A)</b> {{\App\Helpers\StrHelper::latexToHTML($question->answer_a)}}
                             </li>

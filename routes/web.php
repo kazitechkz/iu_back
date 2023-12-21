@@ -162,6 +162,7 @@ Route::group([
         Route::get('stats-on-user-contents/{id}', [AdminStatisticController::class, 'statsOnUserContents'])->name('stats-on-user-contents');
         Route::get('stats-on-user-tests/{id}', [AdminStatisticController::class, 'statsOnUserTests'])->name('stats-on-user-tests');
         Route::get('stats-on-user-translates/{id}', [AdminStatisticController::class, 'statsOnUserTranslates'])->name('stats-on-user-translates');
+        Route::any('filter-stats-on-user', [AdminStatisticController::class, 'filterStatsOnUser'])->name('filter-stats-on-user');
         //Tech Support Type
         Route::resource("tech-support-type",AdminTechSupportTypeController::class);
         //Tech Support Category
