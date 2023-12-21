@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Events\BattleDetailEvent;
 use App\Http\Controllers\Controller;
+use App\Models\Battle;
+use App\Models\BattleBet;
 use App\Services\AttemptService;
 use App\Services\BattleService;
 use App\Services\QuestionService;
@@ -26,8 +28,6 @@ class TestController extends Controller
 
     public function test(Request $request)
     {
-
-        broadcast(new BattleDetailEvent("qeLeyJ5Kz3","refresh_winner"));
 
     }
 }

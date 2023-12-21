@@ -10,6 +10,7 @@ use App\Events\BattleJoined;
 use App\Exceptions\BadRequestException;
 use App\Exceptions\NotFoundException;
 use App\Models\Battle;
+use App\Models\BattleBet;
 use App\Models\BattleStep;
 use App\Models\BattleStepQuestion;
 use App\Models\BattleStepResult;
@@ -64,6 +65,8 @@ class BattleService
             }
             $battle_step = BattleStep::add($input);
         }
+        $user->forceWithdraw($battle->price);
+        BattleBet::add(["is_used"=>false,"battle_id"=>$battle->id,"owner_id"=>$user->id,"owner_bet"=>$battle->price]);
         return $battle;
     }
 
@@ -78,6 +81,11 @@ class BattleService
             foreach ($steps as $step){
                 if($step->current_user == null){
                     $step->edit(["current_user"=>$user->id]);
+                    $battle_bet = BattleBet::where(["battle_id" => $battle->id,"is_used" => false])->first();
+                    if($battle_bet){
+                        $user->forceWithdraw($battle->price);
+                        $battle_bet->edit(["guest_bet"=>$battle->price,"guest_id"=>$user->id]);
+                    }
                 }
             }
             event(new BattleJoined($battle->promo_code));
@@ -239,12 +247,28 @@ class BattleService
                     $is_ended = true;
                 }
                 if($is_ended){
-
+                    $bet_finished = false;
+                    $battle_bet = BattleBet::where(["battle_id" => $battle_id,"is_used" => false])->first();
                     if($common_owner_point > $common_guest_point){
                         $winner_id = $battle->owner_id;
+                        if($battle_bet){
+                            $bet_finished = true;
+                            $battle_bet->owner()->first()->deposit(($battle_bet->owner_bet + $battle_bet->guest_bet));
+                            $battle_bet->edit(["is_used"=>true]);
+                        }
                     }
                     if($common_owner_point < $common_guest_point){
                         $winner_id = $battle->guest_id;
+                        if($battle_bet){
+                            $bet_finished = true;
+                            $battle_bet->guest()->first()->deposit(($battle_bet->owner_bet + $battle_bet->guest_bet));
+                            $battle_bet->edit(["is_used"=>true]);
+                        }
+                    }
+                    if($battle_bet && !$bet_finished){
+                        $battle_bet->owner()->first()->deposit(($battle_bet->owner_bet));
+                        $battle_bet->guest()->first()->deposit(($battle_bet->guest_bet));
+                        $battle_bet->edit(["is_used"=>true]);
                     }
                     $battle->battle_steps()->update(["current_user"=>null,"is_current"=>false]);
                     broadcast(new BattleDetailEvent($battle->promo_code,"refresh_winner"));
@@ -334,7 +358,7 @@ class BattleService
                 'answered_user'=>$user->id,
                 'start_at'=>Carbon::now(),
                 'is_finished'=>false,
-                'must_finished_at'=>Carbon::now()->addSeconds(30)
+                'must_finished_at'=>Carbon::now()->addSeconds(60)
             ]);
         }
         $battle = $battleStep->battle()->first();
