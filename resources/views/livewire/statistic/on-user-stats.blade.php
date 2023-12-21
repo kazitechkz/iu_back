@@ -42,7 +42,7 @@
             </div>
         </div>
     </div>
-    <div class="my-3 grid grid-cols-3 gap-3">
+    <div class="my-3 grid sm:grid-cols-1 sm:gap-1 lg:grid-cols-3 lg:gap-3">
         <div style="height: 32rem;">
             <livewire:livewire-column-chart key="{{ $questionsChart->reactiveKey() }}" :column-chart-model="$questionsChart"/>
         </div>

@@ -13,8 +13,16 @@
         }
         #preview-img img {width: 100%; max-width: 320px; height: auto; border-radius: inherit!important;}
         #preview-img p {white-space: pre-line}
+        #answers_math > li {margin: 20px 20px; white-space: pre-line}
+        #text-img2 img {
+            width: 300px!important;
+            height: 100%!important;
+            border-radius: inherit!important;
+        }
+        #preview-img2 img {width: 100%; max-width: 320px; height: auto; border-radius: inherit!important;}
+        #preview-img2 p {white-space: pre-line}
+        #answers_math2 > li {margin: 20px 20px; white-space: pre-line}
         mjx-container {text-align: left!important; display: inline!important;}
-        #answers_math > li {margin: 20px 20px}
         .MJXc-display {display: inline!important; text-align: center; margin: 1em 0; padding: 0}
     </style>
 @endpush
@@ -23,9 +31,21 @@
     <div class="col-lg-12 grid-margin stretch-card">
         <div class="card">
             <div class="card-body">
-                {{--                <div class="row py-4 my-2">--}}
-                {{--                    <div id="chartUsers" class="pie-chart"></div>--}}
-                {{--                </div>--}}
+                <div class="my-3">
+                    <form class="flex justify-between" action="{{route('filter-stats-on-user')}}">
+                        @csrf
+                        <input type="hidden" name="user_id" value="{{$userID}}">
+                        <input type="hidden" name="is_translate" value="1">
+                        <select name="subject_id" class="form-control mx-1">
+                            <option value="">Выберите предмет</option>
+                            @foreach($subjects as $subject)
+                                <option value="{{$subject->id}}">{{$subject->title}}</option>
+                            @endforeach
+                        </select>
+                        <input type="date" class="form-control mx-1" name="date">
+                        <button type="submit" class="btn bg-blue-400 text-white mx-1">Поиск</button>
+                    </form>
+                </div>
                 <div>
                     <h1>Переводы</h1>
                     <div class="flex flex-col">
@@ -47,9 +67,12 @@
                                             @if($stat->question)
                                                 <tr class="border-b dark:border-neutral-500">
                                                     <td class="whitespace-nowrap px-6 py-4">{{$stat->question->id}}</td>
-                                                    <td class="whitespace-nowrap px-6 py-4">{{$stat->question->subject->title_kk}}</td>
+                                                    <td class="whitespace-nowrap px-6 py-4">{{$stat->question->subject->title}}</td>
                                                     <td class="whitespace-nowrap px-6 py-4">{{$stat->question->text}}</td>
-                                                    <td class="whitespace-nowrap px-6 py-4">{{$stat->created_at->format('d.m.Y H:m')}}</td>
+                                                    <td class="whitespace-nowrap px-6 py-4">
+                                                        {{$stat->created_at->format('d.m.Y H:i')}} <br>
+                                                        <small>({{$stat->created_at->diffForHumans()}})</small>
+                                                    </td>
                                                     <td class="whitespace-nowrap px-6 py-4">
                                                         <livewire:question.preview-question :question="$stat->question" :question_ru="$stat->question->translationQuestionRU->questionKK"/>
                                                     </td>
@@ -64,7 +87,7 @@
                                     </table>
                                     @if($translates)
                                         <div class="my-3">
-                                            {!! $translates->links() !!}
+                                            {!! $translates->appends(request()->except('page'))->links() !!}
                                         </div>
                                     @endif
                                 </div>
