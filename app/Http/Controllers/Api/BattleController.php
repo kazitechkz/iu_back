@@ -18,6 +18,7 @@ use App\Services\ResponseService;
 use App\Traits\ResponseJSON;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class BattleController extends Controller
 {
@@ -148,6 +149,7 @@ class BattleController extends Controller
             }
             else{
                 if($battleResult->must_finished_at < Carbon::now()){
+
                     BattleService::checkBattle($battleStep->battle_id);
                     return ResponseService::NotFound("Время вышло");
                 }
@@ -178,7 +180,7 @@ class BattleController extends Controller
                 return ResponseService::ValidationException("Игра не найдена!");
             }
             if($battle->pass_code){
-                if(!\Hash::check($request->get("pass_code"),$battle->pass_code)){
+                if(!Hash::check($request->get("pass_code"),$battle->pass_code)){
                     return ResponseService::ValidationException("Неверный пароль для игры!");
                 }
             }

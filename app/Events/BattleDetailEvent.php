@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\Models\Battle;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
@@ -12,13 +13,11 @@ class BattleDetailEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    protected $promo_code;
-    public $command;
+    public $promo_code;
 
-    public function __construct($promo_code,$command)
+    public function __construct($promo_code)
     {
         $this->promo_code = $promo_code;
-        $this->command = $command;
     }
 
     /**

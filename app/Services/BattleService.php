@@ -89,7 +89,7 @@ class BattleService
                 }
             }
             event(new BattleJoined($battle->promo_code));
-            broadcast(new BattleDetailEvent($battle->promo_code,"refresh"));
+            broadcast(new BattleDetailEvent($battle->promo_code));
             return $battle;
         }
         else{
@@ -197,7 +197,6 @@ class BattleService
                                 $owner_battle_result->edit(["result"=>$point_owner]);
                                 if(($answered_owner == 0 && !$owner_battle_result->is_finished) || (Carbon::parse($owner_battle_result->must_finished_at) < Carbon::now() && !$owner_battle_result->is_finished) || $end){
                                     $owner_battle_result->edit(["is_finished"=>true,"end_at"=>Carbon::now()]);
-                                    broadcast(new BattleDetailEvent($battle->promo_code,"refresh"));
                                     //Значит до меня уже сдавали
                                     if($guest_battle_result){
                                         if($battle_step->order < 4){
@@ -212,6 +211,7 @@ class BattleService
                                     else{
                                         $battle_step->edit(["current_user"=>$guest_id]);
                                     }
+                                    broadcast(new BattleDetailEvent($battle->promo_code));
                                 }
                             }
                         }
@@ -220,7 +220,6 @@ class BattleService
                                 $guest_battle_result->edit(["result" => $point_guest]);
                                 if (($answered_guest == 0 && !$guest_battle_result->is_finished) || (Carbon::parse($guest_battle_result->must_finished_at) < Carbon::now() && !$guest_battle_result->is_finished) || $end) {
                                     $guest_battle_result->edit(["is_finished" => true, "end_at" => Carbon::now()]);
-                                    broadcast(new BattleDetailEvent($battle->promo_code, "refresh"));
                                     if ($owner_battle_result) {
                                         if ($battle_step->order < 4) {
                                             $battle_step->edit(["is_current" => false, "current_user" => null]);
@@ -232,6 +231,7 @@ class BattleService
                                     else {
                                         $battle_step->edit(["current_user" => $owner_id]);
                                     }
+                                    broadcast(new BattleDetailEvent($battle->promo_code));
                                 }
                             }
                         }
@@ -271,7 +271,7 @@ class BattleService
                         $battle_bet->edit(["is_used"=>true]);
                     }
                     $battle->battle_steps()->update(["current_user"=>null,"is_current"=>false]);
-                    broadcast(new BattleDetailEvent($battle->promo_code,"refresh_winner"));
+                    broadcast(new BattleDetailEvent($battle->promo_code));
                     $end_at = Carbon::now();
                 }
                 $battle->edit(["owner_point"=>$common_owner_point,"guest_point"=>$common_guest_point,"winner_id"=>$winner_id,"is_finished"=>$is_ended,"end_at"=>$end_at]);
