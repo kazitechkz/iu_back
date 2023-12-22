@@ -66,7 +66,7 @@ class QuestionTranslation extends Model
 		return $this->belongsTo(Subject::class);
 	}
 
-    public static function searchableData($request = null, $isIndexPage = true): array
+    public static function searchableData($request = null, $isIndexPage = true, $page = 1): array
     {
         $subjects = Subject::all();
         $types = QuestionType::all();
@@ -75,17 +75,23 @@ class QuestionTranslation extends Model
             $questions = [];
         } else {
             $query = Question::where(['subject_id' => $request['subject_id'], 'type_id' => $request['type_id'], 'locale_id' => 1]);
-            if ($request['group_id']) {
+            if ($request['group_id'] != 0) {
                 $questions = $query->where('group_id', $request['group_id'])
                     ->with('translationQuestion')
                     ->latest()
-                    ->paginate(20);;
+                    ->paginate(20);
             } else {
                 $questions = $query->with('translationQuestion')
                     ->latest()
                     ->paginate(20);
             }
         }
-        return compact('subjects', 'types', 'groups', 'questions');
+        $params = [
+          "subject_id" => $request['subject_id'],
+          "type_id" => $request['type_id'],
+          "group_id" => $request['group_id'],
+          "page" => $request['page'] ? $request['page'] : $page
+        ];
+        return compact('subjects', 'types', 'groups', 'questions', 'page', 'params');
     }
 }

@@ -37,13 +37,15 @@ class TranslationController extends Controller
                    'subject_id' => 'required',
                    'type_id' => 'required'
                 ]);
-                if ($request['question'] && $request['type_id'] == 1 || $request['type_id'] == 3) {
+                $data = QuestionTranslation::searchableData($request, false);
+                if ($request['question'] && $request['type_id'] == 1 || $request['question'] && $request['type_id'] == 3) {
                     TranslateService::saveOneAnswerQuestion($request['question']);
+                    return redirect(route('search-translations', $data['params']));
                 }
                 if ($request['question'] && $request['type_id'] == 2) {
                     TranslateService::saveContextQuestion($request['question']);
+                    return redirect(route('search-translations', $data['params']));
                 }
-                $data = QuestionTranslation::searchableData($request, false);
                 return view("admin.translation.index", compact('data'));
             }
         } catch (\Exception $exception) {
