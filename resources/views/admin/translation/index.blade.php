@@ -89,11 +89,11 @@
                                             @if(!$question->translationQuestion)
                                                 <form action="{{route('search-translations')}}" method="post">
                                                 @csrf
-                                                <input type="hidden" name="subject_id"
-                                                       value="{{$question->subject_id}}">
+                                                <input type="hidden" name="subject_id" value="{{$question->subject_id}}">
                                                 <input type="hidden" name="type_id" value="{{$question->type_id}}">
                                                 <input type="hidden" name="group_id" value="{{$question->group_id}}">
                                                 <input type="hidden" name="question" value="{{$question}}">
+                                                <input type="hidden" name="page" value="{{$data['questions']->currentPage()}}">
                                                 <button type="submit"
                                                         class="flex items-center justify-center btn btn-outline-secondary btn-rounded btn-icon mx-1"><i
                                                         class="mdi mdi-google-translate"></i></button>
