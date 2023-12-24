@@ -53,7 +53,6 @@ class TranslateService
             return;
         }
         $data = self::initialData($question);
-        dd($data);
         self::saveData($data, $question);
     }
 
@@ -90,7 +89,6 @@ class TranslateService
             $data['context_id'] = $context_id;
         }
         $data['text'] = StrHelper::getFormattedTextForTranslateService(TranslateService::translate($question['text']));
-        dd($data);
         $data['answer_a'] = StrHelper::getFormattedTextForTranslateService(TranslateService::translate($question['answer_a']));
         $data['answer_b'] = StrHelper::getFormattedTextForTranslateService(TranslateService::translate($question['answer_b']));
         $data['answer_c'] = StrHelper::getFormattedTextForTranslateService(TranslateService::translate($question['answer_c']));
@@ -119,7 +117,6 @@ class TranslateService
         $data['type_id'] = $question['type_id'];
         $data['group_id'] = $question['group_id'];
         $data['sub_category_id'] = $question['sub_category_id'];
-        dd($data);
         return $data;
     }
 
