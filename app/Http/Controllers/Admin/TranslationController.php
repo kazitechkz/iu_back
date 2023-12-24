@@ -20,7 +20,7 @@ class TranslationController extends Controller
     {
         try {
             if (auth()->user()->can("translation index")) {
-                $data = QuestionTranslation::searchableData(null, true);
+                $data = QuestionTranslation::searchableData();
                 return view("admin.translation.index", compact('data'));
             }
         } catch (\Exception $exception) {

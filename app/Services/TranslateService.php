@@ -35,13 +35,14 @@ class TranslateService
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+//        curl_setopt($curl, CURLOPT_VERBOSE, 1);
         curl_setopt($curl, CURLOPT_POSTFIELDS, $data_json);
         curl_setopt($curl, CURLOPT_URL, self::URL);
         curl_setopt($curl, CURLOPT_POST, true);
         $result = curl_exec($curl);
         curl_close($curl);
         $res = json_decode($result, 1);
-        return $res['translations'][0]['text'];
+        return $res['translations'][0]['text'] ?: '';
     }
 
     public static function saveOneAnswerQuestion($question): void
@@ -52,6 +53,7 @@ class TranslateService
             return;
         }
         $data = self::initialData($question);
+        dd($data);
         self::saveData($data, $question);
     }
 
@@ -83,10 +85,12 @@ class TranslateService
 
     protected static function initialData($question, $context_id = null): array
     {
+        $data = [];
         if ($context_id) {
             $data['context_id'] = $context_id;
         }
         $data['text'] = StrHelper::getFormattedTextForTranslateService(TranslateService::translate($question['text']));
+        dd($data);
         $data['answer_a'] = StrHelper::getFormattedTextForTranslateService(TranslateService::translate($question['answer_a']));
         $data['answer_b'] = StrHelper::getFormattedTextForTranslateService(TranslateService::translate($question['answer_b']));
         $data['answer_c'] = StrHelper::getFormattedTextForTranslateService(TranslateService::translate($question['answer_c']));
@@ -115,6 +119,7 @@ class TranslateService
         $data['type_id'] = $question['type_id'];
         $data['group_id'] = $question['group_id'];
         $data['sub_category_id'] = $question['sub_category_id'];
+        dd($data);
         return $data;
     }
 
