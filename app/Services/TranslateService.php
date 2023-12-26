@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Helpers\StrHelper;
+use App\Models\MethodistContentStat;
 use App\Models\MethodistQuestion;
 use App\Models\Question;
 use App\Models\QuestionTranslation;
@@ -54,6 +55,16 @@ class TranslateService
         $content = SubStepContent::findOrFail($contentFromRequest['id']);
         $content->text_ru = StrHelper::getFormattedTextForTranslateService(TranslateService::translate($content['text_kk']));
         $content->save();
+        $stat = MethodistContentStat::firstWhere('sub_step_content_id', $content->id);
+        if ($stat) {
+            $stat->updated_user = auth()->guard('web')->id();
+        } else {
+            MethodistContentStat::create([
+                'sub_step_content_id' => $content->id,
+                'created_user' => auth()->guard('web')->id(),
+                'updated_user' => auth()->guard('web')->id()
+            ]);
+        }
     }
 
     public static function saveOneAnswerQuestion($question): void
