@@ -8,6 +8,7 @@ use App\Models\Question;
 use App\Models\QuestionTranslation;
 use App\Models\SubjectContext;
 use App\Models\SubjectContextTranslation;
+use App\Models\SubStepContent;
 use App\Models\UserQuestion;
 use Illuminate\Support\Facades\Config;
 
@@ -30,6 +31,8 @@ class TranslateService
             "targetLanguageCode" => self::TARGET_LANGUAGE,
             "texts" => $text,
             "folderId" => $FOLDER_ID,
+            "speller" => true,
+            "format" => "HTML"
         ];
         $data_json = json_encode($post_data);
         $curl = curl_init();
@@ -45,6 +48,14 @@ class TranslateService
         return $res['translations'][0]['text'] ?: '';
     }
 
+    public static function saveContent($contentFromReq): void
+    {
+        $contentFromRequest = json_decode($contentFromReq, 1);
+        $content = SubStepContent::findOrFail($contentFromRequest['id']);
+        $content->text_ru = StrHelper::getFormattedTextForTranslateService(TranslateService::translate($content['text_kk']));
+        $content->save();
+    }
+
     public static function saveOneAnswerQuestion($question): void
     {
         $question = json_decode($question, 1);
@@ -53,7 +64,7 @@ class TranslateService
             return;
         }
         $data = self::initialData($question);
-        self::saveData($data, $question);
+        self::saveQuestionData($data, $question);
     }
 
     public static function saveContextQuestion($question): void
@@ -79,7 +90,7 @@ class TranslateService
             $contextID = $context->id;
         }
         $data = self::initialData($question, $contextID);
-        self::saveData($data, $question);
+        self::saveQuestionData($data, $question);
     }
 
     protected static function initialData($question, $context_id = null): array
@@ -120,7 +131,7 @@ class TranslateService
         return $data;
     }
 
-    protected static function saveData($data, $question): void
+    protected static function saveQuestionData($data, $question): void
     {
         $questionRu = Question::add($data);
         MethodistQuestion::create([

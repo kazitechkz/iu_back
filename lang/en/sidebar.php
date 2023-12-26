@@ -18,6 +18,7 @@ return [
     "subscription" => "Subscription",
     'questions' => 'Questions',
     'translations' => 'Translations',
+    'translations_contents' => 'Content translations',
     "faq" => "FAQ",
     "fact" => "Facts",
     "wallet" => "Wallet",

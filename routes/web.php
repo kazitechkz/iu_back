@@ -171,6 +171,8 @@ Route::group([
         Route::resource("tech-support-ticket",AdminTechSupportController::class);
         //Translation
         Route::resource('translations', AdminTranslationController::class);
+        Route::get('translations-content', [AdminTranslationController::class, 'getContents'])->name('get-contents');
+        Route::any('search-translations-content', [AdminTranslationController::class, 'searchContent'])->name('search-translations-content');
         Route::any('search-translations', [AdminTranslationController::class, 'search'])->name('search-translations');
         Route::post('delete-translations', [AdminTranslationController::class, 'forceDelete'])->name('delete-translations');
     });

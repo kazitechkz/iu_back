@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\ContentTranslation;
 use App\Models\Group;
 use App\Models\Question;
 use App\Models\QuestionTranslation;
@@ -22,6 +23,40 @@ class TranslationController extends Controller
             if (auth()->user()->can("translation index")) {
                 $data = QuestionTranslation::searchableData();
                 return view("admin.translation.index", compact('data'));
+            }
+        } catch (\Exception $exception) {
+            toastr()->error($exception->getMessage(), "Error");
+            return redirect()->route("home");
+        }
+    }
+
+    public function getContents()
+    {
+        try {
+            if (auth()->user()->can("translation index")) {
+                $data = ContentTranslation::searchableData();
+                return view("admin.translation.content", compact('data'));
+            }
+        } catch (\Exception $exception) {
+            toastr()->error($exception->getMessage(), "Error");
+            return redirect()->route("home");
+        }
+    }
+
+    public function searchContent(Request $request)
+    {
+        try {
+            if (auth()->user()->can("translation index")) {
+                $this->validate($request, [
+                    'subject_id' => 'required'
+                ]);
+                $data = ContentTranslation::searchableData($request, false);
+
+                if ($request['content']) {
+                    TranslateService::saveContent($request['content']);
+                    return redirect(route('search-translations-content', $data['params']));
+                }
+                return view("admin.translation.content", compact('data'));
             }
         } catch (\Exception $exception) {
             toastr()->error($exception->getMessage(), "Error");

@@ -1,11 +1,11 @@
 <div wire:ignore>
-    <x-modal blur wire:model.defer="showModal" :z-index="'z-5000'" max-width="6xl" spacing="p-2">
+    <x-modal blur wire:model.defer="showModal" max-width="6xl" spacing="p-2">
         <x-card title="Предпросмотр" fullscreen>
-            <div class="my-3">
-                <h3><strong>Предмет:</strong> {{$content->step->subject->title}}</h3>
-                <h4><strong>Этап:</strong> {{$content->step->title}}</h4>
-                <h5><strong>Субэтап:</strong> {{$content->sub_step->title}}</h5>
-            </div>
+{{--            <div class="my-3">--}}
+{{--                <h3><strong>Предмет:</strong> {{$content->step->subject->title}}</h3>--}}
+{{--                <h4><strong>Этап:</strong> {{$content->step->title}}</h4>--}}
+{{--                <h5><strong>Субэтап:</strong> {{$content->sub_step->title}}</h5>--}}
+{{--            </div>--}}
             <div class="grid lg:grid-cols-2 lg:gap-2 sm:grid-cols-1 sm:gap-1">
                 <div class="preview-content">
                     {!! \App\Helpers\StrHelper::latexToHTML($content->text_kk) !!}
