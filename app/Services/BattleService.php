@@ -83,8 +83,10 @@ class BattleService
                     $step->edit(["current_user"=>$user->id]);
                     $battle_bet = BattleBet::where(["battle_id" => $battle->id,"is_used" => false])->first();
                     if($battle_bet){
-                        $user->forceWithdraw($battle->price);
-                        $battle_bet->edit(["guest_bet"=>$battle->price,"guest_id"=>$user->id]);
+                        if(!$battle_bet->guest_bet){
+                            $user->forceWithdraw($battle->price);
+                            $battle_bet->edit(["guest_bet"=>$battle->price,"guest_id"=>$user->id]);
+                        }
                     }
                 }
             }

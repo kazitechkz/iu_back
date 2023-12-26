@@ -33,6 +33,7 @@ class QuestionService
     const TOURNAMENT_TYPE=3;
     const SETTINGS_TYPE=4;
     const SETTINGS_TYPE_UNT =5;
+    const UNT_TIME_LIMIT = 12600000;
 
     public function get_questions_with_subjects($subjects,$locale_id,$attempt_type_id,$single_q_count =0, $contextual_q_count =0, $multiple_q_count = 0){
         try {
@@ -85,12 +86,19 @@ class QuestionService
         return $count;
     }
 
-    public function get_max_time_in_ms($questions){
+    public function get_max_time_in_ms($questions,$type_id = null){
         $time = 0;
-        foreach ($questions as $key=> $question){
-            $subject = SingleSubjectTest::find($key);
-            $time += ($subject->allotted_time * 60000);
+        $times = [];
+        if($type_id != self::UNT_TYPE){
+            foreach ($questions as $key=> $question){
+                $subject = SingleSubjectTest::find($key);
+                $time += ($subject->allotted_time * 60000);
+            }
         }
+        else{
+            $time = QuestionService::UNT_TIME_LIMIT;
+        }
+
         return $time;
     }
 

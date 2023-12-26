@@ -58,7 +58,7 @@ class AttemptController extends Controller
             $user = auth()->guard("api")->user();
             $questions = $this->questionService->get_questions_with_subjects($attempt->subjects, $attempt->locale_id, $attempt->attempt_type_id);
             $max_points = $this->questionService->get_questions_max_point($questions);
-            $max_time = $this->questionService->get_max_time_in_ms($questions);
+            $max_time = $this->questionService->get_max_time_in_ms($questions,$type_id = QuestionService::UNT_TYPE);
             $attempt = $this->attemptService->create_attempt($user->id, $attempt->attempt_type_id, $attempt->locale_id, $max_points, $questions, $max_time);
             return response()->json(new ResponseJSON(status: true, data: $attempt), 200);
         } catch (\Exception $exception) {
