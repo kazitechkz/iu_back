@@ -174,6 +174,7 @@ class BattleController extends Controller
 
     public function joinToBattleByPromoCode(Request $request){
         try {
+
             $promo_code = $request["promo_code"];
             $battle = Battle::where(["promo_code" => $promo_code,"is_open" => true])->first();
             if(!$battle){
