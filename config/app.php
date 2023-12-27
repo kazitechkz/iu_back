@@ -163,6 +163,7 @@ return [
         /*
          * Application Service Providers...
          */
+        App\Providers\LocalizationServiceProvider::class,
         App\Providers\AppServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
         App\Providers\BroadcastServiceProvider::class,
@@ -184,6 +185,7 @@ return [
     */
 
     'aliases' => Facade::defaultAliases()->merge([
+        'LaravelLocalization' => Mcamara\LaravelLocalization\Facades\LaravelLocalization::class,
         // 'Example' => App\Facades\Example::class
     ])->toArray(),
 

@@ -71,6 +71,7 @@ return [
         RequestReceived::class => [
             ...Octane::prepareApplicationForNextOperation(),
             ...Octane::prepareApplicationForNextRequest(),
+            \App\Listeners\LoadLocalizedRoutesCache::class
             //
         ],
 

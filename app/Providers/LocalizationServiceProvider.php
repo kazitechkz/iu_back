@@ -2,8 +2,6 @@
 
 namespace App\Providers;
 
-namespace App\Providers;
-
 use Mcamara\LaravelLocalization\LaravelLocalization;
 use Mcamara\LaravelLocalization\LaravelLocalizationServiceProvider;
 
