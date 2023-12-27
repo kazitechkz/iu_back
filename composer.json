@@ -86,7 +86,7 @@
     "extra": {
         "laravel": {
             "dont-discover": [
-                "mcamara/laravel-localization"
+
             ]
         }
     },
