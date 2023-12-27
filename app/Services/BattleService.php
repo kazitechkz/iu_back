@@ -168,7 +168,7 @@ class BattleService
     }
 
     public static function checkBattle($battle_id,$end = false){
-        $battle = Battle::with(["battle_steps.battle_step_results","battle_steps.battle_step_questions"])->find($battle_id);
+        $battle = Battle::with(["battle_steps.battle_step_results","battle_steps.battle_step_questions","battleResults","battleQuestions"])->find($battle_id);
         if($battle){
             if(!$battle->is_finished){
                 //Баллы
@@ -202,7 +202,7 @@ class BattleService
                                     //Значит до меня уже сдавали
                                     if($guest_battle_result){
                                         if($battle_step->order < 4){
-                                            $battle_step->edit(["is_current"=>false,"current_user"=>null]);
+                                            $battle_step->edit(["is_current"=>false,"current_user"=>null,"is_finished"=>true]);
                                             $current_step = $battle_step->order+ 1;
                                         }
                                         else{
@@ -224,7 +224,7 @@ class BattleService
                                     $guest_battle_result->edit(["is_finished" => true, "end_at" => Carbon::now()]);
                                     if ($owner_battle_result) {
                                         if ($battle_step->order < 4) {
-                                            $battle_step->edit(["is_current" => false, "current_user" => null]);
+                                            $battle_step->edit(["is_current" => false, "current_user" => null,"is_finished"=>true]);
                                             $current_step = $battle_step->order + 1;
                                         } else {
                                             $is_ended = true;
@@ -387,6 +387,89 @@ class BattleService
                 return self::generatePromoCode($battle_type);
             }
             return $result;
+        }
+    }
+
+
+    public function battleTimeOut($battle_id){
+        $battle = Battle::where(["id"=>$battle_id,"is_finished" => false])->with(["owner","guest","locale","battle_steps","battle_steps","battleQuestions","battleResults"])->first();
+        if($battle){
+            if($battle->must_finished_at < Carbon::now()){
+                //Проверяем есть ли противник
+                $battle_bet = BattleBet::where(["battle_id" => $battle_id,"is_used" => false])->first();
+
+                $point_owner = $battle->battleQuestions()->where(["user_id"=>$battle->owner_id])->sum("point");
+                $point_guest = $battle->battleQuestions()->where(["user_id"=>$battle->guest_id])->sum("point");
+                if($battle->guest_id){
+                    //На ком ход остановился тот и проиграл
+                    $actual_step = $battle->battle_steps()->where(["is_current"=>true])->first();
+                    //Ищем на ком остановился
+                        //Есть ли пользователь текущий есть
+                        if($actual_step){
+                            //Если остановились на владельце - победитель гость
+                            $winner_id = null;
+                            if($actual_step->current_user == $battle->owner_id){
+                                $winner_id = $battle->guest_id;
+                                if($battle_bet){
+                                    //Возвращаем средства гостя и вознаграждаем его
+                                    $battle_bet->guest()->first()->deposit(($battle_bet->owner_bet + ($battle_bet->guest_bet ?? 0)));
+                                    //Закрываем счет
+                                    $battle_bet->edit(["is_used"=>true]);
+                                }
+                                //Обнуляем Результаты владельца
+                                $battle->battleResults()->where(["answered_user"=>$battle->owner_id])->update(["result"=>0]);
+                                $point_owner = 0;
+                            }
+                            //Если остановились на госте - победитель владелец
+                            elseif ($actual_step->current_user == $battle->guest_id){
+                                $winner_id = $battle->owner_id;
+                                if($battle_bet){
+                                    //Возвращаем средства владельцу и вознаграждаем его
+                                    $battle_bet->owner()->first()->deposit(($battle_bet->owner_bet + ($battle_bet->guest_bet ?? 0)));
+                                    //Закрываем счет
+                                    $battle_bet->edit(["is_used"=>true]);
+                                }
+                                //Обнуляем Результаты гостя
+                                $battle->battleResults()->where(["answered_user"=>$battle->guest_id])->update(["result"=>0]);
+                                $point_guest = 0;
+                            }
+                            //Завершаем этапы
+                            $battle->battle_steps()->update(["current_user"=>null,"is_current"=>false]);
+                            $battle->edit(["owner_point"=>$point_owner,"guest_point"=>$point_guest,"winner_id"=>$winner_id,"is_finished"=>true,"end_at"=>Carbon::now()]);
+                            //Сообщаем о завершении
+                            broadcast(new BattleDetailEvent($battle->promo_code));
+                        }
+                        else{
+                            if($battle_bet){
+                                //Возвращаем деньги обоим и устраиваем ничейный счет
+                                $battle_bet->guest()->first()->deposit($battle_bet->guest_bet ?? 0);
+                                $battle_bet->owner()->first()->deposit($battle_bet->owner_bet);
+                                $battle_bet->edit(["is_used"=>true]);
+                            }
+                            $battle->battleResults()->update(["result"=>0]);
+                            $battle->battle_steps()->update(["current_user"=>null,"is_current"=>false]);
+                            $battle->edit(["owner_point"=>0,"guest_point"=>0,"winner_id"=>null,"is_finished"=>true,"end_at"=>Carbon::now()]);
+                            //Сообщаем о завершении
+                            broadcast(new BattleDetailEvent($battle->promo_code));
+                        }
+                }
+                else{
+                    //Победитель автоматически становится владелец
+                    $winner_id = $battle->owner_id;
+                    if($battle_bet){
+                        //Возвращаем средства
+                        $battle_bet->owner()->first()->deposit(($battle_bet->owner_bet + ($battle_bet->guest_bet ?? 0)));
+                        //Закрываем счет
+                        $battle_bet->edit(["is_used"=>true]);
+                    }
+                    //Завершаем этапы
+                    $battle->battle_steps()->update(["current_user"=>null,"is_current"=>false]);
+                    $battle->edit(["owner_point"=>$point_owner,"guest_point"=>$point_guest,"winner_id"=>$winner_id,"is_finished"=>true,"end_at"=>Carbon::now()]);
+                    //Сообщаем о завершении
+                    broadcast(new BattleDetailEvent($battle->promo_code));
+                }
+                return $battle;
+            }
         }
     }
 }

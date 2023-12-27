@@ -124,4 +124,11 @@ class Battle extends Model
     {
         return Carbon::now()->diffInSeconds($this->must_finished_at);
     }
+
+    public function battleQuestions(){
+        return $this->hasManyThrough(BattleStepQuestion::class, BattleStep::class, 'battle_id', 'step_id', 'id');
+    }
+    public function battleResults(){
+        return $this->hasManyThrough(BattleStepResult::class, BattleStep::class, 'battle_id', 'step_id', 'id');
+    }
 }

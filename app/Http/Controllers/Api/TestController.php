@@ -28,6 +28,6 @@ class TestController extends Controller
 
     public function test(Request $request)
     {
-
+        $this->_battleService->battleTimeOut(67);
     }
 }
