@@ -17,6 +17,7 @@ return [
     "subscription" => "Жазылымдар",
     'questions' => 'Сұрақтар',
     'translations' => 'Аудармалар',
+    'translations_contents' => 'Контент аудармалары',
     "promocode" => "Промокод",
     "news" => "Жаналыктар",
     "faq" => "FAQ",

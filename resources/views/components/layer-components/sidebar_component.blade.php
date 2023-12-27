@@ -165,6 +165,10 @@
                         :icon="'mdi mdi-google-translate'"
                         :link="'translations.index'"
                         :name="__('sidebar.translations')"/>
+                    <x-shared.sub-sidebar-menu
+                        :icon="'mdi mdi-google-translate'"
+                        :link="'get-contents'"
+                        :name="__('sidebar.translations_contents')"/>
                 @endcan
             </x-shared.sidebar-menu>
         @endcan

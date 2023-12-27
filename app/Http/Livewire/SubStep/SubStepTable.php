@@ -88,12 +88,14 @@ class SubStepTable extends DataTableComponent
             Column::make("Id", "id")
                 ->sortable()
                 ->searchable(),
-            Column::make("Наименование", StrHelper::getTitleAttribute())
+//            Column::make("Наименование", StrHelper::getTitleAttribute())
+//                ->searchable(),
+            Column::make("Степ", "step.".StrHelper::getTitleAttribute())
+                ->sortable()
                 ->searchable(),
-//            Column::make("Степ", "step.".StrHelper::getTitleAttribute())
-//                ->sortable(),
             Column::make("Субстеп", "sub_category.".StrHelper::getTitleAttribute())
-                ->sortable(),
+                ->sortable()
+                ->searchable(),
             Column::make("Уровень", "level")
                 ->sortable(),
             Column::make("ТЕСТ")
