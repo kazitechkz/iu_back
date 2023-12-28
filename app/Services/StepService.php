@@ -69,10 +69,12 @@ class StepService
     public function refreshSubStepResults(int $sub_step_id, int $user_id, int $locale_id): void
     {
         $points = 0;
-        $sub_step_tests = SubStepTest::where(['sub_step_id' => $sub_step_id, 'locale_id' => $locale_id])->get();
+        $userID = $user_id;
+        $sub_step_tests = SubStepTest::where(['sub_step_id' => $sub_step_id, 'locale_id' => $locale_id])->with('sub_step_content_test', function ($q) use ($userID) {
+            $q->where('user_id', $userID);
+        })->get();
         foreach ($sub_step_tests as $sub_step_test) {
-            $contentTest = SubStepContentTest::firstWhere('test_id', $sub_step_test->id);
-            $points += $contentTest != null ? $contentTest->is_right : 0;
+            $points += $sub_step_test->sub_step_content_test->is_right;
         }
         $stepResult = SubStepResult::firstWhere(['sub_step_id' => $sub_step_id, 'user_id' => $user_id, 'locale_id' => $locale_id]);
         $user_point = round(($points/$sub_step_tests->count()) * 100, 1);
