@@ -120,7 +120,8 @@ class SubStepTestCreate extends Component
 
     public function removeQuestion($question_id): void
     {
-        $question = SubStepTest::where(['sub_step_id' => $this->sub_step_id, 'locale_id' => $this->locale_id, 'question_id' => $question_id])->first();
+        $question = SubStepTest::where(['sub_step_id' => $this->sub_step_id, 'locale_id' => $this->locale_id, 'question_id' => $question_id])->with('sub_step_content_test')->first();
+        $question?->sub_step_content_test?->delete();
         $question?->delete();
         $this->stepQuestions = SubStepTest::with('question')->where(['locale_id' => $this->locale_id, 'sub_step_id' => $this->sub_step_id])->get();
     }
