@@ -44,9 +44,32 @@ class TranslateService
         curl_setopt($curl, CURLOPT_URL, self::URL);
         curl_setopt($curl, CURLOPT_POST, true);
         $result = curl_exec($curl);
-        curl_close($curl);
         $res = json_decode($result, 1);
-        return $res['translations'][0]['text'] ?: '';
+        $response = curl_getinfo($curl);
+        curl_close($curl);
+        if ($response['http_code'] == 200) {
+            return $res['translations'][0]['text'];
+        } else {
+            $err_data = [
+                "sourceLanguageCode" => 'en',
+                "targetLanguageCode" => self::TARGET_LANGUAGE,
+                "texts" => $res['message'],
+                "folderId" => $FOLDER_ID,
+                "speller" => true
+            ];
+            $err_data_json = json_encode($err_data);
+            $err_curl = curl_init();
+            curl_setopt($err_curl, CURLOPT_HTTPHEADER, $headers);
+            curl_setopt($err_curl, CURLOPT_RETURNTRANSFER, 1);
+//        curl_setopt($curl, CURLOPT_VERBOSE, 1);
+            curl_setopt($err_curl, CURLOPT_POSTFIELDS, $err_data_json);
+            curl_setopt($err_curl, CURLOPT_URL, self::URL);
+            curl_setopt($err_curl, CURLOPT_POST, true);
+            $err_result = curl_exec($err_curl);
+            $err_res = json_decode($err_result, 1);
+            curl_close($err_curl);
+            return $err_res['translations'][0]['text'];
+        }
     }
 
     public static function saveContent($contentFromReq): void

@@ -51,7 +51,6 @@ class TranslationController extends Controller
                     'subject_id' => 'required'
                 ]);
                 $data = ContentTranslation::searchableData($request, false);
-
                 if ($request['content']) {
                     TranslateService::saveContent($request['content']);
                     return redirect(route('search-translations-content', $data['params']));
