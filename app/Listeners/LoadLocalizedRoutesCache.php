@@ -4,9 +4,9 @@ namespace App\Listeners;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Foundation\Application;
 use Laravel\Octane\Events\RequestReceived;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
-use Illuminate\Foundation\Application;
 class LoadLocalizedRoutesCache
 {
     /**
@@ -17,6 +17,9 @@ class LoadLocalizedRoutesCache
         //
     }
 
+    /**
+     * Handle the event.
+     */
     private static $lastLocale;
 
 
