@@ -396,7 +396,7 @@ class BattleService
     public function battleTimeOut($battle_id){
         $battle = Battle::where(["id"=>$battle_id,"is_finished" => false])->with(["owner","guest","locale","battle_steps","battle_steps","battleQuestions","battleResults"])->first();
         if($battle){
-            if($battle->must_finished_at < Carbon::now() || true){
+            if($battle->must_finished_at < Carbon::now()){
                 //Проверяем есть ли противник
                 $battle_bet = BattleBet::where(["battle_id" => $battle_id,"is_used" => false])->first();
 
