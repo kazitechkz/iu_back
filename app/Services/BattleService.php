@@ -68,7 +68,7 @@ class BattleService
         }
         $user->forceWithdraw($battle->price);
         BattleBet::add(["is_used"=>false,"battle_id"=>$battle->id,"owner_id"=>$user->id,"owner_bet"=>$battle->price]);
-        CompleteBattleGameJob::dispatch($battle->id)->delay($battle->must_finished_at);
+        CompleteBattleGameJob::dispatch($battle->id)->delay(now()->addSeconds(10));
         return $battle;
     }
 
@@ -396,7 +396,7 @@ class BattleService
     public function battleTimeOut($battle_id){
         $battle = Battle::where(["id"=>$battle_id,"is_finished" => false])->with(["owner","guest","locale","battle_steps","battle_steps","battleQuestions","battleResults"])->first();
         if($battle){
-            if($battle->must_finished_at < Carbon::now()){
+            if($battle->must_finished_at < Carbon::now() || true){
                 //Проверяем есть ли противник
                 $battle_bet = BattleBet::where(["battle_id" => $battle_id,"is_used" => false])->first();
 
