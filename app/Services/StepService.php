@@ -74,7 +74,7 @@ class StepService
             $q->where('user_id', $userID);
         })->get();
         foreach ($sub_step_tests as $sub_step_test) {
-            $points += $sub_step_test->sub_step_content_test->is_right;
+            $points += $sub_step_test->sub_step_content_test != null ? $sub_step_test->sub_step_content_test->is_right : 0;
         }
         $stepResult = SubStepResult::firstWhere(['sub_step_id' => $sub_step_id, 'user_id' => $user_id, 'locale_id' => $locale_id]);
         $user_point = round(($points/$sub_step_tests->count()) * 100, 1);
