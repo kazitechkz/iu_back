@@ -24,23 +24,17 @@ class AttemptService
             $subjects = array_keys($questions);
             $attempts_dto = [];
             $attempt_subject_ids = [];
+            $raw_data = [];
             foreach ($subjects as $subject){
                 //Add Attempt Subject
                 $attempt_subject = AttemptSubject::add(["attempt_id"=>$attempt->id,"subject_id"=>$subject]);
                 foreach ($questions[$subject] as $question){
-                    AttemptQuestion::add(["attempt_subject_id"=>$attempt_subject->id,"question_id"=>$question["id"]]);
+                    array_push($raw_data,["attempt_subject_id"=>$attempt_subject->id,"question_id"=>$question["id"]]);
                 }
                 $attempt_subject_ids[$subject] = $attempt_subject->id;
             }
-            foreach ($questions as $subject_id => $question){
-                $subject_question = Subject::find($subject_id);
-                $subject_dto = SubjectQuestionDTO::fromArray(
-                    ["title_ru"=>$subject_question->title_ru,"title_kk"=>$subject_question->title_kk, "question"=>$question,"attempt_subject_id"=>$attempt_subject_ids[$subject_id]]
-                );
-                array_push($attempts_dto,$subject_dto->data);
-            }
-            $attempt_dto = AttemptDTO::fromArray(["attempt_id"=>$attempt->id,"type_id"=>$type_id,"time_left"=>$attempt->time_left,"subject_questions"=>$attempts_dto,"start_at"=>$attempt->start_at]);
-            return $attempt_dto->data;
+            AttemptQuestion::insert($raw_data);
+            return $attempt->id;
         }
         catch (\Exception $exception){
             throw new AttemptException($exception->getMessage());
