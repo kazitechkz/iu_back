@@ -27,6 +27,16 @@
         />
     </div>
     {{--    Step--}}
+    {{--  End SubTournament --}}
+    @if(count($steps) == 0 && !$tournament_winner)
+    <div class="form-group">
+        <a wire:click="finishTournament" class="cursor-pointer text-white px-4 py-2 bg-red-400 rounded-full">
+            Завершить
+        </a>
+    </div>
+    @endif
+    {{--  End SubTournament --}}
+
     {{-- Single Question Quantity --}}
     <div class="form-group">
         <x-inputs.number

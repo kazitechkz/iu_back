@@ -20,7 +20,7 @@ class TournamentTable extends DataTableComponent
         $this->setPerPage(20);
         $this->setPrimaryKey('id')
             ->setTableRowUrl(function ($row) {
-                return route('tournament.edit', $row);
+                return route('tournament.show', $row);
             });
     }
 

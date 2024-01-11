@@ -5,6 +5,7 @@ namespace App\Services;
 use App\DTOs\AnswerBattleQuestion;
 use App\DTOs\BattleCreateDTO;
 use App\DTOs\BattleStepCreateDTO;
+use App\Events\BattleAdded;
 use App\Events\BattleDetailEvent;
 use App\Events\BattleJoined;
 use App\Exceptions\BadRequestException;
@@ -68,6 +69,7 @@ class BattleService
         }
         $user->forceWithdraw($battle->price);
         BattleBet::add(["is_used"=>false,"battle_id"=>$battle->id,"owner_id"=>$user->id,"owner_bet"=>$battle->price]);
+        broadcast(new BattleAdded($battle));
         CompleteBattleGameJob::dispatch($battle->id)->delay($battle->must_finished_at);
         return $battle;
     }

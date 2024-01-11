@@ -81,7 +81,7 @@ class TournamentService{
             $winners = SubTournamentRival::where(["sub_tournament_id" => $prev_sub_tournament->id])->where("winner","!=",null)->pluck("winner","winner")->toArray();
         }
         else{
-            $winners = SubTournamentResult::where(["sub_tournament_id" => $prev_sub_tournament->id])->orderBy("point","DESC")->orderBy("time","ASC")->take($step->max_participants)->pluck("user_id","user_id")->toArray();
+            $winners = SubTournamentResult::where(["sub_tournament_id" => $prev_sub_tournament->id])->orderBy("point","DESC")->orderBy("time","DESC")->take($step->max_participants)->pluck("user_id","user_id")->toArray();
         }
         if(count($winners) != $step->max_participants){
             throw new TournamentException("Участников для перехода на следующий уровень недостаточно");
@@ -111,9 +111,10 @@ class TournamentService{
             SubTournamentWinner::add(["user_id"=>$winner,"sub_tournament_id"=>$prev_sub_tournament->id]);
             SubTournamentParticipant::add(['user_id' => $winner, 'sub_tournament_id' => $sub_tournament->id, 'status' => 1]);
         }
+        $raw_data = [];
         if($step->is_playoff){
             foreach ($play_off_participants as $participant){
-                SubTournamentRival::add([
+                array_push($raw_data,[
                     'rival_one' => $participant[0],
                     'point_one' => 0,
                     'time_one' => $sub_tournament->time * 60000,
@@ -124,6 +125,7 @@ class TournamentService{
                     'sub_tournament_id' => $sub_tournament->id
                 ]);
             }
+            SubTournamentRival::insert($raw_data);
         }
     }
 
@@ -187,7 +189,7 @@ class TournamentService{
             'sub_tournament_id' => $sub_tournament_id,
             'point' => 0,
             'time' => $sub_tournament->time * 60000,
-            'attempt_id' => $attempt["attempt_id"]
+            'attempt_id' => $attempt
         ]);
         return $attempt;
     }
