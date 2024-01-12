@@ -30,6 +30,7 @@ class Create extends Component
             $this->sub_step = $sub_step;
             $this->text_ru = $sub_step->sub_step_content ? $sub_step->sub_step_content->text_ru : null;
             $this->text_kk = $sub_step->sub_step_content ? $sub_step->sub_step_content->text_kk : null;
+            $this->text_en = $sub_step->sub_step_content ? $sub_step->sub_step_content->text_en : null;
             $this->is_active = $sub_step->sub_step_content ? $sub_step->sub_step_content->is_active : null;
             $this->content_id = $sub_step->sub_step_content ? $sub_step->sub_step_content->id : null;
         } else {
