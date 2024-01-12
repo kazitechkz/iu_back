@@ -197,7 +197,8 @@ Route::group(["middleware" => "auth:sanctum"],function (){
         });
     });
 });
-
+//Forum
+Route::post("/upload-image",[\App\Http\Controllers\Api\FileUploadController::class,"uploadImage"])->middleware("API");
 Route::post('/auth/login', [ApiAuthController::class, 'loginUser']);
 Route::post("/auth/register",[ApiAuthController::class,"register"]);
 Route::post("/auth/send-reset-token",[ApiAuthController::class,"sendResetToken"]);
