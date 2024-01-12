@@ -45,156 +45,159 @@ use App\Http\Controllers\Api\AttemptSettingsController as ApiAttemptSettingsCont
 //Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //    return $request->user();
 //});
-Route::group(['middleware' => 'API'], function() {
-    Route::get('me', [ApiUserController::class, 'me']);
-    Route::post('change-profile', [ApiUserController::class, 'changeProfile']);
-    Route::get("important-news",[ApiNewsController::class,"importantNews"]);
-    Route::get("single-news/{id}",[ApiNewsController::class,"singleNews"]);
-    Route::get("all-news",[ApiNewsController::class,"news"]);
-    Route::get('subjects', [ApiSubjectController::class, 'index']);
-    Route::get('subjects-without-required', [ApiSubjectController::class, 'getSubjectsWithoutRequired']);
-    Route::get('get-my-subjects', [ApiSubjectController::class, 'getMySubjects']);
-    Route::get('categories/{id}/{locale_id}', [ApiCategoryController::class, 'getCategoriesBySubjectID']);
-    Route::get('sub-categories/{id}/{locale_id}', [ApiSubCategoryController::class, 'getSubCategoriesByCategoryID']);
-    Route::get('steps/{locale_id}', [ApiStepController::class, 'getSteps']);
-    Route::get('step-detail/{id}', [ApiStepController::class, 'getStepDetail']);
-    Route::get('sub-steps/{id}', [ApiSubStepController::class, 'getSubStepsByStepId']);
-    Route::get('sub-step/{id}', [ApiSubStepController::class, 'getSubStepById']);
-    Route::get('facts/{subject_id}', [ApiFactController::class, 'getFactsBySubjectID']);
+Route::group(["middleware" => "auth:sanctum"],function (){
+    Route::group(['middleware' => 'API'], function() {
+        Route::get('me', [ApiUserController::class, 'me']);
+        Route::post('change-profile', [ApiUserController::class, 'changeProfile']);
+        Route::get("important-news",[ApiNewsController::class,"importantNews"]);
+        Route::get("single-news/{id}",[ApiNewsController::class,"singleNews"]);
+        Route::get("all-news",[ApiNewsController::class,"news"]);
+        Route::get('subjects', [ApiSubjectController::class, 'index']);
+        Route::get('subjects-without-required', [ApiSubjectController::class, 'getSubjectsWithoutRequired']);
+        Route::get('get-my-subjects', [ApiSubjectController::class, 'getMySubjects']);
+        Route::get('categories/{id}/{locale_id}', [ApiCategoryController::class, 'getCategoriesBySubjectID']);
+        Route::get('sub-categories/{id}/{locale_id}', [ApiSubCategoryController::class, 'getSubCategoriesByCategoryID']);
+        Route::get('steps/{locale_id}', [ApiStepController::class, 'getSteps']);
+        Route::get('step-detail/{id}', [ApiStepController::class, 'getStepDetail']);
+        Route::get('sub-steps/{id}', [ApiSubStepController::class, 'getSubStepsByStepId']);
+        Route::get('sub-step/{id}', [ApiSubStepController::class, 'getSubStepById']);
+        Route::get('facts/{subject_id}', [ApiFactController::class, 'getFactsBySubjectID']);
 
-    Route::get('locales', [ApiLocaleController::class, 'index']);
-    Route::get('faq', [ApiFaqController::class, 'index']);
-    Route::get('forum', [ApiForumController::class, 'index']);
-    Route::get("plan",[ApiPlanController::class,"index"]);
-    Route::get("appeal-types",[ApiAppealTypeController::class,"index"]);
+        Route::get('locales', [ApiLocaleController::class, 'index']);
+        Route::get('faq', [ApiFaqController::class, 'index']);
+        Route::get('forum', [ApiForumController::class, 'index']);
+        Route::get("plan",[ApiPlanController::class,"index"]);
+        Route::get("appeal-types",[ApiAppealTypeController::class,"index"]);
 
-    Route::post('pass-step-test', [ApiStepController::class, 'passTest']);
-    Route::get('get-step-tests/{sub_step_test_id}/{locale_id}', [ApiStepController::class, 'getStepTests']);
-    Route::get('get-result-step-tests/{sub_step_id}/{locale_id}', [ApiStepController::class, 'getStepResultExam']);
-    Route::post('check-sub-step-result', [ApiSubStepController::class, 'checkSubStepResultByUser']);
-    Route::post('get-step-by-forum', [ApiSubStepController::class, 'checkSubStepResultByUser']);
-    //Get UNT Exam
-    Route::post("/attempt",[AttemptController::class,"attempt"]);
-    Route::get("/attempt-types",[AttemptController::class,"attemptTypes"]);
-    Route::get("/attempt_by/{id}",[AttemptController::class,"attemptById"]);
-    Route::post("/create-attempt-settings",[AttemptController::class,"createAttemptSettings"]);
-    Route::post("/create-attempt-settings-unt",[AttemptController::class,"createAttemptSettingsUNT"]);
-    Route::get("/attempt-by-promo-code/{promo_code}",[AttemptController::class,"attemptByPromoCode"]);
-    Route::get("/user-attempts",[AttemptController::class,"userAttempts"]);
-    Route::get("/user-unt-statistics",[AttemptController::class,"userUntStat"]);
-    Route::get("/statistics-attempt-by/{id}",[AttemptController::class,"statAttemptById"]);
-    Route::get("/finish/{attempt_id}",[AttemptController::class,"finish"]);
-    //AttemptSettings
-    Route::get("/my-attempt-settings-single",[ApiAttemptSettingsController::class ,"myAttemptSettingsSingle"]);
-    Route::get("/my-attempt-settings-unt",[ApiAttemptSettingsController::class ,"myAttemptSettingsUNT"]);
+        Route::post('pass-step-test', [ApiStepController::class, 'passTest']);
+        Route::get('get-step-tests/{sub_step_test_id}/{locale_id}', [ApiStepController::class, 'getStepTests']);
+        Route::get('get-result-step-tests/{sub_step_id}/{locale_id}', [ApiStepController::class, 'getStepResultExam']);
+        Route::post('check-sub-step-result', [ApiSubStepController::class, 'checkSubStepResultByUser']);
+        Route::post('get-step-by-forum', [ApiSubStepController::class, 'checkSubStepResultByUser']);
+        //Get UNT Exam
+        Route::post("/attempt",[AttemptController::class,"attempt"]);
+        Route::get("/attempt-types",[AttemptController::class,"attemptTypes"]);
+        Route::get("/attempt_by/{id}",[AttemptController::class,"attemptById"]);
+        Route::post("/create-attempt-settings",[AttemptController::class,"createAttemptSettings"]);
+        Route::post("/create-attempt-settings-unt",[AttemptController::class,"createAttemptSettingsUNT"]);
+        Route::get("/attempt-by-promo-code/{promo_code}",[AttemptController::class,"attemptByPromoCode"]);
+        Route::get("/user-attempts",[AttemptController::class,"userAttempts"]);
+        Route::get("/user-unt-statistics",[AttemptController::class,"userUntStat"]);
+        Route::get("/statistics-attempt-by/{id}",[AttemptController::class,"statAttemptById"]);
+        Route::get("/finish/{attempt_id}",[AttemptController::class,"finish"]);
+        //AttemptSettings
+        Route::get("/my-attempt-settings-single",[ApiAttemptSettingsController::class ,"myAttemptSettingsSingle"]);
+        Route::get("/my-attempt-settings-unt",[ApiAttemptSettingsController::class ,"myAttemptSettingsUNT"]);
 
-    //AttemptSettings
-    //Question
-    Route::post('get-single-subject-test', [ApiQuestionController::class, 'getSingleSubjectTest']);
-    Route::get("/save-question/{questionId}",[ApiQuestionController::class,"saveQuestion"]);
-    Route::get("/get-fifty-fifty/{questionId}",[ApiQuestionController::class,"getFiftyFifty"]);
-    Route::post("/create-appeal-question",[ApiQuestionController::class,"appealQuestion"]);
-    Route::post("/get-sub-category-question-count",[ApiQuestionController::class,"getSubCategoryQuestion"]);
-    Route::post("/get-category-question-count",[ApiQuestionController::class,"getCategoryQuestion"]);
-    Route::get("/my-saved-questions",[ApiQuestionController::class,"getMySavedQuestion"]);
-    Route::get("/my-appeals-questions",[ApiQuestionController::class,"getMyAppealQuestion"]);
-    Route::get("/my-appeal-question-by/{appealId}",[ApiQuestionController::class,"getAppealedQuestion"]);
-    Route::get("/my-saved-question-by/{questionId}",[ApiQuestionController::class,"getSavedQuestionById"]);
-    //Question
-    //Check Answer
-    Route::post("/answer",[AttemptController::class,"answer"]);
-    Route::get("/answer-result/{attempt_subject_id}",[AttemptController::class,"answerResult"]);
-    Route::post("/tournament-attempt",[ApiTournamentController::class,"attempt"]);
-    Route::get("/tournaments-all",[ApiTournamentController::class,"getAllTournaments"]);
-    Route::get("/tournament-detail/{id}",[ApiTournamentController::class,"tournamentDetail"]);
-    Route::get("/sub-tournament-winners/{id}",[ApiTournamentController::class,"subTournamentWinners"]);
-    Route::get("/sub-tournament-participants/{id}",[ApiTournamentController::class,"subTournamentParticipants"]);
-    Route::get("/sub-tournament-results/{id}",[ApiTournamentController::class,"subTournamentResult"]);
-    Route::get("/sub-tournament-rivals/{id}",[ApiTournamentController::class,"subTournamentRival"]);
-    Route::get("/sub-tournament-detail/{id}",[ApiTournamentController::class,"subTournamentDetail"]);
-    Route::post("/participate-tournament",[ApiTournamentController::class,"participate"]);
-    //Statistics
-    Route::get("/statistics/attempt-result/{attempt_id}",[ApiStatisticsController::class,"resultByAttemptId"]);
-    Route::get("/statistics/attempt-stats/{attempt_id}",[ApiStatisticsController::class,"statsByAttemptId"]);
-    Route::get("/statistics/subject-stats/{subject_id}",[ApiStatisticsController::class,"statsBySubjectId"]);
-    Route::get("/statistics/full-stats",[ApiStatisticsController::class,"fullStatistics"]);
-    //Plan
-    Route::get("/plan/unt",[ApiPlanController::class,"getUNTPlan"]);
-    Route::get("/plan/learning",[ApiPlanController::class,"getLearningPlan"]);
-    Route::get("/plan/check-unt-plan",[ApiPlanController::class,"checkPlanUNT"]);
-    //Forum
-    Route::post("/forum/create",[ApiForumController::class,"createForum"]);
-    Route::get("/forum/index",[ApiForumController::class,"index"]);
-    Route::post("/forum/rating",[ApiForumController::class,"ratingForumOrDiscuss"]);
-    Route::get("/forum/show/{id}",[ApiForumController::class,"show"]);
-    Route::get("/forum/discuss/{forum_id}",[ApiForumController::class,"forumDiscuss"]);
-    Route::post("/discuss/create",[ApiForumController::class,"createDiscuss"]);
-    //Wallet
-    Route::get("/wallet",[ApiWalletController::class,"index"]);
-    Route::get("/my-balance",[ApiWalletController::class,"myBalance"]);
-    Route::get("/my-wallet",[ApiWalletController::class,"myWallet"]);
-    Route::post("/wallet-transfer",[ApiWalletController::class,"transfer"]);
-    Route::get("/my-wallet-transaction",[ApiWalletController::class,"myTransaction"]);
-    //User
-    Route::post("/find-user-by-email",[ApiUserController::class,"userEmail"]);
-    //User
-    //Notification
-    Route::get("/notification/unread-count",[ApiNotificationController::class,"getNewMessageCount"]);
-    Route::get("/notification/all",[ApiNotificationController::class,"getNotifications"]);
-    Route::get("/notification/my-notification-ids",[ApiNotificationController::class,"getUserReadMessagesIds"]);
-    Route::get("/notification/check-notification/{id}",[ApiNotificationController::class,"checkNotification"]);
-    Route::get("/notification/notification-types",[ApiNotificationController::class,"getNotificationTypes"]);
-    //Notification
-    //Announcement
-    Route::get("/announcement",[ApiAnnouncementController::class,"index"]);
-    //Announcement
-    //Tech Support Type
-    Route::get("/tech-support-types",[ApiTechSupportController::class,"getTechSupportTypes"]);
-    Route::get("/tech-support-categories",[ApiTechSupportController::class,"getTechSupportCategories"]);
-    Route::get("/my-tech-support-tickets",[ApiTechSupportController::class,"myTechSupportTickets"]);
-    Route::get("/get-tech-support-ticket-detail/{id}",[ApiTechSupportController::class,"getTicketById"]);
-    Route::post("/tech-support-create-ticket",[ApiTechSupportController::class,"createTechSupportTickets"]);
-    Route::post("/tech-support-close-ticket",[ApiTechSupportController::class,"closeTechSupportTickets"]);
-    Route::post("/tech-support-create-message",[ApiTechSupportController::class,"createTechSupportMessage"]);
-    //Tech Support Type
-    //Battle
-    Route::get("/battles",[ApiBattleController::class,"getActiveBattles"]);
-    Route::get("/my-active-battles",[ApiBattleController::class,"getMyActiveBattles"]);
-    Route::get("/battle/{promo_code}",[ApiBattleController::class,"getBattleByPromo"]);
-    Route::post("/battle-create",[ApiBattleController::class,"createBattle"]);
-    Route::post("/battle-step-create",[ApiBattleController::class,"createBattleStep"]);
-    Route::get("/battle-subjects/{battle_step_id}",[ApiBattleController::class,"proposeSubjects"]);
-    Route::get("/battle-by-step/{battle_step_id}",[ApiBattleController::class,"getBattleStepById"]);
-    Route::post("/battle-by-step-answer",[ApiBattleController::class,"answerQuestion"]);
-    Route::get("/battle-finish-result/{battle_step_id}",[ApiBattleController::class,"finishBattleResult"]);
-    Route::post("/join-to-battle-by-promo-code",[ApiBattleController::class,"joinToBattleByPromoCode"]);
-    //Battle
+        //AttemptSettings
+        //Question
+        Route::post('get-single-subject-test', [ApiQuestionController::class, 'getSingleSubjectTest']);
+        Route::get("/save-question/{questionId}",[ApiQuestionController::class,"saveQuestion"]);
+        Route::get("/get-fifty-fifty/{questionId}",[ApiQuestionController::class,"getFiftyFifty"]);
+        Route::post("/create-appeal-question",[ApiQuestionController::class,"appealQuestion"]);
+        Route::post("/get-sub-category-question-count",[ApiQuestionController::class,"getSubCategoryQuestion"]);
+        Route::post("/get-category-question-count",[ApiQuestionController::class,"getCategoryQuestion"]);
+        Route::get("/my-saved-questions",[ApiQuestionController::class,"getMySavedQuestion"]);
+        Route::get("/my-appeals-questions",[ApiQuestionController::class,"getMyAppealQuestion"]);
+        Route::get("/my-appeal-question-by/{appealId}",[ApiQuestionController::class,"getAppealedQuestion"]);
+        Route::get("/my-saved-question-by/{questionId}",[ApiQuestionController::class,"getSavedQuestionById"]);
+        //Question
+        //Check Answer
+        Route::post("/answer",[AttemptController::class,"answer"]);
+        Route::get("/answer-result/{attempt_subject_id}",[AttemptController::class,"answerResult"]);
+        Route::post("/tournament-attempt",[ApiTournamentController::class,"attempt"]);
+        Route::get("/tournaments-all",[ApiTournamentController::class,"getAllTournaments"]);
+        Route::get("/tournament-detail/{id}",[ApiTournamentController::class,"tournamentDetail"]);
+        Route::get("/sub-tournament-winners/{id}",[ApiTournamentController::class,"subTournamentWinners"]);
+        Route::get("/sub-tournament-participants/{id}",[ApiTournamentController::class,"subTournamentParticipants"]);
+        Route::get("/sub-tournament-results/{id}",[ApiTournamentController::class,"subTournamentResult"]);
+        Route::get("/sub-tournament-rivals/{id}",[ApiTournamentController::class,"subTournamentRival"]);
+        Route::get("/sub-tournament-detail/{id}",[ApiTournamentController::class,"subTournamentDetail"]);
+        Route::post("/participate-tournament",[ApiTournamentController::class,"participate"]);
+        //Statistics
+        Route::get("/statistics/attempt-result/{attempt_id}",[ApiStatisticsController::class,"resultByAttemptId"]);
+        Route::get("/statistics/attempt-stats/{attempt_id}",[ApiStatisticsController::class,"statsByAttemptId"]);
+        Route::get("/statistics/subject-stats/{subject_id}",[ApiStatisticsController::class,"statsBySubjectId"]);
+        Route::get("/statistics/full-stats",[ApiStatisticsController::class,"fullStatistics"]);
+        //Plan
+        Route::get("/plan/unt",[ApiPlanController::class,"getUNTPlan"]);
+        Route::get("/plan/learning",[ApiPlanController::class,"getLearningPlan"]);
+        Route::get("/plan/check-unt-plan",[ApiPlanController::class,"checkPlanUNT"]);
+        //Forum
+        Route::post("/forum/create",[ApiForumController::class,"createForum"]);
+        Route::get("/forum/index",[ApiForumController::class,"index"]);
+        Route::post("/forum/rating",[ApiForumController::class,"ratingForumOrDiscuss"]);
+        Route::get("/forum/show/{id}",[ApiForumController::class,"show"]);
+        Route::get("/forum/discuss/{forum_id}",[ApiForumController::class,"forumDiscuss"]);
+        Route::post("/discuss/create",[ApiForumController::class,"createDiscuss"]);
+        //Wallet
+        Route::get("/wallet",[ApiWalletController::class,"index"]);
+        Route::get("/my-balance",[ApiWalletController::class,"myBalance"]);
+        Route::get("/my-wallet",[ApiWalletController::class,"myWallet"]);
+        Route::post("/wallet-transfer",[ApiWalletController::class,"transfer"]);
+        Route::get("/my-wallet-transaction",[ApiWalletController::class,"myTransaction"]);
+        //User
+        Route::post("/find-user-by-email",[ApiUserController::class,"userEmail"]);
+        //User
+        //Notification
+        Route::get("/notification/unread-count",[ApiNotificationController::class,"getNewMessageCount"]);
+        Route::get("/notification/all",[ApiNotificationController::class,"getNotifications"]);
+        Route::get("/notification/my-notification-ids",[ApiNotificationController::class,"getUserReadMessagesIds"]);
+        Route::get("/notification/check-notification/{id}",[ApiNotificationController::class,"checkNotification"]);
+        Route::get("/notification/notification-types",[ApiNotificationController::class,"getNotificationTypes"]);
+        //Notification
+        //Announcement
+        Route::get("/announcement",[ApiAnnouncementController::class,"index"]);
+        //Announcement
+        //Tech Support Type
+        Route::get("/tech-support-types",[ApiTechSupportController::class,"getTechSupportTypes"]);
+        Route::get("/tech-support-categories",[ApiTechSupportController::class,"getTechSupportCategories"]);
+        Route::get("/my-tech-support-tickets",[ApiTechSupportController::class,"myTechSupportTickets"]);
+        Route::get("/get-tech-support-ticket-detail/{id}",[ApiTechSupportController::class,"getTicketById"]);
+        Route::post("/tech-support-create-ticket",[ApiTechSupportController::class,"createTechSupportTickets"]);
+        Route::post("/tech-support-close-ticket",[ApiTechSupportController::class,"closeTechSupportTickets"]);
+        Route::post("/tech-support-create-message",[ApiTechSupportController::class,"createTechSupportMessage"]);
+        //Tech Support Type
+        //Battle
+        Route::get("/battles",[ApiBattleController::class,"getActiveBattles"]);
+        Route::get("/my-active-battles",[ApiBattleController::class,"getMyActiveBattles"]);
+        Route::get("/battle/{promo_code}",[ApiBattleController::class,"getBattleByPromo"]);
+        Route::post("/battle-create",[ApiBattleController::class,"createBattle"]);
+        Route::post("/battle-step-create",[ApiBattleController::class,"createBattleStep"]);
+        Route::get("/battle-subjects/{battle_step_id}",[ApiBattleController::class,"proposeSubjects"]);
+        Route::get("/battle-by-step/{battle_step_id}",[ApiBattleController::class,"getBattleStepById"]);
+        Route::post("/battle-by-step-answer",[ApiBattleController::class,"answerQuestion"]);
+        Route::get("/battle-finish-result/{battle_step_id}",[ApiBattleController::class,"finishBattleResult"]);
+        Route::post("/join-to-battle-by-promo-code",[ApiBattleController::class,"joinToBattleByPromoCode"]);
+        //Battle
 
-    //Forum
-    Route::post("/upload-image",[\App\Http\Controllers\Api\FileUploadController::class,"uploadImage"]);
+        //Forum
+        Route::post("/upload-image",[\App\Http\Controllers\Api\FileUploadController::class,"uploadImage"]);
 
 
-    Route::resource('classrooms', ClassroomController::class)->only(['index', 'show', 'destroy', 'store']);
-    //TEACHER_ROUTES
-    Route::group(['prefix' => 'teacher'], function () {
-        Route::get('dashboard', [DashboardController::class, 'index']);
-        Route::post('get-stats-by-subject', [DashboardController::class, 'getStatsBySubjectID']);
-        Route::post('get-stats-by-unt', [DashboardController::class, 'getStatsByUNT']);
-        Route::get('get-own-students', [StudentController::class, 'getOwnStudents']);
-        Route::get('get-stats-by-user/{id}', [StudentController::class, 'getStats']);
-        Route::resource('classrooms', ClassroomGroupController::class);
-        Route::get('detail-classroom/{id}', [ClassroomGroupController::class, 'getDetailClassroom']);
-        Route::delete('detail-classroom/{classroom_id}', [ClassroomGroupController::class, 'deleteUserFromClass']);
-        Route::get("/my-attempt-settings",[AttemptController::class,"myAttemptSettings"]);
-        Route::get("/my-attempt-settings-unt",[AttemptController::class,"myAttemptSettingsUNT"]);
-        Route::delete("/delete-attempt-settings/{id}",[AttemptController::class,"deleteAttemptSettingsById"]);
-        Route::delete("/delete-attempt-settings-unt/{id}",[AttemptController::class,"deleteAttemptSettingsUNTById"]);
-        Route::post('get-subjects-array-by-user-ids', [ClassroomGroupController::class, 'getSubjectsArrayByUserIDS']);
-        Route::get('get-single-test-statistics/{id}', [ExamController::class, 'getSingleTestByID']);
-        Route::get('get-unt-test-statistics/{id}', [ExamController::class, 'getUNTTestByID']);
-        Route::get('statistics/attempt-stats/{attempt_id}/{user_id}', [ExamController::class, 'statsByAttemptId']);
+        Route::resource('classrooms', ClassroomController::class)->only(['index', 'show', 'destroy', 'store']);
+        //TEACHER_ROUTES
+        Route::group(['prefix' => 'teacher'], function () {
+            Route::get('dashboard', [DashboardController::class, 'index']);
+            Route::post('get-stats-by-subject', [DashboardController::class, 'getStatsBySubjectID']);
+            Route::post('get-stats-by-unt', [DashboardController::class, 'getStatsByUNT']);
+            Route::get('get-own-students', [StudentController::class, 'getOwnStudents']);
+            Route::get('get-stats-by-user/{id}', [StudentController::class, 'getStats']);
+            Route::resource('classrooms', ClassroomGroupController::class);
+            Route::get('detail-classroom/{id}', [ClassroomGroupController::class, 'getDetailClassroom']);
+            Route::delete('detail-classroom/{classroom_id}', [ClassroomGroupController::class, 'deleteUserFromClass']);
+            Route::get("/my-attempt-settings",[AttemptController::class,"myAttemptSettings"]);
+            Route::get("/my-attempt-settings-unt",[AttemptController::class,"myAttemptSettingsUNT"]);
+            Route::delete("/delete-attempt-settings/{id}",[AttemptController::class,"deleteAttemptSettingsById"]);
+            Route::delete("/delete-attempt-settings-unt/{id}",[AttemptController::class,"deleteAttemptSettingsUNTById"]);
+            Route::post('get-subjects-array-by-user-ids', [ClassroomGroupController::class, 'getSubjectsArrayByUserIDS']);
+            Route::get('get-single-test-statistics/{id}', [ExamController::class, 'getSingleTestByID']);
+            Route::get('get-unt-test-statistics/{id}', [ExamController::class, 'getUNTTestByID']);
+            Route::get('statistics/attempt-stats/{attempt_id}/{user_id}', [ExamController::class, 'statsByAttemptId']);
+        });
     });
 });
+
 Route::post('/auth/login', [ApiAuthController::class, 'loginUser']);
 Route::post("/auth/register",[ApiAuthController::class,"register"]);
 Route::post("/auth/send-reset-token",[ApiAuthController::class,"sendResetToken"]);
