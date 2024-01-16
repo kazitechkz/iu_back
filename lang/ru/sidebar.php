@@ -63,4 +63,11 @@ return [
     "tech-support-type"=>"Тип Саппорта",
     "tech-support-category"=>"Категория Саппорта",
     "tech-support-ticket"=>"Тикет",
+    "career"=>"Профориентация",
+    "career_quiz_groups"=>"Группа тестов",
+    "career_quiz_authors"=>"Авторы",
+    "career_quiz_features"=>"Характеристики",
+    "career_quizzes"=>"Тесты",
+    "career_quiz_questions"=>"Вопросы",
+    "career_quiz_answers"=>"Ответы к тестам",
 ];

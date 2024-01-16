@@ -172,6 +172,34 @@
                 @endcan
             </x-shared.sidebar-menu>
         @endcan
+        @can('career management')
+            <x-shared.sidebar-menu :element-id="'career-index'" :name="__('sidebar.career')" :icon="'fas fa-briefcase'">
+                    <x-shared.sub-sidebar-menu
+                            :icon="'fas fa-solid fa-chalkboard-user'"
+                            :link="'career-quiz-group.index'"
+                            :name="__('sidebar.career_quiz_groups')"/>
+                    <x-shared.sub-sidebar-menu
+                            :icon="'fas fa-user'"
+                            :link="'career-quiz-author.index'"
+                            :name="__('sidebar.career_quiz_authors')"/>
+                    <x-shared.sub-sidebar-menu
+                            :icon="'fas fa-smile-wink'"
+                            :link="'career-quiz-feature.index'"
+                            :name="__('sidebar.career_quiz_features')"/>
+                    <x-shared.sub-sidebar-menu
+                            :icon="'fas fa-clipboard-question'"
+                            :link="'career-quiz.index'"
+                            :name="__('sidebar.career_quizzes')"/>
+                    <x-shared.sub-sidebar-menu
+                            :icon="'fas fa-circle-question'"
+                            :link="'career-quiz-question.index'"
+                            :name="__('sidebar.career_quiz_questions')"/>
+                    <x-shared.sub-sidebar-menu
+                            :icon="'fas fa-comment'"
+                            :link="'career-quiz-answer.index'"
+                            :name="__('sidebar.career_quiz_answers')"/>
+            </x-shared.sidebar-menu>
+        @endcan
         @can('content management')
             <x-shared.sidebar-menu :element-id="'content'" :name="__('sidebar.content')" :icon="'fas fa-wallet'">
                 @can("news index")

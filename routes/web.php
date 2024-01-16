@@ -54,6 +54,12 @@ use App\Http\Controllers\Admin\AnnouncementController as AdminAnnouncementContro
 use App\Http\Controllers\Admin\TechSupportTypeController as AdminTechSupportTypeController;
 use App\Http\Controllers\Admin\TechSupportCategoryController as AdminTechSupportCategoryController;
 use App\Http\Controllers\Admin\TechSupportController as AdminTechSupportController;
+use \App\Http\Controllers\Admin\CareerQuizGroupController as AdminCareerQuizGroupController;
+use \App\Http\Controllers\Admin\CareerQuizController as AdminCareerQuizController;
+use \App\Http\Controllers\Admin\CareerQuizAuthorController as AdminCareerQuizAuthorController;
+use \App\Http\Controllers\Admin\CareerQuizFeatureController as AdminCareerQuizFeatureController;
+use \App\Http\Controllers\Admin\CareerQuizAnswerController as AdminCareerQuizAnswerController;
+use \App\Http\Controllers\Admin\CareerQuizQuestionController as AdminCareerQuizQuestionController;
 use App\Http\Controllers\Admin\TestController;
 use App\Http\Controllers\TestController as Testing;
 use Illuminate\Support\Facades\Route;
@@ -175,6 +181,13 @@ if(env("IS_WEB",true)) {
             Route::any('search-translations-content', [AdminTranslationController::class, 'searchContent'])->name('search-translations-content');
             Route::any('search-translations', [AdminTranslationController::class, 'search'])->name('search-translations');
             Route::post('delete-translations', [AdminTranslationController::class, 'forceDelete'])->name('delete-translations');
+            //Career
+            Route::resource("career-quiz-group",AdminCareerQuizGroupController::class);
+            Route::resource("career-quiz",AdminCareerQuizController::class);
+            Route::resource("career-quiz-author",AdminCareerQuizAuthorController::class);
+            Route::resource("career-quiz-feature",AdminCareerQuizFeatureController::class);
+            Route::resource("career-quiz-answer",AdminCareerQuizAnswerController::class);
+            Route::resource("career-quiz-question",AdminCareerQuizQuestionController::class);
         });
     });
     Route::get('import-db', [Testing::class, 'importDb']);
