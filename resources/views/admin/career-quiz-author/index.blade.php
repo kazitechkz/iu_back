@@ -14,7 +14,7 @@
     <div class="col-lg-12 grid-margin stretch-card">
         <div class="card">
             <div class="card-body">
-
+                <livewire:career-quiz-author.career-quiz-author-table/>
             </div>
         </div>
     </div>

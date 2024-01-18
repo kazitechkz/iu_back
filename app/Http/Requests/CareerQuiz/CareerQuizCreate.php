@@ -32,7 +32,7 @@ class CareerQuizCreate extends FormRequest
             'rule_kk'=>"required",
             'price'=>"required|min:0|max:1000000",
             'currency'=>"required",
-            "authors"=>"sometimes|nullable|array",
+            "authors"=>"sometimes|nullable",
             "authors.*"=>"exists:career_quiz_authors,id"
         ];
     }

@@ -14,11 +14,18 @@ php artisan code:models --table=lesson_complaints
 
  // Reset cached roles and permissions
 app()['cache']->forget('spatie.permission.cache');
+php artisan permission:cache-reset
+
 php artisan config:cache
 php artisan config:clear
 php artisan cache:clear
 php artisan optimize:clear
-
+sudo service php8.2-fpm start
+sudo service php8.2-fpm stop
+sudo service php8.2-fpm restart
+<- restart it
+sudo service php5-fpm reload
+<- reload it
 1.Tutors
 
 -User_Id

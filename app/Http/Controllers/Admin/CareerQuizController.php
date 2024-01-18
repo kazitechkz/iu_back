@@ -38,8 +38,9 @@ class CareerQuizController extends Controller
             toastr()->success("Создан профориентационный тест");
             if($request->has("authors")){
                 $raw_data = [];
-                foreach ($request->get("authors") as $author){
-                    $raw_data = ["quiz_id"=>$careerQuiz->id,"author_id"=>$author];
+                $authors = json_decode($request->get("authors"),true);
+                foreach ($authors as $author){
+                    array_push($raw_data,["quiz_id"=>$careerQuiz->id,"author_id"=>$author]);
                 }
                 CareerQuizCreator::insert($raw_data);
             }
@@ -91,8 +92,9 @@ class CareerQuizController extends Controller
                 if($request->has("authors")){
                     CareerQuizCreator::where(["quiz_id" => $careerQuiz->id])->delete();
                     $raw_data = [];
-                    foreach ($request->get("authors") as $author){
-                        $raw_data = ["quiz_id"=>$careerQuiz->id,"author_id"=>$author];
+                    $authors = json_decode($request->get("authors"),true);
+                    foreach ($authors as $author){
+                        array_push($raw_data,["quiz_id"=>$careerQuiz->id,"author_id"=>$author]);
                     }
                     CareerQuizCreator::insert($raw_data);
                 }
