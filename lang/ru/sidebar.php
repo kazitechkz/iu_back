@@ -53,6 +53,7 @@ return [
     "participant-rating" => "Рейтинг ученика",
     "lesson-complaint" => "Жалобы",
     "stats-on-questions" => "Статистика по вопросам",
+    "stats-on-subjects" => "Статистика по предметам",
     "stats-on-user-contents" => "Статистика по методистам",
     "announcement-type"=>"Тип статуса",
     "announcement-group"=>"Группа статуса",

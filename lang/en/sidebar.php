@@ -53,6 +53,7 @@ return [
     "participant-rating" => "Participant Rating",
     "lesson-complaint" => "Lesson Complaint",
     "stats-on-questions" => "Stats on questions",
+    "stats-on-subjects" => "Stats on subjects",
     "stats-on-user-contents" => "Stats on user contents",
 
 

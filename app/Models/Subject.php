@@ -43,6 +43,63 @@ class Subject extends Model
     {
         return $this->hasMany(Question::class);
     }
+
+    public function questions_kk()
+    {
+        return $this->questions()->where('locale_id', 1);
+    }
+    public function questions_ru()
+    {
+        return $this->questions()->where('locale_id', 2);
+    }
+    public function questions_bobo_kk()
+    {
+        return $this->questions_kk()->where('group_id', 1);
+    }
+    public function questions_bobo_ru()
+    {
+        return $this->questions_ru()->where('group_id', 1);
+    }
+    public function questions_grant_kk()
+    {
+        return $this->questions_kk()->where('group_id', 4);
+    }
+    public function questions_grant_ru()
+    {
+        return $this->questions_ru()->where('group_id', 4);
+    }
+    public function questions_shin_kk()
+    {
+        return $this->questions_kk()->where('group_id', 6);
+    }
+    public function questions_shin_ru()
+    {
+        return $this->questions_ru()->where('group_id', 6);
+    }
+    public function questions_orbital_kk()
+    {
+        return $this->questions_kk()->where('group_id', 5);
+    }
+    public function questions_orbital_ru()
+    {
+        return $this->questions_ru()->where('group_id', 5);
+    }
+    public function questions_istudy_kk()
+    {
+        return $this->questions_kk()->where('group_id', 7);
+    }
+    public function questions_istudy_ru()
+    {
+        return $this->questions_ru()->where('group_id', 7);
+    }
+    public function questions_other_kk()
+    {
+        return $this->questions_kk()->whereNotIn('group_id', [1,4,5,6,7]);
+    }
+    public function questions_other_ru()
+    {
+        return $this->questions_ru()->whereNotIn('group_id', [1,4,5,6,7]);
+    }
     public function image(): BelongsTo
     {
         return $this->belongsTo(File::class, 'image_url', 'id');

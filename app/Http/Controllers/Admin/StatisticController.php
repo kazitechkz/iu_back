@@ -25,6 +25,17 @@ class StatisticController extends Controller
             return redirect()->route("home");
         }
     }
+    public function statsOnSubjects()
+    {
+        try {
+            if (auth()->user()->can("stats-by-user index")) {
+                return view('admin.statistics.on-subjects');
+            }
+        } catch (\Exception $exception) {
+            toastr()->error($exception->getMessage(), "Error");
+            return redirect()->route("home");
+        }
+    }
     public function statsOnUser()
     {
         try {
