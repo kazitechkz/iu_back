@@ -81,7 +81,7 @@ if(env("IS_WEB",true)) {
     })->name("home")->middleware("authenticate");
     Route::get('/home', function () {
         return view('admin.dashboard');
-    })->name("home")->middleware("authenticate");
+    })->name("home2")->middleware("authenticate");
     Route::get('login', function () {
         return view('auth.login');
     })->name("login");
