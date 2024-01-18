@@ -178,7 +178,7 @@ if(env("IS_API",true)){
 
             Route::resource('classrooms', ClassroomController::class)->only(['index', 'show', 'destroy', 'store']);
             //TEACHER_ROUTES
-            Route::group(['prefix' => 'teacher'], function () {
+            Route::prefix('teacher')->name('teacher.')->group(function () {
                 Route::get('dashboard', [DashboardController::class, 'index']);
                 Route::post('get-stats-by-subject', [DashboardController::class, 'getStatsBySubjectID']);
                 Route::post('get-stats-by-unt', [DashboardController::class, 'getStatsByUNT']);
@@ -205,6 +205,8 @@ if(env("IS_API",true)){
     Route::post("/auth/send-reset-token",[ApiAuthController::class,"sendResetToken"]);
     Route::post("/auth/reset",[ApiAuthController::class,"resetPassword"]);
     Route::get("/test",[\App\Http\Controllers\Api\TestController::class,"test"]);
+
+    Route::post("/send-whatsapp",[\App\Http\Controllers\Api\TestController::class,"sendWhatsapp"]);
 }
 else{
     Route::get("/",function (){
