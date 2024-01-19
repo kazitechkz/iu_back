@@ -2,11 +2,14 @@
 
 namespace App\Http\Livewire\CareerQuizAuthor;
 
+use App\Models\CareerQuiz;
+use App\Models\CareerQuizGroup;
 use App\Models\File;
 use App\Models\Subject;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Models\CareerQuizAuthor;
+use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 
 class CareerQuizAuthorTable extends DataTableComponent
 {
@@ -24,6 +27,17 @@ class CareerQuizAuthorTable extends DataTableComponent
             ->setTableRowUrl(function($row) {
                 return route('career-quiz-author.edit', $row);
             });
+    }
+
+    public function filters(): array
+    {
+        return [
+            SelectFilter::make(__("sidebar.career_quiz_groups"))
+                ->options(CareerQuizGroup::pluck("title_ru","id")->toArray())
+                ->filter(function($builder, string $value) {
+                    return $builder->where(["group_id"=>$value]);
+                }),
+        ];
     }
 
     public function bulkActions(): array

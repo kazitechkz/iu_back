@@ -52,7 +52,7 @@ class Create extends Component
         $sub_tournament = SubTournament::where(["tournament_id"=>$this->tournament->id,"step_id"=>4])->first();
 
         if($sub_tournament && !$this->tournament_winner){
-            $winners = SubTournamentResult::where(["sub_tournament_id" => $sub_tournament->id])->orderBy("point","DESC")->orderBy("time","DESC")->take(1)->pluck("user_id")->toArray();
+            $winners = SubTournamentResult::where(["sub_tournament_id" => $sub_tournament->id])->orderBy("point","DESC")->orderBy("time","ASC")->take(1)->pluck("user_id")->toArray();
             foreach ($winners as $winner){
                 //Определяем победителей этапа
                 if(!SubTournamentWinner::where(["sub_tournament_id"=>$sub_tournament->id])->first()){

@@ -81,7 +81,7 @@ class TournamentService{
             $winners = SubTournamentRival::where(["sub_tournament_id" => $prev_sub_tournament->id])->where("winner","!=",null)->pluck("winner","winner")->toArray();
         }
         else{
-            $winners = SubTournamentResult::where(["sub_tournament_id" => $prev_sub_tournament->id])->orderBy("point","DESC")->orderBy("time","DESC")->take($step->max_participants)->pluck("user_id","user_id")->toArray();
+            $winners = SubTournamentResult::where(["sub_tournament_id" => $prev_sub_tournament->id])->orderBy("point","DESC")->orderBy("time","ASC")->take($step->max_participants)->pluck("user_id","user_id")->toArray();
         }
         if(count($winners) != $step->max_participants){
             throw new TournamentException("Участников для перехода на следующий уровень недостаточно");
