@@ -15,6 +15,15 @@
         />
     </div>
     {{--    Group--}}
+    {{-- Image Url --}}
+    <label class="h-5">{{__('table.image_url')}}*</label>
+    @if($careerQuiz->image_url)
+        <livewire:image-upload :id="$careerQuiz->image_url" :folder-name="'career_quiz'"/>
+    @else
+        <livewire:image-upload :folder-name="'career_quiz'"/>
+    @endif
+
+    {{-- Image Url --}}
     {{--    Authors  --}}
     <div class="form-group">
         <x-select

@@ -2,9 +2,12 @@
 
 namespace App\Http\Livewire\CareerQuizQuestion;
 
+use App\Models\CareerQuiz;
+use App\Models\CareerQuizFeature;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Models\CareerQuizQuestion;
+use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 
 class CareerQuizQuestionTable extends DataTableComponent
 {
@@ -28,6 +31,22 @@ class CareerQuizQuestionTable extends DataTableComponent
     {
         return [
             'deleteSelected' => 'Удалить'
+        ];
+    }
+
+    public function filters(): array
+    {
+        return [
+            SelectFilter::make(__("sidebar.career_quizzes"))
+                ->options(CareerQuiz::pluck("title_ru","id")->toArray())
+                ->filter(function($builder, string $value) {
+                    return $builder->where(["quiz_id"=>$value]);
+                }),
+            SelectFilter::make(__("sidebar.career_quiz_features"))
+                ->options(CareerQuizFeature::pluck("title_ru","id")->toArray())
+                ->filter(function($builder, string $value) {
+                    return $builder->where(["feature_id"=>$value]);
+                }),
         ];
     }
 

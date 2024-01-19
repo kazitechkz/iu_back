@@ -15,7 +15,7 @@ php artisan code:models --table=lesson_complaints
  // Reset cached roles and permissions
 app()['cache']->forget('spatie.permission.cache');
 php artisan permission:cache-reset
-
+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
 php artisan config:cache
 php artisan config:clear
 php artisan cache:clear

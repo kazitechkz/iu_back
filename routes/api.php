@@ -31,6 +31,7 @@ use App\Http\Controllers\Api\TechSupportController as ApiTechSupportController;
 use App\Http\Controllers\Api\BattleController as ApiBattleController;
 use App\Http\Controllers\Api\AttemptController;
 use App\Http\Controllers\Api\AttemptSettingsController as ApiAttemptSettingsController;
+use App\Http\Controllers\Api\CareerController as ApiCareerController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -174,9 +175,13 @@ if(env("IS_API",true)){
 
             //Forum
             Route::post("/upload-image",[\App\Http\Controllers\Api\FileUploadController::class,"uploadImage"]);
-
-
             Route::resource('classrooms', ClassroomController::class)->only(['index', 'show', 'destroy', 'store']);
+            //Career
+
+            Route::get("/career-quizzes",[ApiCareerController::class,"careerQuizzes"]);
+            Route::get("/career-quiz-detail/{id}",[ApiCareerController::class,"careerQuizDetail"]);
+            Route::get("/pass-career-quiz/{id}",[ApiCareerController::class,"passCareerQuiz"]);
+
             //TEACHER_ROUTES
             Route::prefix('teacher')->name('teacher.')->group(function () {
                 Route::get('dashboard', [DashboardController::class, 'index']);
@@ -205,7 +210,6 @@ if(env("IS_API",true)){
     Route::post("/auth/send-reset-token",[ApiAuthController::class,"sendResetToken"]);
     Route::post("/auth/reset",[ApiAuthController::class,"resetPassword"]);
     Route::get("/test",[\App\Http\Controllers\Api\TestController::class,"test"]);
-
     Route::post("/send-whatsapp",[\App\Http\Controllers\Api\TestController::class,"sendWhatsapp"]);
 }
 else{
