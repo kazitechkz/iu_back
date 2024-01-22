@@ -2,14 +2,27 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\DTOs\FinishCareerQuizDTO;
 use App\Http\Controllers\Controller;
 use App\Models\CareerQuiz;
+use App\Services\AnswerService;
+use App\Services\AttemptService;
+use App\Services\CareerQuizService;
+use App\Services\PlanService;
+use App\Services\QuestionService;
 use App\Services\ResponseService;
 use App\Traits\ResponseJSON;
 use Illuminate\Http\Request;
 
 class CareerController extends Controller
 {
+    private readonly CareerQuizService $careerQuizService;
+
+    public function __construct(CareerQuizService $careerQuizService)
+    {
+        $this->careerQuizService = $careerQuizService;
+    }
+
     public function careerQuizzes(Request $request){
         try{
             $quizzes = CareerQuiz::with(["career_quiz_group","career_quiz_creators.career_quiz_author","file"])->withCount(["career_quiz_questions"])->orderBy("created_at","DESC")->paginate(20);
@@ -35,7 +48,7 @@ class CareerController extends Controller
 
     public function passCareerQuiz($id){
         try{
-            $quiz = CareerQuiz::with(["career_quiz_questions"])->find($id);
+            $quiz = CareerQuiz::with(["career_quiz_questions","career_quiz_answers"])->find($id);
             if(!$quiz){
                 return ResponseService::NotFound("Не найдена информация по тесту");
             }
@@ -45,5 +58,14 @@ class CareerController extends Controller
             return ResponseService::DefineException($exception);
         }
     }
-
+    public function finishCareerQuiz(Request $request){
+        try{
+            $resultQuiz = FinishCareerQuizDTO::fromRequest($request);
+            $attemptId = $this->careerQuizService->finishCareerQuiz($resultQuiz);
+            return response()->json(new ResponseJSON(status: true,data: $attemptId),200);
+        }
+        catch (\Exception $exception) {
+            return ResponseService::DefineException($exception);
+        }
+    }
 }

@@ -39,7 +39,6 @@ class CareerQuizAnswer extends Model
 
 	protected $fillable = [
         'quiz_id',
-
         'title_ru',
         'title_kk',
         'title_en',
