@@ -56,6 +56,6 @@ class CareerQuizAttempt extends Model
 
 	public function career_quiz_attempt_results()
 	{
-		return $this->hasMany(CareerQuizAttemptResult::class, 'attempt_id');
+		return $this->hasMany(CareerQuizAttemptResult::class, 'attempt_id')->orderBy("percentage","desc");
 	}
 }

@@ -182,6 +182,8 @@ if(env("IS_API",true)){
             Route::get("/career-quiz-detail/{id}",[ApiCareerController::class,"careerQuizDetail"]);
             Route::get("/pass-career-quiz/{id}",[ApiCareerController::class,"passCareerQuiz"]);
             Route::post("/finish-career-quiz",[ApiCareerController::class,"finishCareerQuiz"]);
+            Route::get("/result-career-quiz/{id}",[ApiCareerController::class,"resultCareerQuiz"]);
+
 
             //TEACHER_ROUTES
             Route::prefix('teacher')->name('teacher.')->group(function () {

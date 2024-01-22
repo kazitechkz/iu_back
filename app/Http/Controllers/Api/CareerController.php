@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\DTOs\FinishCareerQuizDTO;
 use App\Http\Controllers\Controller;
 use App\Models\CareerQuiz;
+use App\Models\CareerQuizAttempt;
+use App\Models\CareerQuizAttemptResult;
 use App\Services\AnswerService;
 use App\Services\AttemptService;
 use App\Services\CareerQuizService;
@@ -68,4 +70,21 @@ class CareerController extends Controller
             return ResponseService::DefineException($exception);
         }
     }
+
+    public function resultCareerQuiz($id){
+        try{
+            $user = auth()->guard("api")->user();
+            $result = CareerQuizAttempt::with(["career_quiz_attempt_results.career_quiz_feature.file","career_quiz.file"])
+                ->where(["user_id" => $user->id,"id" => $id])
+                ->first();
+            if(!$result){
+                return ResponseService::NotFound("Результат не найден");
+            }
+            return response()->json(new ResponseJSON(status: true,data: $result),200);
+        }
+        catch (\Exception $exception) {
+            return ResponseService::DefineException($exception);
+        }
+    }
+
 }
