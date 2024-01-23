@@ -39,13 +39,13 @@ class CareerQuizQuestionTable extends DataTableComponent
         return [
             SelectFilter::make(__("sidebar.career_quizzes"))
                 ->options(CareerQuiz::pluck("title_ru","id")->toArray())
-                ->filter(function($builder, string $value) {
-                    return $builder->where(["quiz_id"=>$value]);
+                ->filter(function($builder, $value) {
+                    return $builder->where(["career_quiz_questions.quiz_id"=>$value]);
                 }),
             SelectFilter::make(__("sidebar.career_quiz_features"))
                 ->options(CareerQuizFeature::pluck("title_ru","id")->toArray())
-                ->filter(function($builder, string $value) {
-                    return $builder->where(["feature_id"=>$value]);
+                ->filter(function($builder, $value) {
+                    return $builder->where(["career_quiz_questions.feature_id"=>$value]);
                 }),
         ];
     }
