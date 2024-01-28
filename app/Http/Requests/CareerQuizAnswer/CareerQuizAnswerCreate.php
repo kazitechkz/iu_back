@@ -26,6 +26,7 @@ class CareerQuizAnswerCreate extends FormRequest
             'title_ru'=>"required|max:255",
             'title_kk'=>"required|max:255",
             'title_en'=>"sometimes|nullable|max:255",
+            'feature_id'=>"sometimes|nullable|exists:career_quiz_features,id",
             'value'=>"required|integer"
         ];
     }

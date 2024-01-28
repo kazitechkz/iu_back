@@ -63,6 +63,10 @@ class CareerQuizAnswerTable extends DataTableComponent
                 ->sortable(),
             Column::make(__("table.quiz_id"), "career_quiz.title_ru")
                 ->sortable(),
+            Column::make(__("table.feature_id"), "career_quiz_feature.title_ru")
+                ->sortable(),
+            Column::make(__("table.question_id"), "career_quiz_question.question_ru")
+                ->sortable(),
             Column::make(__("table.title_ru"), "title_ru")
                 ->searchable(),
             Column::make(__("table.title_kk"), "title_kk")

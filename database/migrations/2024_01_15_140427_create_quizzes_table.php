@@ -26,6 +26,7 @@ return new class extends Migration
             $table->text("rule_en")->nullable();
             $table->integer("price")->default(0);
             $table->string("currency",20);
+            $table->string("code");
             $table->timestamps();
         });
     }

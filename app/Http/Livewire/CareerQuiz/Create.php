@@ -6,6 +6,7 @@ use App\Http\Requests\CareerQuiz\CareerQuizCreate;
 use App\Models\CareerQuizAuthor;
 use App\Models\CareerQuizGroup;
 use App\Models\Group;
+use App\Services\CareerQuizService;
 use Livewire\Component;
 
 class Create extends Component
@@ -26,6 +27,8 @@ class Create extends Component
     public $rule_en;
     public $price;
     public $currency;
+    public $codes = CareerQuizService::CAREER_QUIZ_CODES;
+    public $code;
 
     public function mount(){
         $this->groups = CareerQuizGroup::all();
@@ -43,6 +46,7 @@ class Create extends Component
         $this->rule_en = old("rule_en");
         $this->price = old("price");
         $this->currency = old("currency");
+        $this->code = old("code");
     }
 
 

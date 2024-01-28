@@ -64,7 +64,8 @@ class CareerQuiz extends Model
 		'rule_kk',
 		'rule_en',
 		'price',
-		'currency'
+		'currency',
+        "code",
 	];
 
 	public function career_quiz_group()

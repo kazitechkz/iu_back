@@ -14,6 +14,17 @@
         />
     </div>
     {{--    Group--}}
+    {{--    Career Codes  --}}
+    <div class="form-group">
+        <x-select
+            :label="__('table.code')"
+            :options="$codes"
+            :option-value="'id'"
+            :option-label="'title_ru'"
+            wire:model="code"
+        />
+    </div>
+    {{--    Career Codes --}}
     {{--    Authors  --}}
     <div class="form-group">
         <x-select

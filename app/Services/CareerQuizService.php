@@ -10,6 +10,21 @@ use Illuminate\Support\Facades\DB;
 
 class CareerQuizService
 {
+    public const CAREER_QUIZ_CODES = [
+        [
+            "id"=>"ONE_ANSWER",
+            "title_ru"=>"Один ответ"
+        ],
+        [
+            "id"=>"DRAG_DROP",
+            "title_ru"=>"Выбор приоритета"
+        ],
+    ];
+    public const CODES_VALIDATION = ["ONE_ANSWER","DRAG_DROP"];
+    public const CAREER_ONE_ANSWER = "ONE_ANSWER";
+    public const CAREER_DRAG_DROP_ANSWER = "DRAG_DROP";
+
+
     public function finishCareerQuiz(FinishCareerQuizDTO $result) : int
     {
         $user = auth()->guard("api")->user();

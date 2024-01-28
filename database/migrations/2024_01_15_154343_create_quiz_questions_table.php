@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('career_quiz_questions', function (Blueprint $table) {
             $table->bigIncrements("id");
             $table->foreignId("quiz_id")->references("id")->on("career_quizzes")->cascadeOnDelete()->cascadeOnUpdate();
-            $table->foreignId("feature_id")->references("id")->on("career_quiz_features")->cascadeOnUpdate()->cascadeOnDelete();
+            $table->foreignId("feature_id")->nullable()->references("id")->on("career_quiz_features")->nullOnDelete();
             $table->text("question_ru");
             $table->text("question_kk");
             $table->text("question_en")->nullable();

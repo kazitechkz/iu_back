@@ -23,7 +23,7 @@ class CareerQuizQuestionCreate extends FormRequest
     {
         return [
             'quiz_id'=>"required|exists:career_quizzes,id",
-            'feature_id'=>"required|exists:career_quiz_features,id",
+            'feature_id'=>"sometimes|nullable|exists:career_quiz_features,id",
             'question_ru'=>"required",
             'question_kk'=>"required",
         ];

@@ -5,6 +5,7 @@ namespace App\Http\Livewire\CareerQuizQuestion;
 use App\Http\Requests\CareerQuizQuestion\CareerQuizQuestionCreate;
 use App\Models\CareerQuiz;
 use App\Models\CareerQuizFeature;
+use App\Services\CareerQuizService;
 use Livewire\Component;
 
 class Create extends Component
@@ -21,6 +22,8 @@ class Create extends Component
     public $context_en;
 
 
+
+
     public function mount(){
       $this->quizzes = CareerQuiz::all();
       $this->quiz_id = old("quiz_id");
@@ -34,8 +37,15 @@ class Create extends Component
     }
 
     public function updatedQuizId(): void {
-        $this->features = CareerQuizFeature::where(["quiz_id" => $this->quiz_id])->get();
-        $this->feature_id = null;
+        $quiz = CareerQuiz::where(["id"=>$this->quiz_id])->first();
+        if($quiz->code == CareerQuizService::CAREER_DRAG_DROP_ANSWER){
+            $this->features = null;
+            $this->feature_id = null;
+        }
+        else{
+            $this->features = CareerQuizFeature::where(["quiz_id" => $this->quiz_id])->get();
+            $this->feature_id = null;
+        }
     }
 
     protected function rules(){

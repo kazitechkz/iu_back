@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\CareerQuiz;
 
+use App\Services\CareerQuizService;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CareerQuizCreate extends FormRequest
@@ -33,7 +34,8 @@ class CareerQuizCreate extends FormRequest
             'price'=>"required|min:0|max:1000000",
             'currency'=>"required",
             "authors"=>"sometimes|nullable",
-            "authors.*"=>"exists:career_quiz_authors,id"
+            "authors.*"=>"exists:career_quiz_authors,id",
+            "code"=>"required|in_array:['ONE_ANSWER','DRAG_DROP']"
         ];
     }
 }

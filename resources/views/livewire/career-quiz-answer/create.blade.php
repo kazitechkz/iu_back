@@ -10,10 +10,32 @@
             :options="$quizzes"
             :option-value="'id'"
             :option-label="'title_ru'"
-            wire:model.defer="quiz_id"
+            wire:model="quiz_id"
         />
     </div>
     {{--    Quiz--}}
+    {{--    Question  --}}
+    <div class="form-group">
+        <x-select
+            :label="__('table.question_id')"
+            :options="$questions"
+            :option-value="'id'"
+            :option-label="'question_ru'"
+            wire:model="question_id"
+        />
+    </div>
+    {{--    Question--}}
+    {{--    Quiz--}}
+        <div class="form-group">
+            <x-select
+                :label="__('table.feature_id')"
+                :options="$features"
+                :option-value="'id'"
+                :option-label="'title_ru'"
+                wire:model="feature_id"
+            />
+        </div>
+
     {{--    Title in Russian --}}
     <div class="form-group">
         <x-input class="my-2"

@@ -8,6 +8,7 @@ use App\Models\CareerQuiz;
 use App\Models\CareerQuizAuthor;
 use App\Models\CareerQuizCreator;
 use App\Models\CareerQuizGroup;
+use App\Services\CareerQuizService;
 use Livewire\Component;
 
 class Edit extends Component
@@ -29,7 +30,8 @@ class Edit extends Component
     public $rule_en;
     public $price;
     public $currency;
-
+    public $codes = CareerQuizService::CAREER_QUIZ_CODES;
+    public $code;
     public function mount(CareerQuiz $careerQuiz){
         $this->careerQuiz = $careerQuiz;
         $this->groups = CareerQuizGroup::all();

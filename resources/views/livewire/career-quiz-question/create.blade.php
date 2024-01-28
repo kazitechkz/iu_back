@@ -14,7 +14,7 @@
         />
     </div>
     {{--    Quiz--}}
-    @if($quiz_id)
+    @if($quiz_id && $features != null)
         {{--    Feature  --}}
         <div class="form-group">
             <x-select

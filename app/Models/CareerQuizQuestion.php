@@ -56,7 +56,10 @@ class CareerQuizQuestion extends Model
 	{
 		return $this->belongsTo(CareerQuizFeature::class, 'feature_id');
 	}
-
+    public function career_quiz_answers()
+    {
+        return $this->hasMany(CareerQuizAnswer::class, 'question_id');
+    }
 	public function career_quiz()
 	{
 		return $this->belongsTo(CareerQuiz::class, 'quiz_id');
