@@ -58,7 +58,7 @@ class Create extends Component
                 if(!SubTournamentWinner::where(["sub_tournament_id"=>$sub_tournament->id])->first()){
                     SubTournamentWinner::add(["user_id"=>$winner,"sub_tournament_id"=>$sub_tournament->id]);
                 }
-                $sub_tournament->edit([["is_finished"=>true,"is_current"=>false]]);
+                $sub_tournament->edit([["is_finished"=>true,"is_current"=>true]]);
                 $this->tournament_winner = TournamentWinner::add(["winner_id"=>$winner,"tournament_id"=>$this->tournament->id]);
             }
         }

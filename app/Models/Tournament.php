@@ -99,4 +99,59 @@ class Tournament extends Model
                         ->withPivot('id', 'deleted_at')
 					->withTimestamps();
 	}
+
+    public function participants()
+    {
+        return $this->sub_tournaments()->where('step_id', 1)->with('subtournament_participants')->first();
+    }
+
+    public function firstSubTournament()
+    {
+        if ($this->sub_tournaments()) {
+            $data = $this->sub_tournaments()->where('step_id', 1)->with('tournament_step')->first();
+            if ($data) {
+                return $data;
+            } else {
+                return [];
+            }
+        } else {
+            return [];
+        }
+    }
+
+    public function currentSubTournament()
+    {
+        if ($this->sub_tournaments()) {
+            $data = $this->sub_tournaments()->where('is_current', 1)->with([
+                'tournament_step',
+                'subtournament_participants',
+                'sub_tournament_results' => function ($q) {
+                    return $q->where('user_id', auth()->guard('api')->id())->with('user');
+                }
+            ])->first();
+            if ($data) {
+                return $data;
+            } else {
+                return [];
+            }
+        } else {
+            return [];
+        }
+    }
+
+    public function winnerTournament()
+    {
+        return $this->sub_tournaments()->where(['is_current' => 1, 'is_finished' => 1])->with('sub_tournament_results', function ($q) {
+            return $q->orderBy('point', 'DESC')->orderBy('time', 'DESC')->with('user');
+        })->first();
+    }
+
+    public function check_access(): bool
+    {
+        $currentST = false;
+        if ($this->currentSubTournament()) {
+            $currentST = (bool)$this->currentSubTournament()->subtournament_participants()->where('user_id', auth()->guard('api')->id())->first();
+        }
+        return $currentST;
+    }
 }

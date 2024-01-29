@@ -52,7 +52,9 @@ class User extends Authenticatable implements Searchable,Wallet
     protected $fillable = [
         "username",
         'name',
+        'parent_name',
         'phone',
+        'parent_phone',
         'email',
         'password',
         "birth_date",
@@ -96,7 +98,10 @@ class User extends Authenticatable implements Searchable,Wallet
     {
         return $this->belongsTo(File::class, 'image_url');
     }
-
+    public function attempts()
+    {
+        return $this->hasMany(Attempt::class);
+    }
 
     public function gender(): BelongsTo
     {

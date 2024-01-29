@@ -215,6 +215,7 @@ if(env("IS_API",true)){
     Route::get("/test",[\App\Http\Controllers\Api\TestController::class,"test"]);
     Route::post("/send-whatsapp",[\App\Http\Controllers\Api\TestController::class,"sendWhatsapp"]);
     Route::post("/paybox",[\App\Http\Controllers\Api\TestController::class,"paybox"]);
+    Route::post("/paybox-result",[\App\Http\Controllers\Api\TestController::class,"payboxResult"]);
 }
 else{
     Route::get("/",function (){

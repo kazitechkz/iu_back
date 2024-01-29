@@ -49,6 +49,7 @@ class TournamentController extends Controller
                 ->where("start_at","<",Carbon::now())
                 ->where("end_at",">",Carbon::now())
                 ->with(["locales","subject","file"])
+                ->latest()
                 ->get();
             $participated_tournaments = Tournament::whereIn("id",$tournament_ids)->with(["locales","subject","file"])->get();
             return response()->json(new ResponseJSON(status: true,data: ["open"=>$open_tournaments,"participated"=>$participated_tournaments,"tournament_ids"=>$tournament_ids]),200);
@@ -59,23 +60,45 @@ class TournamentController extends Controller
     }
 
 
-    public function tournamentDetail($id){
-        try{
+    public function tournamentDetail($id)
+    {
+        try {
             $user = auth()->guard("api")->user();
-            $tournament = Tournament::with(["locales","subject","file","sub_tournaments.tournament_step"])->firstWhere(["id"=>$id]);
-            if ($tournament){
+            $tournament = Tournament::with([
+                "locales",
+                "subject",
+                "file",
+                "sub_tournaments.tournament_step"
+            ])->firstWhere(["id" => $id]);
+            if ($tournament) {
+                $currentST = false;
+                $firstST = false;
                 $steps = TournamentStep::all();
-                $sub_tournament_ids = SubTournamentParticipant::where(["user_id"=>$user->id])->pluck("sub_tournament_id")->toArray();
-                $tournament_ids = SubTournament::whereIn("id",$sub_tournament_ids)->pluck("tournament_id")->toArray();
-                $data = ["tournament"=>$tournament,"subtournament_ids"=>$sub_tournament_ids,"tournament_ids"=>$tournament_ids,"steps"=>$steps];
-                return response()->json(new ResponseJSON(status: true,data: $data),200);
+//                $sub_tournament_ids = SubTournamentParticipant::where(["user_id"=>$user->id])->pluck("sub_tournament_id")->toArray();
+//                $tournament_ids = SubTournament::whereIn("id",$sub_tournament_ids)->pluck("tournament_id")->toArray();
+                if ($tournament->currentSubTournament()) {
+                    $currentST = (bool)$tournament->currentSubTournament()->subtournament_participants()->where('user_id', $user->id)->first();
+                }
+                if ($tournament->firstSubTournament()) {
+                    $firstST = (bool)$tournament->firstSubTournament()->subtournament_participants()->where('user_id', $user->id)->first();
+                }
+                $data = [
+                    'is_join' => $currentST,
+                    'is_reg' => $firstST,
+                    "tournament" => $tournament,
+                    "steps" => $steps,
+                    'firstSubTournament' => $tournament->firstSubTournament(),
+                    'currentSubTournament' => $tournament->currentSubTournament(),
+                    'check_access' => $tournament->check_access(),
+                    'winner_tournament' => $tournament->winnerTournament()
+                ];
+
+                return response()->json(new ResponseJSON(status: true, data: $data));
             }
-            return response()->json(new ResponseJSON(status: false,message: "Tournament Not Found"),404);
-        }
-        catch (\Exception $exception) {
+            return response()->json(new ResponseJSON(status: false, message: "Tournament Not Found"), 404);
+        } catch (\Exception $exception) {
             return ResponseService::DefineException($exception);
         }
-
     }
 
     public function subTournamentDetail($id){
@@ -142,7 +165,7 @@ class TournamentController extends Controller
             $sub_tournament_result = null;
             $my_result = SubTournamentResult::where(["sub_tournament_id" => $sub_tournament->id,"user_id" => $user->id])->with(["user"])->first();
             if($sub_tournament->is_finished){
-                $sub_tournament_result = SubTournamentResult::where(["sub_tournament_id" => $sub_tournament->id])->orderBy("point","DESC")->orderBy("time","ASC")->with(["user"])->paginate(20);
+                $sub_tournament_result = SubTournamentResult::where(["sub_tournament_id" => $sub_tournament->id])->orderBy("point","DESC")->orderBy("time","DESC")->with(["user", 'sub_tournament'])->paginate(20);
             }
             $data = ["results"=>$sub_tournament_result,"my_result"=>$my_result];
             return response()->json(new ResponseJSON(status: true,data: $data),200);
@@ -156,11 +179,15 @@ class TournamentController extends Controller
         try{
             $user = auth()->guard("api")->user();
             $sub_tournament = SubTournament::with("tournament_step")->firstWhere(["id"=>$id]);
-            if(!$sub_tournament){
-                return response()->json(new ResponseJSON(status: false,message: "Этапа не существует"),404);
+//            if(!$sub_tournament){
+//                return response()->json(new ResponseJSON(status: false,message: "Этапа не существует"),404);
+//            }
+            if ($sub_tournament) {
+                $participants = SubTournamentParticipant::with(["user"])->where(["sub_tournament_id" => $sub_tournament->id])->latest()->paginate(20);
+            } else {
+                $participants = [];
             }
-            $participants = SubTournamentParticipant::with(["user"])->where(["sub_tournament_id" => $sub_tournament->id])->paginate(20);
-            return response()->json(new ResponseJSON(status: true,data: $participants),200);
+            return response()->json(new ResponseJSON(status: true,data: $participants));
         }
         catch (\Exception $exception) {
             return ResponseService::DefineException($exception);

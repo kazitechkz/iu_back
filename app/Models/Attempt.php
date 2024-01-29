@@ -99,7 +99,6 @@ class Attempt extends Model
 					->withTimestamps();
 	}
 
-
     public function attempt_subjects()
     {
         return $this->hasMany(AttemptSubject::class,"attempt_id","id");
