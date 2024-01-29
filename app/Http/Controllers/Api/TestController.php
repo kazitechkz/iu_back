@@ -6,6 +6,7 @@ use App\Events\BattleDetailEvent;
 use App\Http\Controllers\Controller;
 use App\Models\Battle;
 use App\Models\BattleBet;
+use App\Models\User;
 use App\Services\AttemptService;
 use App\Services\BattleService;
 use App\Services\QuestionService;
@@ -29,7 +30,7 @@ class TestController extends Controller
 
     public function test(Request $request)
     {
-        $this->_battleService->battleTimeOut(67);
+        return response()->json("Hello world!");
     }
 
     public function paybox(Request $request)

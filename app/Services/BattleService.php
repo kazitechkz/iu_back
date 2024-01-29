@@ -44,6 +44,7 @@ class BattleService
             $input["pass_code"] = bcrypt($input["pass_code"]);
         }
         $battle = Battle::add($input);
+        $raw_data = [];
         foreach (self::STEPS as $STEP){
             $promo_code = self::generatePromoCode("battle_step");
             $input = [
@@ -65,8 +66,9 @@ class BattleService
             if($STEP == self::LAST_STEP){
                 $input["is_last"] = true;
             }
-            $battle_step = BattleStep::add($input);
+            array_push($raw_data,$input);
         }
+        BattleStep::insert($raw_data);
         $user->forceWithdraw($battle->price);
         BattleBet::add(["is_used"=>false,"battle_id"=>$battle->id,"owner_id"=>$user->id,"owner_bet"=>$battle->price]);
         broadcast(new BattleAdded($battle));
