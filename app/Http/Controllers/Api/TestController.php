@@ -36,7 +36,7 @@ class TestController extends Controller
 
     public function test(Request $request)
     {
-        $this->_battleService->battleTimeOut(67);
+        return response()->json("Hello world!");
     }
 
     public function sendWhatsapp()
