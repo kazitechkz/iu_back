@@ -20,7 +20,7 @@ class AuthService
             'birth_date' => $user->birth_date,
             'phone' => $user->phone,
             'role' => $user->roles->count() ? $user->roles[0]['name'] : '',
-            'subscription' => $user->activeSubscriptions()->pluck('name')->toArray()
+            'subscription' => $user->activeSubscriptions()->toArray()
         ]);
     }
 

@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('price');
             $table->integer('status');
             $table->text('description')->nullable();
+            $table->json('subjects')->nullable();
             $table->timestamps();
         });
     }

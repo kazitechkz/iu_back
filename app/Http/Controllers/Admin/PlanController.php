@@ -59,7 +59,7 @@ class PlanController extends Controller
         try{
             if(auth()->user()->can("plan create") ){
                 $input = $request->all();
-                $input["is_active"] = $request->boolean("is_active");
+                $input["is_active"] = true;
                 $plan = Plan::create($input);
                 CommercialGroupPlan::add(["plan_id" => $plan->id, "group_id" => $request->get("commercial_group_id")]);
                 return redirect()->back();

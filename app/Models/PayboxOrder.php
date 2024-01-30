@@ -33,7 +33,8 @@ class PayboxOrder extends Model
 
 	protected $casts = [
 		'user_id' => 'int',
-		'status' => 'int'
+		'status' => 'int',
+        'subjects' => 'json'
 	];
 
 	protected $fillable = [
@@ -41,6 +42,7 @@ class PayboxOrder extends Model
 		'order_id',
 		'price',
 		'status',
+        'subjects',
 		'description'
 	];
 

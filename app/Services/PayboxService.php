@@ -12,13 +12,16 @@ class PayboxService
     {
         $PG_MERCHANT_ID = env('PG_MERCHANT_ID');
         $PG_SECRET_KEY = env('PG_SECRET_KEY');
+        $subjects = [$request['subject_first'], $request['subject_second']];
         $order_id = strval(rand(0, 999999));
         $order = PayboxOrder::where('order_id', $order_id)->firstOrCreate([
             'order_id' => $order_id,
             'price' => $this->getSum($request['time']),
             'user_id' => auth()->guard('api')->id(),
+            'subjects' => $subjects,
             'status' => 0
         ]);
+
         $request = $requestForSignature = [
             'pg_order_id' => $order_id,
             'pg_merchant_id' => $PG_MERCHANT_ID,
@@ -27,13 +30,13 @@ class PayboxService
             'pg_salt' => Str::random(10),
             'pg_payment_route' => 'frame',
             'pg_currency' => 'KZT',
-            'pg_check_url' => 'http://localhost:4200/pay/check',
-            'pg_result_url' => 'http://localhost:8000/api/paybox-result',
+            'pg_check_url' => '',
+            'pg_result_url' => '',
             'pg_request_method' => 'POST',
-            'pg_success_url' => 'http://localhost:4200/pay/success',
-            'pg_failure_url' => 'http://localhost:4200/pay/failure',
-            'pg_success_url_method' => 'GET',
-            'pg_failure_url_method' => 'GET',
+            'pg_success_url' => 'http://localhost:8000/api/pay/success',
+            'pg_failure_url' => 'http://localhost:8000/api/pay/failure',
+            'pg_success_url_method' => 'POST',
+            'pg_failure_url_method' => 'POST',
             'pg_payment_system' => 'EPAYWEBKZT',
             'pg_lifetime' => '86400',
             'pg_postpone_payment' => '0',
@@ -41,7 +44,9 @@ class PayboxService
             'pg_testing_mode' => '1',
             'pg_recurring_start' => '1',
             'pg_recurring_lifetime' => '156',
-            'pg_user_id' => '1'
+            'pg_user_id' => '39932',
+            'subject_first'=> '3',
+            'subject_second' => '4'
         ];
 
         /**
@@ -90,6 +95,71 @@ class PayboxService
             return response()->json(new ResponseJSON(status: true, data: $array));
         }
     }
+
+    public function getSum($time): int
+    {
+        return match ($time) {
+            3 => 2490,
+            6 => 4990,
+            default => 990,
+        };
+    }
+
+    public function getDescription($time): string
+    {
+        return match ($time) {
+            3 => 'Тариф Стандарт',
+            6 => 'Тариф Премиум',
+            default => 'Тариф Базовый'
+        };
+    }
+
+    public function getResultStatus($req)
+    {
+        $PG_MERCHANT_ID = env('PG_MERCHANT_ID');
+        $PG_SECRET_KEY = env('PG_SECRET_KEY');
+
+        $request = [
+            'pg_merchant_id'=> $PG_MERCHANT_ID,
+            'pg_payment_id' => intval($req['pg_payment_id']),
+            'pg_salt' => Str::random(10)
+        ];
+
+        //generate a signature and add it to the array
+        ksort($request); //sort alphabetically
+        array_unshift($request, 'get_status3.php');
+        array_push($request, $PG_SECRET_KEY);
+        $request['pg_sig'] = md5(implode(';', $request)); // signature
+        unset($request[0], $request[1]);
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => "https://api.freedompay.money/get_status3.php",// your preferred url
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 30000,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "POST",
+            CURLOPT_POSTFIELDS => json_encode($request),
+            CURLOPT_SSL_VERIFYPEER => false,
+            CURLOPT_HTTPHEADER => array(
+                // Set here requred headers
+                "accept: */*",
+                "accept-language: en-US,en;q=0.8",
+                "content-type: application/json",
+            ),
+        ));
+
+        $response = curl_exec($curl);
+        $err = curl_error($curl);
+        curl_close($curl);
+        $xml = simplexml_load_string($response);
+        $json = json_encode($xml);
+        $array = json_decode($json,TRUE);
+
+    }
+
     public function makeFlatParamsArray($arrParams, $parent_name = '')
     {
         $arrFlatParams = [];
@@ -109,23 +179,5 @@ class PayboxService
         }
 
         return $arrFlatParams;
-    }
-
-    public function getSum($time): int
-    {
-        return match ($time) {
-            3 => 2490,
-            6 => 4990,
-            default => 990,
-        };
-    }
-
-    public function getDescription($time): string
-    {
-        return match ($time) {
-            3 => 'Тариф Стандарт',
-            6 => 'Тариф Премиум',
-            default => 'Тариф Базовый'
-        };
     }
 }

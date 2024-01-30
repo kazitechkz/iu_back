@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Attempt;
 use App\Models\Battle;
 use App\Models\BattleBet;
+use App\Models\PayboxOrder;
 use App\Models\User;
 use App\Services\AttemptService;
 use App\Services\BattleService;
@@ -75,11 +76,33 @@ class TestController extends Controller
         }
     }
 
-    public function payboxResult(Request $request)
+    public function payboxResultSuccess(Request $request)
     {
-        dd($request->all());
+        $this->getResult($request);
+//        PayboxOrder::where('order_id', 562)->firstOrCreate([
+//            'order_id' => 562,
+//            'price' => 990,
+//            'user_id' => 999,
+//            'status' => 1
+//        ]);
+        return redirect('http://localhost:4200/dashboard/plan-mode');
     }
 
+    public function payboxResultFailure(Request $request)
+    {
+        $this->getResult($request);
+//        PayboxOrder::where('order_id', 562)->firstOrCreate([
+//            'order_id' => 562,
+//            'price' => 990,
+//            'user_id' => 999,
+//            'status' => 1
+//        ]);
+        return redirect('http://localhost:4200/dashboard/plan-mode');
+    }
 
+    public function getResult(Request $request)
+    {
+        $this->_payService->getResultStatus($request);
+    }
 
 }
