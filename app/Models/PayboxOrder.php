@@ -7,6 +7,7 @@
 namespace App\Models;
 
 use App\Traits\CRUD;
+use Bpuig\Subby\Models\Plan;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
@@ -34,6 +35,7 @@ class PayboxOrder extends Model
 	protected $casts = [
 		'user_id' => 'int',
 		'status' => 'int',
+        'plans' => 'json',
         'subjects' => 'json'
 	];
 
@@ -41,6 +43,7 @@ class PayboxOrder extends Model
 		'user_id',
 		'order_id',
 		'price',
+        'plans',
 		'status',
         'subjects',
 		'description'

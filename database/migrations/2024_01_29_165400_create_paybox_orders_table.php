@@ -15,6 +15,7 @@ return new class extends Migration
             $table->bigIncrements('id');
             $table->foreignId('user_id')->references('id')->on('users')->cascadeOnDelete();
             $table->string('order_id');
+            $table->json('plans');
             $table->string('price');
             $table->integer('status');
             $table->text('description')->nullable();

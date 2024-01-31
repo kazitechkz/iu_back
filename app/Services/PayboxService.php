@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\PayboxOrder;
 use App\Traits\ResponseJSON;
+use Bpuig\Subby\Models\Plan;
 use Illuminate\Support\Str;
 
 class PayboxService
@@ -12,13 +13,19 @@ class PayboxService
     {
         $PG_MERCHANT_ID = env('PG_MERCHANT_ID');
         $PG_SECRET_KEY = env('PG_SECRET_KEY');
-        $subjects = [$request['subject_first'], $request['subject_second']];
+        $subjects = [1, 2, 3, intval($request['subject_first']), intval($request['subject_second'])];
         $order_id = strval(rand(0, 999999));
-        $order = PayboxOrder::where('order_id', $order_id)->firstOrCreate([
+        $plans = [];
+        foreach ($subjects as $subject) {
+            $plan = Plan::where('tag', $this->getPlanTag($subject, $request['time']))->first();
+            $plans[] = $plan->id;
+        }
+        PayboxOrder::where('order_id', $order_id)->firstOrCreate([
             'order_id' => $order_id,
             'price' => $this->getSum($request['time']),
             'user_id' => auth()->guard('api')->id(),
             'subjects' => $subjects,
+            'plans' => $plans,
             'status' => 0
         ]);
 
@@ -44,9 +51,9 @@ class PayboxService
             'pg_testing_mode' => '1',
             'pg_recurring_start' => '1',
             'pg_recurring_lifetime' => '156',
-            'pg_user_id' => '39932',
-            'subject_first'=> '3',
-            'subject_second' => '4'
+            'pg_user_id' => strval(auth()->guard('api')->id()),
+            'pg_param1' => auth()->guard('api')->id(),
+            'xutokupu' => '11'
         ];
 
         /**
@@ -62,6 +69,7 @@ class PayboxService
         array_push($requestForSignature, $PG_SECRET_KEY); // Добавление в конец секретного ключа
 
         $request['pg_sig'] = md5(implode(';', $requestForSignature)); // Полученная подпись
+
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
@@ -88,14 +96,16 @@ class PayboxService
         $xml = simplexml_load_string($response);
         $json = json_encode($xml);
         $array = json_decode($json,TRUE);
-
         if ($err) {
             return response()->json($err);
         } else {
             return response()->json(new ResponseJSON(status: true, data: $array));
         }
     }
-
+    public function getPlanTag($subjectID, $time): string
+    {
+        return $subjectID.'.'.$time;
+    }
     public function getSum($time): int
     {
         return match ($time) {
@@ -104,7 +114,6 @@ class PayboxService
             default => 990,
         };
     }
-
     public function getDescription($time): string
     {
         return match ($time) {
@@ -113,7 +122,6 @@ class PayboxService
             default => 'Тариф Базовый'
         };
     }
-
     public function getResultStatus($req)
     {
         $PG_MERCHANT_ID = env('PG_MERCHANT_ID');
@@ -157,9 +165,12 @@ class PayboxService
         $xml = simplexml_load_string($response);
         $json = json_encode($xml);
         $array = json_decode($json,TRUE);
-
+        if ($err) {
+            return response()->json($err);
+        } else {
+            return response()->json($array);
+        }
     }
-
     public function makeFlatParamsArray($arrParams, $parent_name = '')
     {
         $arrFlatParams = [];
