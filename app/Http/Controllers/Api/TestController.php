@@ -79,9 +79,12 @@ class TestController extends Controller
 
     public function payboxResultURL(Request $request)
     {
-        $order_id = $request['pg_order_id'];
         $order = PayboxOrder::find(1);
-        $order->description = $request->all();
+        if ($request['pg_result'] == 1) {
+            $order->description = 'GOOD '.$request['pg_order_id'];
+        } else {
+            $order->desription = 'FAIL '.$request['pg_order_id'];
+        }
         $order->save();
     }
     public function payboxResultSuccess(Request $request)
