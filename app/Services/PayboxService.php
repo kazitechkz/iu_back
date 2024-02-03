@@ -38,7 +38,7 @@ class PayboxService
             'pg_payment_route' => 'frame',
             'pg_currency' => 'KZT',
             'pg_check_url' => '',
-            'pg_result_url' => 'https://back.xn--80a4d.kz/api/pay/success',
+            'pg_result_url' => 'https://back.xn--80a4d.kz/api/pay/result',
             'pg_request_method' => 'POST',
             'pg_success_url' => 'http://localhost:8000/api/pay/success',
             'pg_failure_url' => 'http://localhost:8000/api/pay/failure',

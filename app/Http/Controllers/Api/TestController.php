@@ -79,8 +79,14 @@ class TestController extends Controller
 
     public function payboxResultURL(Request $request)
     {
-        $this->getResult($request);
-        return redirect('http://localhost:4200/dashboard/plan-mode');
+        PayboxOrder::create([
+            'order_id' => 7777,
+            'price' => 777,
+            'user_id' => 7777,
+            'subjects' => [1,2,3,4,5],
+            'plans' => [5,6,7,8,9],
+            'status' => 0
+        ]);
     }
     public function payboxResultSuccess(Request $request)
     {
