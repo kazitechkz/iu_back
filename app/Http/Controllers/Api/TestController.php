@@ -81,7 +81,7 @@ class TestController extends Controller
     {
         $order_id = $request['pg_order_id'];
         $order = PayboxOrder::find(1);
-        $order->description = "TEST PayBOX Updated" . $order_id;
+        $order->description = $request->all();
         $order->save();
     }
     public function payboxResultSuccess(Request $request)
