@@ -79,6 +79,7 @@ class TestController extends Controller
 
     public function payboxResultURL(Request $request)
     {
+        dd($request->all());
         PayboxOrder::create([
             'order_id' => 7777,
             'price' => 777,
