@@ -79,8 +79,9 @@ class TestController extends Controller
 
     public function payboxResultURL(Request $request)
     {
+        $order_id = $request['pg_order_id'];
         $order = PayboxOrder::find(1);
-        $order->description = "TEST PayBOX Updated";
+        $order->description = "TEST PayBOX Updated" . $order_id;
         $order->save();
     }
     public function payboxResultSuccess(Request $request)
