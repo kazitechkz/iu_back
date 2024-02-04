@@ -81,7 +81,11 @@ class TestController extends Controller
     {
         $order = PayboxOrder::where('order_id', $request['pg_order_id'])->first();
         if ($order) {
-            $order->description = "GOOD LUCK!";
+            if ($request['pg_result'] == 1) {
+                $order->description = "GOOD LUCK!";
+            } else {
+                $order->description = "FAIL !!!";
+            }
             $order->save();
         } else {
             PayboxOrder::create([
