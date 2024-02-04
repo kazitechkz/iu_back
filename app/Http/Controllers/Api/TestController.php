@@ -109,8 +109,11 @@ class TestController extends Controller
     }
     public function payboxResultSuccess(Request $request)
     {
-        $desc = $this->getResult($request);
-        $link = "https://xn--80a4d.kz/dashboard/plan-mode?success=1&desc=".$desc;
+        if ($this->getResult($request)) {
+            $link = "https://xn--80a4d.kz/dashboard/plan-mode?success=1";
+        } else {
+            $link = "https://xn--80a4d.kz/dashboard/plan-mode?error=1";
+        }
         return redirect($link);
     }
 
@@ -124,14 +127,9 @@ class TestController extends Controller
         $response = $this->_payService->getResultStatus($request);
         $content = json_decode($response->content(), true);
         if ($content['pg_status'] == 'ok') {
-            $order = PayboxOrder::where('order_id', $request['pg_order_id'])->first();
-            if ($order->status == 1) {
-                return $order->description;
-            } else {
-                return null;
-            }
+            return true;
         } else {
-            return null;
+            return false;
         }
     }
 
