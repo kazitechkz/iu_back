@@ -79,24 +79,33 @@ class TestController extends Controller
 
     public function payboxResultURL(Request $request)
     {
-        $order = PayboxOrder::where('order_id', $request['pg_order_id'])->first();
-        if ($order) {
-            if ($request['pg_result'] == 1) {
-                $order->description = "GOOD LUCK!";
-            } else {
-                $order->description = "FAIL !!!";
+        if ($request['pg_result'] == 1) {
+            $order = PayboxOrder::where('order_id', $request['pg_order_id'])->first();
+            if ($order) {
+                $user = User::find($order->user_id);
+                $order->description = $request['pg_description'];
+                $order->status = 1;
+                $order->save();
+                foreach ($order->plans as $item) {
+                    $plan = Plan::find($item);
+                    if(PlanSubscription::where(["subscriber_id"=>$order->user_id,"plan_id"=>$plan->id])->first()){
+                        // Check subscriber to plan
+                        if(!$user->isSubscribedTo($plan->id))
+                        {
+                            $user->subscription($plan->tag)->renew();
+                        }
+                    }
+                    else{
+                        $user->newSubscription(
+                            $plan->tag, // identifier tag of the subscription. If your application offers a single subscription, you might call this 'main' or 'primary'
+                            $plan, // Plan or PlanCombination instance your subscriber is subscribing to
+                            $plan->name, // Human-readable name for your subscription
+                            $plan->description // Description
+                        );
+                    }
+                }
             }
-            $order->save();
-        } else {
-            PayboxOrder::create([
-               'order_id' => 777,
-               'user_id' => 777,
-               'status' => 777,
-               'description' => 777,
-               'price' => 777
-            ]);
         }
-
     }
     public function payboxResultSuccess(Request $request)
     {
