@@ -146,7 +146,10 @@ class StepService
         } else {
             if ($subs->count()) {
                 $pl = $subs->pluck('name', 'tag');
-                if (isset($pl[$step->subject_id])) {
+                foreach ($pl as $key => $value) {
+                    $data[explode('.',$key)[0]] = $value;
+                }
+                if (isset($data[$step->subject_id])) {
                     return true;
                 } else {
                     return false;
