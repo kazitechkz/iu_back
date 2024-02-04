@@ -110,13 +110,13 @@ class TestController extends Controller
     public function payboxResultSuccess(Request $request)
     {
         $desc = $this->getResult($request);
-        $link = "http://localhost:4200/dashboard/plan-mode?success=1&desc=".$desc;
+        $link = "https://xn--80a4d.kz/dashboard/plan-mode?success=1&desc=".$desc;
         return redirect($link);
     }
 
     public function payboxResultFailure(Request $request)
     {
-        return redirect('http://localhost:4200/dashboard/plan-mode?error=1');
+        return redirect('https://xn--80a4d.kz/dashboard/plan-mode?error=1');
     }
 
     public function getResult(Request $request)
