@@ -12,7 +12,7 @@ class Create extends Component
     public string $tag;
     public string $name;
     public string $description;
-    public bool $is_active;
+    public bool $is_active = true;
     public $price;
     public $signup_fee;
     public string $currency;
