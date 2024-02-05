@@ -13,26 +13,32 @@ class PlanService
         if(count($subject_plans) == 0){
             return null;
         }
-        return Subject::whereIn("id",$subject_plans)->with("image")->get();
+        return Subject::whereIn("id",$this->getIDSFromTag($subject_plans))->with("image")->get();
     }
-
-
     public function get_closed_subjects(){
         $subject_plans = auth()->guard("api")->user()->activeSubscriptions()->pluck("tag");
         if(count($subject_plans) == 0){
             return null;
         }
-        return Subject::whereNotIn("id",$subject_plans)->get();
+        return Subject::whereNotIn("id",$this->getIDSFromTag($subject_plans))->get();
     }
-
     public static function check_user_subject(int $subject_id): bool
     {
         $subject_plans = auth()->guard('api')->user()->activeSubscriptions()->pluck("tag")->toArray();
-        return in_array($subject_id, $subject_plans);
+        return in_array($subject_id, self::getIDSFromTag($subject_plans));
     }
     public function check_user_subject_for_attempt_settings(int $subject_id): bool
     {
         $subject_plans = auth()->guard('api')->user()->activeSubscriptions()->pluck("tag")->toArray();
-        return in_array($subject_id, $subject_plans);
+        return in_array($subject_id, self::getIDSFromTag($subject_plans));
+    }
+
+    public function getIDSFromTag($subs): array
+    {
+        $data = [];
+        foreach ($subs as $item) {
+            $data[explode('.',$item)[0]] = explode('.',$item)[0];
+        }
+        return $data;
     }
 }

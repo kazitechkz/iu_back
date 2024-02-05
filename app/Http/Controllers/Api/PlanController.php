@@ -74,9 +74,9 @@ class PlanController extends Controller
 
     public function checkPlanUNT(){
         try {
-            $subscriptions = auth()->guard("api")->user()->activeSubscriptions()->whereIn("tag",["basic","standart","pro","premium"]);
+            $subscriptions = auth()->guard("api")->user()->activeSubscriptions();
             $result = $subscriptions->count() > 0;
-            return response()->json(new ResponseJSON(status: true,data: $result),200);
+            return response()->json(new ResponseJSON(status: true,data: $result));
         }
         catch (\Exception $exception) {
             return ResponseService::DefineException($exception);

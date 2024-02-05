@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\AuthController as ApiAuthController;
 use App\Http\Controllers\Api\CategoryController as ApiCategoryController;
 use App\Http\Controllers\Api\FactController as ApiFactController;
+use App\Http\Controllers\Api\PayboxController;
 use App\Http\Controllers\Api\SubCategoryController as ApiSubCategoryController;
 use App\Http\Controllers\Api\ClassroomController;
 use App\Http\Controllers\Api\StepController as ApiStepController;
@@ -214,10 +215,10 @@ if(env("IS_API",true)){
     Route::post("/auth/reset",[ApiAuthController::class,"resetPassword"]);
     Route::get("/test",[\App\Http\Controllers\Api\TestController::class,"test"]);
     Route::post("/send-whatsapp",[\App\Http\Controllers\Api\TestController::class,"sendWhatsapp"]);
-    Route::post("/paybox",[\App\Http\Controllers\Api\TestController::class,"paybox"]);
-    Route::post("/pay/result",[\App\Http\Controllers\Api\TestController::class,"payboxResultURL"]);
-    Route::post("/pay/success",[\App\Http\Controllers\Api\TestController::class,"payboxResultSuccess"]);
-    Route::post("/pay/failure",[\App\Http\Controllers\Api\TestController::class,"payboxResultFailure"]);
+    Route::post("/paybox",[PayboxController::class,"paybox"]);
+    Route::post("/pay/result",[PayboxController::class,"payboxResultURL"]);
+    Route::post("/pay/success",[PayboxController::class,"payboxResultSuccess"]);
+    Route::post("/pay/failure",[PayboxController::class,"payboxResultFailure"]);
 }
 else{
     Route::get("/",function (){
