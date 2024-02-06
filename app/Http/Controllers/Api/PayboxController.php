@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 class PayboxController extends Controller
 {
     private PayboxService $_payService;
+
     public function __construct(PayboxService $payService)
     {
         $this->_payService = $payService;
@@ -36,46 +37,25 @@ class PayboxController extends Controller
     public function payboxResultURL(Request $request)
     {
         if ($request['pg_result'] == 1) {
-            $order = PayboxOrder::where('order_id', $request['pg_order_id'])->first();
-            if ($order) {
-                $user = User::find($order->user_id);
-                $order->description = $request['pg_description'];
-                $order->status = 1;
-                $order->save();
-                foreach ($order->plans as $item) {
-                    $plan = Plan::find($item);
-                    if(PlanSubscription::where(["subscriber_id"=>$order->user_id,"plan_id"=>$plan->id])->first()){
-                        // Check subscriber to plan
-                        if(!$user->isSubscribedTo($plan->id))
-                        {
-                            $user->subscription($plan->tag)->renew();
-                        }
-                    }
-                    else{
-                        $user->newSubscription(
-                            $plan->tag, // identifier tag of the subscription. If your application offers a single subscription, you might call this 'main' or 'primary'
-                            $plan, // Plan or PlanCombination instance your subscriber is subscribing to
-                            $plan->name, // Human-readable name for your subscription
-                            $plan->description // Description
-                        );
-                    }
-                }
-            }
+            $this->_payService->addSubscriptionForUser($request);
         }
     }
-    public function payboxResultSuccess(Request $request)
+
+    public function payboxSuccessURL(Request $request)
     {
         if ($this->getResult($request)) {
-            $link = "https://xn--80a4d.kz/dashboard/plan-mode?success=1";
+//            $link = "https://xn--80a4d.kz/dashboard/plan-mode?success=1";
+            $link = "http://localhost:4200/dashboard/plan-mode?success=1";
         } else {
             $link = "https://xn--80a4d.kz/dashboard/plan-mode?error=1";
         }
         return redirect($link);
     }
 
-    public function payboxResultFailure(Request $request)
+    public function payboxFailureURL(Request $request)
     {
-        return redirect('https://xn--80a4d.kz/dashboard/plan-mode?error=1');
+//        return redirect('https://xn--80a4d.kz/dashboard/plan-mode?error=1');
+        return redirect('http://localhost:4200/dashboard/plan-mode?error=1');
     }
 
     public function getResult(Request $request)
@@ -83,7 +63,12 @@ class PayboxController extends Controller
         $response = $this->_payService->getResultStatus($request);
         $content = json_decode($response->content(), true);
         if ($content['pg_status'] == 'ok') {
-            return true;
+            if ($content['pg_payment_status'] == 'success') {
+                $this->_payService->addSubscriptionForUser($request);
+                return true;
+            } else {
+                return false;
+            }
         } else {
             return false;
         }

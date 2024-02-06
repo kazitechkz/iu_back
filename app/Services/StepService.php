@@ -115,7 +115,7 @@ class StepService
                 $bonus = UserStepsBonus::firstWhere(['step_id' => $step_id, 'user_id' => $user_id]);
                 if (!$bonus) {
                     UserStepsBonus::create(['step_id' => $step_id, 'user_id' => $user_id]);
-                    $user->deposit(10);
+                    $user->deposit(30);
                 }
             }
         } else {

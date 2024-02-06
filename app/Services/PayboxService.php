@@ -3,8 +3,11 @@
 namespace App\Services;
 
 use App\Models\PayboxOrder;
+use App\Models\User;
 use App\Traits\ResponseJSON;
 use Bpuig\Subby\Models\Plan;
+use Bpuig\Subby\Models\PlanSubscription;
+use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
 class PayboxService
@@ -23,6 +26,7 @@ class PayboxService
         PayboxOrder::where('order_id', $order_id)->firstOrCreate([
             'order_id' => $order_id,
             'price' => $this->getSum($request['time']),
+            'description' => $this->getDescription($request['time']),
             'user_id' => auth()->guard('api')->id(),
             'subjects' => $subjects,
             'plans' => $plans,
@@ -38,10 +42,13 @@ class PayboxService
             'pg_payment_route' => 'frame',
             'pg_currency' => 'KZT',
             'pg_check_url' => '',
-            'pg_result_url' => 'https://back.xn--80a4d.kz/api/pay/result',
+//            'pg_result_url' => 'https://back.xn--80a4d.kz/api/pay/result',
+            'pg_result_url' => 'http://localhost:8000/api/pay/result',
             'pg_request_method' => 'POST',
-            'pg_success_url' => 'https://back.xn--80a4d.kz/api/pay/success',
-            'pg_failure_url' => 'https://back.xn--80a4d.kz/api/pay/failure',
+//            'pg_success_url' => 'https://back.xn--80a4d.kz/api/pay/success',
+//            'pg_failure_url' => 'https://back.xn--80a4d.kz/api/pay/failure',
+            'pg_success_url' => 'http://localhost:8000/api/pay/success',
+            'pg_failure_url' => 'http://localhost:8000/api/pay/failure',
             'pg_success_url_method' => 'POST',
             'pg_failure_url_method' => 'POST',
             'pg_payment_system' => 'EPAYWEBKZT',
@@ -51,9 +58,7 @@ class PayboxService
             'pg_testing_mode' => '1',
             'pg_recurring_start' => '1',
             'pg_recurring_lifetime' => '156',
-            'pg_user_id' => strval(auth()->guard('api')->id()),
-            'pg_param1' => auth()->guard('api')->id(),
-            'xutokupu' => '11'
+            'pg_user_id' => strval(auth()->guard('api')->id())
         ];
 
         /**
@@ -190,5 +195,31 @@ class PayboxService
         }
 
         return $arrFlatParams;
+    }
+
+    public function addSubscriptionForUser(Request $request): void
+    {
+        $order = PayboxOrder::where('order_id', $request['pg_order_id'])->first();
+        if ($order) {
+            $user = User::find($order->user_id);
+            $order->status = 1;
+            $order->save();
+            foreach ($order->plans as $item) {
+                $plan = Plan::find($item);
+                if (PlanSubscription::where(["subscriber_id" => $order->user_id, "plan_id" => $plan->id])->first()) {
+                    // Check subscriber to plan
+                    if (!$user->isSubscribedTo($plan->id)) {
+                        $user->subscription($plan->tag)->renew();
+                    }
+                } else {
+                    $user->newSubscription(
+                        $plan->tag, // identifier tag of the subscription. If your application offers a single subscription, you might call this 'main' or 'primary'
+                        $plan, // Plan or PlanCombination instance your subscriber is subscribing to
+                        $plan->name, // Human-readable name for your subscription
+                        $plan->description // Description
+                    );
+                }
+            }
+        }
     }
 }
