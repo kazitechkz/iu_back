@@ -77,7 +77,8 @@ class Edit extends Component
     public function render(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         if($this->subject_id){
-            $this->plans = Plan::where("tag","{$this->subject_id}")->get();
+            $tag = $this->subject_id.'.1';
+            $this->plans = Plan::where("tag",$tag)->get();
             $this->categories = Category::where(["subject_id" => $this->subject_id])->get();
         }
         return view('livewire.step.edit');
