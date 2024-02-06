@@ -44,8 +44,8 @@ class PayboxController extends Controller
     public function payboxSuccessURL(Request $request)
     {
         if ($this->getResult($request)) {
-//            $link = "https://xn--80a4d.kz/dashboard/plan-mode?success=1";
-            $link = "http://localhost:4200/dashboard/plan-mode?success=1";
+            $link = "https://xn--80a4d.kz/dashboard/plan-mode?success=1";
+//            $link = "http://localhost:4200/dashboard/plan-mode?success=1";
         } else {
             $link = "https://xn--80a4d.kz/dashboard/plan-mode?error=1";
         }
@@ -54,8 +54,8 @@ class PayboxController extends Controller
 
     public function payboxFailureURL(Request $request)
     {
-//        return redirect('https://xn--80a4d.kz/dashboard/plan-mode?error=1');
-        return redirect('http://localhost:4200/dashboard/plan-mode?error=1');
+        return redirect('https://xn--80a4d.kz/dashboard/plan-mode?error=1');
+//        return redirect('http://localhost:4200/dashboard/plan-mode?error=1');
     }
 
     public function getResult(Request $request)
