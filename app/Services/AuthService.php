@@ -19,6 +19,7 @@ class AuthService
             'file' => $user->file,
             'birth_date' => $user->birth_date,
             'phone' => $user->phone,
+            'balance' => $user->balanceInt,
             'role' => $user->roles->count() ? $user->roles[0]['name'] : '',
             'subscription' => $user->activeSubscriptions()->toArray()
         ]);

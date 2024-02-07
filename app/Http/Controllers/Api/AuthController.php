@@ -63,6 +63,7 @@ class AuthController extends Controller
                 $input['role'] = 'student';
             }
             $user = User::add($input);
+            $user->deposit(1000);
             $role = Role::findByName($input['role']);
             if ($role) {
                 $user->assignRole($input['role']);
