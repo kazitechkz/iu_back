@@ -135,6 +135,7 @@ if(env("IS_API",true)){
             Route::post("/discuss/create",[ApiForumController::class,"createDiscuss"]);
             //Wallet
             Route::get("/wallet",[ApiWalletController::class,"index"]);
+            Route::get("/wallet-rating",[ApiWalletController::class,"getAllWalletRating"]);
             Route::get("/my-balance",[ApiWalletController::class,"myBalance"]);
             Route::get("/my-wallet",[ApiWalletController::class,"myWallet"]);
             Route::post("/wallet-transfer",[ApiWalletController::class,"transfer"]);
