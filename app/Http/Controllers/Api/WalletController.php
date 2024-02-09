@@ -45,7 +45,7 @@ class WalletController extends Controller
     public function getAllWalletRating()
     {
         try {
-            $ratings = Wallet::with('holder')->orderBy('balance', 'DESC')->paginate(10);
+            $ratings = Wallet::with('holder')->orderBy('balance', 'DESC')->paginate(20);
             return response()->json(new ResponseJSON(
                 status: true, data: $ratings
             ));

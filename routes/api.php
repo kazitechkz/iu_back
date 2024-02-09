@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\AuthController as ApiAuthController;
 use App\Http\Controllers\Api\CategoryController as ApiCategoryController;
 use App\Http\Controllers\Api\FactController as ApiFactController;
+use App\Http\Controllers\Api\OrderController as ApiOrderController;
 use App\Http\Controllers\Api\PayboxController;
 use App\Http\Controllers\Api\SubCategoryController as ApiSubCategoryController;
 use App\Http\Controllers\Api\ClassroomController;
@@ -186,6 +187,8 @@ if(env("IS_API",true)){
             Route::post("/finish-career-quiz",[ApiCareerController::class,"finishCareerQuiz"]);
             Route::get("/result-career-quiz/{id}",[ApiCareerController::class,"resultCareerQuiz"]);
 
+            //ORDERS
+            Route::get('my-orders', [ApiOrderController::class, 'getAll']);
 
             //TEACHER_ROUTES
             Route::prefix('teacher')->name('teacher.')->group(function () {

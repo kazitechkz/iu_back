@@ -17,13 +17,16 @@ class PayboxService
         $PG_MERCHANT_ID = env('PG_MERCHANT_ID');
         $PG_SECRET_KEY = env('PG_SECRET_KEY');
         $subjects = [1, 2, 3, intval($request['subject_first']), intval($request['subject_second'])];
-        $order_id = strval(rand(0, 999999));
+        $order_id = strval(rand(0, 999999999));
+        if (PayboxOrder::where('order_id', $order_id)->first()) {
+            $order_id = strval(rand(0, 999999999));
+        }
         $plans = [];
         foreach ($subjects as $subject) {
             $plan = Plan::where('tag', $this->getPlanTag($subject, $request['time']))->first();
             $plans[] = $plan->id;
         }
-        PayboxOrder::where('order_id', $order_id)->firstOrCreate([
+        PayboxOrder::where('order_id', $order_id)->create([
             'order_id' => $order_id,
             'price' => $this->getSum($request['time']),
             'description' => $this->getDescription($request['time']),
