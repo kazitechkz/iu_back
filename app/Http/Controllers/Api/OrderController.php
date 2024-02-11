@@ -23,9 +23,6 @@ class OrderController extends Controller
         try {
             $user = auth()->guard('api')->user();
             $orders = PayboxOrder::where('user_id', $user->id)->get();
-//            $subs = $this->planService->get_subjects();
-//            $data['subs'] = $subs;
-            $data['orders'] = $orders;
             return response()->json(new ResponseJSON(
                 status: true, data: $orders
             ));
