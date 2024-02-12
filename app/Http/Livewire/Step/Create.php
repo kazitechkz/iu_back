@@ -38,7 +38,7 @@ class Create extends Component
         $this->subject_id = old("subject_id");
         $this->category_id = old("category_id");
         $this->plan_id = old("plan_id");
-        $this->level = old("level")??0;
+        $this->level = old("level") ?? 0;
         $this->is_active = old("is_active") ?? true;
         $this->is_free = old("is_free") ?? false;
         $this->image_url = old("image_url");
@@ -49,6 +49,7 @@ class Create extends Component
     {
         return (new StepCreateRequest())->rules();
     }
+
     public function updated($propertyName): void
     {
         $this->validateOnly($propertyName);
@@ -56,8 +57,8 @@ class Create extends Component
 
     public function updatedSubjectId(): void
     {
-        $tag = $this->subject_id.'.1';
-        $this->plans = Plan::where("tag","{$tag}")->get();
+        $tag = $this->subject_id . '.1';
+        $this->plans = Plan::where("tag", $tag)->get();
         $this->categories = Category::where(["subject_id" => $this->subject_id])->get();
         $this->plan_id = null;
         $this->category_id = null;
