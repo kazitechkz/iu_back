@@ -34,7 +34,7 @@ class CareerQuizEdit extends FormRequest
             'currency'=>"required",
             "authors"=>"sometimes|nullable",
             "authors.*"=>"exists:career_quiz_authors,id",
-            "code"=>"sometimes|nullable|in_array:['ONE_ANSWER','DRAG_DROP']"
+            "code"=>"sometimes|nullable"
         ];
     }
 }

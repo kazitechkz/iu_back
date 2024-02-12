@@ -22,7 +22,7 @@ class OrderController extends Controller
     {
         try {
             $user = auth()->guard('api')->user();
-            $orders = PayboxOrder::where('user_id', $user->id)->get();
+            $orders = PayboxOrder::where('user_id', $user->id)->latest()->paginate(5);
             return response()->json(new ResponseJSON(
                 status: true, data: $orders
             ));
