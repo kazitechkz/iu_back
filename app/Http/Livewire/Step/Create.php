@@ -56,7 +56,8 @@ class Create extends Component
 
     public function updatedSubjectId(): void
     {
-        $this->plans = Plan::where("tag","{$this->subject_id}")->get();
+        $tag = $this->subject_id.'.1';
+        $this->plans = Plan::where("tag","{$tag}")->get();
         $this->categories = Category::where(["subject_id" => $this->subject_id])->get();
         $this->plan_id = null;
         $this->category_id = null;
