@@ -80,4 +80,30 @@ class PayboxController extends Controller
             return ResponseService::DefineException($exception);
         }
     }
+    public function payboxCareerResultURL(Request $request)
+    {
+        if ($request['pg_result'] == 1) {
+            $this->_payService->addAcceptForUser($request);
+        }
+    }
+    public function payboxCareerSuccessURL(Request $request)
+    {
+        $response = $this->_payService->getResultStatus($request);
+        $content = json_decode($response->content(), true);
+        if ($content['pg_status'] == 'ok') {
+            if ($content['pg_payment_status'] == 'success') {
+                $this->_payService->addAcceptForUser($request);
+                return redirect('http://localhost:4200/dashboard/my-profile?success=1');
+            } else {
+                return redirect('https://xn--80a4d.kz/dashboard/plan-mode?error=1');
+            }
+        } else {
+            return redirect('https://xn--80a4d.kz/dashboard/plan-mode?error=1');
+        }
+    }
+    public function payboxCareerFailureURL(Request $request)
+    {
+//        return redirect('https://xn--80a4d.kz/dashboard/plan-mode?error=1');
+        return redirect('http://localhost:4200/dashboard/my-profile?error=1');
+    }
 }

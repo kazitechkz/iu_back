@@ -12,6 +12,7 @@ use App\Traits\ResponseJSON;
 use Bpuig\Subby\Models\Plan;
 use Bpuig\Subby\Models\PlanSubscription;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 
 class PayboxService
@@ -47,13 +48,10 @@ class PayboxService
             'pg_payment_route' => 'frame',
             'pg_currency' => 'KZT',
             'pg_check_url' => '',
-//            'pg_result_url' => 'https://back.xn--80a4d.kz/api/pay/result',
-            'pg_result_url' => 'http://localhost:8000/api/pay/result',
+            'pg_result_url' => $this->getRedirectURL()['payResultURL'],
             'pg_request_method' => 'POST',
-//            'pg_success_url' => 'https://back.xn--80a4d.kz/api/pay/success',
-//            'pg_failure_url' => 'https://back.xn--80a4d.kz/api/pay/failure',
-            'pg_success_url' => 'http://localhost:8000/api/pay/success',
-            'pg_failure_url' => 'http://localhost:8000/api/pay/failure',
+            'pg_success_url' => $this->getRedirectURL()['paySuccessURL'],
+            'pg_failure_url' => $this->getRedirectURL()['payFailureURL'],
             'pg_success_url_method' => 'POST',
             'pg_failure_url_method' => 'POST',
             'pg_payment_system' => 'EPAYWEBKZT',
@@ -133,8 +131,10 @@ class PayboxService
                     'order_id' => $order_id,
                     'career_quiz_id' => $quiz->id,
                     'career_group_id' => $quiz->group_id,
-                    'is_used' => false,
-                    'status' => false
+                    'is_used' => true,
+                    'status' => false,
+                    'created_at' => Carbon::now(),
+                    'updated_at' => Carbon::now()
                 ];
             }
             CareerCoupon::insert($raw_data);
@@ -146,7 +146,7 @@ class PayboxService
                 'order_id' => $order_id,
                 'career_quiz_id' => $quiz->id,
                 'career_group_id' => $quiz->group_id,
-                'is_used' => false,
+                'is_used' => true,
                 'status' => false
             ]);
         } else {
@@ -161,13 +161,10 @@ class PayboxService
             'pg_payment_route' => 'frame',
             'pg_currency' => 'KZT',
             'pg_check_url' => '',
-//            'pg_result_url' => 'https://back.xn--80a4d.kz/api/pay/result',
-            'pg_result_url' => 'http://localhost:8000/api/pay/result',
+            'pg_result_url' => $this->getRedirectURL()['payCareerResultURL'],
             'pg_request_method' => 'POST',
-//            'pg_success_url' => 'https://back.xn--80a4d.kz/api/pay/success',
-//            'pg_failure_url' => 'https://back.xn--80a4d.kz/api/pay/failure',
-            'pg_success_url' => 'http://localhost:8000/api/pay/success',
-            'pg_failure_url' => 'http://localhost:8000/api/pay/failure',
+            'pg_success_url' => $this->getRedirectURL()['payCareerSuccessURL'],
+            'pg_failure_url' => $this->getRedirectURL()['payCareerFailureURL'],
             'pg_success_url_method' => 'POST',
             'pg_failure_url_method' => 'POST',
             'pg_payment_system' => 'EPAYWEBKZT',
@@ -181,7 +178,17 @@ class PayboxService
         ];
         return $this->getInitPay($request, $requestForSignature);
     }
-
+    public function addAcceptForUser(Request $request): void
+    {
+        $coupons = CareerCoupon::where('order_id', $request['pg_order_id'])->get();
+        if ($coupons) {
+            foreach ($coupons as $coupon) {
+                $coupon->status = true;
+                $coupon->is_used = false;
+                $coupon->save();
+            }
+        }
+    }
     //CORE
     public $TRANSACTION_CODES = [
         0 => "KUNDELIK.KZ",
@@ -237,6 +244,16 @@ class PayboxService
     {
         $data['PG_MERCHANT_ID'] = env('PG_MERCHANT_ID');
         $data['PG_SECRET_KEY'] = env('PG_SECRET_KEY');
+        return $data;
+    }
+    public function getRedirectURL(): array
+    {
+        $data['payResultURL'] = env('APP_DEBUG') ? 'http://localhost:8000/api/pay/result' : 'https://back.xn--80a4d.kz/api/pay/result';
+        $data['paySuccessURL'] = env('APP_DEBUG') ? 'http://localhost:8000/api/pay/success' : 'https://back.xn--80a4d.kz/api/pay/success';
+        $data['payFailureURL'] = env('APP_DEBUG') ? 'http://localhost:8000/api/pay/failure' : 'https://back.xn--80a4d.kz/api/pay/failure';
+        $data['payCareerResultURL'] = env('APP_DEBUG') ? 'http://localhost:8000/api/pay/career-result' : 'https://back.xn--80a4d.kz/api/pay/career-result';
+        $data['payCareerSuccessURL'] = env('APP_DEBUG') ? 'http://localhost:8000/api/pay/career-success' : 'https://back.xn--80a4d.kz/api/pay/career-success';
+        $data['payCareerFailureURL'] = env('APP_DEBUG') ? 'http://localhost:8000/api/pay/career-failure' : 'https://back.xn--80a4d.kz/api/pay/career-failure';
         return $data;
     }
     private function getInitPay($request, $requestForSignature): \Illuminate\Http\JsonResponse
