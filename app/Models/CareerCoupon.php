@@ -33,7 +33,6 @@ class CareerCoupon extends Model
 {
     use CRUD;
 	protected $table = 'career_coupons';
-
 	protected $casts = [
 		'user_id' => 'int',
 		'order_id' => 'int',
@@ -42,7 +41,6 @@ class CareerCoupon extends Model
 		'is_used' => 'bool',
 		'status' => 'bool'
 	];
-
 	protected $fillable = [
 		'user_id',
 		'order_id',
@@ -51,6 +49,7 @@ class CareerCoupon extends Model
 		'is_used',
 		'status'
 	];
+    public $timestamps = true;
 
 	public function career_quiz_group()
 	{
