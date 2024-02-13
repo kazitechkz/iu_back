@@ -186,6 +186,8 @@ if(env("IS_API",true)){
             Route::get("/pass-career-quiz/{id}",[ApiCareerController::class,"passCareerQuiz"]);
             Route::post("/finish-career-quiz",[ApiCareerController::class,"finishCareerQuiz"]);
             Route::get("/result-career-quiz/{id}",[ApiCareerController::class,"resultCareerQuiz"]);
+            Route::get("/career-quiz-groups-list",[ApiCareerController::class,"careerQuizGroupList"]);
+            Route::get("/my-career-attempts",[ApiCareerController::class,"myCareerAttempts"]);
 
             //ORDERS
             Route::get('my-orders', [ApiOrderController::class, 'getAll']);

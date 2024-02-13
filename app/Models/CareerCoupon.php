@@ -6,12 +6,13 @@
 
 namespace App\Models;
 
+use App\Traits\CRUD;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class CareerCoupon
- * 
+ *
  * @property int $id
  * @property int $user_id
  * @property int $order_id
@@ -21,7 +22,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property bool $status
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * 
+ *
  * @property CareerQuizGroup $career_quiz_group
  * @property CareerQuiz $career_quiz
  * @property User $user
@@ -30,6 +31,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class CareerCoupon extends Model
 {
+    use CRUD;
 	protected $table = 'career_coupons';
 
 	protected $casts = [
