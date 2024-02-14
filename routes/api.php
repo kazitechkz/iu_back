@@ -186,6 +186,8 @@ if(env("IS_API",true)){
             Route::get("/pass-career-quiz/{id}",[ApiCareerController::class,"passCareerQuiz"]);
             Route::post("/finish-career-quiz",[ApiCareerController::class,"finishCareerQuiz"]);
             Route::get("/result-career-quiz/{id}",[ApiCareerController::class,"resultCareerQuiz"]);
+            Route::get("/career-quiz-groups-list",[ApiCareerController::class,"careerQuizGroupList"]);
+            Route::get("/my-career-attempts",[ApiCareerController::class,"myCareerAttempts"]);
 
             //ORDERS
             Route::get('my-orders', [ApiOrderController::class, 'getAll']);
@@ -220,9 +222,13 @@ if(env("IS_API",true)){
     Route::get("/test",[\App\Http\Controllers\Api\TestController::class,"test"]);
     Route::post("/send-whatsapp",[\App\Http\Controllers\Api\TestController::class,"sendWhatsapp"]);
     Route::post("/paybox",[PayboxController::class,"paybox"]);
+    Route::post("/pay-career",[PayboxController::class,"payCareer"]);
     Route::post("/pay/result",[PayboxController::class,"payboxResultURL"]);
+    Route::post("/pay/career-result",[PayboxController::class,"payboxCareerResultURL"]);
     Route::post("/pay/success",[PayboxController::class,"payboxSuccessURL"]);
+    Route::post("/pay/career-success",[PayboxController::class,"payboxCareerSuccessURL"]);
     Route::post("/pay/failure",[PayboxController::class,"payboxFailureURL"]);
+    Route::post("/pay/career-failure",[PayboxController::class,"payboxCareerFailureURL"]);
 }
 else{
     Route::get("/",function (){
