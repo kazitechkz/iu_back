@@ -65,7 +65,10 @@ class CareerController extends Controller
             }
             $purchased = CareerCoupon::where(["user_id" => $user->id,"career_quiz_id" => $quiz->id,"is_used" => false,"status" => true])->exists();
             if(!$purchased){
-                throw new NotFoundException("Вы не приобрели данный продукт");
+                return ResponseService::NotFound("Вы не приобрели данный продукт");
+            }
+            if($quiz->career_quiz_questions->count() == 0){
+                return ResponseService::ValidationException("Вопросов недостаточно");
             }
             return response()->json(new ResponseJSON(status: true,data: $quiz),200);
         }
@@ -82,7 +85,7 @@ class CareerController extends Controller
                 throw new NotFoundException("Вы не приобрели данный продукт");
             }
             $attemptId = $this->careerQuizService->finishCareerQuiz($resultQuiz);
-            $purchased->edit(["is_user"=>true]);
+            $purchased->edit(["is_used"=>true]);
             return response()->json(new ResponseJSON(status: true,data: $attemptId),200);
         }
         catch (\Exception $exception) {
