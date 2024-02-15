@@ -24,6 +24,8 @@ use App\Http\Controllers\Admin\SubjectController as AdminSubjectController;
 use App\Http\Controllers\Admin\SubscriptionController as AdminSubscriptionController;
 use App\Http\Controllers\Admin\TranslationController as AdminTranslationController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
+use App\Http\Controllers\Admin\UserHubController as AdminUserHubController;
+use App\Http\Controllers\Admin\HubController as AdminHubController;
 use App\Http\Controllers\Admin\WalletController as AdminWalletController;
 use App\Http\Controllers\Admin\DiscussController as AdminDiscussController;
 use App\Http\Controllers\Admin\TournamentController as AdminTournamentController;
@@ -101,6 +103,8 @@ if(env("IS_WEB",true)) {
     ], function () {
         Route::group(["prefix" => "dashboard", "middleware" => "auth"], function () {
             Route::resource("user", AdminUserController::class);
+            Route::resource("user-hubs", AdminUserHubController::class);
+            Route::resource("hubs", AdminHubController::class);
             Route::resource("role", AdminRoleController::class);
             Route::resource("locale", AdminLocaleController::class);
             Route::resource("permission", AdminPermissionController::class);

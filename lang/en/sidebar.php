@@ -3,6 +3,7 @@
 return [
     'home' => 'Home',
     'user' => 'Users',
+    'user_hubs' => 'User Hubs',
     'subject' => 'Subjects',
     'role' => 'Roles',
     'permission' => 'Permissions',

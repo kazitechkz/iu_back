@@ -6,7 +6,9 @@ use App\DTOs\AuthDTO;
 use App\DTOs\UserDTO;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserCreateRequest;
+use App\Models\Hub;
 use App\Models\User;
+use App\Models\UserHub;
 use App\Models\UserResetToken;
 use App\Services\AuthService;
 use App\Traits\ResponseJSON;
@@ -19,6 +21,13 @@ use Spatie\Permission\Models\Role;
 
 class AuthController extends Controller
 {
+    private AuthService $authService;
+
+    public function __construct(AuthService $authService)
+    {
+        $this->authService = $authService;
+    }
+
     /**
      * Login The User
      * @param Request $request
@@ -35,18 +44,11 @@ class AuthController extends Controller
             if ($validateUser->fails()) {
                 return response()->json(new ResponseJSON(status: false, message: "Validation Error", errors: $validateUser->errors()), 400);
             }
-            if (!Auth::attempt($request->only(['email', 'password']))) {
-                return response()->json(new ResponseJSON(status: false, message: "Email & Password does not match with our record."), 400);
-            }
-            $user = User::with('roles')->where('email', $request->email)->first();
-            $data = AuthService::initialAuthDTO($user);
-            return response()->json(new ResponseJSON(status: true, message: "User Logged In Successfully", data: $data->data));
-
+            return $this->authService->login($request);
         } catch (\Throwable $th) {
             return response()->json(new ResponseJSON(status: false, errors: $th->getMessage()), 500);
         }
     }
-
     public function register(Request $request)
     {
         try {
@@ -54,69 +56,29 @@ class AuthController extends Controller
             if ($validateUser->fails()) {
                 return response()->json(new ResponseJSON(status: false, message: "Validation Error", errors: $validateUser->errors()), 400);
             }
-            $input = $request->all();
-            $input["password"] = bcrypt($input["password"]);
-            $input["email"] = strtolower($input["email"]);
-            $input['username'] = $input['email'];
-            if ($input['role'] == 'teacher') {
-                $input['role'] = 'teacher';
-            } else {
-                $input['role'] = 'student';
-            }
-            $user = User::add($input);
-            $user->deposit(1000);
-            $role = Role::findByName($input['role']);
-            if ($role) {
-                $user->assignRole($input['role']);
-            }
-            return response()->json(new ResponseJSON(status: true, message: "User registered successfully"), 200);
+            return $this->authService->register($request);
         } catch (\Throwable $th) {
             return response()->json(new ResponseJSON(status: false, message: $th->getMessage()), 500);
         }
     }
-
     public function sendResetToken(Request $request){
         try {
             $validateUser = Validator::make($request->all(), ["email"=>"required|email|max:255"]);
             if ($validateUser->fails()) {
                 return response()->json(new ResponseJSON(status: false, message: "Validation Error", errors: $validateUser->errors(),data: false), 400);
             }
-            $user = User::where(["email" => $request->get("email")])->first();
-            if(!$user){
-                return response()->json(new ResponseJSON(status: true, message: "User not found",data: false), 422);
-            }
-            UserResetToken::where(["user_id" => $user->id])->update(["is_used" => true]);
-            $token = random_int(100000, 999999);
-            UserResetToken::add(["user_id"=>$user->id,"email"=>$request->get("email"),"expired_at"=>Carbon::now()->addHour(2),"code"=>$token]);
-            return response()->json(new ResponseJSON(status: true, message: "Token Sended to your account",data: true), 200);
+            $this->authService->sendResetToken($request);
         } catch (\Throwable $th) {
             return response()->json(new ResponseJSON(status: false, message: $th->getMessage(),data: false), 500);
         }
     }
-
-
     public function resetPassword(Request $request){
         try {
             $validateUser = Validator::make($request->all(), ["email"=>"required|email|max:255","password"=>"required|min:4|max:20","code"=>"required"]);
             if ($validateUser->fails()) {
                 return response()->json(new ResponseJSON(status: false, message: "Validation Error", errors: $validateUser->errors(),data: false), 400);
             }
-            $reset_token = UserResetToken::where(["code" => $request->get("code"),"email" => $request->get("email"),"is_used" => false])->first();
-            if(!$reset_token){
-                return response()->json(new ResponseJSON(status: true, message: "Token is not valid or used",data: false), 422);
-            }
-            if($reset_token->expired_at < Carbon::now()){
-                $reset_token->edit(["is_used"=>true]);
-                return response()->json(new ResponseJSON(status: true, message: "Token is expired",data: false), 422);
-            }
-            $user = User::where(["email" => $request->get("email")])->first();
-            if(!$user){
-                return response()->json(new ResponseJSON(status: true, message: "User not found",data: false), 422);
-            }
-            $user->password = bcrypt($request->get("password"));
-            $user->save();
-            UserResetToken::where(["user_id" => $reset_token->user_id])->update(["is_used" => true]);
-            return response()->json(new ResponseJSON(status: true, message: "Password successfully changed",data: true), 200);
+            $this->authService->resetPassword($request);
         } catch (\Throwable $th) {
             return response()->json(new ResponseJSON(status: false, message: $th->getMessage(),data: false), 500);
         }
@@ -130,6 +92,4 @@ class AuthController extends Controller
             return response()->json(new ResponseJSON(status: true, data:false), 403);
         }
     }
-
-
 }

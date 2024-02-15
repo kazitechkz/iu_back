@@ -36,7 +36,7 @@ class PayboxController extends Controller
     public function payboxResultURL(Request $request)
     {
         if ($request['pg_result'] == 1) {
-            $this->_payService->addSubscriptionForUser($request);
+            $this->_payService->addSubscriptionForUser($request, true);
         }
     }
     public function payboxSuccessURL(Request $request)

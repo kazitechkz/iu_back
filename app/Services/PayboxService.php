@@ -85,10 +85,11 @@ class PayboxService
             default => $this->TRANSACTION_CODES[1]
         };
     }
-    public function addSubscriptionForUser(Request $request): void
+    public function addSubscriptionForUser(Request $request, bool $cashback = false): void
     {
         $order = PayboxOrder::where('order_id', $request['pg_order_id'])->first();
         if ($order) {
+            $cash = intval($order->price*0.1);
             $user = User::find($order->user_id);
             $order->status = 1;
             $order->save();
@@ -107,6 +108,9 @@ class PayboxService
                         $plan->description // Description
                     );
                 }
+            }
+            if ($cashback) {
+                $user->deposit($cash);
             }
         }
     }

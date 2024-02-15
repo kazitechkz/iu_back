@@ -10,6 +10,12 @@
             <x-shared.sidebar-menu
                 :element-id="'users'" :name="__('sidebar.user')"
                 :icon="'fas fa-solid fa-building-shield'">
+                @can("user-hubs index")
+                <x-shared.sub-sidebar-menu
+                    :icon="'fa fa-user-group'"
+                    :link="'hubs.index'"
+                    :name="__('sidebar.user_hubs')"/>
+                @endcan
                 @can("user index")
                 <x-shared.sub-sidebar-menu
                     :icon="'fa fa-user'"

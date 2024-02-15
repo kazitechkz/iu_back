@@ -12,6 +12,8 @@ class AppConstants
     public const all_permissions = [
         //User
         "user create", "user index", "user edit", "user show",
+        //UserHubs
+        "user-hubs create", "user-hubs index", "user-hubs edit", "user-hubs show",
         //Role
         "role create", "role index", "role edit", "role show",
         //Locale
@@ -106,6 +108,7 @@ class AppConstants
         "career index", "career create", "career edit", "career show",
         //Permission for main menu
         "user management",
+        "user-hubs management",
         "locale management",
         "subject management",
         "finance management",
