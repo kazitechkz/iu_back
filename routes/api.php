@@ -219,6 +219,7 @@ if(env("IS_API",true)){
     Route::post("/auth/register",[ApiAuthController::class,"register"]);
     Route::post("/auth/send-reset-token",[ApiAuthController::class,"sendResetToken"]);
     Route::post("/auth/reset",[ApiAuthController::class,"resetPassword"]);
+    Route::get("/auth/user-check",[ApiAuthController::class,"userCheck"]);
     Route::get("/test",[\App\Http\Controllers\Api\TestController::class,"test"]);
     Route::post("/send-whatsapp",[\App\Http\Controllers\Api\TestController::class,"sendWhatsapp"]);
     Route::post("/paybox",[PayboxController::class,"paybox"]);

@@ -121,7 +121,7 @@ class PayboxService
             $order_id = strval(rand(0, 999999999));
         }
         $row = $request->all();
-        if ($row['career_group_id']) {
+        if ($request->has('career_group_id')) {
             $quizzes = CareerQuiz::where('group_id', $request['career_group_id'])->get();
             $price = (CareerQuizGroup::find($row["career_group_id"]))->price;
             $raw_data = [];
@@ -138,7 +138,7 @@ class PayboxService
                 ];
             }
             CareerCoupon::insert($raw_data);
-        } elseif ($row["career_quiz_id"]) {
+        } elseif ($request->has("career_quiz_id")) {
             $quiz = CareerQuiz::find($row["career_quiz_id"]);
             $price = $quiz->price;
             CareerCoupon::create([

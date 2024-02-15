@@ -14,6 +14,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Mockery\Exception;
 use Spatie\Permission\Models\Role;
 
 class AuthController extends Controller
@@ -118,6 +119,15 @@ class AuthController extends Controller
             return response()->json(new ResponseJSON(status: true, message: "Password successfully changed",data: true), 200);
         } catch (\Throwable $th) {
             return response()->json(new ResponseJSON(status: false, message: $th->getMessage(),data: false), 500);
+        }
+    }
+
+    public function userCheck(){
+        try{
+            return response()->json(new ResponseJSON(status: true, data: \auth()->guard("api")->check()), 200);
+        }
+        catch (Exception $exception){
+            return response()->json(new ResponseJSON(status: true, data:false), 403);
         }
     }
 
