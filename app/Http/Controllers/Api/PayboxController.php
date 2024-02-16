@@ -42,7 +42,7 @@ class PayboxController extends Controller
     public function payboxSuccessURL(Request $request)
     {
         if ($this->getResult($request)) {
-            $link = env('APP_DEBUG') ? 'http://localhost:4200/dashboard/my-profile?success=1' : 'https://iutest.kz/dashboard/plan-mode?success=1';
+            $link = env('APP_DEBUG') ? 'http://localhost:4200/dashboard/my-profile?success=1' : 'https://iutest.kz/dashboard/my-profile?success=1';
         } else {
             $link = "https://iutest.kz/dashboard/plan-mode?error=1";
         }
@@ -50,7 +50,7 @@ class PayboxController extends Controller
     }
     public function payboxFailureURL(Request $request)
     {
-        $link = env('APP_DEBUG') ? 'http://localhost:4200/dashboard/my-profile?error=1' : 'https://iutest.kz/dashboard/plan-mode?error=1';
+        $link = env('APP_DEBUG') ? 'http://localhost:4200/dashboard/my-profile?error=1' : 'https://iutest.kz/dashboard/my-profile?error=1';
         return redirect($link);
     }
     public function getResult(Request $request)
