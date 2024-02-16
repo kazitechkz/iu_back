@@ -222,14 +222,22 @@ if(env("IS_API",true)){
     Route::get("/auth/user-check",[ApiAuthController::class,"userCheck"]);
     Route::get("/test",[\App\Http\Controllers\Api\TestController::class,"test"]);
     Route::post("/send-whatsapp",[\App\Http\Controllers\Api\TestController::class,"sendWhatsapp"]);
+
     Route::post("/paybox",[PayboxController::class,"paybox"]);
-    Route::post("/pay-career",[PayboxController::class,"payCareer"]);
     Route::post("/pay/result",[PayboxController::class,"payboxResultURL"]);
-    Route::post("/pay/career-result",[PayboxController::class,"payboxCareerResultURL"]);
     Route::post("/pay/success",[PayboxController::class,"payboxSuccessURL"]);
-    Route::post("/pay/career-success",[PayboxController::class,"payboxCareerSuccessURL"]);
     Route::post("/pay/failure",[PayboxController::class,"payboxFailureURL"]);
+
+    Route::post("/pay-career",[PayboxController::class,"payCareer"]);
+    Route::post("/pay/career-result",[PayboxController::class,"payboxCareerResultURL"]);
+    Route::post("/pay/career-success",[PayboxController::class,"payboxCareerSuccessURL"]);
     Route::post("/pay/career-failure",[PayboxController::class,"payboxCareerFailureURL"]);
+
+    Route::post("/pay-tournament",[PayboxController::class,"payTournament"]);
+    Route::post("/pay/tournament-result",[PayboxController::class,"payTournamentResultURL"]);
+    Route::post("/pay/tournament-success",[PayboxController::class,"payTournamentSuccessURL"]);
+    Route::post("/pay/tournament-failure",[PayboxController::class,"payTournamentFailureURL"]);
+
 }
 else{
     Route::get("/",function (){
