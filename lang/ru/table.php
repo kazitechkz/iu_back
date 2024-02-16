@@ -536,5 +536,26 @@ return [
     "context_en"=>"Контекст на английском",
     "feature_id"=>"Характеристика",
 //    other
-    'select_category' => 'Выберите категорию'
+    'select_category' => 'Выберите категорию',
+    //IUTUBE AUTHOR
+    "iutube_author_lists" => "Список Авторов Видеороликов",
+    "iutube_author_management" => "Управление Авторами Видеороликов",
+    "iutube_author_create_title" => "Создать Автора Видеороликов",
+    "iutube_author_create_subtitle" => "Блок Создания Автора Видеороликов",
+    "iutube_author_edit_title" => "Изменить Автора Видеороликов",
+    "iutube_author_edit_subtitle" => "Блок Изменения Автора Видеороликов",
+    //IUTUBE VIDEO
+    "iutube_video_lists" => "Список Видеороликов",
+    "iutube_video_management" => "Управление Видеороликами",
+    "iutube_video_create_title" => "Создать Видеоролик",
+    "iutube_video_create_subtitle" => "Блок Создания Видеоролика",
+    "iutube_video_edit_title" => "Изменить Видеоролик",
+    "iutube_video_edit_subtitle" => "Блок Изменения Видеороликов",
+    //IUTUBE ACCESS
+    "iutube_access_lists" => "Список Доступа Видеороликам",
+    "iutube_access_management" => "Управление Доступами к Видеороликам",
+    "iutube_access_create_title" => "Создать Доступ к Видеоролику",
+    "iutube_access_create_subtitle" => "Блок Создания Доступа Видеоролика",
+    "iutube_access_edit_title" => "Изменить Доступ к Видеороликам",
+    "iutube_access_edit_subtitle" => "Блок Изменения Доступов к Видеороликами",
 ];

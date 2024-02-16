@@ -72,4 +72,7 @@ return [
     "career_quizzes"=>"Тесты",
     "career_quiz_questions"=>"Вопросы",
     "career_quiz_answers"=>"Ответы к тестам",
+    "iutube_authors"=>"Авторы роликов",
+    "iutube_access"=>"Доступы роликов",
+    "iutube_videos"=>"Видеоролики",
 ];

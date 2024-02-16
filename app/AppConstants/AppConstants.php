@@ -106,6 +106,8 @@ class AppConstants
         "stats-by-user index", "stats-by-user create", "stats-by-user edit", "stats-by-user show",
         //Career
         "career index", "career create", "career edit", "career show",
+        //IUTube
+        "iutube index", "iutube create", "iutube edit", "iutube show",
         //Permission for main menu
         "user management",
         "user-hubs management",
@@ -126,7 +128,8 @@ class AppConstants
         "fact management",
         "translation management",
         "stats-by-user management",
-        "career management"
+        "career management",
+        "iutube management"
     ];
 
     public const ADMIN_PERMISSIONS = self::all_permissions;

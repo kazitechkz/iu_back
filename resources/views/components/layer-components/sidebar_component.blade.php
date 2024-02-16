@@ -206,6 +206,22 @@
                             :name="__('sidebar.career_quiz_answers')"/>
             </x-shared.sidebar-menu>
         @endcan
+        @can('iutube management')
+            <x-shared.sidebar-menu :element-id="'iutube-index'" :name="__('sidebar.iutube_videos')" :icon="'fas fa-play'">
+                <x-shared.sub-sidebar-menu
+                    :icon="'fas fa-user'"
+                    :link="'iutube-author.index'"
+                    :name="__('sidebar.iutube_authors')"/>
+                <x-shared.sub-sidebar-menu
+                    :icon="'fas fa-lock-open'"
+                    :link="'iutube-access.index'"
+                    :name="__('sidebar.iutube_access')"/>
+                <x-shared.sub-sidebar-menu
+                    :icon="'fas fa-video'"
+                    :link="'iutube-video.index'"
+                    :name="__('sidebar.iutube_videos')"/>
+            </x-shared.sidebar-menu>
+        @endcan
         @can('content management')
             <x-shared.sidebar-menu :element-id="'content'" :name="__('sidebar.content')" :icon="'fas fa-wallet'">
                 @can("news index")
