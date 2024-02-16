@@ -42,7 +42,7 @@ class PayboxController extends Controller
     public function payboxSuccessURL(Request $request)
     {
         if ($this->getResult($request)) {
-            $link = env('APP_DEBUG') ? 'https://xn--80a4d.kz/dashboard/plan-mode?success=1' : 'http://localhost:4200/dashboard/my-profile?success=1';
+            $link = env('APP_DEBUG') ? 'http://localhost:4200/dashboard/my-profile?success=1' : 'https://xn--80a4d.kz/dashboard/plan-mode?success=1';
         } else {
             $link = "https://xn--80a4d.kz/dashboard/plan-mode?error=1";
         }
