@@ -42,17 +42,16 @@ class PayboxController extends Controller
     public function payboxSuccessURL(Request $request)
     {
         if ($this->getResult($request)) {
-//            $link = "https://xn--80a4d.kz/dashboard/plan-mode?success=1";
-            $link = "http://localhost:4200/dashboard/my-profile?success=1";
+            $link = env('APP_DEBUG') ? 'http://localhost:4200/dashboard/my-profile?success=1' : 'https://iutest.kz/dashboard/my-profile?success=1';
         } else {
-            $link = "https://xn--80a4d.kz/dashboard/plan-mode?error=1";
+            $link = env('APP_DEBUG') ? 'http://localhost:4200/dashboard/my-profile?error=1' : 'https://iutest.kz/dashboard/my-profile?error=1';
         }
         return redirect($link);
     }
     public function payboxFailureURL(Request $request)
     {
-//        return redirect('https://xn--80a4d.kz/dashboard/plan-mode?error=1');
-        return redirect('http://localhost:4200/dashboard/my-profile?error=1');
+        $link = env('APP_DEBUG') ? 'http://localhost:4200/dashboard/my-profile?error=1' : 'https://iutest.kz/dashboard/my-profile?error=1';
+        return redirect($link);
     }
     public function getResult(Request $request)
     {
@@ -93,17 +92,55 @@ class PayboxController extends Controller
         if ($content['pg_status'] == 'ok') {
             if ($content['pg_payment_status'] == 'success') {
                 $this->_payService->addAcceptForUser($request);
-                return redirect('http://localhost:4200/dashboard/my-profile?success=1');
+                $link = env('APP_DEBUG') ? 'http://localhost:4200/dashboard/my-profile?success=1' : 'https://iutest.kz/dashboard/my-profile?success=1';
             } else {
-                return redirect('https://xn--80a4d.kz/dashboard/plan-mode?error=1');
+                $link = env('APP_DEBUG') ? 'http://localhost:4200/dashboard/my-profile?error=1' : 'https://iutest.kz/dashboard/my-profile?error=1';
             }
         } else {
-            return redirect('https://xn--80a4d.kz/dashboard/plan-mode?error=1');
+            $link = env('APP_DEBUG') ? 'http://localhost:4200/dashboard/my-profile?error=1' : 'https://iutest.kz/dashboard/my-profile?error=1';
         }
+        return redirect($link);
     }
     public function payboxCareerFailureURL(Request $request)
     {
-//        return redirect('https://xn--80a4d.kz/dashboard/plan-mode?error=1');
-        return redirect('http://localhost:4200/dashboard/my-profile?error=1');
+        $link = env('APP_DEBUG') ? 'http://localhost:4200/dashboard/my-profile?error=1' : 'https://iutest.kz/dashboard/my-profile?error=1';
+        return redirect($link);
+    }
+    public function payTournament(Request $request) {
+        try {
+            $this->validate($request, [
+                'tournament_id' => 'required|exists:tournaments,id'
+            ]);
+            return $this->_payService->initialTournamentPay($request);
+        } catch (\Exception $exception) {
+            return ResponseService::DefineException($exception);
+        }
+    }
+    public function payTournamentResultURL(Request $request)
+    {
+        if ($request['pg_result'] == 1) {
+            $this->_payService->addTournamentOrder($request);
+        }
+    }
+    public function payTournamentSuccessURL(Request $request)
+    {
+        $response = $this->_payService->getResultStatus($request);
+        $content = json_decode($response->content(), true);
+        if ($content['pg_status'] == 'ok') {
+            if ($content['pg_payment_status'] == 'success') {
+                $this->_payService->addTournamentOrder($request);
+                $link = env('APP_DEBUG') ? 'http://localhost:4200/dashboard/my-profile?success=1' : 'https://iutest.kz/dashboard/my-profile?success=1';
+            } else {
+                $link = env('APP_DEBUG') ? 'http://localhost:4200/dashboard/my-profile?error=1' : 'https://iutest.kz/dashboard/my-profile?error=1';
+            }
+        } else {
+            $link = env('APP_DEBUG') ? 'http://localhost:4200/dashboard/my-profile?error=1' : 'https://iutest.kz/dashboard/my-profile?error=1';
+        }
+        return redirect($link);
+    }
+    public function payTournamentFailureURL(Request $request)
+    {
+        $link = env('APP_DEBUG') ? 'http://localhost:4200/dashboard/my-profile?error=1' : 'https://iutest.kz/dashboard/my-profile?error=1';
+        return redirect($link);
     }
 }

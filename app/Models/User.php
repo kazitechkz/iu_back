@@ -144,4 +144,18 @@ class User extends Authenticatable implements Searchable,Wallet
     {
         return $this->stats_by_questions()->whereHas('question', function ($q){$q->where('locale_id',2);});
     }
+
+    public function hubs()
+    {
+        return $this->hasMany(UserHub::class);
+    }
+
+    public function isKundelik(): bool
+    {
+        if ($this->hubs()->where('hub_id', 1)->first()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

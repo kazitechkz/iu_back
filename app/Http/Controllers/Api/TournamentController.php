@@ -46,8 +46,8 @@ class TournamentController extends Controller
             $tournament_ids = SubTournament::whereIn("id",$sub_tournament_ids)->pluck("tournament_id","tournament_id")->toArray();
             $open_tournaments = Tournament::
             where(["status"=>1])
-                ->where("start_at","<",Carbon::now())
-                ->where("end_at",">",Carbon::now())
+//                ->where("start_at","<",Carbon::now())
+//                ->where("end_at",">",Carbon::now())
                 ->with(["locales","subject","file"])
                 ->latest()
                 ->get();

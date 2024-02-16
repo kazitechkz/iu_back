@@ -7,6 +7,8 @@ use App\Models\CareerCoupon;
 use App\Models\CareerQuiz;
 use App\Models\CareerQuizGroup;
 use App\Models\PayboxOrder;
+use App\Models\Tournament;
+use App\Models\TournamentOrder;
 use App\Models\User;
 use App\Traits\ResponseJSON;
 use Bpuig\Subby\Models\Plan;
@@ -22,6 +24,7 @@ class PayboxService
     {
         $subjects = [1, 2, 3, intval($request['subject_first']), intval($request['subject_second'])];
         $order_id = strval(rand(0, 999999999));
+        $user = auth()->guard('api')->user();
         if (PayboxOrder::where('order_id', $order_id)->first()) {
             $order_id = strval(rand(0, 999999999));
         }
@@ -33,7 +36,7 @@ class PayboxService
         PayboxOrder::where('order_id', $order_id)->create([
             'order_id' => $order_id,
             'price' => $this->getSum($request['time']),
-            'description' => $this->getDescription($request['time']),
+            'description' => $user->isKundelik() ? $this->getDescription($request['time']).'.'.$this->TRANSACTION_CODES[0] : $this->getDescription($request['time']),
             'user_id' => auth()->guard('api')->id(),
             'subjects' => $subjects,
             'plans' => $plans,
@@ -119,8 +122,8 @@ class PayboxService
     public function initialCareerPay($request): \Illuminate\Http\JsonResponse
     {
         $order_id = strval(rand(0, 999999999));
-        $description = $this->TRANSACTION_CODES[4];
         $user = auth()->guard("api")->user();
+        $description = $user->isKundelik() ? $this->TRANSACTION_CODES[4].'.'.$this->TRANSACTION_CODES[0] : $this->TRANSACTION_CODES[4];
         if (CareerCoupon::where('order_id', $order_id)->first()) {
             $order_id = strval(rand(0, 999999999));
         }
@@ -193,6 +196,63 @@ class PayboxService
             }
         }
     }
+
+    //Tournament Pay
+    public function initialTournamentPay($request): \Illuminate\Http\JsonResponse
+    {
+        $order_id = strval(rand(0, 999999999));
+        $user = auth()->guard("api")->user();
+        $description = $user->isKundelik() ? $this->TRANSACTION_CODES[5].'.'.$this->TRANSACTION_CODES[0] : $this->TRANSACTION_CODES[5];
+        if (TournamentOrder::where('order_id', $order_id)->first()) {
+            $order_id = strval(rand(0, 999999999));
+        }
+        if ($request->has('tournament_id')) {
+            $tournament = Tournament::find($request['tournament_id']);
+            TournamentOrder::create([
+                'user_id' => $user->id,
+                'order_id' => $order_id,
+                'price' => $tournament->price,
+                'description' => $description,
+                'tournament_id' => $tournament->id,
+                'status' => false
+            ]);
+            $request = $requestForSignature = [
+                'pg_order_id' => $order_id,
+                'pg_merchant_id' => $this->getSecretKey()['PG_MERCHANT_ID'],
+                'pg_amount' => $tournament->price,
+                'pg_description' => $description,
+                'pg_salt' => Str::random(10),
+                'pg_payment_route' => 'frame',
+                'pg_currency' => 'KZT',
+                'pg_check_url' => '',
+                'pg_result_url' => $this->getRedirectURL()['payTournamentResultURL'],
+                'pg_request_method' => 'POST',
+                'pg_success_url' => $this->getRedirectURL()['payTournamentSuccessURL'],
+                'pg_failure_url' => $this->getRedirectURL()['payTournamentFailureURL'],
+                'pg_success_url_method' => 'POST',
+                'pg_failure_url_method' => 'POST',
+                'pg_payment_system' => 'EPAYWEBKZT',
+                'pg_lifetime' => '86400',
+                'pg_postpone_payment' => '0',
+                'pg_language' => 'ru',
+                'pg_testing_mode' => '1',
+                'pg_recurring_start' => '1',
+                'pg_recurring_lifetime' => '156',
+                'pg_user_id' => strval(auth()->guard('api')->id())
+            ];
+            return $this->getInitPay($request, $requestForSignature);
+        } else {
+            throw new BadRequestException("Вы не выбрали ни один из продуктов!");
+        }
+    }
+    public function addTournamentOrder(Request $request): void
+    {
+        $tournamentOrder = TournamentOrder::where('order_id', $request['pg_order_id'])->first();
+        if ($tournamentOrder) {
+            $tournamentOrder->status = true;
+            $tournamentOrder->save();
+        }
+    }
     //CORE
     public $TRANSACTION_CODES = [
         0 => "KUNDELIK.KZ",
@@ -200,6 +260,7 @@ class PayboxService
         2 => "Стандартный тариф",
         3 => "Премиум тариф",
         4 => "Профориентация",
+        5 => "Турнир"
     ];
     public function getResultStatus($req): \Illuminate\Http\JsonResponse
     {
@@ -258,6 +319,9 @@ class PayboxService
         $data['payCareerResultURL'] = env('APP_DEBUG') ? 'http://localhost:8000/api/pay/career-result' : 'https://back.xn--80a4d.kz/api/pay/career-result';
         $data['payCareerSuccessURL'] = env('APP_DEBUG') ? 'http://localhost:8000/api/pay/career-success' : 'https://back.xn--80a4d.kz/api/pay/career-success';
         $data['payCareerFailureURL'] = env('APP_DEBUG') ? 'http://localhost:8000/api/pay/career-failure' : 'https://back.xn--80a4d.kz/api/pay/career-failure';
+        $data['payTournamentResultURL'] = env('APP_DEBUG') ? 'http://localhost:8000/api/pay/tournament-result' : 'https://back.xn--80a4d.kz/api/pay/tournament-result';
+        $data['payTournamentSuccessURL'] = env('APP_DEBUG') ? 'http://localhost:8000/api/pay/tournament-success' : 'https://back.xn--80a4d.kz/api/pay/tournament-success';
+        $data['payTournamentFailureURL'] = env('APP_DEBUG') ? 'http://localhost:8000/api/pay/tournament-failure' : 'https://back.xn--80a4d.kz/api/pay/tournament-failure';
         return $data;
     }
     private function getInitPay($request, $requestForSignature): \Illuminate\Http\JsonResponse
