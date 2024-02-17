@@ -22,7 +22,7 @@ class IUTubeAccessEditRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "subject_id"=>"required|exists:iutube_access,id"
+            "subject_id"=>"required|exists:subjects,id"
         ];
     }
 }

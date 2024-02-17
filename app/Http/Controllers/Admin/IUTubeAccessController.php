@@ -89,7 +89,7 @@ class IUTubeAccessController extends Controller
     {
         try{
             if(auth()->user()->can("iutube edit") ){
-                $access = IutubeAccess::find($id);
+                $access = IutubeAccess::with("subject")->find($id);
                 if($access){
                     return view("admin.iutube-access.edit",compact("access"));
                 }

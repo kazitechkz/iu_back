@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\IUTubeVideo;
 
+use App\Models\File;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Models\IUTubeVideo;
@@ -14,6 +15,36 @@ class IUTubeVideoTable extends DataTableComponent
     public function configure(): void
     {
         $this->setPrimaryKey('id');
+        $this->setPerPageAccepted([20,40,80,100]);
+        $this->setPerPage(20);
+        $this->setBulkActions([
+            'deleteSelected' => 'Удалить'
+        ]);
+        $this->setPrimaryKey('id')
+            ->setTableRowUrl(function($row) {
+                return route('iutube-video.edit', $row);
+            });
+    }
+
+    public function bulkActions(): array
+    {
+        return [
+            'deleteSelected' => 'Удалить'
+        ];
+    }
+
+
+    public function deleteSelected(): void
+    {
+        $items = $this->getSelected();
+        foreach ($items as $key => $value) {
+            $model = IUTubeVideo::find($value);
+            if ($model) {
+                File::deleteFileFromAWS($model->image_url);
+            }
+            $model?->delete();
+        }
+        $this->clearSelected();
     }
 
     public function columns(): array
@@ -37,7 +68,7 @@ class IUTubeVideoTable extends DataTableComponent
                 ->searchable(),
             BooleanColumn::make("Доступ открыт всем", "is_public")
                 ->sortable(),
-            Column::make("Рекомендуемые", "is_recommended")
+            BooleanColumn::make("Рекомендуемые", "is_recommended")
                 ->sortable(),
             Column::make("Создан", "created_at")
                 ->sortable(),
