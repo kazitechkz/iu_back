@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Exceptions\TournamentException;
 use App\Http\Controllers\Controller;
 use App\Models\PayboxOrder;
+use App\Models\SubTournament;
+use App\Models\TournamentOrder;
 use App\Models\User;
 use App\Services\PayboxService;
 use App\Services\ResponseService;
+use App\Services\TournamentService;
 use Bpuig\Subby\Models\Plan;
 use Bpuig\Subby\Models\PlanSubscription;
 use Illuminate\Http\Request;
@@ -14,10 +18,12 @@ use Illuminate\Http\Request;
 class PayboxController extends Controller
 {
     private PayboxService $_payService;
+    private TournamentService $_tournamentService;
 
-    public function __construct(PayboxService $payService)
+    public function __construct(PayboxService $payService, TournamentService $tournamentService)
     {
         $this->_payService = $payService;
+        $this->_tournamentService = $tournamentService;
     }
 
     public function paybox(Request $request)
@@ -109,27 +115,36 @@ class PayboxController extends Controller
     public function payTournament(Request $request) {
         try {
             $this->validate($request, [
-                'tournament_id' => 'required|exists:tournaments,id'
+                'sub_tournament_id' => 'required|exists:sub_tournaments,id',
+                'locale_id' => 'required|exists:locales,id'
             ]);
             return $this->_payService->initialTournamentPay($request);
         } catch (\Exception $exception) {
             return ResponseService::DefineException($exception);
         }
     }
+
+    /**
+     * @throws TournamentException
+     */
     public function payTournamentResultURL(Request $request)
     {
         if ($request['pg_result'] == 1) {
-            $this->_payService->addTournamentOrder($request);
+            $this->_payService->addTournamentOrder($request, $this->_tournamentService);
         }
     }
+
+    /**
+     * @throws TournamentException
+     */
     public function payTournamentSuccessURL(Request $request)
     {
         $response = $this->_payService->getResultStatus($request);
         $content = json_decode($response->content(), true);
         if ($content['pg_status'] == 'ok') {
             if ($content['pg_payment_status'] == 'success') {
-                $this->_payService->addTournamentOrder($request);
-                $link = env('APP_DEBUG') ? 'http://localhost:4200/dashboard/my-profile?success=1' : 'https://iutest.kz/dashboard/my-profile?success=1';
+                $id = $this->_payService->addTournamentOrder($request, $this->_tournamentService, true);
+                $link = env('APP_DEBUG') ? 'http://localhost:4200/dashboard/tournament-detail/'.$id.'?success=1' : 'https://iutest.kz/dashboard/tournament-detail/'.$id.'?success=1';
             } else {
                 $link = env('APP_DEBUG') ? 'http://localhost:4200/dashboard/my-profile?error=1' : 'https://iutest.kz/dashboard/my-profile?error=1';
             }
@@ -140,7 +155,11 @@ class PayboxController extends Controller
     }
     public function payTournamentFailureURL(Request $request)
     {
-        $link = env('APP_DEBUG') ? 'http://localhost:4200/dashboard/my-profile?error=1' : 'https://iutest.kz/dashboard/my-profile?error=1';
-        return redirect($link);
+        $tournamentOrder = TournamentOrder::where('order_id', $request['pg_order_id'])->first();
+        if ($tournamentOrder) {
+            $id = (SubTournament::find($tournamentOrder->tournament_id))->tournament_id;
+            $link = env('APP_DEBUG') ? 'http://localhost:4200/dashboard/tournament-detail/'.$id.'?error=1' : 'https://iutest.kz/dashboard/tournament-detail/'.$id.'?error=1';
+            return redirect($link);
+        }
     }
 }

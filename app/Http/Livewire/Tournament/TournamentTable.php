@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Tournament;
 
 use App\Models\File;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
+use Rappasoft\LaravelLivewireTables\Exceptions\DataTableConfigurationException;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Models\Tournament;
 use Rappasoft\LaravelLivewireTables\Views\Columns\ButtonGroupColumn;
@@ -13,15 +14,37 @@ class TournamentTable extends DataTableComponent
 {
     protected $model = Tournament::class;
 
+    /**
+     * @throws DataTableConfigurationException
+     */
     public function configure(): void
     {
         $this->setPrimaryKey('id');
         $this->setPerPageAccepted([20, 50, 100]);
         $this->setPerPage(20);
+        $this->setBulkActions([
+            'deleteSelected' => 'Удалить'
+        ]);
         $this->setPrimaryKey('id')
             ->setTableRowUrl(function ($row) {
                 return route('tournament.show', $row);
             });
+    }
+    public function bulkActions(): array
+    {
+        return [
+            'deleteSelected' => 'Удалить'
+        ];
+    }
+
+    public function deleteSelected(): void
+    {
+        $subSteps = $this->getSelected();
+        foreach ($subSteps as $key => $value) {
+            $sub = Tournament::find($value);
+            $sub?->delete();
+        }
+        $this->clearSelected();
     }
 
     public function columns(): array
