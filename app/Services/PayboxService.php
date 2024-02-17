@@ -255,7 +255,7 @@ class PayboxService
     /**
      * @throws TournamentException
      */
-    public function addTournamentOrder(Request $request, TournamentService $service, bool $isSuccessURL = false): null|int
+    public function addTournamentOrder(Request $request, TournamentService $service, bool $isSuccessURL = false)
     {
         $tournamentOrder = TournamentOrder::where('order_id', $request['pg_order_id'])->first();
         if ($tournamentOrder) {
@@ -264,8 +264,8 @@ class PayboxService
             $service->participate($tournamentOrder->user_id, $tournamentOrder->tournament_id, true);
             if ($isSuccessURL) {
                 return (SubTournament::find($tournamentOrder->tournament_id))->tournament_id;
-            } else {return null;}
-        } else {return null;}
+            }
+        }
     }
     //CORE
     public $TRANSACTION_CODES = [
