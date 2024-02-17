@@ -3,10 +3,12 @@
 namespace App\Services;
 
 use App\Exceptions\BadRequestException;
+use App\Exceptions\TournamentException;
 use App\Models\CareerCoupon;
 use App\Models\CareerQuiz;
 use App\Models\CareerQuizGroup;
 use App\Models\PayboxOrder;
+use App\Models\SubTournament;
 use App\Models\Tournament;
 use App\Models\TournamentOrder;
 use App\Models\User;
@@ -206,52 +208,64 @@ class PayboxService
         if (TournamentOrder::where('order_id', $order_id)->first()) {
             $order_id = strval(rand(0, 999999999));
         }
-        if ($request->has('tournament_id')) {
-            $tournament = Tournament::find($request['tournament_id']);
-            TournamentOrder::create([
-                'user_id' => $user->id,
-                'order_id' => $order_id,
-                'price' => $tournament->price,
-                'description' => $description,
-                'tournament_id' => $tournament->id,
-                'status' => false
-            ]);
-            $request = $requestForSignature = [
-                'pg_order_id' => $order_id,
-                'pg_merchant_id' => $this->getSecretKey()['PG_MERCHANT_ID'],
-                'pg_amount' => $tournament->price,
-                'pg_description' => $description,
-                'pg_salt' => Str::random(10),
-                'pg_payment_route' => 'frame',
-                'pg_currency' => 'KZT',
-                'pg_check_url' => '',
-                'pg_result_url' => $this->getRedirectURL()['payTournamentResultURL'],
-                'pg_request_method' => 'POST',
-                'pg_success_url' => $this->getRedirectURL()['payTournamentSuccessURL'],
-                'pg_failure_url' => $this->getRedirectURL()['payTournamentFailureURL'],
-                'pg_success_url_method' => 'POST',
-                'pg_failure_url_method' => 'POST',
-                'pg_payment_system' => 'EPAYWEBKZT',
-                'pg_lifetime' => '86400',
-                'pg_postpone_payment' => '0',
-                'pg_language' => 'ru',
-                'pg_testing_mode' => '1',
-                'pg_recurring_start' => '1',
-                'pg_recurring_lifetime' => '156',
-                'pg_user_id' => strval(auth()->guard('api')->id())
-            ];
-            return $this->getInitPay($request, $requestForSignature);
+        if ($request->has('sub_tournament_id')) {
+            $subTournament = SubTournament::where('id', $request['sub_tournament_id'])->with('tournament')->first();
+            if ($subTournament) {
+                TournamentOrder::create([
+                    'user_id' => $user->id,
+                    'order_id' => $order_id,
+                    'price' => $subTournament->tournament->price,
+                    'description' => $description,
+                    'tournament_id' => $subTournament->id,
+                    'status' => false
+                ]);
+                $request = $requestForSignature = [
+                    'pg_order_id' => $order_id,
+                    'pg_merchant_id' => $this->getSecretKey()['PG_MERCHANT_ID'],
+                    'pg_amount' => $subTournament->tournament->price,
+                    'pg_description' => $description,
+                    'pg_salt' => Str::random(10),
+                    'pg_payment_route' => 'frame',
+                    'pg_currency' => 'KZT',
+                    'pg_check_url' => '',
+                    'pg_result_url' => $this->getRedirectURL()['payTournamentResultURL'],
+                    'pg_request_method' => 'POST',
+                    'pg_success_url' => $this->getRedirectURL()['payTournamentSuccessURL'],
+                    'pg_failure_url' => $this->getRedirectURL()['payTournamentFailureURL'],
+                    'pg_success_url_method' => 'POST',
+                    'pg_failure_url_method' => 'POST',
+                    'pg_payment_system' => 'EPAYWEBKZT',
+                    'pg_lifetime' => '86400',
+                    'pg_postpone_payment' => '0',
+                    'pg_language' => 'ru',
+                    'pg_testing_mode' => '1',
+                    'pg_recurring_start' => '1',
+                    'pg_recurring_lifetime' => '156',
+                    'pg_user_id' => strval(auth()->guard('api')->id())
+                ];
+                return $this->getInitPay($request, $requestForSignature);
+            } else {
+                return response()->json('Турнир не найден', 500);
+            }
         } else {
             throw new BadRequestException("Вы не выбрали ни один из продуктов!");
         }
     }
-    public function addTournamentOrder(Request $request): void
+
+    /**
+     * @throws TournamentException
+     */
+    public function addTournamentOrder(Request $request, TournamentService $service, bool $isSuccessURL = false): null|int
     {
         $tournamentOrder = TournamentOrder::where('order_id', $request['pg_order_id'])->first();
         if ($tournamentOrder) {
             $tournamentOrder->status = true;
             $tournamentOrder->save();
-        }
+            $service->participate($tournamentOrder->user_id, $tournamentOrder->tournament_id, true);
+            if ($isSuccessURL) {
+                return (SubTournament::find($tournamentOrder->tournament_id))->tournament_id;
+            } else {return null;}
+        } else {return null;}
     }
     //CORE
     public $TRANSACTION_CODES = [

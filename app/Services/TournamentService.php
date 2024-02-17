@@ -130,7 +130,7 @@ class TournamentService{
     }
 
 
-    public function participate($user_id,$sub_tournament_id){
+    public function participate($user_id,$sub_tournament_id, bool $payFrom = false){
         $sub_tournament = SubTournament::find($sub_tournament_id);
         if(!$sub_tournament){
             throw new TournamentException("Этап Турнира не существует");
@@ -140,7 +140,9 @@ class TournamentService{
         }
         if(($sub_tournament->start_at < Carbon::now()) && (Carbon::now()< $sub_tournament->end_at)){
             if(SubTournamentParticipant::where(["user_id"=>$user_id,"sub_tournament_id"=>$sub_tournament_id,])->first()){
-                throw new TournamentException("Вы уже участвовали в турнире");
+                if (!$payFrom) {
+                    throw new TournamentException("Вы уже участвовали в турнире");
+                }
             }
             SubTournamentParticipant::add(["user_id"=>$user_id,"sub_tournament_id"=>$sub_tournament_id,"status"=>1]);
         }

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('user_id')->references('id')->on('users')->cascadeOnDelete();
             $table->integer('order_id');
             $table->integer('price');
-            $table->foreignId('tournament_id')->references('id')->on('tournaments')->cascadeOnDelete();
+            $table->foreignId('tournament_id')->references('id')->on('sub_tournaments')->cascadeOnDelete();
             $table->boolean('status')->default(false);
             $table->string('description');
             $table->timestamps();
