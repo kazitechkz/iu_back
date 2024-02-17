@@ -130,7 +130,7 @@ class PayboxController extends Controller
     public function payTournamentResultURL(Request $request)
     {
         if ($request['pg_result'] == 1) {
-            $this->_payService->addTournamentOrder($request, $this->_tournamentService);
+            $this->_payService->addTournamentOrder($request, $this->_tournamentService, true);
         }
     }
 
