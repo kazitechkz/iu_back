@@ -29,20 +29,18 @@ class IUTubeController extends Controller
         try {
             $accessSubjectId = IutubeAccess::where(["is_active" => true])->pluck("subject_id")->toArray();
             $whereCondition = ["is_public"=>true];
-            $rawRequest =  IutubeVideo::whereIn("subject_id",$accessSubjectId)->with(["iutube_author.file","file","locale","step","sub_step","subject"])->query();
+            $rawRequest =  IutubeVideo::whereIn("subject_id",$accessSubjectId)->with(["iutube_author.file","file","locale","step","sub_step","subject"]);
             if($request->get("subject_id")){
                 $whereCondition["subject_id"] = $request->get("subject_id");
             }
             if($request->get("locale_id")){
                 $whereCondition["locale_id"] = $request->get("locale_id");
             }
-            if(count($whereCondition)){
-                $rawRequest = $rawRequest->where($whereCondition);
-            }
+            $rawRequest = $rawRequest->where($whereCondition);
             if($request->get("search")){
-                $rawRequest = $rawRequest->where('name', 'like', '%' . $request->get("search") . '%');
+                $rawRequest = $rawRequest->where('title', 'like', '%' . $request->get("search") . '%');
             }
-            $result = $rawRequest->latest()->paginate(15);
+            $result = $rawRequest->latest()->paginate(12);
             return response()->json(new ResponseJSON(status: true,data: $result),200);
 
         }
@@ -53,11 +51,11 @@ class IUTubeController extends Controller
 
     public function getAuthorDetail($id,Request $request){
         try {
-            $author = IutubeAuthor::where(["id"=>$id,"is_active" => true])->first();
+            $author = IutubeAuthor::where(["id"=>$id,"is_active" => true])->with("file")->first();
             if(!$author){
                 return ResponseService::NotFound("Не найден автор");
             }
-            $videos = IutubeVideo::with(["iutube_author.file","file","locale","step","sub_step","subject"])->where(["author_id" => $id])->paginate(12);
+            $videos = IutubeVideo::with(["iutube_author.file","file","locale","step","sub_step","subject"])->where(["author_id" => $id])->latest()->paginate(12);
             return response()->json(new ResponseJSON(status: true,data: ["author"=>$author,"videos"=>$videos]),200);
         }
         catch (Exception $exception){
