@@ -34,6 +34,7 @@ use App\Http\Controllers\Api\BattleController as ApiBattleController;
 use App\Http\Controllers\Api\AttemptController;
 use App\Http\Controllers\Api\AttemptSettingsController as ApiAttemptSettingsController;
 use App\Http\Controllers\Api\CareerController as ApiCareerController;
+use App\Http\Controllers\Api\IUTubeController as ApiIUTubeController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -180,7 +181,6 @@ if(env("IS_API",true)){
             Route::post("/upload-image",[\App\Http\Controllers\Api\FileUploadController::class,"uploadImage"]);
             Route::resource('classrooms', ClassroomController::class)->only(['index', 'show', 'destroy', 'store']);
             //Career
-
             Route::get("/career-quizzes",[ApiCareerController::class,"careerQuizzes"]);
             Route::get("/career-quiz-detail/{id}",[ApiCareerController::class,"careerQuizDetail"]);
             Route::get("/pass-career-quiz/{id}",[ApiCareerController::class,"passCareerQuiz"]);
@@ -188,7 +188,11 @@ if(env("IS_API",true)){
             Route::get("/result-career-quiz/{id}",[ApiCareerController::class,"resultCareerQuiz"]);
             Route::get("/career-quiz-groups-list",[ApiCareerController::class,"careerQuizGroupList"]);
             Route::get("/my-career-attempts",[ApiCareerController::class,"myCareerAttempts"]);
-
+            //IUTube
+            Route::get("/main-videos",[ApiIUTubeController::class,"getMainVideos"]);
+            Route::get("/all-videos",[ApiIUTubeController::class,"getListVideos"]);
+            Route::get("/video-author-detail/{id}",[ApiIUTubeController::class,"getAuthorDetail"]);
+            Route::get("/video-detail/{alias}",[ApiIUTubeController::class,"getSingleVideo"]);
             //ORDERS
             Route::get('my-orders', [ApiOrderController::class, 'getAll']);
 
