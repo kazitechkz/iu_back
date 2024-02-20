@@ -36,6 +36,7 @@ class CareerQuizController extends Controller
             $input = $request->all();
             $careerQuiz = CareerQuiz::add($input);
             toastr()->success("Создан профориентационный тест");
+            dd($input);
             if($request->has("authors")){
                 $raw_data = [];
                 $authors = json_decode($request->get("authors"),true);
