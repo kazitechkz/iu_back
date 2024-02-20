@@ -15,6 +15,7 @@ use App\Traits\ResponseJSON;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Validator;
 use Mockery\Exception;
 use Spatie\Permission\Models\Role;

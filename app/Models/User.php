@@ -55,6 +55,7 @@ class User extends Authenticatable implements Searchable,Wallet
         'parent_name',
         'phone',
         'parent_phone',
+        'email_code',
         'email',
         'password',
         "birth_date",
