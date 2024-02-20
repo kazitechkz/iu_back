@@ -32,24 +32,26 @@ class CareerQuizController extends Controller
      */
     public function store(CareerQuizCreate $request)
     {
-        try {
-            $input = $request->all();
-            $careerQuiz = CareerQuiz::add($input);
-            toastr()->success("Создан профориентационный тест");
-            dd($input);
-            if($request->has("authors")){
-                $raw_data = [];
-                $authors = json_decode($request->get("authors"),true);
-                foreach ($authors as $author){
-                    array_push($raw_data,["quiz_id"=>$careerQuiz->id,"author_id"=>$author]);
-                }
-                CareerQuizCreator::insert($raw_data);
-            }
-        }
-        catch (\Exception $exception){
-            toastr()->error($exception);
-        }
-        return redirect()->route("career-quiz.index");
+        dd($request);
+//        try {
+//            $input = $request->all();
+//            $careerQuiz = CareerQuiz::add($input);
+//            toastr()->success("Создан профориентационный тест");
+//            if($request->has("authors")){
+//                $raw_data = [];
+//                $authors = json_decode($request->get("authors"),true);
+//                foreach ($authors as $author){
+//                    array_push($raw_data,["quiz_id"=>$careerQuiz->id,"author_id"=>$author]);
+//                }
+//                CareerQuizCreator::insert($raw_data);
+//            }
+//            return redirect()->back();
+//        }
+//        catch (\Exception $exception){
+//            toastr()->error($exception);
+//            return redirect()->back();
+//        }
+
     }
 
     /**
