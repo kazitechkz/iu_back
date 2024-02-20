@@ -4,13 +4,18 @@ namespace App\Services;
 
 use App\DTOs\AuthDTO;
 use App\DTOs\UserDTO;
+use App\Mail\VerifyEmail;
 use App\Models\User;
 use App\Models\UserHub;
 use App\Models\UserResetToken;
 use App\Traits\ResponseJSON;
+use Bavix\Wallet\Internal\Exceptions\ExceptionInterface;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Mail;
 use Spatie\Permission\Models\Role;
 
 class AuthService
@@ -32,14 +37,25 @@ class AuthService
         ]);
     }
 
-    public static function initialAuthDTO(User $user): \WendellAdriel\ValidatedDTO\SimpleDTO
+    public static function initialAuthDTO(User $user, bool $isVerify = false): \WendellAdriel\ValidatedDTO\SimpleDTO
     {
-        $userDTO = self::initialUserDTO($user);
-        return AuthDTO::fromArray([
-            'token' => $user->createToken("API TOKEN")->plainTextToken,
-            'role' => $user->roles->count() ? $user->roles[0]->name : 'student',
-            'user' => $userDTO->data
-        ]);
+        if ($isVerify) {
+            $userDTO = self::initialUserDTO($user);
+            return AuthDTO::fromArray([
+                'token' => $user->createToken("API TOKEN")->plainTextToken,
+                'role' => $user->roles->count() ? $user->roles[0]->name : 'student',
+                'user' => $userDTO->data,
+                'redirectURL' => ''
+            ]);
+        } else {
+            $redirectURL = "http://localhost:4200/auth/verify-email?user=".Crypt::encrypt($user->id);
+            return AuthDTO::fromArray([
+                'token' => '',
+                'role' => '',
+                'user' => '',
+                'redirectURL' => $redirectURL
+            ]);
+        }
     }
     public function login(Request $request): \Illuminate\Http\JsonResponse
     {
@@ -47,10 +63,19 @@ class AuthService
             return response()->json(new ResponseJSON(status: false, message: "Email & Password does not match with our record."), 400);
         }
         $user = User::with('roles')->where('email', $request->email)->first();
-        $data = AuthService::initialAuthDTO($user);
+        if ($user->email_verified_at == null && $user->email_code != null) {
+            $data = AuthService::initialAuthDTO($user);
+        } else {
+            $data = AuthService::initialAuthDTO($user, true);
+        }
         return response()->json(new ResponseJSON(status: true, message: "User Logged In Successfully", data: $data->data));
     }
-    public function register(Request $request): \Illuminate\Http\JsonResponse
+
+    /**
+     * @throws ExceptionInterface
+     * @throws Exception
+     */
+    public function register(Request $request)
     {
         $input = $request->all();
         $input["password"] = bcrypt($input["password"]);
@@ -61,7 +86,10 @@ class AuthService
         } else {
             $input['role'] = 'student';
         }
+        $data = ['code' => random_int(1000, 9999)];
+        $input['email_code'] = $data['code'];
         $user = User::add($input);
+//        MailService::sendMail('mails.verify-email', $data, $input['email'], 'Подтверждение электронной почты');
         UserHub::create([
             'user_id' => $user->id,
             'hub_id' => 2
@@ -71,7 +99,8 @@ class AuthService
         if ($role) {
             $user->assignRole($input['role']);
         }
-        return response()->json(new ResponseJSON(status: true, message: "User registered successfully"), 200);
+        $redirectURL = "http://localhost:4200/auth/verify-email?user=".Crypt::encrypt($user->id);
+        return response()->json(new ResponseJSON(status: true, message: "User registered successfully", data: $redirectURL));
     }
     public function sendResetToken(Request $request): \Illuminate\Http\JsonResponse
     {

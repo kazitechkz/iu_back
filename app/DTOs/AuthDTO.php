@@ -10,6 +10,7 @@ class AuthDTO extends ValidatedDTO
     public string $token;
     public string $role;
     public $user;
+    public string $redirectURL;
     protected function rules(): array
     {
         return [];
