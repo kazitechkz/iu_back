@@ -11,21 +11,23 @@ php artisan code:models --table=lesson_schedule_participants
 php artisan code:models --table=lesson_ratings
 php artisan code:models --table=participant_ratings
 php artisan code:models --table=lesson_complaints
+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
 
  // Reset cached roles and permissions
 app()['cache']->forget('spatie.permission.cache');
+sudo git pull
 php artisan permission:cache-reset
-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
 php artisan config:cache
 php artisan config:clear
 php artisan cache:clear
-php artisan optimize:clear
+sudo php artisan optimize:clear
+sudo service php8.2-fpm restart
 sudo service php8.2-fpm stop
 sudo service php8.2-fpm start
 
-sudo service php8.2-fpm restart
+
 <- restart it
-sudo service php5-fpm reload
+sudo service php8.2-fpm reload
 <- reload it
 1.Tutors
 
