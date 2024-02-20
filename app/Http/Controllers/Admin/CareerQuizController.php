@@ -24,7 +24,6 @@ class CareerQuizController extends Controller
      */
     public function create()
     {
-        dd("WORK OUT");
         return view("admin.career-quiz.create");
     }
 
