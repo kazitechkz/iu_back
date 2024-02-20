@@ -5,12 +5,12 @@ namespace App\Http\Livewire\IUTubeAuthor;
 use App\Models\File;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
-use App\Models\IUTubeAuthor;
+use App\Models\IutubeAuthor;
 use Rappasoft\LaravelLivewireTables\Views\Columns\BooleanColumn;
 
 class IUTubeAuthorTable extends DataTableComponent
 {
-    protected $model = IUTubeAuthor::class;
+    protected $model = IutubeAuthor::class;
 
     public function configure(): void
     {

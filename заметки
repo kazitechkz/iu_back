@@ -20,8 +20,9 @@ php artisan config:cache
 php artisan config:clear
 php artisan cache:clear
 php artisan optimize:clear
-sudo service php8.2-fpm start
 sudo service php8.2-fpm stop
+sudo service php8.2-fpm start
+
 sudo service php8.2-fpm restart
 <- restart it
 sudo service php5-fpm reload
