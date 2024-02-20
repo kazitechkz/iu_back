@@ -5,12 +5,12 @@ namespace App\Http\Livewire\IUTubeAccess;
 use App\Models\File;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
-use App\Models\IUTubeAccess;
+use App\Models\IutubeAccess;
 use Rappasoft\LaravelLivewireTables\Views\Columns\BooleanColumn;
 
 class IUTubeAccessTable extends DataTableComponent
 {
-    protected $model = IUTubeAccess::class;
+    protected $model = IutubeAccess::class;
 
     public function configure(): void
     {

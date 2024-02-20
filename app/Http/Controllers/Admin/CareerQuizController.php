@@ -46,7 +46,7 @@ class CareerQuizController extends Controller
             }
         }
         catch (\Exception $exception){
-            toastr()->error($exception);
+            toastr()->error($exception->getMessage());
         }
         return redirect()->route("career-quiz.index");
     }
