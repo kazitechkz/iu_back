@@ -34,7 +34,6 @@ class CareerQuizController extends Controller
     {
         try {
             $input = $request->all();
-            dd($input);
             $careerQuiz = CareerQuiz::add($input);
             toastr()->success("Создан профориентационный тест");
             if($request->has("authors")){
