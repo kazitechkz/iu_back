@@ -34,18 +34,18 @@ class CareerQuizController extends Controller
     {
         try {
             $input = $request->all();
-            dd($input);
-//            $careerQuiz = CareerQuiz::add($input);
-//            toastr()->success("Создан профориентационный тест");
-//            if($request->has("authors")){
-//                $raw_data = [];
-//                $authors = json_decode($request->get("authors"),true);
-//                foreach ($authors as $author){
-//                    array_push($raw_data,["quiz_id"=>$careerQuiz->id,"author_id"=>$author]);
-//                }
-//                CareerQuizCreator::insert($raw_data);
-//            }
-            return redirect()->back();
+
+            $careerQuiz = CareerQuiz::add($input);
+            toastr()->success("Создан профориентационный тест");
+           if($request->has("authors")){
+                $raw_data = [];
+                $authors = json_decode($request->get("authors"),true);
+                foreach ($authors as $author){
+                    array_push($raw_data,["quiz_id"=>$careerQuiz->id,"author_id"=>$author]);
+                }
+                CareerQuizCreator::insert($raw_data);
+            }
+            dd("SUCCESS");
         }
         catch (\Exception $exception){
             toastr()->error($exception->getMessage());
