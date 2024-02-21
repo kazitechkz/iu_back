@@ -179,10 +179,10 @@ class TournamentService{
         $questions = $question_service->get_questions_with_subjects(
             subjects: [...$subject],
             locale_id: $locale_id,
+            attempt_type_id: QuestionService::TOURNAMENT_TYPE,
             single_q_count: $sub_tournament->single_question_quantity,
-            multiple_q_count:$sub_tournament->multiple_question_quantity,
             contextual_q_count: $sub_tournament->context_question_quantity,
-            attempt_type_id:QuestionService::TOURNAMENT_TYPE
+            multiple_q_count: $sub_tournament->multiple_question_quantity
             );
         $count_question = $question_service->get_questions_max_point($questions);
         $attempt_service = new AttemptService();

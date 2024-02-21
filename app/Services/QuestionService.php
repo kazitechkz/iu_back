@@ -11,10 +11,12 @@ use App\Models\AttemptSettingsResultsUnt;
 use App\Models\AttemptSettingsUnt;
 use App\Models\GroupPlan;
 use App\Models\Question;
+use App\Models\QuestionType;
 use App\Models\SingleSubjectTest;
 use App\Models\SubCategory;
 use App\Models\Subject;
 use Illuminate\Support\Facades\DB;
+use Laravel\Octane\Exceptions\DdException;
 
 
 class QuestionService
@@ -121,6 +123,10 @@ class QuestionService
                                      $multiple_q_count,
                                      )
     {
+        $isTournament = false;
+        if ($type_id == QuestionService::TOURNAMENT_TYPE) {
+            $isTournament = true;
+        }
         foreach ($compulsory_subjects as $compulsory_subject) {
             if ($type_id == self::UNT_TYPE || $type_id == self::CASUAL_TYPE || $type_id == self::SETTINGS_TYPE_UNT) {
                 $single_subject_test = SingleSubjectTest::where(["subject_id" => $compulsory_subject->id])->first();
@@ -131,18 +137,18 @@ class QuestionService
             $hidden = QuestionService::getHidden($type_id);
             $questions[$compulsory_subject->id] = [];
             if ($single_q_count > 0) {
-                $questions_one = $this->get_single_questions($locale_id, $compulsory_subject, $single_q_count, $hidden);
+                $questions_one = $this->get_single_questions($locale_id, $compulsory_subject, $single_q_count, $hidden, null, null, $isTournament);
                 array_push($questions[$compulsory_subject->id], ...$questions_one);
             }
             if ($contextual_q_count > 0) {
                 if ($contextual_q_count % self::CONTEXT_QUESTION_NUMBER) {
                     throw new QuestionException("Контекстных Вопросов в дисциплине {$compulsory_subject->title_ru} недостаточно");
                 }
-                $context_questions = $this->get_context_questions($locale_id, $compulsory_subject, $contextual_q_count / self::CONTEXT_QUESTION_NUMBER, $hidden);
+                $context_questions = $this->get_context_questions($locale_id, $compulsory_subject, $contextual_q_count / self::CONTEXT_QUESTION_NUMBER, $hidden, null, null, $isTournament);
                 array_push($questions[$compulsory_subject->id], ...$context_questions);
             }
             if ($multiple_q_count > 0) {
-                $multiple_question = $this->get_multiple_questions($locale_id, $compulsory_subject, $multiple_q_count, $hidden);
+                $multiple_question = $this->get_multiple_questions($locale_id, $compulsory_subject, $multiple_q_count, $hidden, null, null, $isTournament);
                 array_push($questions[$compulsory_subject->id], ...$multiple_question);
             }
         }
@@ -150,9 +156,20 @@ class QuestionService
     }
 
 
-    protected function get_single_questions($locale_id, $compulsory_subject, $count, $hidden, $category_id = null, $sub_category_id = null)
+    /**
+     * @param $locale_id
+     * @param $compulsory_subject
+     * @param $count
+     * @param $hidden
+     * @param $category_id
+     * @param $sub_category_id
+     * @param bool $isTournament
+     * @return mixed[]
+     * @throws DdException
+     */
+    protected function get_single_questions($locale_id, $compulsory_subject, $count, $hidden, $category_id = null, $sub_category_id = null, bool $isTournament = false)
     {
-        if (!PlanService::check_user_subject($compulsory_subject->id)) {
+        if (!PlanService::check_user_subject($compulsory_subject->id) && !$isTournament) {
             $condition = ["subject_id" => $compulsory_subject->id, "type_id" => self::SINGLE_QUESTION_ID, "locale_id" => $locale_id, 'group_id' => 2];
         } else {
             $condition = ["subject_id" => $compulsory_subject->id, "type_id" => self::SINGLE_QUESTION_ID, "locale_id" => $locale_id];
@@ -171,10 +188,9 @@ class QuestionService
         $questions_one = $single_question_query->take($count)->get()->makeHidden($hidden)->toArray();
         return $questions_one;
     }
-
-    protected function get_context_questions($locale_id, $compulsory_subject, $rand_int, $hidden, $category_id = null, $sub_category_id = null)
+    protected function get_context_questions($locale_id, $compulsory_subject, $rand_int, $hidden, $category_id = null, $sub_category_id = null, bool $isTournament = false)
     {
-        if (!PlanService::check_user_subject($compulsory_subject->id)) {
+        if (!PlanService::check_user_subject($compulsory_subject->id) && !$isTournament) {
             $condition = ["type_id" => self::CONTEXT_QUESTION_ID, "subject_id" => $compulsory_subject->id, "locale_id" => $locale_id, 'group_id' => 2];
         } else {
             $condition = ["type_id" => self::CONTEXT_QUESTION_ID, "subject_id" => $compulsory_subject->id, "locale_id" => $locale_id];
@@ -206,10 +222,9 @@ class QuestionService
         return $context_questions;
 
     }
-
-    protected function get_multiple_questions($locale_id, $compulsory_subject, $count, $hidden, $category_id = null, $sub_category_id = null)
+    protected function get_multiple_questions($locale_id, $compulsory_subject, $count, $hidden, $category_id = null, $sub_category_id = null, bool $isTournament = false)
     {
-        if (!PlanService::check_user_subject($compulsory_subject->id)) {
+        if (!PlanService::check_user_subject($compulsory_subject->id) && !$isTournament) {
             $condition = ["subject_id" => $compulsory_subject->id, "type_id" => self::MULTI_QUESTION_ID, "locale_id" => $locale_id, 'group_id' => 2];
         } else {
             $condition = ["subject_id" => $compulsory_subject->id, "type_id" => self::MULTI_QUESTION_ID, "locale_id" => $locale_id];
