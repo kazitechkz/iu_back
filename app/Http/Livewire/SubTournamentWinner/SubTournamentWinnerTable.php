@@ -18,6 +18,25 @@ class SubTournamentWinnerTable extends DataTableComponent
     {
         $this->setPrimaryKey('id');
         $this->setPerPageAccepted([20, 50, 100,200]);
+        $this->setBulkActions([
+            'deleteSelected' => 'Удалить'
+        ]);
+    }
+    public function bulkActions(): array
+    {
+        return [
+            'deleteSelected' => 'Удалить'
+        ];
+    }
+
+    public function deleteSelected(): void
+    {
+        $subjects = $this->getSelected();
+        foreach ($subjects as $key => $value) {
+            $sub = SubTournamentWinner::find($value);
+            $sub?->delete();
+        }
+        $this->clearSelected();
     }
     public function filters(): array
 
