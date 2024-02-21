@@ -48,7 +48,7 @@ class AuthService
                 'redirectURL' => ''
             ]);
         } else {
-            $redirectURL = "http://localhost:4200/auth/verify-email?user=".Crypt::encrypt($user->id);
+            $redirectURL = "https://iutest.kz/auth/verify-email?user=".Crypt::encrypt($user->id);
             return AuthDTO::fromArray([
                 'token' => '',
                 'role' => '',
@@ -100,7 +100,7 @@ class AuthService
         if ($role) {
             $user->assignRole($input['role']);
         }
-        $redirectURL = "http://localhost:4200/auth/verify-email?user=".Crypt::encrypt($user->id);
+        $redirectURL = "https://iutest.kz/auth/verify-email?user=".Crypt::encrypt($user->id);
         return response()->json(new ResponseJSON(status: true, message: "User registered successfully", data: $redirectURL));
     }
     public function verifyEmail(Request $request): bool
