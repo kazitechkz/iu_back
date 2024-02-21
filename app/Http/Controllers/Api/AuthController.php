@@ -62,6 +62,19 @@ class AuthController extends Controller
             return response()->json(new ResponseJSON(status: false, message: $th->getMessage()), 500);
         }
     }
+    public function verifyEmail(Request $request)
+    {
+        try {
+            $this->validate($request, ['user_id' => 'required', 'code' => 'required']);
+            if ($this->authService->verifyEmail($request)) {
+                return response()->json(new ResponseJSON(status: true, data: true));
+            } else {
+                return response()->json(new ResponseJSON(status: false, message: 'Не валидный код', data: false), 500);
+            }
+        } catch (\Throwable $th) {
+            return response()->json(new ResponseJSON(status: false, message: $th->getMessage()), 500);
+        }
+    }
     public function sendResetToken(Request $request){
         try {
             $validateUser = Validator::make($request->all(), ["email"=>"required|email|max:255"]);

@@ -63,7 +63,7 @@ class AuthService
             return response()->json(new ResponseJSON(status: false, message: "Email & Password does not match with our record."), 400);
         }
         $user = User::with('roles')->where('email', $request->email)->first();
-        if ($user->email_verified_at == null && $user->email_code != null) {
+        if ($user->email_verified_at == null) {
             $data = AuthService::initialAuthDTO($user);
         } else {
             $data = AuthService::initialAuthDTO($user, true);
@@ -87,7 +87,8 @@ class AuthService
             $input['role'] = 'student';
         }
         $data = ['code' => random_int(1000, 9999)];
-        $input['email_code'] = $data['code'];
+//        $input['email_code'] = $data['code'];
+        $input['email_code'] = 1111;
         $user = User::add($input);
 //        MailService::sendMail('mails.verify-email', $data, $input['email'], 'Подтверждение электронной почты');
         UserHub::create([
@@ -101,6 +102,18 @@ class AuthService
         }
         $redirectURL = "http://localhost:4200/auth/verify-email?user=".Crypt::encrypt($user->id);
         return response()->json(new ResponseJSON(status: true, message: "User registered successfully", data: $redirectURL));
+    }
+    public function verifyEmail(Request $request): bool
+    {
+        $userID = Crypt::decrypt($request['user_id']);
+        $user = User::find($userID);
+        if ($user->email_code == $request['code']) {
+            $user->email_verified_at = Carbon::now();
+            $user->save();
+            return true;
+        } else {
+            return false;
+        }
     }
     public function sendResetToken(Request $request): \Illuminate\Http\JsonResponse
     {
