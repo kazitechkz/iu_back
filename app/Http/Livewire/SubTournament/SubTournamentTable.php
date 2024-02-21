@@ -53,12 +53,30 @@ class SubTournamentTable extends DataTableComponent
         $this->setPrimaryKey('id');
         $this->setPerPageAccepted([20, 50, 100]);
         $this->setPerPage(20);
+        $this->setBulkActions([
+            'deleteSelected' => 'Удалить'
+        ]);
         $this->setPrimaryKey('id')
             ->setTableRowUrl(function ($row) {
                 return route('sub-tournament.edit', $row);
             });
     }
+    public function bulkActions(): array
+    {
+        return [
+            'deleteSelected' => 'Удалить'
+        ];
+    }
 
+    public function deleteSelected(): void
+    {
+        $subjects = $this->getSelected();
+        foreach ($subjects as $key => $value) {
+            $sub = SubTournament::find($value);
+            $sub?->delete();
+        }
+        $this->clearSelected();
+    }
 
     public function columns(): array
     {
