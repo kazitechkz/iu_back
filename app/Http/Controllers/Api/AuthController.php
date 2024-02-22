@@ -16,6 +16,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
 use Mockery\Exception;
 use Spatie\Permission\Models\Role;
@@ -46,6 +47,22 @@ class AuthController extends Controller
                 return response()->json(new ResponseJSON(status: false, message: "Validation Error", errors: $validateUser->errors()), 400);
             }
             return $this->authService->login($request);
+        } catch (\Throwable $th) {
+            return response()->json(new ResponseJSON(status: false, errors: $th->getMessage()), 500);
+        }
+    }
+    public function loginUserFromKundelik(Request $request)
+    {
+        try {
+            $validateUser = Validator::make($request->all(),
+                [
+                    'token' => 'required'
+                ]);
+            if ($validateUser->fails()) {
+                return response()->json(new ResponseJSON(status: false, message: "Validation Error", errors: $validateUser->errors()), 400);
+            }
+            $user = Http::withHeader('Access-token', $request['token'])->get('https://api.kundelik.kz/v2/users/me/context');
+            dd(json_decode($user->body(),1));
         } catch (\Throwable $th) {
             return response()->json(new ResponseJSON(status: false, errors: $th->getMessage()), 500);
         }

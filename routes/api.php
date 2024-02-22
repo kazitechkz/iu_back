@@ -220,6 +220,7 @@ if(env("IS_API",true)){
 //Forum
     Route::post("/upload-image",[\App\Http\Controllers\Api\FileUploadController::class,"uploadImage"])->middleware("API");
     Route::post('/auth/login', [ApiAuthController::class, 'loginUser']);
+    Route::post('/auth/kundelik', [ApiAuthController::class, 'loginUserFromKundelik']);
     Route::post("/auth/register",[ApiAuthController::class,"register"]);
     Route::post("/auth/verify-email",[ApiAuthController::class,"verifyEmail"]);
     Route::post("/auth/send-reset-token",[ApiAuthController::class,"sendResetToken"]);
