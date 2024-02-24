@@ -33,7 +33,8 @@ class AuthService
             'phone' => $user->phone,
             'balance' => $user->balanceInt,
             'role' => $user->roles->count() ? $user->roles[0]['name'] : '',
-            'subscription' => $user->activeSubscriptions()->toArray()
+            'subscription' => $user->activeSubscriptions()->toArray(),
+            'isKundelik' => $user->isKundelik()
         ]);
     }
 
@@ -71,6 +72,24 @@ class AuthService
         return response()->json(new ResponseJSON(status: true, message: "User Logged In Successfully", data: $data->data));
     }
 
+    public function registerUserFromKundelik($request)
+    {
+        $email = $request['id'] ? $request['id'].'@kundelik.kz' : '';
+        $user = User::where('email', $email)->first();
+        if (!$user) {
+            if ($request['roles'][0] == 'EduStudent') {
+                $user = $this->getInitialDataForKundelik($request, $email);
+                $user->deposit(1000);
+                $user->assignRole('student');
+            } else {
+                $user = $this->getInitialDataForKundelik($request, $email);
+                $user->assignRole('teacher');
+            }
+        }
+        $data = AuthService::initialAuthDTO($user, true);
+        return response()->json(new ResponseJSON(status: true, message: "User Logged In Successfully", data: $data->data));
+    }
+
     /**
      * @throws ExceptionInterface
      * @throws Exception
@@ -95,9 +114,10 @@ class AuthService
             'user_id' => $user->id,
             'hub_id' => 2
         ]);
-        $user->deposit(1000);
-        $role = Role::findByName($input['role']);
-        if ($role) {
+        if ($input['role'] == 'student') {
+            $user->deposit(1000);
+        }
+        if (Role::findByName($input['role'])) {
             $user->assignRole($input['role']);
         }
         $redirectURL = "https://iutest.kz/auth/verify-email?user=".Crypt::encrypt($user->id);
@@ -144,5 +164,28 @@ class AuthService
         $user->save();
         UserResetToken::where(["user_id" => $reset_token->user_id])->update(["is_used" => true]);
         return response()->json(new ResponseJSON(status: true, message: "Password successfully changed", data: true), 200);
+    }
+
+    /**
+     * @param $request
+     * @param string $email
+     * @return User
+     */
+    public function getInitialDataForKundelik($request, string $email): User
+    {
+        $userData['name'] = $request['shortName'] ? $request['shortName'] : '-';
+        $userData['birth_date'] = $request['birthday'] ? Carbon::create($request['birthday']) : '';
+        $userData['email'] = $email;
+        $userData['phone'] = $request['phone'] ? $request['phone'] : '';
+        $userData['gender_id'] = $request['sex'] == 'Male' ? 1 : 2;
+        $userData['username'] = $request['login'] ? $request['login'] : '';
+        $userData['email_verified_at'] = Carbon::now();
+        $userData['password'] = bcrypt('kundelik123');
+        $user = User::add($userData);
+        UserHub::create([
+            'user_id' => $user->id,
+            'hub_id' => 1
+        ]);
+        return $user;
     }
 }

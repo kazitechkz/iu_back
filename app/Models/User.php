@@ -59,6 +59,7 @@ class User extends Authenticatable implements Searchable,Wallet
         'email',
         'password',
         "birth_date",
+        "email_verified_at",
         "image_url",
         "gender_id"
     ];

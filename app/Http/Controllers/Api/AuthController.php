@@ -61,8 +61,11 @@ class AuthController extends Controller
             if ($validateUser->fails()) {
                 return response()->json(new ResponseJSON(status: false, message: "Validation Error", errors: $validateUser->errors()), 400);
             }
-            $user = Http::withHeader('Access-token', $request['token'])->get('https://api.kundelik.kz/v2/users/me');
-            dd(json_decode($user->body(),1));
+            $user = Http::withoutVerifying()
+                ->withHeader('Access-token', $request['token'])
+                ->get('https://api.kundelik.kz/v2/users/me');
+            $body = json_decode($user->body(),1);
+            return $this->authService->registerUserFromKundelik($body);
         } catch (\Throwable $th) {
             return response()->json(new ResponseJSON(status: false, errors: $th->getMessage()), 500);
         }
