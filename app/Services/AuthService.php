@@ -49,7 +49,7 @@ class AuthService
                 'redirectURL' => ''
             ]);
         } else {
-            $redirectURL = "https://iutest.kz/auth/verify-email?user=".Crypt::encrypt($user->id);
+            $redirectURL = "https://iutest.kz/auth/verify-email?user=" . Crypt::encrypt($user->id);
             return AuthDTO::fromArray([
                 'token' => '',
                 'role' => '',
@@ -58,6 +58,7 @@ class AuthService
             ]);
         }
     }
+
     public function login(Request $request): \Illuminate\Http\JsonResponse
     {
         if (!Auth::attempt($request->only(['email', 'password']))) {
@@ -74,7 +75,7 @@ class AuthService
 
     public function registerUserFromKundelik($request)
     {
-        $email = $request['id'] ? $request['id'].'@kundelik.kz' : '';
+        $email = $request['id'] ? $request['id'] . '@kundelik.kz' : '';
         $user = User::where('email', $email)->first();
         if (!$user) {
             if ($request['roles'][0] == 'EduStudent') {
@@ -120,9 +121,10 @@ class AuthService
         if (Role::findByName($input['role'])) {
             $user->assignRole($input['role']);
         }
-        $redirectURL = "https://iutest.kz/auth/verify-email?user=".Crypt::encrypt($user->id);
+        $redirectURL = "https://iutest.kz/auth/verify-email?user=" . Crypt::encrypt($user->id);
         return response()->json(new ResponseJSON(status: true, message: "User registered successfully", data: $redirectURL));
     }
+
     public function verifyEmail(Request $request): bool
     {
         $userID = Crypt::decrypt($request['user_id']);
@@ -135,17 +137,26 @@ class AuthService
             return false;
         }
     }
+
     public function sendResetToken(Request $request): \Illuminate\Http\JsonResponse
     {
         $user = User::where(["email" => $request->get("email")])->first();
-        if(!$user){
-            return response()->json(new ResponseJSON(status: true, message: "User not found",data: false), 422);
+        if (!$user) {
+            return response()->json(new ResponseJSON(status: true, message: "User not found", data: false), 422);
         }
-        UserResetToken::where(["user_id" => $user->id])->update(["is_used" => true]);
         $token = random_int(100000, 999999);
-        UserResetToken::add(["user_id"=>$user->id,"email"=>$request->get("email"),"expired_at"=>Carbon::now()->addHour(2),"code"=>$token]);
-        return response()->json(new ResponseJSON(status: true, message: "Token Sended to your account",data: true), 200);
+        $userToken = UserResetToken::where(["user_id" => $user->id])->first();
+        if ($userToken) {
+            $userToken->is_used = false;
+            $userToken->code = $token;
+            $userToken->expired_at = Carbon::now()->addHour()->setTimezone('Asia/Almaty');
+            $userToken->save();
+        } else {
+            UserResetToken::add(["user_id" => $user->id, "email" => $request->get("email"), "expired_at" => Carbon::now()->addHour()->setTimezone('Asia/Almaty'), "code" => $token]);
+        }
+        return response()->json(new ResponseJSON(status: true, message: "Token Sended to your account", data: true));
     }
+
     public function resetPassword(Request $request): \Illuminate\Http\JsonResponse
     {
         $reset_token = UserResetToken::where(["code" => $request->get("code"), "email" => $request->get("email"), "is_used" => false])->first();
