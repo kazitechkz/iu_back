@@ -62,15 +62,20 @@ class AuthService
     public function login(Request $request): \Illuminate\Http\JsonResponse
     {
         if (!Auth::attempt($request->only(['email', 'password']))) {
-            return response()->json(new ResponseJSON(status: false, message: "Email & Password does not match with our record."), 400);
+            return response()->json(new ResponseJSON(status: false, message: "Адрес электронной почты и пароль не совпадают с нашей записью."), 400);
         }
         $user = User::with('roles')->where('email', $request->email)->first();
         if ($user->email_verified_at == null) {
+            $tokenCode = random_int(1000, 9999);
+            $user->email_code = $tokenCode;
+            $user->save();
+            $data = ['code' => $tokenCode];
+            MailService::sendMail('mails.verify-email', $data, $request['email'], 'Подтверждение электронной почты');
             $data = AuthService::initialAuthDTO($user);
         } else {
             $data = AuthService::initialAuthDTO($user, true);
         }
-        return response()->json(new ResponseJSON(status: true, message: "User Logged In Successfully", data: $data->data));
+        return response()->json(new ResponseJSON(status: true, message: "Вы успешно авторизовались", data: $data->data));
     }
 
     public function registerUserFromKundelik($request)
@@ -88,7 +93,7 @@ class AuthService
             }
         }
         $data = AuthService::initialAuthDTO($user, true);
-        return response()->json(new ResponseJSON(status: true, message: "User Logged In Successfully", data: $data->data));
+        return response()->json(new ResponseJSON(status: true, message: "Вы успешно авторизовались", data: $data->data));
     }
 
     /**
@@ -107,10 +112,10 @@ class AuthService
             $input['role'] = 'student';
         }
         $data = ['code' => random_int(1000, 9999)];
-//        $input['email_code'] = $data['code'];
-        $input['email_code'] = 1111;
+        $input['email_code'] = $data['code'];
+//        $input['email_code'] = 1111;
         $user = User::add($input);
-//        MailService::sendMail('mails.verify-email', $data, $input['email'], 'Подтверждение электронной почты');
+        MailService::sendMail('mails.verify-email', $data, $input['email'], 'Подтверждение электронной почты');
         UserHub::create([
             'user_id' => $user->id,
             'hub_id' => 2
@@ -122,7 +127,7 @@ class AuthService
             $user->assignRole($input['role']);
         }
         $redirectURL = "https://iutest.kz/auth/verify-email?user=" . Crypt::encrypt($user->id);
-        return response()->json(new ResponseJSON(status: true, message: "User registered successfully", data: $redirectURL));
+        return response()->json(new ResponseJSON(status: true, message: "Вы успешно зарегистрированы", data: $redirectURL));
     }
 
     public function verifyEmail(Request $request): bool
@@ -142,9 +147,11 @@ class AuthService
     {
         $user = User::where(["email" => $request->get("email")])->first();
         if (!$user) {
-            return response()->json(new ResponseJSON(status: true, message: "User not found", data: false), 422);
+            return response()->json(new ResponseJSON(status: false, message: "Пользователь не найден", data: false), 422);
         }
         $token = random_int(100000, 999999);
+        $data = ['data' => ['name' => $user->name, 'code' => $token]];
+//        MailService::sendMail('mails.reset-password', $data, $request['email'], 'Восстановление пароля');
         $userToken = UserResetToken::where(["user_id" => $user->id])->first();
         if ($userToken) {
             $userToken->is_used = false;
@@ -154,18 +161,18 @@ class AuthService
         } else {
             UserResetToken::add(["user_id" => $user->id, "email" => $request->get("email"), "expired_at" => Carbon::now()->addHour()->setTimezone('Asia/Almaty'), "code" => $token]);
         }
-        return response()->json(new ResponseJSON(status: true, message: "Token Sended to your account", data: true));
+        return response()->json(new ResponseJSON(status: true, message: "Код успешно отправлен на ваш электронный адрес", data: true));
     }
 
     public function resetPassword(Request $request): \Illuminate\Http\JsonResponse
     {
         $reset_token = UserResetToken::where(["code" => $request->get("code"), "email" => $request->get("email"), "is_used" => false])->first();
         if (!$reset_token) {
-            return response()->json(new ResponseJSON(status: true, message: "Token is not valid or used", data: false), 422);
+            return response()->json(new ResponseJSON(status: true, message: "Не валидный токен", data: false), 422);
         }
         if ($reset_token->expired_at < Carbon::now()) {
             $reset_token->edit(["is_used" => true]);
-            return response()->json(new ResponseJSON(status: true, message: "Token is expired", data: false), 422);
+            return response()->json(new ResponseJSON(status: true, message: "Устаревший токен", data: false), 422);
         }
         $user = User::where(["email" => $request->get("email")])->first();
         if (!$user) {
@@ -174,7 +181,7 @@ class AuthService
         $user->password = bcrypt($request->get("password"));
         $user->save();
         UserResetToken::where(["user_id" => $reset_token->user_id])->update(["is_used" => true]);
-        return response()->json(new ResponseJSON(status: true, message: "Password successfully changed", data: true), 200);
+        return response()->json(new ResponseJSON(status: true, message: "Пароль успешно изменен", data: true), 200);
     }
 
     /**

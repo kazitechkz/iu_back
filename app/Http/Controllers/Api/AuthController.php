@@ -112,7 +112,7 @@ class AuthController extends Controller
             if ($validateUser->fails()) {
                 return response()->json(new ResponseJSON(status: false, message: "Validation Error", errors: $validateUser->errors(),data: false), 400);
             }
-            $this->authService->resetPassword($request);
+            return $this->authService->resetPassword($request);
         } catch (\Throwable $th) {
             return response()->json(new ResponseJSON(status: false, message: $th->getMessage(),data: false), 500);
         }

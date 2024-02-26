@@ -12,7 +12,7 @@
 </head>
 <body class="bg-light">
 <div class="container">
-    <img class="ax-center my-10 w-24" src="https://iutest.kz/assets/images/logo-white.png" />
+    <img class="ax-center my-10 w-24" src="https://iunion.s3.ap-south-1.amazonaws.com/iu_test_logo_for_mail_template.jpg" />
     <div class="card p-6 p-lg-10 space-y-4">
         <h1 class="h3 fw-700">
             Спасибо за регистрацию на iutest.kz!
