@@ -54,6 +54,7 @@ if(env("IS_API",true)){
         Route::group(['middleware' => 'API'], function() {
             Route::get('me', [ApiUserController::class, 'me']);
             Route::post('change-profile', [ApiUserController::class, 'changeProfile']);
+            Route::post('change-avatar', [ApiUserController::class, 'changeAvatar']);
             Route::get("important-news",[ApiNewsController::class,"importantNews"]);
             Route::get("single-news/{id}",[ApiNewsController::class,"singleNews"]);
             Route::get("all-news",[ApiNewsController::class,"news"]);

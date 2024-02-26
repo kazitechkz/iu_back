@@ -34,7 +34,9 @@ class AuthService
             'balance' => $user->balanceInt,
             'role' => $user->roles->count() ? $user->roles[0]['name'] : '',
             'subscription' => $user->activeSubscriptions()->toArray(),
-            'isKundelik' => $user->isKundelik()
+            'isKundelik' => $user->isKundelik(),
+            'parent_phone' => $user->parent_phone,
+            'parent_name' => $user->parent_name
         ]);
     }
 

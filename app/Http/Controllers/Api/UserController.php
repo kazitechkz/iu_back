@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\DTOs\FindUserByEmailDTO;
 use App\DTOs\UserDTO;
 use App\Http\Controllers\Controller;
+use App\Models\File;
 use App\Models\User;
 use App\Services\AuthService;
 use App\Services\ResponseService;
@@ -51,6 +52,30 @@ class UserController extends Controller
             if ($request['gender']) {
                 $user->gender_id = $request['gender'];
             }
+            if ($request['parent_phone']) {
+                $user->parent_phone = $request['parent_phone'];
+            }
+            if ($request['parent_name']) {
+                $user->parent_name = $request['parent_name'];
+            }
+            $user->save();
+            return response()->json(new ResponseJSON(
+                status: true,
+                data: true
+            ));
+        } catch (\Exception $exception) {
+            return ResponseService::DefineException($exception);
+        }
+    }
+    public function changeAvatar(Request $request)
+    {
+        try {
+            $this->validate($request, ['file' => 'required|image']);
+            $user = auth()->guard('api')->user();
+            if ($user->image_url) {
+                File::deleteFileFromAWS($user->image_url);
+            }
+            $user->image_url = File::uploadFileAWS($request['file'], 'avatars');
             $user->save();
             return response()->json(new ResponseJSON(
                 status: true,
