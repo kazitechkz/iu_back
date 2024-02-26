@@ -56,6 +56,7 @@ return [
     "lesson-complaint" => "Шағымдар",
     "stats-on-questions" => "Сұрақтар бойынша",
     "stats-on-subjects" => "Пәндер бойынша",
+    "stats-on-types" => "Типтер бойынша",
     "stats-on-user-contents" => "Методисттер бойынша",
     "announcement-type"=>"күй түрі",
     "announcement-group"=>"күй тобы",

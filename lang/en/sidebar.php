@@ -55,6 +55,7 @@ return [
     "lesson-complaint" => "Lesson Complaint",
     "stats-on-questions" => "Stats on questions",
     "stats-on-subjects" => "Stats on subjects",
+    "stats-on-types" => "Stats on types",
     "stats-on-user-contents" => "Stats on user contents",
 
 

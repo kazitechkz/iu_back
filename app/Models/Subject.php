@@ -100,6 +100,30 @@ class Subject extends Model
     {
         return $this->questions_ru()->whereNotIn('group_id', [1,4,5,6,7]);
     }
+    public function questions_single_type_kk()
+    {
+        return $this->questions_kk()->where('type_id',1);
+    }
+    public function questions_single_type_ru()
+    {
+        return $this->questions_ru()->where('type_id',1);
+    }
+    public function questions_context_type_kk()
+    {
+        return $this->questions_kk()->where('type_id',2);
+    }
+    public function questions_context_type_ru()
+    {
+        return $this->questions_ru()->where('type_id',2);
+    }
+    public function questions_multi_type_kk()
+    {
+        return $this->questions_kk()->where('type_id',2);
+    }
+    public function questions_multi_type_ru()
+    {
+        return $this->questions_ru()->where('type_id',2);
+    }
     public function image(): BelongsTo
     {
         return $this->belongsTo(File::class, 'image_url', 'id');
