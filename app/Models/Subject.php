@@ -118,11 +118,11 @@ class Subject extends Model
     }
     public function questions_multi_type_kk()
     {
-        return $this->questions_kk()->where('type_id',2);
+        return $this->questions_kk()->where('type_id',3);
     }
     public function questions_multi_type_ru()
     {
-        return $this->questions_ru()->where('type_id',2);
+        return $this->questions_ru()->where('type_id',3);
     }
     public function image(): BelongsTo
     {
