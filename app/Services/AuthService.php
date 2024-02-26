@@ -151,7 +151,7 @@ class AuthService
         }
         $token = random_int(100000, 999999);
         $data = ['data' => ['name' => $user->name, 'code' => $token]];
-//        MailService::sendMail('mails.reset-password', $data, $request['email'], 'Восстановление пароля');
+        MailService::sendMail('mails.reset-password', $data, $request['email'], 'Восстановление пароля');
         $userToken = UserResetToken::where(["user_id" => $user->id])->first();
         if ($userToken) {
             $userToken->is_used = false;
