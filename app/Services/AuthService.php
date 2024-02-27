@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\DTOs\AuthDTO;
 use App\DTOs\UserDTO;
+use App\Exceptions\BadRequestException;
 use App\Mail\VerifyEmail;
 use App\Models\User;
 use App\Models\UserHub;
@@ -82,16 +83,18 @@ class AuthService
 
     public function registerUserFromKundelik($request)
     {
-        $email = $request['id'] ? $request['id'] . '@kundelik.kz' : '';
+        $email = $request['id'] . '@kundelik.kz';
         $user = User::where('email', $email)->first();
         if (!$user) {
             if ($request['roles'][0] == 'EduStudent') {
                 $user = $this->getInitialDataForKundelik($request, $email);
                 $user->deposit(1000);
                 $user->assignRole('student');
-            } else {
+            } else if ($request['roles'][0] == 'EduStaff'){
                 $user = $this->getInitialDataForKundelik($request, $email);
                 $user->assignRole('teacher');
+            } else {
+                throw new BadRequestException('Error');
             }
         }
         $data = AuthService::initialAuthDTO($user, true);
@@ -193,12 +196,16 @@ class AuthService
      */
     public function getInitialDataForKundelik($request, string $email): User
     {
-        $userData['name'] = $request['shortName'] ? $request['shortName'] : '-';
+        $userData['name'] = $request['shortName'] ?: '-';
         $userData['birth_date'] = $request['birthday'] ? Carbon::create($request['birthday']) : '';
         $userData['email'] = $email;
-        $userData['phone'] = $request['phone'] ? $request['phone'] : '';
+        if (User::where('phone', $request['phone'])->first()) {
+            $userData['phone'] = $request['id'];
+        } else {
+            $userData['phone'] = $request['phone'];
+        }
         $userData['gender_id'] = $request['sex'] == 'Male' ? 1 : 2;
-        $userData['username'] = $request['login'] ? $request['login'] : '';
+        $userData['username'] = $request['login'];
         $userData['email_verified_at'] = Carbon::now();
         $userData['password'] = bcrypt('kundelik123');
         $user = User::add($userData);

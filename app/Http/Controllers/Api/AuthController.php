@@ -11,6 +11,7 @@ use App\Models\User;
 use App\Models\UserHub;
 use App\Models\UserResetToken;
 use App\Services\AuthService;
+use App\Services\ResponseService;
 use App\Traits\ResponseJSON;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -67,7 +68,7 @@ class AuthController extends Controller
             $body = json_decode($user->body(),1);
             return $this->authService->registerUserFromKundelik($body);
         } catch (\Throwable $th) {
-            return response()->json(new ResponseJSON(status: false, errors: $th->getMessage()), 500);
+            return ResponseService::DefineException($th);
         }
     }
     public function register(Request $request)
