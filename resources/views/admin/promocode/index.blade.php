@@ -14,7 +14,7 @@
     <div class="col-lg-12 grid-margin stretch-card">
         <div class="card">
             <div class="card-body">
-                <livewire:promocode.promocode-table/>
+                <livewire:promocode.index-table/>
             </div>
         </div>
     </div>

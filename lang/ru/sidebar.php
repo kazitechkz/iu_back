@@ -15,6 +15,7 @@ return [
     'plan' => 'План подписки',
     'plan-combination' => 'Локализация плана',
     "promocode" => "Промокод",
+    "promocode_plans" => "Планы промокодов",
     "news" => "Новости",
     "subscription" => "Подписки",
     'questions' => 'Вопросы',

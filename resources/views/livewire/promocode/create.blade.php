@@ -1,52 +1,56 @@
-<x-form-component.form-component
-    :method="'post'"
-    :route="'promocode.store'"
-    :element-id="'promocode-create'"
->
-    {{-- Usage --}}
-    <div class="form-group">
-        <x-inputs.number
-            label="{{__('table.usages')}}*"
-            max="1000"
-            min="1"
-            wire:model="usages"
-            hint="{{__('table.usages_hint')}}"
-        />
+<form wire:submit.prevent="submit" method="post">
+    @csrf
+    <div class="my-3">
+        <label for="code">PROMO CODE <span wire:click="generate()" class="cursor-pointer hover:text-blue-500">(Сгенерировать)</span></label>
+        <input type="text" id="code" wire:model="code" class="form-control">
+        @error('code') <span class="text-danger">{{ $message }}</span> @enderror
     </div>
-    {{-- Usage --}}
-    {{-- Count --}}
-    <div class="form-group">
-        <x-inputs.number
-            label="{{__('table.count')}}*"
-            max="1000"
-            min="1"
-            wire:model="count"
-            hint="{{__('table.count_hint')}}"
-        />
+    <div class="my-3">
+        <label for="percentage">Скидка в процентах %</label>
+        <input type="text" id="percentage" wire:model="percentage" class="form-control">
+        @error('percentage') <span class="text-danger">{{ $message }}</span> @enderror
     </div>
-    {{-- Count --}}
+    <div class="my-3">
+        <label for="expired_at">Дата истечения</label>
+        <input type="date" id="expired_at" wire:model="expired_at" class="form-control">
+        @error('expired_at') <span class="text-danger">{{ $message }}</span> @enderror
+    </div>
+    <div class="my-3">
+        <div wire:ignore>
+            <select wire:model="group_ids" multiple id="group_ids" class="w-full form-control">
+                @foreach($this->groups as $group)
+                    <option value="{{$group->id}}">{{$group->title_ru}}</option>
+                @endforeach
+            </select>
+        </div>
+    </div>
+    <div class="my-3">
+        <div wire:ignore>
+            <select wire:model="plan_ids" multiple id="plan_ids" class="w-full form-control">
+                @foreach($this->plans as $plan)
+                    <option value="{{$plan->id}}">{{$plan->title}}</option>
+                @endforeach
+            </select>
+        </div>
+    </div>
 
-    {{-- Point --}}
-    <div class="form-group">
-        <x-inputs.number
-            label="{{__('table.point')}}*"
-            max="10000"
-            min="1"
-            wire:model="points"
-            hint="{{__('table.point')}}, 1KZT = 1 UI COIN"
-        />
-    </div>
-    {{-- Point --}}
+    <button type="submit">SEND</button>
+</form>
 
-    {{--Expiration Date --}}
-    <x-datetime-picker
-        label="{{__('table.expiration')}}"
-        time-format="24"
-        parse-format="DD-MM-YYYY HH:mm"
-        :min="now()"
-        :max="now()->addYear(2)"
-        wire:model="expiration_date"
-        hint="{{__('table.expiration')}}"
-    />
-    {{--Expiration Date --}}
-</x-form-component.form-component>
+@push('js')
+    <script>
+        $(document).ready(function (){
+            $('#group_ids').select2()
+            $('#group_ids').on('change', function () {
+                let data = $(this).val()
+                @this.set('group_ids', data)
+            })
+            $('#plan_ids').select2()
+            $('#plan_ids').on('change', function () {
+                let data = $(this).val()
+                @this.set('plan_ids', data)
+            })
+        })
+    </script>
+@endpush
+

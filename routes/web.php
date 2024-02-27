@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AppealController as AdminAppealController;
 use App\Http\Controllers\Admin\AppealTypeController as AdminAppealTypeController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Admin\FactController as AdminFactController;
+use App\Http\Controllers\Admin\PromocodePlanController as AdminPromocodePlanController;
 use App\Http\Controllers\Admin\StatisticController as AdminStatisticController;
 use App\Http\Controllers\Admin\SubCategoryController as AdminSubCategoryController;
 use App\Http\Controllers\Admin\FaqController as AdminFaqController;
@@ -120,6 +121,7 @@ if(env("IS_WEB",true)) {
             Route::resource("plan-combination", AdminPlanCombinationController::class);
             Route::resource("subscription", AdminSubscriptionController::class);
             Route::resource("promocode", AdminPromocodeController::class);
+            Route::resource("promocode-plans", AdminPromocodePlanController::class);
             Route::resource("news", AdminNewsController::class);
             Route::resource("fact", AdminFactController::class);
             Route::resource("wallet", AdminWalletController::class);

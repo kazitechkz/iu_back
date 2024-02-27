@@ -20,6 +20,7 @@ return [
     'translations' => 'Аудармалар',
     'translations_contents' => 'Контент аудармалары',
     "promocode" => "Промокод",
+    "promocode_plans" => "Промокод топтары",
     "news" => "Жаналыктар",
     "faq" => "FAQ",
     "fact" => "Факты",

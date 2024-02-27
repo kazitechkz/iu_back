@@ -15,6 +15,7 @@ return [
     'plan' => 'Subscribe Plan',
     'plan-combination' => 'Plan Localization',
     "promocode" => "Promocode",
+    "promocode_plans" => "Promocode Plans",
     "news" => "News",
     "subscription" => "Subscription",
     'questions' => 'Questions',

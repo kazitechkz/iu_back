@@ -106,6 +106,12 @@
                  :link="'subscription.index'"
                   :name="__('sidebar.subscription')"/>
             @endcan
+            @can("promocode-plans index")
+            <x-shared.sub-sidebar-menu
+                :icon="'fas fa-tag'"
+                :link="'promocode-plans.index'"
+                :name="__('sidebar.promocode_plans')"/>
+            @endcan
             @can("promocode index")
             <x-shared.sub-sidebar-menu
                 :icon="'fas fa-tag'"

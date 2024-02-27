@@ -36,6 +36,8 @@ class AppConstants
         "plan-combination create", "plan-combination index", "plan-combination edit", "plan-combination show",
         //Subscription
         "subscription create", "subscription index", "subscription edit", "subscription show",
+        //Promocode-plans
+        "promocode-plans create", "promocode-plans index", "promocode-plans edit", "promocode-plans show",
         //Promocode
         "promocode create", "promocode index", "promocode edit", "promocode show",
         //News
