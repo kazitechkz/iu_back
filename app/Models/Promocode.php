@@ -8,6 +8,7 @@ namespace App\Models;
 
 use App\Traits\CRUD;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
@@ -31,6 +32,7 @@ use Illuminate\Database\Eloquent\Model;
 class Promocode extends Model
 {
     use CRUD;
+
 	protected $table = 'promocodes';
 
 	protected $casts = [
@@ -48,6 +50,32 @@ class Promocode extends Model
 		'percentage',
 		'details'
 	];
+
+//    protected function group_ids(): Attribute {
+//        return Attribute::make(
+//            get: function($value){
+//                $ids = json_decode($value);
+//                if(!is_array($ids)){
+//                    return [];
+//                }
+//                return Hub::whereIn('id', $ids)->select([
+//                    'id',
+//                    'title_ru',
+//                    'title_kk'
+//                ])->get();
+//            },
+//        );
+//    }
+    protected function plan_ids(): Attribute {
+        return Attribute::make(
+            get: function($value){
+                $ids = json_encode($value);
+                $t1 = str_replace("\\", '', $ids);
+                return str_replace('\\', '', $t1);
+//                return explode(',', $t2);
+            },
+        );
+    }
 
 	public function users()
 	{

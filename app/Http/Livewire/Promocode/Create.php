@@ -22,7 +22,7 @@ class Create extends Component
     protected $rules = [
         'code' => 'required|unique:promocodes,code',
         'expired_at' => 'required',
-        'percentage' => 'required|numeric'
+        'percentage' => 'required|numeric|max:100|min:1'
     ];
     public function generate()
     {

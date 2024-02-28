@@ -16,6 +16,7 @@
         @error('expired_at') <span class="text-danger">{{ $message }}</span> @enderror
     </div>
     <div class="my-3">
+        <label for="group_ids">Группа пользователей</label>
         <div wire:ignore>
             <select wire:model="group_ids" multiple id="group_ids" class="w-full form-control">
                 @foreach($this->groups as $group)
@@ -25,6 +26,7 @@
         </div>
     </div>
     <div class="my-3">
+        <label for="plan_ids">Группа промокодов</label>
         <div wire:ignore>
             <select wire:model="plan_ids" multiple id="plan_ids" class="w-full form-control">
                 @foreach($this->plans as $plan)
@@ -34,7 +36,7 @@
         </div>
     </div>
 
-    <button type="submit">SEND</button>
+    <x-button type="submit" label="Отправить" primary md icon="check" />
 </form>
 
 @push('js')
