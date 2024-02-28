@@ -8,6 +8,7 @@ use App\Models\CareerCoupon;
 use App\Models\CareerQuiz;
 use App\Models\CareerQuizGroup;
 use App\Models\PayboxOrder;
+use App\Models\Promocode;
 use App\Models\SubTournament;
 use App\Models\Tournament;
 use App\Models\TournamentOrder;
@@ -27,6 +28,7 @@ class PayboxService
         $subjects = [1, 2, 3, intval($request['subject_first']), intval($request['subject_second'])];
         $order_id = strval(rand(0, 999999999));
         $user = auth()->guard('api')->user();
+        $price = $this->getSum($request['time'], $user, $request['promo']);
         if (PayboxOrder::where('order_id', $order_id)->first()) {
             $order_id = strval(rand(0, 999999999));
         }
@@ -37,7 +39,7 @@ class PayboxService
         }
         PayboxOrder::where('order_id', $order_id)->create([
             'order_id' => $order_id,
-            'price' => $this->getSum($request['time']),
+            'price' => $price,
             'description' => $user->isKundelik() ? $this->getDescription($request['time']).'.'.$this->TRANSACTION_CODES[0] : $this->getDescription($request['time']),
             'user_id' => auth()->guard('api')->id(),
             'subjects' => $subjects,
@@ -47,7 +49,7 @@ class PayboxService
         $request = $requestForSignature = [
             'pg_order_id' => $order_id,
             'pg_merchant_id' => $this->getSecretKey()['PG_MERCHANT_ID'],
-            'pg_amount' => $this->getSum($request['time']),
+            'pg_amount' => $price,
             'pg_description' => $this->getDescription($request['time']),
             'pg_salt' => Str::random(10),
             'pg_payment_route' => 'frame',
@@ -63,7 +65,7 @@ class PayboxService
             'pg_lifetime' => '86400',
             'pg_postpone_payment' => '0',
             'pg_language' => 'ru',
-            'pg_testing_mode' => '1',
+            'pg_testing_mode' => '0',
             'pg_recurring_start' => '1',
             'pg_recurring_lifetime' => '156',
             'pg_user_id' => strval(auth()->guard('api')->id())
@@ -74,13 +76,34 @@ class PayboxService
     {
         return $subjectID . '.' . $time;
     }
-    public function getSum($time): int
+    public function getSum($time, $user, $promoCode = null): int
     {
-        return match ($time) {
-            3 => 2490,
-            6 => 4990,
-            default => 990,
-        };
+        if ($promoCode) {
+            $promo = Promocode::where('code', $promoCode)->first();
+            if ($promo && Carbon::create($promo->expired_at) > Carbon::now()) {
+                if ($promo->plan_ids == null || in_array(1, $promo->plan_ids)) {
+                    if ($promo->group_ids == null || !empty(array_intersect($user->hubs()->pluck('hub_id')->toArray(), $promo->group_ids))) {
+                        return match ($time) {
+                            3 => round((2490 * (100 - $promo->percentage)) / 100),
+                            6 => round((4990 * (100 - $promo->percentage)) / 100),
+                            default => round((990 * (100 - $promo->percentage)) / 100),
+                        };
+                    } else {
+                        throw new BadRequestException('К сожалению, вы не являетесь участником данного промокода!');
+                    }
+                } else {
+                    throw new BadRequestException('Данный промокод не предназначен для оформления подписки!');
+                }
+            } else {
+                throw new BadRequestException('Промокод не существует или просрочен!');
+            }
+        } else {
+            return match ($time) {
+                3 => 2490,
+                6 => 4990,
+                default => 990,
+            };
+        }
     }
     public function getDescription($time): string
     {
@@ -102,17 +125,15 @@ class PayboxService
                 $plan = Plan::find($item);
                 if (PlanSubscription::where(["subscriber_id" => $order->user_id, "plan_id" => $plan->id])->first()) {
                     // Check subscriber to plan
-                    if (!$user->isSubscribedTo($plan->id)) {
-                        $user->subscription($plan->tag)->renew();
-                    }
-                } else {
-                    $user->newSubscription(
-                        $plan->tag, // identifier tag of the subscription. If your application offers a single subscription, you might call this 'main' or 'primary'
-                        $plan, // Plan or PlanCombination instance your subscriber is subscribing to
-                        $plan->name, // Human-readable name for your subscription
-                        $plan->description // Description
-                    );
+                    $user->subscription($plan->tag)->delete();
+                    //                    $user->subscription($plan->tag)->renew();
                 }
+                $user->newSubscription(
+                    $plan->tag, // identifier tag of the subscription. If your application offers a single subscription, you might call this 'main' or 'primary'
+                    $plan, // Plan or PlanCombination instance your subscriber is subscribing to
+                    $plan->name, // Human-readable name for your subscription
+                    $plan->description // Description
+                );
             }
             if ($cashback) {
                 $user->deposit($cash);
@@ -180,7 +201,7 @@ class PayboxService
             'pg_lifetime' => '86400',
             'pg_postpone_payment' => '0',
             'pg_language' => 'ru',
-            'pg_testing_mode' => '1',
+            'pg_testing_mode' => '0',
             'pg_recurring_start' => '1',
             'pg_recurring_lifetime' => '156',
             'pg_user_id' => strval(auth()->guard('api')->id())
@@ -238,7 +259,7 @@ class PayboxService
                     'pg_lifetime' => '86400',
                     'pg_postpone_payment' => '0',
                     'pg_language' => 'ru',
-                    'pg_testing_mode' => '1',
+                    'pg_testing_mode' => '0',
                     'pg_recurring_start' => '1',
                     'pg_recurring_lifetime' => '156',
                     'pg_user_id' => strval(auth()->guard('api')->id())

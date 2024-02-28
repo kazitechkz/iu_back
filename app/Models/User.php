@@ -147,7 +147,7 @@ class User extends Authenticatable implements Searchable,Wallet
         return $this->stats_by_questions()->whereHas('question', function ($q){$q->where('locale_id',2);});
     }
 
-    public function hubs()
+    public function hubs(): HasMany
     {
         return $this->hasMany(UserHub::class);
     }
