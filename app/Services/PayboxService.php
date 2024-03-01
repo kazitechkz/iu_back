@@ -76,27 +76,14 @@ class PayboxService
     {
         return $subjectID . '.' . $time;
     }
+
+    /**
+     * @throws BadRequestException
+     */
     public function getSum($time, $user, $promoCode = null): int
     {
         if ($promoCode) {
-            $promo = Promocode::where('code', $promoCode)->first();
-            if ($promo && Carbon::create($promo->expired_at) > Carbon::now()) {
-                if ($promo->plan_ids == null || in_array(1, $promo->plan_ids)) {
-                    if ($promo->group_ids == null || !empty(array_intersect($user->hubs()->pluck('hub_id')->toArray(), $promo->group_ids))) {
-                        return match ($time) {
-                            3 => round((2490 * (100 - $promo->percentage)) / 100),
-                            6 => round((4990 * (100 - $promo->percentage)) / 100),
-                            default => round((990 * (100 - $promo->percentage)) / 100),
-                        };
-                    } else {
-                        throw new BadRequestException('К сожалению, вы не являетесь участником данного промокода!');
-                    }
-                } else {
-                    throw new BadRequestException('Данный промокод не предназначен для оформления подписки!');
-                }
-            } else {
-                throw new BadRequestException('Промокод не существует или просрочен!');
-            }
+            return PromoService::getSum($time, $promoCode, $user);
         } else {
             return match ($time) {
                 3 => 2490,

@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\CategoryController as ApiCategoryController;
 use App\Http\Controllers\Api\FactController as ApiFactController;
 use App\Http\Controllers\Api\OrderController as ApiOrderController;
 use App\Http\Controllers\Api\PayboxController;
+use App\Http\Controllers\Api\PromoCodeController as ApiPromoCodeController;
 use App\Http\Controllers\Api\SubCategoryController as ApiSubCategoryController;
 use App\Http\Controllers\Api\ClassroomController;
 use App\Http\Controllers\Api\StepController as ApiStepController;
@@ -216,6 +217,8 @@ if(env("IS_API",true)){
                 Route::get('get-unt-test-statistics/{id}', [ExamController::class, 'getUNTTestByID']);
                 Route::get('statistics/attempt-stats/{attempt_id}/{user_id}', [ExamController::class, 'statsByAttemptId']);
             });
+
+            Route::post('check-promo', [ApiPromoCodeController::class, 'checkPromo']);
         });
     });
 //Forum
