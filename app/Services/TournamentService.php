@@ -145,7 +145,7 @@ class TournamentService{
                     throw new TournamentException("Вы уже участвовали в турнире");
                 }
             } else {
-                SubTournamentParticipant::add(["user_id" => $user_id, "sub_tournament_id" => $sub_tournament_id, "status" => 1]);
+                SubTournamentParticipant::add(["user_id" => $user_id, "sub_tournament_id" => $sub_tournament_id, "status" => 1,"created_at"=>Carbon::now(),"updated_at"=>Carbon::now()]);
             }
         } else {
             throw new TournamentException("Дата турнира прошла");
