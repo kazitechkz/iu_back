@@ -7,6 +7,8 @@ use App\Models\Step;
 use App\Models\StepResult;
 use App\Models\Subject;
 use App\Models\SubStepContentTest;
+use App\Models\SubStepResult;
+use App\Models\SubStepTest;
 use App\Services\ResponseService;
 use App\Services\StepService;
 use App\Traits\ResponseJSON;
@@ -144,14 +146,23 @@ class StepController extends Controller
     public function passTest(Request $request)
     {
         try {
+            $point = 0;
             if ($request->all()) {
-                foreach ($request->all() as $item) {
-                    $this->stepService->check($item['sub_step_test_id'], $item['answer'], auth()->guard('api')->id(), $item['locale_id']);
+                if (count($request->all()) > 0) {
+                    $user = auth()->guard('api')->user();
+                    $subStepContentTest = SubStepTest::find($request->all()[0]['sub_step_test_id']);
+                    foreach ($request->all() as $item) {
+                        $this->stepService->check($item['sub_step_test_id'], $item['answer'], auth()->guard('api')->id(), $item['locale_id']);
+                    }
+                    $result = SubStepResult::where(['sub_step_id' => $subStepContentTest->sub_step_id, 'user_id' => $user->id, 'locale_id' => $request->all()[0]['locale_id']])->first();
+                    if ($result) {
+                        $point = (round($result->user_point))*10;
+                        $user->deposit($point);
+                    }
                 }
-//                $results = SubStepContentTest::where()
                 return response()->json(new ResponseJSON(
                     status: true,
-                    data: true
+                    data: $point
                 ));
             } else {
                 return response()->json(new ResponseJSON(

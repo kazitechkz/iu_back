@@ -104,7 +104,7 @@ class PayboxService
     {
         $order = PayboxOrder::where('order_id', $request['pg_order_id'])->first();
         if ($order) {
-            $cash = intval($order->price*0.1);
+            $cash = intval($order->price);
             $user = User::find($order->user_id);
             $order->status = 1;
             $order->save();

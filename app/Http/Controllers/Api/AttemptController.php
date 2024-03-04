@@ -405,7 +405,8 @@ class AttemptController extends Controller
                 return response()->json(new ResponseJSON(status: false, message: "Forbidden"), 403);
             }
             $attempt->update(["end_at" => Carbon::now(), 'time_left' => $attempt->time - Carbon::now()->diffInMilliseconds($attempt->start_at)]);
-            return response()->json(new ResponseJSON(status: true, data: $attempt_id), 200);
+            $user->deposit(($attempt->points)*10);
+            return response()->json(new ResponseJSON(status: true, data: $attempt_id));
         } catch (\Exception $exception) {
             return ResponseService::DefineException($exception);
         }
