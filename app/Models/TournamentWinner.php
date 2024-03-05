@@ -46,6 +46,13 @@ class TournamentWinner extends Model
 
 	public function winner()
 	{
-		return $this->belongsTo(User::class, 'winner_id');
+		return $this->belongsTo(User::class, 'winner_id')->select([
+            'id',
+            "username",
+            'name',
+            'phone',
+            'email',
+            'image_url'
+        ])->with("file");
 	}
 }

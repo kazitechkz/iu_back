@@ -93,6 +93,11 @@ class Tournament extends Model
 		return $this->hasMany(SubTournament::class);
 	}
 
+    public function tournament_winner(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(TournamentWinner::class,"tournament_id","id");
+    }
+
 	public function locales(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
 		return $this->belongsToMany(Locale::class, 'tournament_locales')
@@ -139,11 +144,11 @@ class Tournament extends Model
         }
     }
 
+
     public function winnerTournament()
     {
-        return $this->sub_tournaments()->where(['is_current' => 1, 'is_finished' => 1])->with('sub_tournament_results', function ($q) {
-            return $q->orderBy('point', 'DESC')->orderBy('time', 'DESC')->with('user');
-        })->first();
+        $tournament_winner =  $this->tournament_winner()->with("winner")->first();
+        return $tournament_winner->winner;
     }
 
     public function check_access(): bool
