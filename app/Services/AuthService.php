@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\DTOs\AuthDTO;
 use App\DTOs\UserDTO;
+use App\Events\WalletEvent;
 use App\Exceptions\BadRequestException;
 use App\Mail\VerifyEmail;
 use App\Models\User;
@@ -78,6 +79,7 @@ class AuthService
         } else {
             $data = AuthService::initialAuthDTO($user, true);
         }
+        BonusService::everydayBonus($request);
         return response()->json(new ResponseJSON(status: true, message: "Вы успешно авторизовались", data: $data->data));
     }
 
@@ -89,6 +91,7 @@ class AuthService
             if ($request['roles'][0] == 'EduStudent') {
                 $user = $this->getInitialDataForKundelik($request, $email);
                 $user->deposit(1000);
+                event(new WalletEvent($user->balanceInt));
                 $user->assignRole('student');
             } else if ($request['roles'][0] == 'EduStaff'){
                 $user = $this->getInitialDataForKundelik($request, $email);
@@ -127,6 +130,7 @@ class AuthService
         ]);
         if ($input['role'] == 'student') {
             $user->deposit(1000);
+            event(new WalletEvent($user->balanceInt));
         }
         if (Role::findByName($input['role'])) {
             $user->assignRole($input['role']);

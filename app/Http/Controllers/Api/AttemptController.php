@@ -9,6 +9,7 @@ use App\DTOs\AttemptDTO;
 use App\DTOs\AttemptSettingsCreateDTO;
 use App\DTOs\AttemptSettingsUNTCreateDTO;
 use App\DTOs\SubjectQuestionDTO;
+use App\Events\WalletEvent;
 use App\Http\Controllers\Controller;
 use App\Models\Attempt;
 use App\Models\AttemptQuestion;
@@ -319,9 +320,9 @@ class AttemptController extends Controller
                 attempt_id: $answer_dto->attempt_id,
                 attempt_subject_id: $answer_dto->attempt_subject_id,
                 question_id: $answer_dto->question_id,
-                attempt_type: $answer_dto->attempt_type_id, answers: $answer_dto->answers
+                answers: $answer_dto->answers, attempt_type: $answer_dto->attempt_type_id
             );
-            return response()->json(new ResponseJSON(status: true, data: $result), 200);
+            return response()->json(new ResponseJSON(status: true, data: $result));
         } catch (\Exception $exception) {
             return ResponseService::DefineException($exception);
         }
@@ -406,7 +407,8 @@ class AttemptController extends Controller
             }
             $attempt->update(["end_at" => Carbon::now(), 'time_left' => $attempt->time - Carbon::now()->diffInMilliseconds($attempt->start_at)]);
             $user->deposit(($attempt->points)*10);
-            return response()->json(new ResponseJSON(status: true, data: $attempt_id));
+            event(new WalletEvent($user->balanceInt));
+            return response()->json(new ResponseJSON(status: true, data: ['attempt_id' => $attempt_id, 'points' => ($attempt->points)*10]));
         } catch (\Exception $exception) {
             return ResponseService::DefineException($exception);
         }

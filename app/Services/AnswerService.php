@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\DTOs\AnswerResultDTO;
+use App\Events\WalletEvent;
 use App\Exceptions\AnswerException;
 use App\Models\Attempt;
 use App\Models\AttemptQuestion;
@@ -48,6 +49,12 @@ class AnswerService
                         $result_check = $this->check_attempt($attempt,$user_id);
                         $result_check["is_answered"] = true;
                         $result_check["question_id"] = $question_id;
+                        if ($result_check['is_finished']) {
+                            $user = auth()->guard('api')->user();
+                            $result_check['points'] = ($attempt->points)*10;
+                            $user->deposit(($attempt->points)*10);
+                            event(new WalletEvent($user->balanceInt));
+                        }
                         $answer_dto = AnswerResultDTO::fromArray($result_check);
                         return $answer_dto->data;
                     }

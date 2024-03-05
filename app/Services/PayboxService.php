@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Events\WalletEvent;
 use App\Exceptions\BadRequestException;
 use App\Exceptions\TournamentException;
 use App\Models\CareerCoupon;
@@ -124,6 +125,7 @@ class PayboxService
             }
             if ($cashback) {
                 $user->deposit($cash);
+                event(new WalletEvent($user->balanceInt));
             }
         }
     }
