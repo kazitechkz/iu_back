@@ -10,6 +10,7 @@ class AnswerResultDTO extends ValidatedDTO
     public bool $is_finished;
     public bool $is_answered;
     public int $question_left;
+    public int $points;
 
     public $question_id;
 

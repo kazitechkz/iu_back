@@ -1,26 +1,15 @@
 <?php
 
 namespace App\Http\Controllers\Api;
-
-use App\DTOs\AuthDTO;
-use App\DTOs\UserDTO;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserCreateRequest;
-use App\Models\Hub;
-use App\Models\User;
-use App\Models\UserHub;
-use App\Models\UserResetToken;
 use App\Services\AuthService;
 use App\Services\ResponseService;
 use App\Traits\ResponseJSON;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
-use Mockery\Exception;
-use Spatie\Permission\Models\Role;
 
 class AuthController extends Controller
 {
@@ -48,8 +37,8 @@ class AuthController extends Controller
                 return response()->json(new ResponseJSON(status: false, message: "Validation Error", errors: $validateUser->errors()), 400);
             }
             return $this->authService->login($request);
-        } catch (\Throwable $th) {
-            return response()->json(new ResponseJSON(status: false, errors: $th->getMessage()), 500);
+        } catch (\Exception $exception) {
+            return ResponseService::DefineException($exception);
         }
     }
     public function loginUserFromKundelik(Request $request)
@@ -67,8 +56,8 @@ class AuthController extends Controller
                 ->get('https://api.kundelik.kz/v2/users/me');
             $body = json_decode($user->body(),1);
             return $this->authService->registerUserFromKundelik($body);
-        } catch (\Throwable $th) {
-            return ResponseService::DefineException($th);
+        } catch (\Exception $exception) {
+            return ResponseService::DefineException($exception);
         }
     }
     public function register(Request $request)
@@ -79,8 +68,8 @@ class AuthController extends Controller
                 return response()->json(new ResponseJSON(status: false, message: "Validation Error", errors: $validateUser->errors()), 400);
             }
             return $this->authService->register($request);
-        } catch (\Throwable $th) {
-            return response()->json(new ResponseJSON(status: false, message: $th->getMessage()), 500);
+        } catch (\Exception $exception) {
+            return ResponseService::DefineException($exception);
         }
     }
     public function verifyEmail(Request $request)
@@ -92,8 +81,8 @@ class AuthController extends Controller
             } else {
                 return response()->json(new ResponseJSON(status: false, message: 'Не валидный код', data: false), 500);
             }
-        } catch (\Throwable $th) {
-            return response()->json(new ResponseJSON(status: false, message: $th->getMessage()), 500);
+        } catch (\Exception $exception) {
+            return ResponseService::DefineException($exception);
         }
     }
     public function sendResetToken(Request $request){
@@ -103,8 +92,8 @@ class AuthController extends Controller
                 return response()->json(new ResponseJSON(status: false, message: "Validation Error", errors: $validateUser->errors(),data: false), 400);
             }
             return $this->authService->sendResetToken($request);
-        } catch (\Throwable $th) {
-            return response()->json(new ResponseJSON(status: false, message: $th->getMessage(),data: false), 500);
+        } catch (\Exception $exception) {
+            return ResponseService::DefineException($exception);
         }
     }
     public function resetPassword(Request $request){
@@ -114,17 +103,16 @@ class AuthController extends Controller
                 return response()->json(new ResponseJSON(status: false, message: "Validation Error", errors: $validateUser->errors(),data: false), 400);
             }
             return $this->authService->resetPassword($request);
-        } catch (\Throwable $th) {
-            return response()->json(new ResponseJSON(status: false, message: $th->getMessage(),data: false), 500);
+        } catch (\Exception $exception) {
+            return ResponseService::DefineException($exception);
         }
     }
-
     public function userCheck(){
         try{
             return response()->json(new ResponseJSON(status: true, data: \auth()->guard("api")->check()), 200);
         }
-        catch (Exception $exception){
-            return response()->json(new ResponseJSON(status: true, data:false), 403);
+        catch (\Exception $exception) {
+            return ResponseService::DefineException($exception);
         }
     }
 }

@@ -111,13 +111,13 @@ class StepService
         if ($test_result) {
             $test_result->user_point = $point;
             $test_result->save();
-            if ($test_result->user_point >= 90) {
-                $bonus = UserStepsBonus::firstWhere(['step_id' => $step_id, 'user_id' => $user_id]);
-                if (!$bonus) {
-                    UserStepsBonus::create(['step_id' => $step_id, 'user_id' => $user_id]);
-                    $user->deposit(30);
-                }
-            }
+//            if ($test_result->user_point >= 90) {
+//                $bonus = UserStepsBonus::firstWhere(['step_id' => $step_id, 'user_id' => $user_id]);
+//                if (!$bonus) {
+//                    UserStepsBonus::create(['step_id' => $step_id, 'user_id' => $user_id]);
+//                    $user->deposit(30);
+//                }
+//            }
         } else {
             StepResult::create([
                 'step_id' => $step_id,

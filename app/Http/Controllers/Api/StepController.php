@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Events\WalletEvent;
 use App\Http\Controllers\Controller;
 use App\Models\Step;
 use App\Models\StepResult;
@@ -158,6 +159,7 @@ class StepController extends Controller
                     if ($result) {
                         $point = (round($result->user_point))*10;
                         $user->deposit($point);
+                        event(new WalletEvent($user->balanceInt));
                     }
                 }
                 return response()->json(new ResponseJSON(
