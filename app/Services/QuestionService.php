@@ -105,6 +105,7 @@ class QuestionService
             $time = QuestionService::UNT_TIME_LIMIT;
         }
 
+
         return $time;
     }
 
