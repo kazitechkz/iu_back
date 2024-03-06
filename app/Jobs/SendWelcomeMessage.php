@@ -27,7 +27,7 @@ class SendWelcomeMessage implements ShouldQueue
      */
     public function handle(): void
     {
-        Http::async()->asForm()->post('https://biz.wapico.ru/api/send.php', [
+        Http::asForm()->post('https://biz.wapico.ru/api/send.php', [
             'number' => str_replace(' ', '',$this->phone),
             'type' => 'text',
             'message' => 'Біздің білім беру порталына қош келдіңіз!
