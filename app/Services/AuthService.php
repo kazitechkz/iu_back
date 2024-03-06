@@ -146,7 +146,7 @@ class AuthService
         if ($user->email_code == $request['code']) {
             $user->email_verified_at = Carbon::now();
             $user->save();
-            dispatch(new SendWelcomeMessage($user->phone));
+            SendWelcomeMessage::dispatch($user->phone);
             return true;
         } else {
             return false;
