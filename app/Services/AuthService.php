@@ -6,7 +6,7 @@ use App\DTOs\AuthDTO;
 use App\DTOs\UserDTO;
 use App\Events\WalletEvent;
 use App\Exceptions\BadRequestException;
-use App\Mail\VerifyEmail;
+use App\Jobs\SendWelcomeMessage;
 use App\Models\User;
 use App\Models\UserHub;
 use App\Models\UserResetToken;
@@ -17,7 +17,6 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
-use Illuminate\Support\Facades\Mail;
 use Spatie\Permission\Models\Role;
 
 class AuthService
@@ -108,7 +107,7 @@ class AuthService
      * @throws ExceptionInterface
      * @throws Exception
      */
-    public function register(Request $request)
+    public function register(Request $request): \Illuminate\Http\JsonResponse
     {
         $input = $request->all();
         $input["password"] = bcrypt($input["password"]);
@@ -136,6 +135,7 @@ class AuthService
             $user->assignRole($input['role']);
         }
         $redirectURL = "https://iutest.kz/auth/verify-email?user=" . Crypt::encrypt($user->id);
+//        $redirectURL = "http://localhost:4200/auth/verify-email?user=" . Crypt::encrypt($user->id);
         return response()->json(new ResponseJSON(status: true, message: "Вы успешно зарегистрированы", data: $redirectURL));
     }
 
@@ -146,6 +146,7 @@ class AuthService
         if ($user->email_code == $request['code']) {
             $user->email_verified_at = Carbon::now();
             $user->save();
+            dispatch(new SendWelcomeMessage($user->phone));
             return true;
         } else {
             return false;
