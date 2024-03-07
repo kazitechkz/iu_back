@@ -13,7 +13,9 @@ use Illuminate\Support\Facades\Http;
 class SendWelcomeMessage implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+
     public $phone;
+
     /**
      * Create a new job instance.
      */
@@ -27,8 +29,10 @@ class SendWelcomeMessage implements ShouldQueue
      */
     public function handle(): void
     {
+        $INSTANCE_ID = env('WB_INSTANCE_ID');
+        $ACCESS_TOKEN = env('WB_ACCESS_TOKEN');
         Http::asForm()->post('https://biz.wapico.ru/api/send.php', [
-            'number' => str_replace(' ', '',$this->phone),
+            'number' => str_replace(' ', '', $this->phone),
             'type' => 'text',
             'message' => 'Біздің білім беру порталына қош келдіңіз!
 Біз Сіздерді оқу және даму қауымдастығымызда қарсы алуға қуаныштымыз. Мұнда сіз оқуға, білім алмасуға және дағдыларыңызды кеңейтуге көптеген мүмкіндіктер таба аласыз.
@@ -44,8 +48,8 @@ class SendWelcomeMessage implements ShouldQueue
 Еще раз добро пожаловать, и желаем вам удачи в вашем образовательном путешествии!
 С уважением,
 Команда iU test!',
-            'instance_id' => '65E842D038246',
-            'access_token' => 'ec6c3a8139aee6aff0fb5d467adbaf0b'
+            'instance_id' => $INSTANCE_ID,
+            'access_token' => $ACCESS_TOKEN
         ]);
     }
 }
