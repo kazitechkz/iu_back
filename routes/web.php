@@ -35,6 +35,7 @@ use App\Http\Controllers\Admin\SubTournamentParticipantController as AdminSubTou
 use App\Http\Controllers\Admin\SubTournamentWinnerController as AdminSubTournamentWinnerController;
 use App\Http\Controllers\Admin\SubTournamentResultController as AdminSubTournamentResultController;
 use App\Http\Controllers\Admin\SubTournamentRivalController as AdminSubTournamentRivalController;
+use App\Http\Controllers\Admin\TournamentAwardController as AdminTournamentAwardController;
 use App\Http\Controllers\Admin\CommercialGroupController as AdminCommercialGroupController;
 use App\Http\Controllers\Admin\StepController as AdminStepController;
 use App\Http\Controllers\Admin\SubStepController as AdminSubStepController;
@@ -145,6 +146,7 @@ if(env("IS_WEB",true)) {
             Route::resource("sub-tournament-winner", AdminSubTournamentWinnerController::class);
             Route::resource("sub-tournament-result", AdminSubTournamentResultController::class);
             Route::resource("sub-tournament-rival", AdminSubTournamentRivalController::class);
+            Route::get("tournament-awards/{id}",[AdminTournamentAwardController::class,"show"])->name("tournament-awards-id");
             Route::resource("commercial-group", AdminCommercialGroupController::class);
             //Step
             Route::resource("step", AdminStepController::class);

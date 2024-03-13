@@ -86,6 +86,14 @@ class TournamentTable extends DataTableComponent
                 ->buttons([
                     LinkColumn::make('View') // make() has no effect in this case but needs to be set anyway
                     ->title(fn($row) => '')
+                        ->location(fn($row) => route('tournament-awards-id', $row))
+                        ->attributes(function($row) {
+                            return [
+                                'class' => 'fas fa-coins btn btn-success btn-rounded btn-icon flex align-center justify-center items-center',
+                            ];
+                        }),
+                    LinkColumn::make('View') // make() has no effect in this case but needs to be set anyway
+                    ->title(fn($row) => '')
                         ->location(fn($row) => route('tournament.show', $row))
                         ->attributes(function($row) {
                             return [

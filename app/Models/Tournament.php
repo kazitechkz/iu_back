@@ -148,7 +148,7 @@ class Tournament extends Model
     public function winnerTournament()
     {
         $tournament_winner =  $this->tournament_winner()->with("winner")->first();
-        return $tournament_winner->winner;
+        return $tournament_winner ? $tournament_winner->winner : null;
     }
 
     public function check_access(): bool
