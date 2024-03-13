@@ -68,6 +68,7 @@ if(env("IS_API",true)){
             Route::get('step-detail/{id}', [ApiStepController::class, 'getStepDetail']);
             Route::get('sub-steps/{id}', [ApiSubStepController::class, 'getSubStepsByStepId']);
             Route::get('sub-step/{id}', [ApiSubStepController::class, 'getSubStepById']);
+            Route::post('findSubStepBySubCategoryId', [ApiSubStepController::class, 'getSubStepBySubCategoryId']);
             Route::get('facts/{subject_id}', [ApiFactController::class, 'getFactsBySubjectID']);
 
             Route::get('locales', [ApiLocaleController::class, 'index']);

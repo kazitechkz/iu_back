@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Wallet;
 
 use App\Exports\WalletExport;
 use App\Models\Subject;
+use App\Models\User;
 use Bavix\Wallet\Models\Wallet;
 use Maatwebsite\Excel\Facades\Excel;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
@@ -58,9 +59,23 @@ class WalletTable extends DataTableComponent
         return [
             Column::make("Id", "id")
                 ->sortable(),
+            Column::make("Username")
+                ->label(fn($v) => $this->getUserBalance($v['id']))
+                ->sortable(),
+            Column::make("Email")
+                ->label(fn($v) => $this->getUserEmail($v['id']))
+                ->searchable(),
         ];
     }
 
+    public function getUserBalance($walletID) {
+        $wallet = Wallet::with('holder')->find($walletID);
+        return $wallet->holder ? $wallet->holder->balanceInt : '';
+    }
+    public function getUserEmail($walletID) {
+        $wallet = Wallet::with('holder')->find($walletID);
+        return $wallet->holder ? $wallet->holder->email : '';
+    }
     protected function results(): array
     {
         return [
