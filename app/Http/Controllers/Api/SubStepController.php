@@ -64,12 +64,30 @@ class SubStepController extends Controller
                 if ($accept) {
                     return  response()->json(new ResponseJSON(status: true, data: $subStep));
                 } else {
-                    return  response()->json(new ResponseJSON(status: false, message: "Недостаточно прав!"), 200);
+                    return  response()->json(new ResponseJSON(status: false, message: "Недостаточно прав!"), 403);
                 }
             } else {
                 return  response()->json(new ResponseJSON(status: false, message: "Что-то пошло не так!"), 500);
             }
-
+        } catch (\Exception $exception) {
+            return ResponseService::DefineException($exception);
+        }
+    }
+    public function getSubStepBySubCategoryId(Request $request)
+    {
+        try {
+            $this->validate($request, ['sub_category_id' => 'required|exists:sub_categories,id']);
+            $subSteps = SubStep::where('sub_category_id', $request['sub_category_id'])->get();
+            if ($subSteps->count() > 0) {
+                $accept = $this->stepService->checkStepAccept($subSteps[0]->step);
+                if ($accept) {
+                    return  response()->json(new ResponseJSON(status: true, data: $subSteps));
+                } else {
+                    return  response()->json(new ResponseJSON(status: false, message: "Недостаточно прав!", data: null), 403);
+                }
+            } else {
+                return  response()->json(new ResponseJSON(status: false, message: "Что-то пошло не так!"), 500);
+            }
         } catch (\Exception $exception) {
             return ResponseService::DefineException($exception);
         }
