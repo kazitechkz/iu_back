@@ -59,7 +59,7 @@ class WalletTable extends DataTableComponent
         return [
             Column::make("Id", "id")
                 ->sortable(),
-            Column::make("Username")
+            Column::make("Balance")
                 ->label(fn($v) => $this->getUserBalance($v['id']))
                 ->sortable(),
             Column::make("Email")

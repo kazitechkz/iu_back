@@ -134,6 +134,11 @@ class QuestionController extends Controller
                 return response()->json(new ResponseJSON(status: false, message: "Вы уже оставляли заявку на текущий вопрос"), 400);
             } else {
                 Appeal::add($appeal_question->toArray());
+                $question = Question::find($input['question_id']);
+                if ($question && $question->group_id != 2) {
+                    $question->group_id = 11;
+                    $question->save();
+                }
                 return response()->json(new ResponseJSON(status: true,message: "Спасибо за отзыв! Мы обязательно рассмотрим данный вопрос",data: true),200);
             }
         }
