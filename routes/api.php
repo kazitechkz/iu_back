@@ -116,6 +116,7 @@ if(env("IS_API",true)){
             Route::post("/tournament-attempt",[ApiTournamentController::class,"attempt"]);
             Route::get("/tournaments-all",[ApiTournamentController::class,"getAllTournaments"]);
             Route::get("/tournament-detail/{id}",[ApiTournamentController::class,"tournamentDetail"]);
+            Route::get("/tournament-awards/{id}",[ApiTournamentController::class,"tournamentAward"]);
             Route::get("/sub-tournament-winners/{id}",[ApiTournamentController::class,"subTournamentWinners"]);
             Route::get("/sub-tournament-participants/{id}",[ApiTournamentController::class,"subTournamentParticipants"]);
             Route::get("/sub-tournament-results/{id}",[ApiTournamentController::class,"subTournamentResult"]);
@@ -171,6 +172,7 @@ if(env("IS_API",true)){
             Route::get("/battles",[ApiBattleController::class,"getActiveBattles"]);
             Route::get("/my-active-battles",[ApiBattleController::class,"getMyActiveBattles"]);
             Route::get("/battle/{promo_code}",[ApiBattleController::class,"getBattleByPromo"]);
+            Route::get("/battle-questions/{promo_code}",[ApiBattleController::class,"getBattleQuestionsByPromo"]);
             Route::post("/battle-create",[ApiBattleController::class,"createBattle"]);
             Route::post("/battle-step-create",[ApiBattleController::class,"createBattleStep"]);
             Route::get("/battle-subjects/{battle_step_id}",[ApiBattleController::class,"proposeSubjects"]);

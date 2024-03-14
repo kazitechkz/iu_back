@@ -529,6 +529,26 @@ return [
     "context_kk"=>"қазақ тіліндегі Контекст",
     "context_en"=>"ағылшын тіліндегі Контекст",
     "feature_id"=>"Сипаттама",
-
-    'select_category' => 'Категорияны таңдаңыз'
+    'select_category' => 'Категорияны таңдаңыз',
+     //IUTUBE AUTHOR
+    "iutube_author_lists" => "бейне авторларының тізімі",
+    "iutube_author_management" => "бейне авторларын басқару",
+    "iutube_author_create_title" => "бейне авторын құру",
+    "iutube_author_create_subtitle" => "бейне авторын құру блогы",
+    "iutube_author_edit_title" => "бейне авторын өзгерту",
+    "iutube_author_edit_subtitle" => "бейне авторының өзгерту блогы",
+    //IUTUBE VIDEO
+    "iutube_video_lists" => "бейнелер тізімі",
+    "iutube_video_management" => "бейнелерді басқару",
+    "iutube_video_create_title" => "бейне жасау",
+    "iutube_video_create_subtitle" => "бейне жасау блогы",
+    "iutube_video_edit_title" => "бейнені өзгерту",
+    "iutube_video_edit_subtitle" => "бейнені өзгерту блогы",
+    //IUTUBE ACCESS
+    "iutube_access_lists" => "бейнеге кіру тізімі",
+    "iutube_access_management" => "бейнеге қол жеткізуді басқару",
+    "iutube_access_create_title" => "бейнеге қол жеткізу",
+    "iutube_access_create_subtitle" => "бейнеге қол жеткізу блогы",
+    "iutube_access_edit_title" => "бейнелерге қол жеткізуді өзгерту",
+    "iutube_access_edit_subtitle" => "бейнеге қол жеткізуді өзгерту блогы",
 ];

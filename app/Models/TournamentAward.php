@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class TournamentAward
- * 
+ *
  * @property int $id
  * @property string $title_ru
  * @property string $title_kk
@@ -25,7 +25,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string|null $deleted_at
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * 
+ *
  * @property SubTournament $sub_tournament
  * @property Tournament $tournament
  * @property User $user
@@ -68,6 +68,13 @@ class TournamentAward extends Model
 
 	public function user()
 	{
-		return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class,"user_id","id")->select([
+            'id',
+            "username",
+            'name',
+            'phone',
+            'email',
+            'image_url'
+        ])->with("file");
 	}
 }

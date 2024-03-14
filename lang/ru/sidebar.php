@@ -77,4 +77,6 @@ return [
     "iutube_authors"=>"Авторы роликов",
     "iutube_access"=>"Доступы роликов",
     "iutube_videos"=>"Видеоролики",
+    "tournament-prize"=>"Призы",
+    "tournament-award"=>"Выданные подарки",
 ];

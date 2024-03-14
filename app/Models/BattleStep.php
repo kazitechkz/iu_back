@@ -90,7 +90,14 @@ class BattleStep extends Model
 
     public function battle_step_questions() : HasMany
     {
-        return $this->hasMany(BattleStepQuestion::class, 'step_id');
+        return $this->hasMany(BattleStepQuestion::class, 'step_id')->select([
+            'step_id',
+            'question_id',
+            'user_id',
+            'is_right',
+            'is_answered',
+            'point'
+        ]);
     }
 
 	public function battle_step_results() : HasMany

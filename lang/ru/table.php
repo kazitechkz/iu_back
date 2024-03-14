@@ -558,4 +558,19 @@ return [
     "iutube_access_create_subtitle" => "Блок Создания Доступа Видеоролика",
     "iutube_access_edit_title" => "Изменить Доступ к Видеороликам",
     "iutube_access_edit_subtitle" => "Блок Изменения Доступов к Видеороликами",
+
+    //Tournament Prize
+    "tournament_prize_lists" => "Список призов турниров",
+    "tournament_prize_management" => "Управление призами турниров",
+    "tournament_prize_create_title" => "Создать приз турнира",
+    "tournament_prize_edit_title" => "Изменить приз турнира",
+    "tournament_prize_create_subtitle" => "Блок создания призов турнира",
+    "tournament_prize_edit_subtitle" => "Блок редактирования приза турниров",
+    //Tournament Awards
+    "tournament_awards_lists" => "Список призов победителей турниров",
+    "tournament_awards_management" => "Управление призами победителей турниров",
+    "tournament_awards_create_title" => "Создать приз победителя турнира",
+    "tournament_awards_edit_title" => "Изменить приз победителя турнира",
+    "tournament_awards_create_subtitle" => "Блок создания призов победителей турнира",
+    "tournament_awards_edit_subtitle" => "Блок редактирования приза победителя турниров",
 ];

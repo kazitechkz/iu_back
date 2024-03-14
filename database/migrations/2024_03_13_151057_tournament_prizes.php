@@ -18,8 +18,9 @@ return new class extends Migration
             $table->string("title_en",255)->nullable();
             $table->boolean("is_virtual")->default(false);
             $table->foreignId("tournament_id")->references("id")->on("tournaments")->cascadeOnDelete();
-            $table->integer("order");
-            $table->
+            $table->integer("order")->nullable();
+            $table->integer("start_from")->nullable();
+            $table->integer("end_to")->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

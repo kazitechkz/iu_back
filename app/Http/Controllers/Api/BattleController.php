@@ -48,6 +48,24 @@ class BattleController extends Controller
         }
     }
 
+    public function getBattleQuestionsByPromo($promo_code){
+        try {
+            $battle = Battle::where(["promo_code" =>$promo_code])->where("end_at",'!=',null)->first();
+            $user = auth()->guard("api")->user();
+            if(!$battle){
+                return ResponseService::NotFound("Игра не найдена!");
+            }
+            if($battle->owner_id == $user->id || $battle->guest_id == $user->id){
+                $stepsID = $battle->battle_steps()->pluck("id")->toArray();
+                $battleQuestions = BattleStepQuestion::whereIn("step_id",$stepsID)->where(["user_id"=>$user->id])->with("question.subject","question.context","question.category","question.subcategory")->get();
+                return response()->json(new ResponseJSON(status: true, data: $battleQuestions), 200);
+            }
+            return ResponseService::NotFound("Игра не найдена!");
+        } catch (\Exception $exception) {
+            return ResponseService::DefineException($exception);
+        }
+    }
+
     public function getActiveBattles(Request $request){
         try {
             $user = auth()->guard("api")->user();

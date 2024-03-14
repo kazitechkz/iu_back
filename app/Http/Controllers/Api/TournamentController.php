@@ -12,6 +12,7 @@ use App\Models\SubTournamentResult;
 use App\Models\SubTournamentRival;
 use App\Models\SubTournamentWinner;
 use App\Models\Tournament;
+use App\Models\TournamentAward;
 use App\Models\TournamentStep;
 use App\Services\AnswerService;
 use App\Services\AttemptService;
@@ -173,7 +174,6 @@ class TournamentController extends Controller
         catch (\Exception $exception) {
             return ResponseService::DefineException($exception);
         }
-
     }
     public function subTournamentParticipants($id){
         try{
@@ -214,6 +214,16 @@ class TournamentController extends Controller
             $attempt_tournament = SubTournamentCreateDTO::fromRequest($request);
             $this->tournamentService->participate(auth()->guard("api")->id(),$attempt_tournament->sub_tournament_id);
             return response()->json(new ResponseJSON(status: true,data: true),200);
+        }
+        catch (\Exception $exception) {
+            return ResponseService::DefineException($exception);
+        }
+    }
+
+    public function tournamentAward($id){
+        try {
+            $tournamentAwards = TournamentAward::where(["tournament_id" => $id])->with(["user"])->orderBy("order","ASC")->paginate(20);
+            return response()->json(new ResponseJSON(status: true,data: $tournamentAwards),200);
         }
         catch (\Exception $exception) {
             return ResponseService::DefineException($exception);

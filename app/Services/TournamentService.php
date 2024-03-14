@@ -13,7 +13,11 @@ use App\Models\SubTournamentResult;
 use App\Models\SubTournamentRival;
 use App\Models\SubTournamentWinner;
 use App\Models\Tournament;
+use App\Models\TournamentAward;
+use App\Models\TournamentPrize;
 use App\Models\TournamentStep;
+use App\Models\TournamentWinner;
+use App\Models\User;
 use Illuminate\Support\Carbon;
 class TournamentService{
 
@@ -197,6 +201,105 @@ class TournamentService{
         return $attempt;
     }
 
+
+    public function givePrize($id){
+        $tournament = Tournament::with("sub_tournaments")->find($id);
+        //Sub Steps
+        $final_sub = $tournament->sub_tournaments()->where(["step_id"=>4])->first();
+        $half_final_sub = $tournament->sub_tournaments()->where(["step_id"=>3])->first();
+        $fourth_final_sub = $tournament->sub_tournaments()->where(["step_id"=>2])->first();
+        $first_sub = $tournament->sub_tournaments()->where(["step_id"=>1])->first();
+        $winner = TournamentWinner::where(["tournament_id" => $tournament->id])->first();
+        $second_winner = SubTournamentParticipant::where(["sub_tournament_id" => $final_sub->id])->where("user_id","!=",$winner->winner_id)->first();
+        $third_winners = SubTournamentParticipant::where(["sub_tournament_id" => $half_final_sub->id])->whereNotIn("user_id",[$winner->winner_id,$second_winner->user_id])->pluck("user_id")->toArray();
+        $fourth_winners = SubTournamentParticipant::where(["sub_tournament_id" => $fourth_final_sub->id])->whereNotIn("user_id",[$winner->winner_id,$second_winner->user_id,...$third_winners])->pluck("user_id")->toArray();
+        $results = [];
+        for ($i=1;$i <= 4;$i++){
+            $prize = TournamentPrize::where(["tournament_id" => $id,"order"=>$i])->first();
+            if($i == 1){
+                $results[] = [
+                    'title_ru'=>$prize->title_ru,
+                    'title_kk'=>$prize->title_kk,
+                    'title_en'=>$prize->title_en,
+                    'is_awarded'=>false,
+                    'tournament_id'=>$id,
+                    'sub_tournament_id'=>$final_sub->id,
+                    'user_id'=>$winner->winner_id,
+                    'order'=>$prize->order
+                ];
+            }
+            if($i == 2){
+                $results[] = [
+                    'title_ru'=>$prize->title_ru,
+                    'title_kk'=>$prize->title_kk,
+                    'title_en'=>$prize->title_en,
+                    'is_awarded'=>false,
+                    'tournament_id'=>$id,
+                    'sub_tournament_id'=>$half_final_sub->id,
+                    'user_id'=>$second_winner->user_id,
+                    'order'=>$prize->order
+                ];
+            }
+            if($i == 3){
+                foreach ($third_winners as $winner_id){
+                    $results[] = [
+                        'title_ru'=>$prize->title_ru,
+                        'title_kk'=>$prize->title_kk,
+                        'title_en'=>$prize->title_en,
+                        'is_awarded'=>false,
+                        'tournament_id'=>$id,
+                        'sub_tournament_id'=>$fourth_final_sub->id,
+                        'user_id'=>$winner_id,
+                        'order'=>$prize->order
+                    ];
+                }
+            }
+            if($i == 4){
+                foreach ($fourth_winners as $winner_id){
+                    $results[] = [
+                        'title_ru'=>$prize->title_ru,
+                        'title_kk'=>$prize->title_kk,
+                        'title_en'=>$prize->title_en,
+                        'is_awarded'=>false,
+                        'tournament_id'=>$id,
+                        'sub_tournament_id'=>$first_sub->id,
+                        'user_id'=>$winner_id,
+                        'order'=>$prize->order
+                    ];
+                }
+            }
+        }
+        $exclude_users = [$winner->winner_id,$second_winner->user_id,...$third_winners,...$fourth_winners];
+        $reminders = TournamentPrize::where(["tournament_id" => $id,"order"=>null])->orderBy("start_from","ASC")->get();
+        $order_id = 5;
+        foreach ($reminders as $reminder){
+            $takes = $reminder->end_to - $reminder->start_from;
+            $remind_users = SubTournamentResult::where(["sub_tournament_id" => $first_sub->id])
+                ->whereNotIn("user_id",$exclude_users)
+                ->orderBy("point","DESC")->orderBy("time","DESC")->get()->take($takes)->pluck("user_id")->toArray();
+            foreach ($remind_users as $remind_user){
+                $results[] = [
+                    'title_ru'=>$reminder->title_ru,
+                    'title_kk'=>$reminder->title_kk,
+                    'title_en'=>$reminder->title_en,
+                    'is_awarded'=>false,
+                    'tournament_id'=>$id,
+                    'sub_tournament_id'=>$first_sub->id,
+                    'user_id'=>$remind_user,
+                    'order'=>$order_id
+                ];
+                $order_id++;
+                $exclude_users[] = $remind_user;
+                if($reminder->is_virtual){
+                    $user = User::find($remind_user);
+                    if($user){
+                        $user->deposit($reminder->value);
+                    }
+                }
+            }
+        }
+        TournamentAward::insert($results);
+    }
 
 
 

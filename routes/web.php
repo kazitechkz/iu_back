@@ -30,6 +30,7 @@ use App\Http\Controllers\Admin\HubController as AdminHubController;
 use App\Http\Controllers\Admin\WalletController as AdminWalletController;
 use App\Http\Controllers\Admin\DiscussController as AdminDiscussController;
 use App\Http\Controllers\Admin\TournamentController as AdminTournamentController;
+use App\Http\Controllers\Admin\TournamentPrizeController as AdminTournamentPrizeController;
 use App\Http\Controllers\Admin\SubTournamentController as AdminSubTournamentController;
 use App\Http\Controllers\Admin\SubTournamentParticipantController as AdminSubTournamentParticipantController;
 use App\Http\Controllers\Admin\SubTournamentWinnerController as AdminSubTournamentWinnerController;
@@ -141,6 +142,8 @@ if(env("IS_WEB",true)) {
             Route::resource("discuss", AdminDiscussController::class);
             //Tournament
             Route::resource("tournament", AdminTournamentController::class);
+            Route::resource("tournament-prize",AdminTournamentPrizeController::class);
+            Route::get("tournament-award",[AdminTournamentAwardController::class,"index"])->name("tournament-award-index");
             Route::resource("sub-tournament", AdminSubTournamentController::class);
             Route::resource("sub-tournament-participant", AdminSubTournamentParticipantController::class);
             Route::resource("sub-tournament-winner", AdminSubTournamentWinnerController::class);

@@ -6,46 +6,46 @@
             name="{{__('sidebar.home')}}"
         />
 
-            @can("user management")
+        @can("user management")
             <x-shared.sidebar-menu
                 :element-id="'users'" :name="__('sidebar.user')"
                 :icon="'fas fa-solid fa-building-shield'">
                 @can("user-hubs index")
-                <x-shared.sub-sidebar-menu
-                    :icon="'fa fa-user-group'"
-                    :link="'hubs.index'"
-                    :name="__('sidebar.user_hubs')"/>
+                    <x-shared.sub-sidebar-menu
+                        :icon="'fa fa-user-group'"
+                        :link="'hubs.index'"
+                        :name="__('sidebar.user_hubs')"/>
                 @endcan
                 @can("user index")
-                <x-shared.sub-sidebar-menu
-                    :icon="'fa fa-user'"
-                    :link="'user.index'"
-                    :name="__('sidebar.user')"/>
+                    <x-shared.sub-sidebar-menu
+                        :icon="'fa fa-user'"
+                        :link="'user.index'"
+                        :name="__('sidebar.user')"/>
                 @endcan
                 @can("role index")
-                <x-shared.sub-sidebar-menu
-                    :icon="'fas fa-person-military-pointing'"
-                    :link="'role.index'"
-                    :name="__('sidebar.role')"/>
+                    <x-shared.sub-sidebar-menu
+                        :icon="'fas fa-person-military-pointing'"
+                        :link="'role.index'"
+                        :name="__('sidebar.role')"/>
                 @endcan
                 @can("permission index")
-                <x-shared.sub-sidebar-menu
-                    :icon="'fas fa-hand'"
-                    :link="'permission.index'"
-                    :name="__('sidebar.permission')"/>
+                    <x-shared.sub-sidebar-menu
+                        :icon="'fas fa-hand'"
+                        :link="'permission.index'"
+                        :name="__('sidebar.permission')"/>
                 @endcan
             </x-shared.sidebar-menu>
+        @endcan
+        @can("locale management")
+            @can("locale index")
+                <x-shared.main-sidebar-menu
+                    link="locale.index"
+                    icon="fas fa-language"
+                    name="{{__('sidebar.locale')}}"
+                />
             @endcan
-            @can("locale management")
-                @can("locale index")
-                    <x-shared.main-sidebar-menu
-                        link="locale.index"
-                        icon="fas fa-language"
-                        name="{{__('sidebar.locale')}}"
-                    />
-                @endcan
-            @endcan
-            @can("subject management")
+        @endcan
+        @can("subject management")
             <x-shared.sidebar-menu :element-id="'subjects'" :name="__('sidebar.subject')" :icon="'fas fa-book'">
                 @can("subject index")
                     <x-shared.sub-sidebar-menu
@@ -72,53 +72,53 @@
                         :name="__('sidebar.single_subject_tests')"/>
                 @endcan
             </x-shared.sidebar-menu>
-            @endcan
+        @endcan
 
         @can("finance management")
-        <x-shared.sidebar-menu :element-id="'finance'" :name="__('sidebar.finance')" :icon="'mdi mdi-currency-usd'">
-            @can("commercial-group index")
-            <x-shared.sub-sidebar-menu
-                :icon="'fas fa-credit-card'"
-                :link="'commercial-group.index'"
-                :name="__('sidebar.commercial-group')"/>
-            @endcan
-            @can("wallet index")
-            <x-shared.sub-sidebar-menu
-                :icon="'fas fa-wallet'"
-                :link="'wallet.index'"
-                :name="__('sidebar.wallet')"/>
-            @endcan
-            @can("plan index")
-              <x-shared.sub-sidebar-menu
-                :icon="'fas fa-credit-card'"
-                :link="'plan.index'"
-                :name="__('sidebar.plan')"/>
-            @endcan
-            @can("plan-combination index")
-            <x-shared.sub-sidebar-menu
-                :icon="' mdi mdi-compass-outline'"
-                :link="'plan-combination.index'"
-                :name="__('sidebar.plan-combination')"/>
-            @endcan
-            @can("subscription index")
-               <x-shared.sub-sidebar-menu
-                 :icon="'fas fa-handshake'"
-                 :link="'subscription.index'"
-                  :name="__('sidebar.subscription')"/>
-            @endcan
-            @can("promocode-plans index")
-            <x-shared.sub-sidebar-menu
-                :icon="'fas fa-tag'"
-                :link="'promocode-plans.index'"
-                :name="__('sidebar.promocode_plans')"/>
-            @endcan
-            @can("promocode index")
-            <x-shared.sub-sidebar-menu
-                :icon="'fas fa-tag'"
-                :link="'promocode.index'"
-                :name="__('sidebar.promocode')"/>
-            @endcan
-        </x-shared.sidebar-menu>
+            <x-shared.sidebar-menu :element-id="'finance'" :name="__('sidebar.finance')" :icon="'mdi mdi-currency-usd'">
+                @can("commercial-group index")
+                    <x-shared.sub-sidebar-menu
+                        :icon="'fas fa-credit-card'"
+                        :link="'commercial-group.index'"
+                        :name="__('sidebar.commercial-group')"/>
+                @endcan
+                @can("wallet index")
+                    <x-shared.sub-sidebar-menu
+                        :icon="'fas fa-wallet'"
+                        :link="'wallet.index'"
+                        :name="__('sidebar.wallet')"/>
+                @endcan
+                @can("plan index")
+                    <x-shared.sub-sidebar-menu
+                        :icon="'fas fa-credit-card'"
+                        :link="'plan.index'"
+                        :name="__('sidebar.plan')"/>
+                @endcan
+                @can("plan-combination index")
+                    <x-shared.sub-sidebar-menu
+                        :icon="' mdi mdi-compass-outline'"
+                        :link="'plan-combination.index'"
+                        :name="__('sidebar.plan-combination')"/>
+                @endcan
+                @can("subscription index")
+                    <x-shared.sub-sidebar-menu
+                        :icon="'fas fa-handshake'"
+                        :link="'subscription.index'"
+                        :name="__('sidebar.subscription')"/>
+                @endcan
+                @can("promocode-plans index")
+                    <x-shared.sub-sidebar-menu
+                        :icon="'fas fa-tag'"
+                        :link="'promocode-plans.index'"
+                        :name="__('sidebar.promocode_plans')"/>
+                @endcan
+                @can("promocode index")
+                    <x-shared.sub-sidebar-menu
+                        :icon="'fas fa-tag'"
+                        :link="'promocode.index'"
+                        :name="__('sidebar.promocode')"/>
+                @endcan
+            </x-shared.sidebar-menu>
         @endcan
         @can("support management")
             <x-shared.sidebar-menu
@@ -153,7 +153,8 @@
         @endcan
 
         @can("examination management")
-            <x-shared.sidebar-menu :element-id="'tests'" :name="__('sidebar.tests')" :icon="'fas fa-clipboard-question'">
+            <x-shared.sidebar-menu :element-id="'tests'" :name="__('sidebar.tests')"
+                                   :icon="'fas fa-clipboard-question'">
                 @can("group index")
                     <x-shared.sub-sidebar-menu
                         :icon="'fas fa-layer-group'"
@@ -186,34 +187,35 @@
         @endcan
         @can('career management')
             <x-shared.sidebar-menu :element-id="'career-index'" :name="__('sidebar.career')" :icon="'fas fa-briefcase'">
-                    <x-shared.sub-sidebar-menu
-                            :icon="'fas fa-solid fa-chalkboard-user'"
-                            :link="'career-quiz-group.index'"
-                            :name="__('sidebar.career_quiz_groups')"/>
-                    <x-shared.sub-sidebar-menu
-                            :icon="'fas fa-user'"
-                            :link="'career-quiz-author.index'"
-                            :name="__('sidebar.career_quiz_authors')"/>
-                    <x-shared.sub-sidebar-menu
-                            :icon="'fas fa-smile-wink'"
-                            :link="'career-quiz-feature.index'"
-                            :name="__('sidebar.career_quiz_features')"/>
-                    <x-shared.sub-sidebar-menu
-                            :icon="'fas fa-clipboard-question'"
-                            :link="'career-quiz.index'"
-                            :name="__('sidebar.career_quizzes')"/>
-                    <x-shared.sub-sidebar-menu
-                            :icon="'fas fa-circle-question'"
-                            :link="'career-quiz-question.index'"
-                            :name="__('sidebar.career_quiz_questions')"/>
-                    <x-shared.sub-sidebar-menu
-                            :icon="'fas fa-comment'"
-                            :link="'career-quiz-answer.index'"
-                            :name="__('sidebar.career_quiz_answers')"/>
+                <x-shared.sub-sidebar-menu
+                    :icon="'fas fa-solid fa-chalkboard-user'"
+                    :link="'career-quiz-group.index'"
+                    :name="__('sidebar.career_quiz_groups')"/>
+                <x-shared.sub-sidebar-menu
+                    :icon="'fas fa-user'"
+                    :link="'career-quiz-author.index'"
+                    :name="__('sidebar.career_quiz_authors')"/>
+                <x-shared.sub-sidebar-menu
+                    :icon="'fas fa-smile-wink'"
+                    :link="'career-quiz-feature.index'"
+                    :name="__('sidebar.career_quiz_features')"/>
+                <x-shared.sub-sidebar-menu
+                    :icon="'fas fa-clipboard-question'"
+                    :link="'career-quiz.index'"
+                    :name="__('sidebar.career_quizzes')"/>
+                <x-shared.sub-sidebar-menu
+                    :icon="'fas fa-circle-question'"
+                    :link="'career-quiz-question.index'"
+                    :name="__('sidebar.career_quiz_questions')"/>
+                <x-shared.sub-sidebar-menu
+                    :icon="'fas fa-comment'"
+                    :link="'career-quiz-answer.index'"
+                    :name="__('sidebar.career_quiz_answers')"/>
             </x-shared.sidebar-menu>
         @endcan
         @can('iutube management')
-            <x-shared.sidebar-menu :element-id="'iutube-index'" :name="__('sidebar.iutube_videos')" :icon="'fas fa-play'">
+            <x-shared.sidebar-menu :element-id="'iutube-index'" :name="__('sidebar.iutube_videos')"
+                                   :icon="'fas fa-play'">
                 <x-shared.sub-sidebar-menu
                     :icon="'fas fa-user'"
                     :link="'iutube-author.index'"
@@ -245,7 +247,8 @@
             </x-shared.sidebar-menu>
         @endcan
         @can('announcement management')
-            <x-shared.sidebar-menu :element-id="'announcement'" :name="__('sidebar.announcement')" :icon="'fas fa-bullhorn'">
+            <x-shared.sidebar-menu :element-id="'announcement'" :name="__('sidebar.announcement')"
+                                   :icon="'fas fa-bullhorn'">
                 @can("announcement index")
                     <x-shared.sub-sidebar-menu
                         :icon="'fas fa-bullhorn'"
@@ -253,92 +256,94 @@
                         :name="__('sidebar.announcement-type')"/>
                 @endcan
                 @can("announcement index")
-                        <x-shared.sub-sidebar-menu
-                            :icon="'fas fa-bullhorn'"
-                            :link="'announcement-group.index'"
-                            :name="__('sidebar.announcement-group')"/>
+                    <x-shared.sub-sidebar-menu
+                        :icon="'fas fa-bullhorn'"
+                        :link="'announcement-group.index'"
+                        :name="__('sidebar.announcement-group')"/>
                 @endcan
-                    @can("announcement index")
-                        <x-shared.sub-sidebar-menu
-                            :icon="'fas fa-bullhorn'"
-                            :link="'announcement.index'"
-                            :name="__('sidebar.announcement')"/>
+                @can("announcement index")
+                    <x-shared.sub-sidebar-menu
+                        :icon="'fas fa-bullhorn'"
+                        :link="'announcement.index'"
+                        :name="__('sidebar.announcement')"/>
                 @endcan
             </x-shared.sidebar-menu>
         @endcan
         @can('notification management')
-            <x-shared.sidebar-menu :element-id="'notification'" :name="__('sidebar.notification')" :icon="'fas fa-message'">
+            <x-shared.sidebar-menu :element-id="'notification'" :name="__('sidebar.notification')"
+                                   :icon="'fas fa-message'">
                 @can("notification index")
                     <x-shared.sub-sidebar-menu
                         :icon="'fas fa-message'"
                         :link="'notification-type.index'"
                         :name="__('sidebar.notification-type')"/>
                 @endcan
-                    @can("notification index")
-                        <x-shared.sub-sidebar-menu
-                            :icon="'fas fa-message'"
-                            :link="'notification.index'"
-                            :name="__('sidebar.notification')"/>
-                    @endcan
+                @can("notification index")
+                    <x-shared.sub-sidebar-menu
+                        :icon="'fas fa-message'"
+                        :link="'notification.index'"
+                        :name="__('sidebar.notification')"/>
+                @endcan
 
             </x-shared.sidebar-menu>
         @endcan
         @can('tech-support management')
-            <x-shared.sidebar-menu :element-id="'tech-support'" :name="__('sidebar.tech-support')" :icon="'fas fa-toolbox'">
+            <x-shared.sidebar-menu :element-id="'tech-support'" :name="__('sidebar.tech-support')"
+                                   :icon="'fas fa-toolbox'">
                 @can("tech-support index")
                     <x-shared.sub-sidebar-menu
                         :icon="'fas fa-toolbox'"
                         :link="'tech-support-type.index'"
                         :name="__('sidebar.tech-support-type')"/>
                 @endcan
-                    @can("tech-support index")
-                        <x-shared.sub-sidebar-menu
-                            :icon="'fas fa-toolbox'"
-                            :link="'tech-support-category.index'"
-                            :name="__('sidebar.tech-support-category')"/>
-                    @endcan
-                    @can("tech-support index")
-                        <x-shared.sub-sidebar-menu
-                            :icon="'fas fa-toolbox'"
-                            :link="'tech-support-ticket.index'"
-                            :name="__('sidebar.tech-support-ticket')"/>
-                    @endcan
+                @can("tech-support index")
+                    <x-shared.sub-sidebar-menu
+                        :icon="'fas fa-toolbox'"
+                        :link="'tech-support-category.index'"
+                        :name="__('sidebar.tech-support-category')"/>
+                @endcan
+                @can("tech-support index")
+                    <x-shared.sub-sidebar-menu
+                        :icon="'fas fa-toolbox'"
+                        :link="'tech-support-ticket.index'"
+                        :name="__('sidebar.tech-support-ticket')"/>
+                @endcan
 
             </x-shared.sidebar-menu>
         @endcan
         @can("step management")
-        <x-shared.sidebar-menu :element-id="'step-content'" :name="__('sidebar.step')" :icon="'fas fa-stairs'">
+            <x-shared.sidebar-menu :element-id="'step-content'" :name="__('sidebar.step')" :icon="'fas fa-stairs'">
                 @can('step index')
-                <x-shared.sub-sidebar-menu
-                    :icon="'fas fa-stairs'"
-                    :link="'step.index'"
-                    :name="__('sidebar.step')"/>
+                    <x-shared.sub-sidebar-menu
+                        :icon="'fas fa-stairs'"
+                        :link="'step.index'"
+                        :name="__('sidebar.step')"/>
                 @endcan
-                    @can('sub-step index')
-                        <x-shared.sub-sidebar-menu
-                            :icon="'fas fa-shoe-prints'"
-                            :link="'sub-step.index'"
-                            :name="__('sidebar.sub-step')"/>
-                    @endcan
-                    @can('sub-step-content index')
-                        <x-shared.sub-sidebar-menu
-                            :icon="'fas fa-shoe-prints'"
-                            :link="'sub-step-content.index'"
-                            :name="__('sidebar.sub-step-content')"/>
-                    @endcan
-                    @can('subStepVideo index')
-                        <x-shared.sub-sidebar-menu
-                            :icon="'fa fa-video-camera'"
-                            :link="'sub-step-video.index'"
-                            :name="__('sidebar.sub-step-video')"/>
-                    @endcan
-{{--                    @can("substeptest index")--}}
-{{--                        <x-shared.sub-sidebar-menu--}}
-{{--                            :icon="'mdi mdi-text-shadow'"--}}
-{{--                            :link="'sub-step-test.index'"--}}
-{{--                            :name="__('sidebar.substeptest')"/>--}}
-{{--                    @endcan--}}
-        </x-shared.sidebar-menu>
+                @can('sub-step index')
+                    <x-shared.sub-sidebar-menu
+                        :icon="'fas fa-shoe-prints'"
+                        :link="'sub-step.index'"
+                        :name="__('sidebar.sub-step')"/>
+                @endcan
+                @can('sub-step-content index')
+                    <x-shared.sub-sidebar-menu
+                        :icon="'fas fa-shoe-prints'"
+                        :link="'sub-step-content.index'"
+                        :name="__('sidebar.sub-step-content')"/>
+                @endcan
+                @can('subStepVideo index')
+                    <x-shared.sub-sidebar-menu
+                        :icon="'fa fa-video-camera'"
+                        :link="'sub-step-video.index'"
+                        :name="__('sidebar.sub-step-video')"/>
+                @endcan
+                {{--                    @can("substeptest index")--}}
+                {{--                        <x-shared.sub-sidebar-menu--}}
+                {{--                            :icon="'mdi mdi-text-shadow'"--}}
+                {{--                            :link="'sub-step-test.index'"--}}
+                {{--                            :name="__('sidebar.substeptest')"/>--}}
+                {{--                    @endcan--}}
+            </x-shared.sidebar-menu>
         @endcan
         @can("tournament management")
             <x-shared.sidebar-menu :element-id="'tournament'" :name="__('sidebar.tournament')" :icon="'fas fa-trophy'">
@@ -347,6 +352,18 @@
                         :icon="'fas fa-trophy'"
                         :link="'tournament.index'"
                         :name="__('sidebar.tournament')"/>
+                @endcan
+                @can("tournament index")
+                    <x-shared.sub-sidebar-menu
+                        :icon="'fas fa-trophy'"
+                        :link="'tournament-prize.index'"
+                        :name="__('sidebar.tournament-prize')"/>
+                @endcan
+                @can("tournament index")
+                    <x-shared.sub-sidebar-menu
+                        :icon="'fas fa-trophy'"
+                        :link="'tournament-award-index'"
+                        :name="__('sidebar.tournament-award')"/>
                 @endcan
                 @can("sub-tournament index")
                     <x-shared.sub-sidebar-menu
@@ -373,7 +390,8 @@
             </x-shared.sidebar-menu>
         @endcan
         @can("tutor management")
-            <x-shared.sidebar-menu :element-id="'tutor-content'" :name="__('sidebar.tutor')" :icon="'fa-solid fa-chalkboard-user'">
+            <x-shared.sidebar-menu :element-id="'tutor-content'" :name="__('sidebar.tutor')"
+                                   :icon="'fa-solid fa-chalkboard-user'">
                 <x-shared.sub-sidebar-menu
                     :icon="'fas fa-venus-mars'"
                     :link="'gender.index'"
@@ -409,7 +427,8 @@
             </x-shared.sidebar-menu>
         @endcan
         @can("statistic management")
-            <x-shared.sidebar-menu :element-id="'statistic-content'" :name="__('sidebar.statistic')" :icon="'fa fa-line-chart'">
+            <x-shared.sidebar-menu :element-id="'statistic-content'" :name="__('sidebar.statistic')"
+                                   :icon="'fa fa-line-chart'">
                 <x-shared.sub-sidebar-menu
                     :icon="'fa fa-bar-chart'"
                     :link="'stats-on-questions'"
@@ -431,7 +450,8 @@
             </x-shared.sidebar-menu>
         @endcan
         @can("fact management")
-            <x-shared.sidebar-menu :element-id="'fact-content'" :name="__('sidebar.fact')" :icon="'fa-regular fa-face-laugh-squint'">
+            <x-shared.sidebar-menu :element-id="'fact-content'" :name="__('sidebar.fact')"
+                                   :icon="'fa-regular fa-face-laugh-squint'">
                 <x-shared.sub-sidebar-menu
                     :icon="'fa-regular fa-face-grin-squint-tears'"
                     :link="'fact.index'"
