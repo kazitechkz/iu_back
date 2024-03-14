@@ -7,6 +7,7 @@ use App\Http\Requests\Appeal\AppealCreateRequest;
 use App\Http\Requests\Appeal\AppealUpdateRequest;
 use App\Models\Appeal;
 use App\Models\AppealType;
+use App\Models\Subject;
 use Illuminate\Http\Request;
 
 class AppealController extends Controller
@@ -19,8 +20,11 @@ class AppealController extends Controller
         try {
             if (auth()->user()->can("appeal index")) {
                 $types = AppealType::all();
-                $appeals = Appeal::with('question')->latest()->paginate(10);
-                return view("admin.appeal.index", compact('types', 'appeals'));
+                $subjects = Subject::all();
+                $appeals = Appeal::whereHas('question', function ($q) {
+                    $q->where('deleted_at', null);
+                })->latest()->paginate(10);
+                return view("admin.appeal.index", compact('types', 'appeals', 'subjects'));
             } else {
                 toastr()->warning(__("message.not_allowed"));
                 return redirect()->route("home");
@@ -36,6 +40,7 @@ class AppealController extends Controller
         try {
             if (auth()->user()->can("appeal index")) {
                 $types = AppealType::all();
+                $subjects = Subject::all();
                 $query = Appeal::query();
                 if ($request['type_id'] != 0) {
                     $query = $query->where('type_id', $request['type_id']);
@@ -43,8 +48,16 @@ class AppealController extends Controller
                 if ($request['status'] != 'all' || $request['status'] == 0) {
                     $query = $query->where('status', $request['status']);
                 }
-                $appeals = $query->with('question')->latest()->paginate(10);
-                return view("admin.appeal.index", compact('types', 'appeals'));
+                if ($request['subject_id'] != 0) {
+                    $appeals = $query->whereHas('question', function ($query) use ($request) {
+                        $query->where('subject_id', $request['subject_id'])->where('deleted_at', null);
+                    })->latest()->paginate(10);
+                } else {
+                    $appeals = $query->whereHas('question', function ($q) {
+                        $q->where('deleted_at', null);
+                    })->latest()->paginate(10);
+                }
+                return view("admin.appeal.index", compact('types', 'appeals', 'subjects'));
             } else {
                 toastr()->warning(__("message.not_allowed"));
                 return redirect()->route("home");

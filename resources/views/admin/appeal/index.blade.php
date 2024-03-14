@@ -57,17 +57,32 @@
             <div class="card-body">
                 <form action="{{route('search-appeal')}}" class="flex" method="post">
                     @csrf
-                    <select name="type_id" class="form-control mx-2">
-                        <option selected value="0">Все</option>
-                        @foreach($types as $type)
-                            <option value="{{$type->id}}">{{$type->title}}</option>
-                        @endforeach
-                    </select>
-                    <select name="status" class="form-control mx-2">
-                        <option selected value="all">Все</option>
-                        <option value="1">Решенные</option>
-                        <option value="0">Не решенные</option>
-                    </select>
+                    <div class="w-full mx-2">
+                        <label for="subject_id">Выбрать предмет</label>
+                        <select id="subject_id" name="subject_id" class="form-control">
+                            <option selected value="0">Все</option>
+                            @foreach($subjects as $subject)
+                                <option value="{{$subject->id}}">{{$subject->title_ru}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="w-full mx-2">
+                        <label for="type_id">Выбрать тип ошибки</label>
+                        <select id="type_id" name="type_id" class="form-control">
+                            <option selected value="0">Все</option>
+                            @foreach($types as $type)
+                                <option value="{{$type->id}}">{{$type->title}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="w-full mx-2">
+                        <label for="status">Выбрать статус</label>
+                        <select id="status" name="status" class="form-control">
+                            <option selected value="all">Все</option>
+                            <option value="1">Решенные</option>
+                            <option value="0">Не решенные</option>
+                        </select>
+                    </div>
                     <button class="btn btn-facebook">Поиск</button>
                 </form>
             </div>
@@ -92,16 +107,18 @@
                     <td class="whitespace-nowrap px-6 py-4 font-medium">{{$appeals->firstItem() + $loop->index}}</td>
                     <td class="whitespace-nowrap px-6 py-4">{!! $appeal->message != '' ? $appeal->message : '<span class="text-red-500">--</span>' !!}</td>
                     <td class="whitespace-nowrap px-6 py-4">{{$appeal->appeal_type->title}}</td>
-                    <td class="whitespace-nowrap px-6 py-4">{{$appeal->question->subject->title}}</td>
+                    <td class="whitespace-nowrap px-6 py-4">{{$appeal->question ? $appeal->question->subject->title : ''}}</td>
                     <td class="whitespace-nowrap px-6 py-4">{!! $appeal->status ? '<span class="text-green-500">Решен</span>' : '<span class="text-red-500">Не решен</span>' !!}</td>
                     <td class="whitespace-nowrap px-6 py-4">
                         <div class="flex w-full justify-between">
                                 <span class="flex justify-start">
-                                <livewire:question.preview-question :question="$appeal->question"/>
-                                <a href="{{route('questions.edit', $appeal->question_id)}}" target="_blank"
-                                   class="flex items-center justify-center btn btn-outline-secondary btn-rounded btn-icon mx-1">
-                                    <i class="mdi mdi-pencil"></i>
-                                </a>
+                                    @if($appeal->question)
+                                        <livewire:question.preview-question :question="$appeal->question"/>
+                                        <a href="{{route('questions.edit', $appeal->question_id)}}" target="_blank"
+                                           class="flex items-center justify-center btn btn-outline-secondary btn-rounded btn-icon mx-1">
+                                            <i class="mdi mdi-pencil"></i>
+                                        </a>
+                                    @endif
                                     @if($appeal->status)
                                         <a href="{{route('appeal.show', $appeal->id)}}"
                                            class="flex items-center justify-center btn btn-outline-secondary btn-rounded btn-icon mx-1">
