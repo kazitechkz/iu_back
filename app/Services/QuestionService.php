@@ -173,7 +173,7 @@ class QuestionService
         if (!PlanService::check_user_subject($compulsory_subject->id) && !$isTournament) {
             $condition = ["subject_id" => $compulsory_subject->id, "type_id" => self::SINGLE_QUESTION_ID, "locale_id" => $locale_id, 'group_id' => 2];
         } else {
-            $condition = ["subject_id" => $compulsory_subject->id, "type_id" => self::SINGLE_QUESTION_ID, "locale_id" => $locale_id];
+            $condition = [["subject_id", '=', $compulsory_subject->id], ["type_id", '=', self::SINGLE_QUESTION_ID], ["locale_id", '=', $locale_id], ["group_id", "!=", [2,11]]];
         }
         $query = Question::query();
         if ($category_id && !$sub_category_id) {
@@ -194,7 +194,7 @@ class QuestionService
         if (!PlanService::check_user_subject($compulsory_subject->id) && !$isTournament) {
             $condition = ["type_id" => self::CONTEXT_QUESTION_ID, "subject_id" => $compulsory_subject->id, "locale_id" => $locale_id, 'group_id' => 2];
         } else {
-            $condition = ["type_id" => self::CONTEXT_QUESTION_ID, "subject_id" => $compulsory_subject->id, "locale_id" => $locale_id];
+            $condition = [["type_id", '=', self::CONTEXT_QUESTION_ID], ["subject_id", '=', $compulsory_subject->id], ["locale_id", '=', $locale_id], ["group_id", "!=", [2,11]]];
         }
         $query = Question::query();
         $context_questions = [];
@@ -228,7 +228,7 @@ class QuestionService
         if (!PlanService::check_user_subject($compulsory_subject->id) && !$isTournament) {
             $condition = ["subject_id" => $compulsory_subject->id, "type_id" => self::MULTI_QUESTION_ID, "locale_id" => $locale_id, 'group_id' => 2];
         } else {
-            $condition = ["subject_id" => $compulsory_subject->id, "type_id" => self::MULTI_QUESTION_ID, "locale_id" => $locale_id];
+            $condition = [["subject_id", '=', $compulsory_subject->id], ["type_id", '=', self::MULTI_QUESTION_ID], ["locale_id",  '=', $locale_id], ["group_id", "!=", [2,11]]];
         }
         $query = Question::query();
         if ($category_id && !$sub_category_id) {
