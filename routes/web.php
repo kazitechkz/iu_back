@@ -109,6 +109,8 @@ if(env("IS_WEB",true)) {
     ], function () {
         Route::group(["prefix" => "dashboard", "middleware" => "auth"], function () {
             Route::resource("user", AdminUserController::class);
+            Route::get("user-import", [AdminUserController::class, 'getImport'])->name('get-import');
+            Route::post("user-import", [AdminUserController::class, 'postImport'])->name('post-import');
             Route::resource("user-hubs", AdminUserHubController::class);
             Route::resource("hubs", AdminHubController::class);
             Route::resource("role", AdminRoleController::class);

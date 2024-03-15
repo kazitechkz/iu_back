@@ -9,9 +9,7 @@ use App\Models\CareerCoupon;
 use App\Models\CareerQuiz;
 use App\Models\CareerQuizGroup;
 use App\Models\PayboxOrder;
-use App\Models\Promocode;
 use App\Models\SubTournament;
-use App\Models\Tournament;
 use App\Models\TournamentOrder;
 use App\Models\User;
 use App\Traits\ResponseJSON;
@@ -49,7 +47,7 @@ class PayboxService
         ]);
         $request = $requestForSignature = [
             'pg_order_id' => $order_id,
-            'pg_merchant_id' => $this->getSecretKey()['PG_MERCHANT_ID'],
+            'pg_merchant_id' => $this->getSecretKey($user)['PG_MERCHANT_ID'],
             'pg_amount' => $price,
             'pg_description' => $this->getDescription($request['time']),
             'pg_salt' => Str::random(10),
@@ -71,7 +69,8 @@ class PayboxService
             'pg_recurring_lifetime' => '156',
             'pg_user_id' => strval(auth()->guard('api')->id())
         ];
-        return $this->getInitPay($request, $requestForSignature);
+
+        return $this->getInitPay($request, $requestForSignature, $user);
     }
     public function getPlanTag($subjectID, $time): string
     {
@@ -173,9 +172,9 @@ class PayboxService
         }
         $request = $requestForSignature = [
             'pg_order_id' => $order_id,
-            'pg_merchant_id' => $this->getSecretKey()['PG_MERCHANT_ID'],
+            'pg_merchant_id' => $this->getSecretKey($user)['PG_MERCHANT_ID'],
             'pg_amount' => $price,
-            'pg_description' => $description,
+            'pg_description' => $this->TRANSACTION_CODES[4],
             'pg_salt' => Str::random(10),
             'pg_payment_route' => 'frame',
             'pg_currency' => 'KZT',
@@ -195,7 +194,7 @@ class PayboxService
             'pg_recurring_lifetime' => '156',
             'pg_user_id' => strval(auth()->guard('api')->id())
         ];
-        return $this->getInitPay($request, $requestForSignature);
+        return $this->getInitPay($request, $requestForSignature, $user);
     }
     public function addAcceptForUser(Request $request): void
     {
@@ -231,9 +230,9 @@ class PayboxService
                 ]);
                 $request = $requestForSignature = [
                     'pg_order_id' => $order_id,
-                    'pg_merchant_id' => $this->getSecretKey()['PG_MERCHANT_ID'],
+                    'pg_merchant_id' => $this->getSecretKey($user)['PG_MERCHANT_ID'],
                     'pg_amount' => $subTournament->tournament->price,
-                    'pg_description' => $description,
+                    'pg_description' => $this->TRANSACTION_CODES[5],
                     'pg_salt' => Str::random(10),
                     'pg_payment_route' => 'frame',
                     'pg_currency' => 'KZT',
@@ -253,7 +252,7 @@ class PayboxService
                     'pg_recurring_lifetime' => '156',
                     'pg_user_id' => strval(auth()->guard('api')->id())
                 ];
-                return $this->getInitPay($request, $requestForSignature);
+                return $this->getInitPay($request, $requestForSignature, $user);
             } else {
                 return response()->json('Турнир не найден', 500);
             }
@@ -286,17 +285,17 @@ class PayboxService
         4 => "Профориентация",
         5 => "Турнир"
     ];
-    public function getResultStatus($req): \Illuminate\Http\JsonResponse
+    public function getResultStatus($req, $user): \Illuminate\Http\JsonResponse
     {
         $request = [
-            'pg_merchant_id' => $this->getSecretKey()['PG_MERCHANT_ID'],
+            'pg_merchant_id' => $this->getSecretKey($user)['PG_MERCHANT_ID'],
             'pg_payment_id' => intval($req['pg_payment_id']),
             'pg_salt' => Str::random(10)
         ];
         //generate a signature and add it to the array
         ksort($request); //sort alphabetically
         array_unshift($request, 'get_status3.php');
-        array_push($request, $this->getSecretKey()['PG_SECRET_KEY']);
+        array_push($request, $this->getSecretKey($user)['PG_SECRET_KEY']);
         $request['pg_sig'] = md5(implode(';', $request)); // signature
         unset($request[0], $request[1]);
         $curl = curl_init();
@@ -329,10 +328,15 @@ class PayboxService
             return response()->json($array);
         }
     }
-    private function getSecretKey(): array
+    private function getSecretKey($user): array
     {
-        $data['PG_MERCHANT_ID'] = env('PG_MERCHANT_ID');
-        $data['PG_SECRET_KEY'] = env('PG_SECRET_KEY');
+        if ($user->isKundelik()) {
+            $data['PG_MERCHANT_ID'] = env('PG_MERCHANT_KUNDELIK_ID');
+            $data['PG_SECRET_KEY'] = env('PG_SECRET_KUNDELIK_KEY');
+        } else {
+            $data['PG_MERCHANT_ID'] = env('PG_MERCHANT_ID');
+            $data['PG_SECRET_KEY'] = env('PG_SECRET_KEY');
+        }
         return $data;
     }
     public function getRedirectURL(): array
@@ -348,7 +352,7 @@ class PayboxService
         $data['payTournamentFailureURL'] = env('APP_DEBUG') ? 'http://localhost:8000/api/pay/tournament-failure' : 'https://back.xn--80a4d.kz/api/pay/tournament-failure';
         return $data;
     }
-    private function getInitPay($request, $requestForSignature): \Illuminate\Http\JsonResponse
+    private function getInitPay($request, $requestForSignature, $user): \Illuminate\Http\JsonResponse
     {
         /**
          * Функция превращает многомерный массив в плоский
@@ -359,7 +363,7 @@ class PayboxService
         // Генерация подписи
         ksort($requestForSignature); // Сортировка по ключю
         array_unshift($requestForSignature, 'init_payment.php'); // Добавление в начало имени скрипта
-        array_push($requestForSignature, $this->getSecretKey()['PG_SECRET_KEY']); // Добавление в конец секретного ключа
+        array_push($requestForSignature, $this->getSecretKey($user)['PG_SECRET_KEY']); // Добавление в конец секретного ключа
         $request['pg_sig'] = md5(implode(';', $requestForSignature)); // Полученная подпись
         $curl = curl_init();
         curl_setopt_array($curl, array(
@@ -410,5 +414,16 @@ class PayboxService
         }
 
         return $arrFlatParams;
+    }
+    public function getUserFromOrderID($order_id, $type = 1): User
+    {
+        if ($type == 1) {
+            $order = PayboxOrder::where('order_id', $order_id)->first();
+        } elseif ($type == 2) {
+            $order = CareerCoupon::where('order_id', $order_id)->first();
+        } else {
+            $order = TournamentOrder::where('order_id', $order_id)->first();
+        }
+        return User::where('id', $order->user_id)->first();
     }
 }

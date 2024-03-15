@@ -61,7 +61,8 @@ class PayboxController extends Controller
     }
     public function getResult(Request $request)
     {
-        $response = $this->_payService->getResultStatus($request);
+        $user = $this->_payService->getUserFromOrderID($request['pg_order_id']);
+        $response = $this->_payService->getResultStatus($request, $user);
         $content = json_decode($response->content(), true);
         if ($content['pg_status'] == 'ok') {
             if ($content['pg_payment_status'] == 'success') {
@@ -93,7 +94,8 @@ class PayboxController extends Controller
     }
     public function payboxCareerSuccessURL(Request $request)
     {
-        $response = $this->_payService->getResultStatus($request);
+        $user = $this->_payService->getUserFromOrderID($request['pg_order_id'],2);
+        $response = $this->_payService->getResultStatus($request, $user);
         $content = json_decode($response->content(), true);
         if ($content['pg_status'] == 'ok') {
             if ($content['pg_payment_status'] == 'success') {
@@ -139,7 +141,8 @@ class PayboxController extends Controller
      */
     public function payTournamentSuccessURL(Request $request)
     {
-        $response = $this->_payService->getResultStatus($request);
+        $user = $this->_payService->getUserFromOrderID($request['pg_order_id'],3);
+        $response = $this->_payService->getResultStatus($request, $user);
         $content = json_decode($response->content(), true);
         if ($content['pg_status'] == 'ok') {
             if ($content['pg_payment_status'] == 'success') {

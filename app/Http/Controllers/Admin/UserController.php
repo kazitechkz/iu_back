@@ -5,10 +5,11 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserCreateRequest;
 use App\Http\Requests\UserEditRequest;
+use App\Imports\Users\UsersImport;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
 use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
@@ -33,6 +34,17 @@ class UserController extends Controller
         }
     }
 
+    public function getImport()
+    {
+        return view('admin.user.import');
+    }
+    public function postImport(Request $request)
+    {
+        $this->validate($request, ['file' => 'required']);
+        Excel::import(new UsersImport, $request['file']);
+        toastr()->success('Успешно импортированы пользователи!');
+        return redirect(route('user.index'));
+    }
     /**
      * Show the form for creating a new resource.
      */

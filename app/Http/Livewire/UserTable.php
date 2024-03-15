@@ -22,6 +22,7 @@ class UserTable extends DataTableComponent
         $this->setPerPageAccepted([20,50,100]);
         $this->setPerPage(20);
         $this->setBulkActions([
+            'import' => 'Import',
             'exportSelected' => 'Export',
         ]);
         $this->setPrimaryKey('id')
@@ -46,8 +47,14 @@ class UserTable extends DataTableComponent
     public function bulkActions(): array
     {
         return [
-            'exportSelected' => 'Export',
+            'import' => 'Импорт',
+            'exportSelected' => 'Экспорт',
         ];
+    }
+
+    public function import(): \Illuminate\Foundation\Application|\Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse|\Illuminate\Contracts\Foundation\Application
+    {
+        return redirect(route('get-import'));
     }
 
     public function exportSelected()
