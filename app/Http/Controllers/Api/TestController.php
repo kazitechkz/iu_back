@@ -7,6 +7,9 @@ use App\Http\Controllers\Controller;
 use App\Models\Attempt;
 use App\Models\Battle;
 use App\Models\BattleBet;
+use App\Models\CareerQuizAnswer;
+use App\Models\CareerQuizFeature;
+use App\Models\CareerQuizQuestion;
 use App\Models\PayboxOrder;
 use App\Models\User;
 use App\Services\AttemptService;
@@ -38,7 +41,16 @@ class TestController extends Controller
 
     public function test(Request $request)
     {
-        return response()->json("Hello world!");
+        $careerQuiz = CareerQuizFeature::where(["quiz_id" => 4])->select(
+            [
+                'title_kk',
+                'description_kk',
+                'activity_kk',
+                'prospect_kk',
+                'meaning_kk',
+            ]
+        )->get();
+        return response()->json($careerQuiz);
     }
 
     public function sendWhatsapp()
