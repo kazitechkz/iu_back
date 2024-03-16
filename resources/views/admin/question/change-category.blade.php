@@ -1,7 +1,6 @@
 @extends('layouts.default')
 @push('css')
     <style>
-        td {max-width: inherit!important;}
         .z-5000 {z-index: 5000!important;}
         #text-img img {
             width: 300px!important;
@@ -164,7 +163,7 @@
 {{--                                            {{$loop->iteration}}. {{\App\Helpers\StrHelper::getSubStr(\App\Helpers\StrHelper::getCorrectAnswers($question, $ans), 30)}} <br>--}}
 {{--                                        @endforeach--}}
 {{--                                    </td>--}}
-                                    <td class="flex" >
+                                    <td class="flex max-w-full" >
                                         <livewire:question.preview-question :question="$question"/>
                                         <x-shared.action-buttons
                                             :edit-link="route('questions.edit', $question->id)"
