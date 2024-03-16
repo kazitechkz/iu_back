@@ -24,13 +24,22 @@ class UserTable extends DataTableComponent
         $this->setBulkActions([
             'import' => 'Import',
             'exportSelected' => 'Export',
+            'deleteSelected' => 'Удалить'
         ]);
         $this->setPrimaryKey('id')
             ->setTableRowUrl(function($row) {
                 return route('user.edit', $row);
             });
     }
-
+    public function deleteSelected(): void
+    {
+        $users = $this->getSelected();
+        foreach ($users as $key => $value) {
+            $user = User::find($value);
+            $user?->delete();
+        }
+        $this->clearSelected();
+    }
     public function filters(): array
 
     {
@@ -49,6 +58,7 @@ class UserTable extends DataTableComponent
         return [
             'import' => 'Импорт',
             'exportSelected' => 'Экспорт',
+            'deleteSelected' => 'Удалить'
         ];
     }
 
