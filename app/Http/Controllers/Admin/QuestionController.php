@@ -54,6 +54,16 @@ class QuestionController extends Controller
         }
     }
 
+    public function moveQuestionToDefect($questionID)
+    {
+        $question = Question::find($questionID);
+        if ($question) {
+            $question->group_id = 11;
+            $question->save();
+        }
+        return redirect()->back();
+    }
+
     public function importQuestions()
     {
         try{

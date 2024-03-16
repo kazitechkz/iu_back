@@ -1,6 +1,7 @@
 @extends('layouts.default')
 @push('css')
     <style>
+        td {max-width: inherit!important;}
         .z-5000 {z-index: 5000!important;}
         #text-img img {
             width: 300px!important;
@@ -169,6 +170,14 @@
                                             :edit-link="route('questions.edit', $question->id)"
                                             :delete-link="route('questions.destroy', $question->id)"
                                         />
+                                        @if($question->group_id != 11)
+                                            <a class="mx-2" href="{{route('move-question-to-defect', $question->id)}}">
+                                                <button class="btn btn-outline-secondary btn-rounded btn-icon">
+                                                    <i class="mdi mdi-information-variant"></i>
+                                                </button>
+                                            </a>
+                                        @endif
+
                                     </td>
                                 </tr>
                             @endforeach

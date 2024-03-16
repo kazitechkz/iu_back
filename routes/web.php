@@ -137,6 +137,7 @@ if(env("IS_WEB",true)) {
             Route::post("import-from-csv", [AdminQuestionController::class, 'importFromCsv'])->name('import-from-csv');
             Route::post('questions-ckeditor-upload', [AdminQuestionController::class, 'uploadFromCkeditor'])->name('questions-ckeditor-upload');
             Route::get('change-category-in-subject/{id}/{locale_id?}', [AdminQuestionController::class, 'changeCategoryInSubject'])->name('change-category-in-subject');
+            Route::get('change-group-question-to-defect/{id}', [AdminQuestionController::class, 'moveQuestionToDefect'])->name('move-question-to-defect');
             Route::resource("group", AdminGroupController::class);
             Route::resource("appeal-type", AdminAppealTypeController::class);
             Route::resource("appeal", AdminAppealController::class);
