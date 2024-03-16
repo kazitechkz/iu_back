@@ -32,7 +32,7 @@ class QuestionTable extends DataTableComponent
         $this->setPerPage(20);
         $this->setBulkActions([
             'import' => 'Import',
-            'deleteSelected' => 'Удалить'
+//            'deleteSelected' => 'Удалить'
         ]);
         $this->setPrimaryKey('id')
             ->setTableRowUrl(function($row) {
@@ -75,7 +75,7 @@ class QuestionTable extends DataTableComponent
     {
         return [
             'import' => 'Import',
-            'deleteSelected' => 'Удалить'
+//            'deleteSelected' => 'Удалить'
         ];
     }
 
