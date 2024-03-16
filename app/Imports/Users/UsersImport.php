@@ -6,13 +6,16 @@ use App\Imports\Users\FirstSheetImport;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
+use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 use Maatwebsite\Excel\Concerns\WithUpserts;
 
-class UsersImport implements ToModel, WithUpserts, WithHeadingRow, WithMultipleSheets
+class UsersImport implements ToModel, WithUpserts, WithHeadingRow, WithMultipleSheets, WithChunkReading
 {
+    use Importable;
     /**
     * @param array $row
     *
@@ -46,7 +49,12 @@ class UsersImport implements ToModel, WithUpserts, WithHeadingRow, WithMultipleS
     public function sheets(): array
     {
         return [
-            new FirstSheetImport()
+            0 => $this
         ];
+    }
+
+    public function chunkSize(): int
+    {
+        return 20;
     }
 }

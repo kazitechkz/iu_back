@@ -22,6 +22,7 @@ class SubscriptionTable extends DataTableComponent
         $this->setPerPageAccepted([20, 50, 100]);
         $this->setPerPage(20);
         $this->setBulkActions([
+            'import' => 'Import',
             'exportSelected' => 'Export',
             'deleteSelected' => 'Удалить'
         ]);
@@ -33,11 +34,15 @@ class SubscriptionTable extends DataTableComponent
     public function bulkActions(): array
     {
         return [
-            'exportSelected' => 'Export',
+            'import' => 'Импорт',
+            'exportSelected' => 'Экспорт',
             'deleteSelected' => 'Удалить'
         ];
     }
-
+    public function import(): \Illuminate\Foundation\Application|\Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse|\Illuminate\Contracts\Foundation\Application
+    {
+        return redirect(route('get-subs-import'));
+    }
     public function deleteSelected()
     {
         $model = $this->getSelected();

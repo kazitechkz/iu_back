@@ -4,12 +4,14 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Subscription\SubcscriptionCreateRequest;
+use App\Imports\SubscriptionImports;
 use App\Models\GroupPlan;
 use App\Models\Question;
 use App\Models\User;
 use Bpuig\Subby\Models\Plan;
 use Bpuig\Subby\Models\PlanSubscription;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class SubscriptionController extends Controller
 {
@@ -32,7 +34,16 @@ class SubscriptionController extends Controller
             return redirect()->route("home");
         }
     }
-
+    public function getImport()
+    {
+        return view('admin.subscription.import');
+    }
+    public function postImport(Request $request)
+    {
+        Excel::import(new SubscriptionImports($request['time']), $request['file']);
+        toastr()->success('Успешно импортирован!');
+        return redirect(route('subscription.index'));
+    }
     /**
      * Show the form for creating a new resource.
      */

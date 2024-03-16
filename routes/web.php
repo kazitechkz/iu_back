@@ -109,8 +109,8 @@ if(env("IS_WEB",true)) {
     ], function () {
         Route::group(["prefix" => "dashboard", "middleware" => "auth"], function () {
             Route::resource("user", AdminUserController::class);
-            Route::get("user-import", [AdminUserController::class, 'getImport'])->name('get-import');
-            Route::post("user-import", [AdminUserController::class, 'postImport'])->name('post-import');
+            Route::get("user-import", [AdminUserController::class, 'getImport'])->name('get-user-import');
+            Route::post("user-import", [AdminUserController::class, 'postImport'])->name('post-user-import');
             Route::resource("user-hubs", AdminUserHubController::class);
             Route::resource("hubs", AdminHubController::class);
             Route::resource("role", AdminRoleController::class);
@@ -124,6 +124,8 @@ if(env("IS_WEB",true)) {
             Route::resource('sub-categories', AdminSubCategoryController::class)->except(['show', 'destroy']);
             Route::resource("plan-combination", AdminPlanCombinationController::class);
             Route::resource("subscription", AdminSubscriptionController::class);
+            Route::get("subscription-import", [AdminSubscriptionController::class, 'getImport'])->name('get-subs-import');
+            Route::post("subscription-import", [AdminSubscriptionController::class, 'postImport'])->name('post-subs-import');
             Route::resource("promocode", AdminPromocodeController::class);
             Route::resource("promocode-plans", AdminPromocodePlanController::class);
             Route::resource("news", AdminNewsController::class);

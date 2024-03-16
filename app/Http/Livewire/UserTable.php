@@ -54,7 +54,7 @@ class UserTable extends DataTableComponent
 
     public function import(): \Illuminate\Foundation\Application|\Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse|\Illuminate\Contracts\Foundation\Application
     {
-        return redirect(route('get-import'));
+        return redirect(route('get-user-import'));
     }
 
     public function exportSelected()
