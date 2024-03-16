@@ -6,12 +6,13 @@ use App\Models\User;
 use Bpuig\Subby\Models\Plan;
 use Bpuig\Subby\Models\PlanSubscription;
 use Illuminate\Support\Collection;
+use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 
-class SubscriptionImports implements ToCollection, WithHeadingRow, WithMultipleSheets, WithChunkReading
+class SubscriptionImports implements ToCollection, WithHeadingRow, WithMultipleSheets, WithChunkReading, SkipsEmptyRows
 {
     public int $time;
     public function __construct($time) {
@@ -52,7 +53,14 @@ class SubscriptionImports implements ToCollection, WithHeadingRow, WithMultipleS
             }
         }
     }
-
+    public function rules(): array
+    {
+        return [
+            'email' => 'required',
+            "pervyi_profilnyi_predmet" => 'required',
+            "vtoroi_profilnyi_predmet" => 'required'
+        ];
+    }
     public function headingRow(): int
     {
         return 1;

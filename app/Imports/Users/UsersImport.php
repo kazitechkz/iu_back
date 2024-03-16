@@ -7,13 +7,14 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Maatwebsite\Excel\Concerns\Importable;
+use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 use Maatwebsite\Excel\Concerns\WithUpserts;
 
-class UsersImport implements ToModel, WithUpserts, WithHeadingRow, WithMultipleSheets, WithChunkReading
+class UsersImport implements ToModel, WithUpserts, WithHeadingRow, WithMultipleSheets, WithChunkReading, SkipsEmptyRows
 {
     use Importable;
     /**
@@ -40,7 +41,17 @@ class UsersImport implements ToModel, WithUpserts, WithHeadingRow, WithMultipleS
     {
         return ['email', 'phone'];
     }
-
+    public function rules(): array
+    {
+        return [
+            'name' => 'required',
+            'parent_name' => 'required',
+            'phone' => 'required',
+            'parent_phone' => 'required',
+            'email' => 'required',
+            "birth_date" => 'required'
+        ];
+    }
     public function headingRow(): int
     {
         return 1;
