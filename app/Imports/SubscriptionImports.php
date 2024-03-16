@@ -98,6 +98,6 @@ class SubscriptionImports implements ToCollection, WithHeadingRow, WithMultipleS
 
     public function chunkSize(): int
     {
-        return 5;
+        return 1;
     }
 }

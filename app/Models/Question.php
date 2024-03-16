@@ -142,4 +142,13 @@ class Question extends Model implements Searchable
     {
         return $this->hasOne(QuestionTranslation::class, 'question_ru');
     }
+
+    public function questionRu(): \Illuminate\Database\Eloquent\Relations\HasOneThrough
+    {
+        return $this->hasOneThrough(Question::class, QuestionTranslation::class, 'question_kk', 'id', 'id', 'question_ru');
+    }
+    public function questionKk(): \Illuminate\Database\Eloquent\Relations\HasOneThrough
+    {
+        return $this->hasOneThrough(Question::class, QuestionTranslation::class, 'question_ru', 'id', 'id', 'question_kk');
+    }
 }

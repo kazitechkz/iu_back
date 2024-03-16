@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Question;
 
 use App\Models\Category;
 use App\Models\Question;
+use App\Models\QuestionTranslation;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -24,6 +25,14 @@ class ChangeCategory extends Component
     public function updatedSubCategoryId(): void
     {
         if ($this->sub_category_id != 0) {
+            if ($this->question->questionRu) {
+                $this->question->questionRu->sub_category_id = $this->sub_category_id;
+                $this->question->questionRu->save();
+            }
+            if ($this->question->questionKk) {
+                $this->question->questionKk->sub_category_id = $this->sub_category_id;
+                $this->question->questionKk->save();
+            }
             $this->question->sub_category_id = $this->sub_category_id;
             $this->question->save();
         }

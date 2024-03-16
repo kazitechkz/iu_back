@@ -66,6 +66,6 @@ class UsersImport implements ToModel, WithUpserts, WithHeadingRow, WithMultipleS
 
     public function chunkSize(): int
     {
-        return 20;
+        return 1;
     }
 }
