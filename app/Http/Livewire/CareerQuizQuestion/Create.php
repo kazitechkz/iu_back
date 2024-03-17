@@ -38,7 +38,7 @@ class Create extends Component
 
     public function updatedQuizId(): void {
         $quiz = CareerQuiz::where(["id"=>$this->quiz_id])->first();
-        if($quiz->code == CareerQuizService::CAREER_DRAG_DROP_ANSWER){
+        if($quiz->code == CareerQuizService::CAREER_DRAG_DROP_ANSWER || $quiz->code == CareerQuizService::CAREER_QUESTIONS_AND_ANSWERS){
             $this->features = null;
             $this->feature_id = null;
         }

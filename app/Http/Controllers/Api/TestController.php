@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 use App\Models\CareerQuizFeature;
 use App\Services\AttemptService;
 use App\Services\BattleService;
+use App\Services\OpenAiService;
 use App\Services\QuestionService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
@@ -28,16 +29,9 @@ class TestController extends Controller
 
     public function test(Request $request)
     {
-        $careerQuiz = CareerQuizFeature::where(["quiz_id" => 4])->select(
-            [
-                'title_kk',
-                'description_kk',
-                'activity_kk',
-                'prospect_kk',
-                'meaning_kk',
-            ]
-        )->get();
-        return response()->json($careerQuiz);
+        $service = new OpenAiService();
+        $answer = $service->getQuestionRightAnswerAndExplanation(14333,auth()->guard("api")->user());
+        return response()->json($answer);
     }
 
     public function sendWhatsapp()

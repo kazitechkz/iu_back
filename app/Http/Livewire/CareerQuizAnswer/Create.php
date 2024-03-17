@@ -43,7 +43,7 @@ class Create extends Component
     }
     public function updatedQuizId(): void {
         $quiz = CareerQuiz::where(["id"=>$this->quiz_id])->first();
-        if($quiz->code == CareerQuizService::CAREER_DRAG_DROP_ANSWER){
+        if($quiz->code == CareerQuizService::CAREER_DRAG_DROP_ANSWER || $quiz->code == CareerQuizService::CAREER_QUESTIONS_AND_ANSWERS){
             $this->features = CareerQuizFeature::where(["quiz_id" => $this->quiz_id])->get();
             $this->questions = CareerQuizQuestion::where(["quiz_id" => $this->quiz_id])->get();
             $this->feature_id = null;

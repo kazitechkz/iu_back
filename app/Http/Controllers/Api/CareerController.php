@@ -63,12 +63,17 @@ class CareerController extends Controller
             if(!$quiz){
                 return ResponseService::NotFound("Не найдена информация по тесту");
             }
-            $purchased = CareerCoupon::where(["user_id" => $user->id,"career_quiz_id" => $quiz->id,"is_used" => false,"status" => true])->exists();
-            if(!$purchased){
-                return ResponseService::NotFound("Вы не приобрели данный продукт");
+            if($quiz->price > 0){
+                $purchased = CareerCoupon::where(["user_id" => $user->id,"career_quiz_id" => $quiz->id,"is_used" => false,"status" => true])->exists();
+                if(!$purchased){
+                    return ResponseService::NotFound("Вы не приобрели данный продукт");
+                }
             }
             if($quiz->career_quiz_questions->count() == 0){
                 return ResponseService::ValidationException("Вопросов недостаточно");
+            }
+            if($quiz->code == CareerQuizService::CAREER_QUESTIONS_AND_ANSWERS){
+                $quiz->load("career_quiz_questions.career_quiz_answers");
             }
             return response()->json(new ResponseJSON(status: true,data: $quiz),200);
         }
@@ -80,12 +85,17 @@ class CareerController extends Controller
         try{
             $user = auth()->guard("api")->user();
             $resultQuiz = FinishCareerQuizDTO::fromRequest($request);
-            $purchased = CareerCoupon::where(["user_id" => $user->id,"career_quiz_id" => $resultQuiz->quiz_id,"is_used" => false,"status" => true])->first();
-            if(!$purchased){
-                throw new NotFoundException("Вы не приобрели данный продукт");
+            $careerQuiz = CareerQuiz::find($request->get("quiz_id"));
+            if($careerQuiz->price > 0){
+                $purchased = CareerCoupon::where(["user_id" => $user->id,"career_quiz_id" => $resultQuiz->quiz_id,"is_used" => false,"status" => true])->first();
+                if(!$purchased){
+                    throw new NotFoundException("Вы не приобрели данный продукт");
+                }
             }
             $attemptId = $this->careerQuizService->finishCareerQuiz($resultQuiz);
-            $purchased->edit(["is_used"=>true]);
+            if ($careerQuiz->price > 0){
+                $purchased->edit(["is_used"=>true]);
+            }
             return response()->json(new ResponseJSON(status: true,data: $attemptId),200);
         }
         catch (\Exception $exception) {
