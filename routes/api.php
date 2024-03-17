@@ -36,6 +36,7 @@ use App\Http\Controllers\Api\AttemptController;
 use App\Http\Controllers\Api\AttemptSettingsController as ApiAttemptSettingsController;
 use App\Http\Controllers\Api\CareerController as ApiCareerController;
 use App\Http\Controllers\Api\IUTubeController as ApiIUTubeController;
+use App\Http\Controllers\Api\OpenAiController as ApiOpenAiController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -200,6 +201,8 @@ if(env("IS_API",true)){
             Route::get("/video-detail/{alias}",[ApiIUTubeController::class,"getSingleVideo"]);
             //ORDERS
             Route::get('my-orders', [ApiOrderController::class, 'getAll']);
+            //OPEN API
+            Route::get("/get-ai-answer/{questionId}",[ApiOpenAiController::class,"getOpenAiAnswer"]);
 
             //TEACHER_ROUTES
             Route::prefix('teacher')->name('teacher.')->group(function () {

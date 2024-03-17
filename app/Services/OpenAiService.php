@@ -4,8 +4,10 @@ namespace App\Services;
 
 use App\Exceptions\BadRequestException;
 use App\Exceptions\NotFoundException;
+use App\Models\OpenAiQuestion;
 use App\Models\Question;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Http;
 
 class OpenAiService
@@ -15,6 +17,17 @@ class OpenAiService
     public const OPEN_AI_ROLE = "user";
 
     public const OPEN_AI_URL = "https://api.openai.com/v1/chat/completions";
+
+    public const MAX_REQUEST_PER_DAY = 30;
+
+
+    public function checkPermissionToAI($user)
+    {
+        $limit = OpenAiQuestion::where(["user_id" => $user->id])->whereBetween("created_at",[Carbon::now()->startOfDay(),Carbon::now()->endOfDay()])->count();
+        if($limit > self::MAX_REQUEST_PER_DAY){
+            throw new BadRequestException("Вы исчерпали лимит на сегодня:".$limit . " из " . self::MAX_REQUEST_PER_DAY);
+        }
+    }
 
 
     public function getQuestionRightAnswerAndExplanation($question_id, User $user)
@@ -39,6 +52,13 @@ class OpenAiService
         }
         $questionText = self::getRequestQuestionText($question);
         $answer = self::sendOpenApiRequest($questionText);
+        if($answer){
+            OpenAiQuestion::add([
+                "user_id"=>$user->id,
+                "question_id"=>$question->id,
+                "answer"=>$answer
+            ]);
+        }
         return $answer;
 
     }
@@ -120,7 +140,7 @@ class OpenAiService
 
     public static function sendOpenApiRequest($text)
     {
-        $response = Http::withHeaders(["Authorization" => "Bearer " . env(self::OPEN_AI_TOKEN)])->post(self::OPEN_AI_URL,
+        $response = Http::timeout(180)->withHeaders(["Authorization" => "Bearer " . env(self::OPEN_AI_TOKEN)])->post(self::OPEN_AI_URL,
             [
                 "model" => self::OPEN_AI_MODEL,
                 "messages" => [
