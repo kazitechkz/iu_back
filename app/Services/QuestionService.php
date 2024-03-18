@@ -192,7 +192,7 @@ class QuestionService
     protected function get_context_questions($locale_id, $compulsory_subject, $rand_int, $hidden, $category_id = null, $sub_category_id = null, bool $isTournament = false)
     {
         if (!PlanService::check_user_subject($compulsory_subject->id) && !$isTournament) {
-            $condition = ["type_id" => self::CONTEXT_QUESTION_ID, "subject_id" => $compulsory_subject->id, "locale_id" => $locale_id, 'group_id' => 2];
+            $condition = [["type_id", '=', self::CONTEXT_QUESTION_ID], ["subject_id", '=', $compulsory_subject->id], ["locale_id", '=', $locale_id], ["group_id", "=", 2]];
         } else {
             $condition = [["type_id", '=', self::CONTEXT_QUESTION_ID], ["subject_id", '=', $compulsory_subject->id], ["locale_id", '=', $locale_id], ["group_id", "!=", [2,11]]];
         }
@@ -207,13 +207,12 @@ class QuestionService
             $context_question = $query->where($condition)->with("context")->get()->take($rand_int * self::CONTEXT_QUESTION_NUMBER)->makeHidden($hidden)->toArray();;
             array_push($context_questions, ...$context_question);
         } else {
-            $query->where($condition);
-            $questions = $query->select("context_id", DB::raw('COUNT(questions.context_id) as context_qty'))->groupBy("context_id")->having(DB::raw('count(context_id)'), '=', 5)->pluck("context_qty", "context_id")->toArray();
+            $questions = $query->where($condition)->select("context_id", DB::raw('COUNT(questions.context_id) as context_qty'))->groupBy("context_id")->having(DB::raw('count(context_id)'), '=', 5)->pluck("context_qty", "context_id")->toArray();
             if (count($questions) >= $rand_int) {
                 $ids = array_rand($questions, $rand_int);
                 $ids = is_array($ids) ? $ids : [$ids];
                 foreach ($ids as $id) {
-                    $context_question = Question::whereIn("context_id", [$id])->with("context")->get()->take(5)->makeHidden($hidden)->toArray();
+                    $context_question = Question::where($condition)->whereIn("context_id", [$id])->with("context")->get()->take(5)->makeHidden($hidden)->toArray();
                     array_push($context_questions, ...$context_question);
                 }
             } else {
@@ -221,7 +220,6 @@ class QuestionService
             }
         }
         return $context_questions;
-
     }
     protected function get_multiple_questions($locale_id, $compulsory_subject, $count, $hidden, $category_id = null, $sub_category_id = null, bool $isTournament = false)
     {
