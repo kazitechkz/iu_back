@@ -181,6 +181,8 @@ if(env("IS_API",true)){
             Route::post("/battle-by-step-answer",[ApiBattleController::class,"answerQuestion"]);
             Route::get("/battle-finish-result/{battle_step_id}",[ApiBattleController::class,"finishBattleResult"]);
             Route::post("/join-to-battle-by-promo-code",[ApiBattleController::class,"joinToBattleByPromoCode"]);
+            Route::get("/battle-history",[ApiBattleController::class,"battleHistory"]);
+            Route::get("/battle-stats",[ApiBattleController::class,"battleStats"]);
             //Battle
 
             //Forum
