@@ -88,7 +88,7 @@ class PayboxService
             return match ($time) {
                 3 => 2490,
                 6 => 4990,
-                default => 100,
+                default => 990,
             };
         }
     }
