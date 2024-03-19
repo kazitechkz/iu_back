@@ -46,7 +46,8 @@ class PayboxOrder extends Model
         'plans',
 		'status',
         'subjects',
-		'description'
+		'description',
+        'promo'
 	];
 
 	public function user()

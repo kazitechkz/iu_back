@@ -9,6 +9,7 @@ use App\Models\CareerQuiz;
 use App\Models\CareerQuizGroup;
 use App\Models\PayboxOrder;
 use App\Models\Promocode;
+use App\Models\PromocodeUser;
 use App\Models\SubTournament;
 use App\Models\Tournament;
 use App\Models\TournamentOrder;
@@ -29,9 +30,9 @@ class PromoService
             if ($promo->plan_ids == null || in_array(1, $promo->plan_ids)) {
                 if ($promo->group_ids == null || !empty(array_intersect($user->hubs()->pluck('hub_id')->toArray(), $promo->group_ids))) {
                     return match ($time) {
-                        3 => round((2490 * (100 - $promo->percentage)) / 100),
-                        6 => round((4990 * (100 - $promo->percentage)) / 100),
-                        default => round((990 * (100 - $promo->percentage)) / 100),
+                        3 => round(3990 - (4990*($promo->percentage/100))),
+                        6 => round(6990 - (8990*($promo->percentage/100))),
+                        default => round(1590 - (1990*($promo->percentage/100))),
                     };
                 } else {
                     throw new BadRequestException('К сожалению, вы не являетесь участником данного промокода!');
@@ -51,7 +52,11 @@ class PromoService
         if ($promo && Carbon::create($promo->expired_at) > Carbon::now()) {
             if ($promo->plan_ids == null || in_array(1, $promo->plan_ids)) {
                 if ($promo->group_ids == null || !empty(array_intersect($user->hubs()->pluck('hub_id')->toArray(), $promo->group_ids))) {
-                    return $promo->percentage;
+                    if (PromocodeUser::where(['user_id' => auth()->guard('api')->id(), 'promocode_id' => $promo->id])->first()) {
+                        throw new BadRequestException('К сожалению, вы уже использовали этот промокод!');
+                    } else {
+                        return $promo->percentage;
+                    }
                 } else {
                     throw new BadRequestException('К сожалению, вы не являетесь участником данного промокода!');
                 }

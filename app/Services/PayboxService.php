@@ -9,6 +9,8 @@ use App\Models\CareerCoupon;
 use App\Models\CareerQuiz;
 use App\Models\CareerQuizGroup;
 use App\Models\PayboxOrder;
+use App\Models\Promocode;
+use App\Models\PromocodeUser;
 use App\Models\SubTournament;
 use App\Models\TournamentOrder;
 use App\Models\User;
@@ -43,6 +45,7 @@ class PayboxService
             'user_id' => auth()->guard('api')->id(),
             'subjects' => $subjects,
             'plans' => $plans,
+            'promo' => $request['promo'] ?? null,
             'status' => 0
         ]);
         $request = $requestForSignature = [
@@ -86,9 +89,9 @@ class PayboxService
             return PromoService::getSum($time, $promoCode, $user);
         } else {
             return match ($time) {
-                3 => 2490,
-                6 => 4990,
-                default => 990,
+                3 => 3990,
+                6 => 6990,
+                default => 1590,
             };
         }
     }
@@ -108,6 +111,13 @@ class PayboxService
             $user = User::find($order->user_id);
             $order->status = 1;
             $order->save();
+            $promo = Promocode::where('code', $order->promo)->first();
+            if ($promo) {
+                PromocodeUser::create([
+                    'user_id' => $user->id,
+                    'promocode_id' => $promo->id
+                ]);
+            }
             foreach ($order->plans as $item) {
                 $plan = Plan::find($item);
                 if (PlanSubscription::where(["subscriber_id" => $order->user_id, "plan_id" => $plan->id])->first()) {
