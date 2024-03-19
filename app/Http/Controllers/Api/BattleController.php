@@ -229,4 +229,45 @@ class BattleController extends Controller
         }
     }
 
+
+    public function battleHistory(){
+        try {
+            $user = auth()->guard("api")->user();
+            $battles = Battle::where(function ($query) use ($user) {
+                $query->where(["owner_id" => $user->id])
+                    ->orWhere(["guest_id" => $user->id]);
+            })->where(["is_finished" => true])->with(["owner","guest","winner"])->latest()->paginate(20);
+            return response()->json(new ResponseJSON(status: true, data: $battles), 200);
+        } catch (\Exception $exception) {
+            return ResponseService::DefineException($exception);
+        }
+    }
+
+    public function battleStats(){
+        try {
+            $user = auth()->guard("api")->user();
+            $total = Battle::where(function ($query) use ($user) {
+                $query->where(["owner_id" => $user->id])
+                    ->orWhere(["guest_id" => $user->id]);
+            })->where(["is_finished" => true])->count();
+            $victory = Battle::where(["is_finished" => true,"winner_id" => $user->id])->count();
+            $defeat = Battle::where(function ($query) use ($user) {
+                $query->where(["owner_id" => $user->id])
+                    ->orWhere(["guest_id" => $user->id]);
+            })->where(["is_finished" => true])->where(function ($query) use ($user) {
+                $query->where("winner_id","!=",$user->id)
+                    ->where("winner_id","!=",null);
+            })->count();
+            $draft = Battle::where(function ($query) use ($user) {
+                $query->where(["owner_id" => $user->id])
+                    ->orWhere(["guest_id" => $user->id]);
+            })->where(["is_finished" => true])->where(function ($query) use ($user) {
+                $query->where("winner_id","=",null);
+            })->count();
+            return response()->json(new ResponseJSON(status: true, data: ["total"=>$total,"victory"=>$victory,"draft"=>$draft,"defeat"=>$defeat]), 200);
+        } catch (\Exception $exception) {
+            return ResponseService::DefineException($exception);
+        }
+    }
+
 }
