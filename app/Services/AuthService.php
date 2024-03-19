@@ -76,6 +76,7 @@ class AuthService
             MailService::sendMail('mails.verify-email', $data, $request['email'], 'Подтверждение электронной почты');
             $data = AuthService::initialAuthDTO($user);
         } else {
+            $user->tokens()->delete();
             $data = AuthService::initialAuthDTO($user, true);
         }
         BonusService::everydayBonus($request);
