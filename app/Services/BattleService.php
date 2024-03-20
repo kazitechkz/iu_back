@@ -179,7 +179,7 @@ class BattleService
             if(!$battle->is_finished){
                 //Баллы
                 $end_at = null;
-                $common_owner_point =0;
+                $common_owner_point = 0;
                 $common_guest_point = 0;
                 //Пользовательские айди
                 $owner_id = $battle->owner_id;
@@ -366,7 +366,7 @@ class BattleService
                 'answered_user'=>$user->id,
                 'start_at'=>Carbon::now(),
                 'is_finished'=>false,
-                'must_finished_at'=>Carbon::now()->addSeconds(60)
+                'must_finished_at'=>Carbon::now()->addSeconds(120)
             ]);
         }
         $battle = $battleStep->battle()->first();

@@ -38,8 +38,13 @@ class NotificationController extends Controller
                     $notifications = $notifications->where(["users"=>null,"class_id"=>null]);
                 }
             }
-            else{
+            if($request->get('notification_type') == "personal"){
                $notifications = $notifications->whereJsonContains("users",$user->id);
+            }
+            else{
+                $notifications = $notifications->where(function ($query) use ($user){
+                    $query->where(["users"=>null,"class_id"=>null])->orWhereJsonContains("users",$user->id);
+                });
             }
 
             if($request->get("type_id")){

@@ -230,6 +230,17 @@ class TournamentController extends Controller
         }
     }
 
+    public function tournamentList(){
+        try{
+            $tournaments = Tournament::where(["status"=>1])->with(["locales","subject","file"])->latest()->paginate(12);
+            return response()->json(new ResponseJSON(status: true,data: $tournaments),200);
+        }
+        catch (\Exception $exception) {
+            return ResponseService::DefineException($exception);
+        }
+
+    }
+
 
 
 }

@@ -19,6 +19,7 @@ class Create extends Component
     public $phone;
     public $address;
     public $price;
+    public $old_price;
     public $currency;
 
     public function mount(){
@@ -32,6 +33,7 @@ class Create extends Component
         $this->phone = old("phone");
         $this->address = old("address");
         $this->price = old("price");
+        $this->old_price = old("old_price");
         $this->currency = old("currency");
     }
 

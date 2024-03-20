@@ -26,6 +26,8 @@ class Create extends Component
     public $rule_kk;
     public $rule_en;
     public $price;
+    public $old_price;
+    public $order;
     public $currency;
     public $codes = CareerQuizService::CAREER_QUIZ_CODES;
     public $code;
@@ -45,6 +47,8 @@ class Create extends Component
         $this->rule_kk = old("rule_kk");
         $this->rule_en = old("rule_en");
         $this->price = old("price");
+        $this->old_price = old("old_price");
+        $this->order = old("order");
         $this->currency = old("currency");
         $this->code = old("code");
     }

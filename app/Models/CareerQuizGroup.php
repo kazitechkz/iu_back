@@ -25,6 +25,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $phone
  * @property string|null $address
  * @property int $price
+ * @property int $old_price
  * @property string $currency
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
@@ -41,7 +42,8 @@ class CareerQuizGroup extends Model
     protected $table = 'career_quiz_groups';
 
 	protected $casts = [
-		'price' => 'int'
+		'price' => 'int',
+        'old_price'=>'int',
 	];
 
 	protected $fillable = [
@@ -55,6 +57,7 @@ class CareerQuizGroup extends Model
 		'phone',
 		'address',
 		'price',
+        'old_price',
 		'currency'
 	];
 

@@ -32,7 +32,7 @@ class CareerController extends Controller
     public function careerQuizzes(Request $request){
         try{
             $user = auth()->guard("api")->user();
-            $quizzes = CareerQuiz::with(["career_quiz_group","career_quiz_creators.career_quiz_author","file"])->withCount(["career_quiz_questions"])->orderBy("created_at","DESC")->paginate(20);
+            $quizzes = CareerQuiz::with(["career_quiz_group","career_quiz_creators.career_quiz_author","file"])->withCount(["career_quiz_questions"])->orderBy("order","ASC")->paginate(20);
             $purchasedCareerQuiz = CareerCoupon::where(["user_id" => $user->id,"status"=>true,"is_used" => false])->pluck("career_quiz_id")->toArray();
             return response()->json(new ResponseJSON(status: true,data: ["quizzes"=>$quizzes,"purchased"=>$purchasedCareerQuiz]),200);
         }

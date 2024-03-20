@@ -27,6 +27,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $rule_kk
  * @property string|null $rule_en
  * @property int $price
+ * @property int $old_price
+ * @property int $order
  * @property string $currency
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
@@ -48,7 +50,9 @@ class CareerQuiz extends Model
 	protected $casts = [
 		'group_id' => 'int',
 		'image_url' => 'int',
-		'price' => 'int'
+		'price' => 'int',
+        'old_price'=>'int',
+        'order'=>'int',
 	];
 
 	protected $fillable = [
@@ -64,6 +68,8 @@ class CareerQuiz extends Model
 		'rule_kk',
 		'rule_en',
 		'price',
+        'old_price',
+        'order',
 		'currency',
         "code",
 	];

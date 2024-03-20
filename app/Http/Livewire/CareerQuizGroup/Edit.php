@@ -20,6 +20,7 @@ class Edit extends Component
     public $phone;
     public $address;
     public $price;
+    public $old_price;
     public $currency;
 
     public function mount(CareerQuizGroup $careerQuizGroup){
@@ -34,6 +35,7 @@ class Edit extends Component
         $this->phone = $this->careerQuizGroup->phone;
         $this->address = $this->careerQuizGroup->address;
         $this->price = $this->careerQuizGroup->price;
+        $this->old_price = $this->careerQuizGroup->old_price;
         $this->currency = $this->careerQuizGroup->currency;
     }
 

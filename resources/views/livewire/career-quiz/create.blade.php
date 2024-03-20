@@ -139,6 +139,25 @@
         />
     </div>
     {{-- Price --}}
+    {{-- Old Price --}}
+    <div class="form-group">
+        <x-inputs.number
+            label="Старая цена"
+            prefix="KZT"
+            wire:model="old_price"
+            hint="Старая цена (реклама)"
+        />
+    </div>
+    {{--Old Price --}}
+    {{-- Order --}}
+    <div class="form-group">
+        <x-inputs.number
+            label="Порядок"
+            wire:model="order"
+            hint="Порядок ( 1, 2 , 3 и тд"
+        />
+    </div>
+    {{-- Order --}}
     {{-- currency--}}
     <div class="form-group">
         <x-input class="my-2"

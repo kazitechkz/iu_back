@@ -29,6 +29,8 @@ class Edit extends Component
     public $rule_kk;
     public $rule_en;
     public $price;
+    public $old_price;
+    public $order;
     public $currency;
     public $codes = CareerQuizService::CAREER_QUIZ_CODES;
     public $code;
@@ -49,6 +51,8 @@ class Edit extends Component
         $this->rule_kk = $this->careerQuiz->rule_kk;
         $this->rule_en = $this->careerQuiz->rule_en;
         $this->price = $this->careerQuiz->price;
+        $this->old_price = $this->careerQuiz->old_price;
+        $this->order = $this->careerQuiz->order;
         $this->currency = $this->careerQuiz->currency;
     }
     protected function rules(){

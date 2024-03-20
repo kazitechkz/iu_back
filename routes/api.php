@@ -116,6 +116,7 @@ if(env("IS_API",true)){
             Route::get("/answer-result/{attempt_subject_id}",[AttemptController::class,"answerResult"]);
             Route::post("/tournament-attempt",[ApiTournamentController::class,"attempt"]);
             Route::get("/tournaments-all",[ApiTournamentController::class,"getAllTournaments"]);
+            Route::get("/tournaments-list",[ApiTournamentController::class,"tournamentList"]);
             Route::get("/tournament-detail/{id}",[ApiTournamentController::class,"tournamentDetail"]);
             Route::get("/tournament-awards/{id}",[ApiTournamentController::class,"tournamentAward"]);
             Route::get("/sub-tournament-winners/{id}",[ApiTournamentController::class,"subTournamentWinners"]);

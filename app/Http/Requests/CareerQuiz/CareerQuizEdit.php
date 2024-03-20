@@ -31,6 +31,7 @@ class CareerQuizEdit extends FormRequest
             'rule_ru'=>"required",
             'rule_kk'=>"required",
             'price'=>"required|min:0|max:1000000",
+            "order"=>"sometimes|nullable|min:0",
             'currency'=>"required",
             "authors"=>"sometimes|nullable",
             "authors.*"=>"exists:career_quiz_authors,id",

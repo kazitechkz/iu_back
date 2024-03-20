@@ -75,6 +75,8 @@ class CareerQuizTable extends DataTableComponent
                 ->searchable(),
             Column::make(__("table.price"), "price")
                 ->searchable(),
+            Column::make(__("table.level"), "order")
+                ->sortable(),
             Column::make(__("table.currency"), "currency")
                 ->searchable(),
             Column::make(__("table.created_at"), "created_at")
