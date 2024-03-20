@@ -29,7 +29,7 @@ class StepController extends Controller
     public function getSteps($locale_id)
     {
         try {
-            $steps = Subject::whereNotIn('id', [3,13,14,15])->with('image', 'steps.own_result')->withCount(['steps', 'subSteps'])->get();
+            $steps = Subject::whereNotIn('id', [3,13,15])->with('image', 'steps.own_result')->withCount(['steps', 'subSteps'])->get();
             foreach ($steps as $key => $step) {
                 $steps[$key]['progress'] = 0;
                 if ($step->steps) {

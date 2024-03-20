@@ -11,6 +11,7 @@ class AuthDTO extends ValidatedDTO
     public string $role;
     public $user;
     public string $redirectURL;
+    public bool $isFirst;
     protected function rules(): array
     {
         return [];

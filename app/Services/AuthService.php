@@ -8,6 +8,7 @@ use App\Events\WalletEvent;
 use App\Exceptions\BadRequestException;
 use App\Jobs\SendWelcomeMessage;
 use App\Models\User;
+use App\Models\UserActivity;
 use App\Models\UserHub;
 use App\Models\UserResetToken;
 use App\Traits\ResponseJSON;
@@ -49,6 +50,7 @@ class AuthService
                 'token' => $user->createToken("API TOKEN")->plainTextToken,
                 'role' => $user->roles->count() ? $user->roles[0]->name : 'student',
                 'user' => $userDTO->data,
+                'isFirst' => !UserActivity::where('user_id', $user->id)->first(),
                 'redirectURL' => ''
             ]);
         } else {
@@ -57,6 +59,7 @@ class AuthService
                 'token' => '',
                 'role' => '',
                 'user' => '',
+                'isFirst' => false,
                 'redirectURL' => $redirectURL
             ]);
         }
@@ -76,9 +79,10 @@ class AuthService
             MailService::sendMail('mails.verify-email', $data, $request['email'], 'Подтверждение электронной почты');
             $data = AuthService::initialAuthDTO($user);
         } else {
+            $user->tokens()->delete();
             $data = AuthService::initialAuthDTO($user, true);
+            BonusService::everydayBonus($request);
         }
-        BonusService::everydayBonus($request);
         return response()->json(new ResponseJSON(status: true, message: "Вы успешно авторизовались", data: $data->data));
     }
 
