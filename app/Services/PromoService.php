@@ -44,7 +44,23 @@ class PromoService
             throw new BadRequestException('Промокод не существует или просрочен!');
         }
     }
-
+    public static function getCareerSum($price, $promoCode, $user): float
+    {
+        $promo = Promocode::where('code', $promoCode)->first();
+        if ($promo && Carbon::create($promo->expired_at) > Carbon::now()) {
+            if ($promo->plan_ids == null || in_array(1, $promo->plan_ids)) {
+                if ($promo->group_ids == null || !empty(array_intersect($user->hubs()->pluck('hub_id')->toArray(), $promo->group_ids))) {
+                    return round($price - ($price * ($promo->percentage/100)));
+                } else {
+                    throw new BadRequestException('К сожалению, вы не являетесь участником данного промокода!');
+                }
+            } else {
+                throw new BadRequestException('Данный промокод не предназначен для оформления подписки!');
+            }
+        } else {
+            throw new BadRequestException('Промокод не существует или просрочен!');
+        }
+    }
     public function check($code)
     {
         $promo = Promocode::where('code', $code)->first();

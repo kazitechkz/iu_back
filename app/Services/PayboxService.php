@@ -180,6 +180,9 @@ class PayboxService
         } else {
             throw new BadRequestException("Вы не выбрали ни один из продуктов!");
         }
+        if ($request['promo']) {
+            $price = PromoService::getCareerSum($price, $request['promo'], $user);
+        }
         $request = $requestForSignature = [
             'pg_order_id' => $order_id,
             'pg_merchant_id' => $this->getSecretKey($user)['PG_MERCHANT_ID'],

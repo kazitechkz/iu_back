@@ -79,7 +79,8 @@ class PayboxController extends Controller
         try {
             $this->validate($request, [
                 'career_quiz_id' => 'sometimes|nullable|exists:career_quizzes,id',
-                'career_group_id' => 'sometimes|nullable|exists:career_quiz_groups,id'
+                'career_group_id' => 'sometimes|nullable|exists:career_quiz_groups,id',
+                'promo' => 'sometimes|nullable'
             ]);
             return $this->_payService->initialCareerPay($request);
         } catch (\Exception $exception) {
