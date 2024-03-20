@@ -45,9 +45,13 @@ class WalletController extends Controller
     public function getAllWalletRating()
     {
         try {
+            $user = auth()->guard('api')->user();
             $ratings = Wallet::whereHas('holder')->with('holder.file')->orderBy('balance', 'DESC')->paginate(20);
+            $place = Wallet::whereHas('holder')->with('holder.file')->where('balance', '>=', $user->balanceInt)->count();
+            $data['ratings'] = $ratings;
+            $data['place'] = $place;
             return response()->json(new ResponseJSON(
-                status: true, data: $ratings
+                status: true, data: $data
             ));
         } catch (\Exception $exception) {
             return ResponseService::DefineException($exception);
