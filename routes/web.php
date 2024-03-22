@@ -65,6 +65,7 @@ use \App\Http\Controllers\Admin\CareerQuizAuthorController as AdminCareerQuizAut
 use \App\Http\Controllers\Admin\CareerQuizFeatureController as AdminCareerQuizFeatureController;
 use \App\Http\Controllers\Admin\CareerQuizAnswerController as AdminCareerQuizAnswerController;
 use \App\Http\Controllers\Admin\CareerQuizQuestionController as AdminCareerQuizQuestionController;
+use \App\Http\Controllers\Admin\CareerCouponController as AdminCareerCouponController;
 use \App\Http\Controllers\Admin\IUTubeAuthorController as AdminIUTubeAuthorController;
 use \App\Http\Controllers\Admin\IUTubeAccessController as AdminIUTubeAccessController;
 use \App\Http\Controllers\Admin\IUTubeVideoController as AdminIUTubeVideoController;
@@ -209,6 +210,7 @@ if(env("IS_WEB",true)) {
             Route::resource("career-quiz-feature",AdminCareerQuizFeatureController::class);
             Route::resource("career-quiz-answer",AdminCareerQuizAnswerController::class);
             Route::resource("career-quiz-question",AdminCareerQuizQuestionController::class);
+            Route::resource("career-quiz-coupon",AdminCareerCouponController::class);
             //IUTUBE
             Route::resource("iutube-author",AdminIUTubeAuthorController::class);
             Route::resource("iutube-access",AdminIUTubeAccessController::class);

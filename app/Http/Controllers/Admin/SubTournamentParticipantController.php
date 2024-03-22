@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\SubTournamentParticipant\SubTournamentParticipantCreate;
+use App\Models\SubTournamentParticipant;
 use Illuminate\Http\Request;
 
 class SubTournamentParticipantController extends Controller
@@ -35,7 +37,7 @@ class SubTournamentParticipantController extends Controller
     {
         try{
             if(auth()->user()->can("sub-tournament create") ){
-
+                return view("admin.sub-tournament-participant.create");
             }
             else{
                 toastr()->warning(__("message.not_allowed"));
@@ -51,11 +53,14 @@ class SubTournamentParticipantController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(SubTournamentParticipantCreate $request)
     {
         try{
             if(auth()->user()->can("sub-tournament create") ){
-
+                $input = $request->all();
+                $input["status"] = true;
+                SubTournamentParticipant::add($input);
+                return redirect()->route("sub-tournament-participant.index");
             }
             else{
                 toastr()->warning(__("message.not_allowed"));

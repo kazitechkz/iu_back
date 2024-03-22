@@ -211,6 +211,10 @@
                     :icon="'fas fa-comment'"
                     :link="'career-quiz-answer.index'"
                     :name="__('sidebar.career_quiz_answers')"/>
+                <x-shared.sub-sidebar-menu
+                    :icon="'fas fa-ticket'"
+                    :link="'career-quiz-coupon.index'"
+                    :name="__('sidebar.career_coupons')"/>
             </x-shared.sidebar-menu>
         @endcan
         @can('iutube management')

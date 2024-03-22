@@ -551,4 +551,25 @@ return [
     "iutube_access_create_subtitle" => "бейнеге қол жеткізу блогы",
     "iutube_access_edit_title" => "бейнелерге қол жеткізуді өзгерту",
     "iutube_access_edit_subtitle" => "бейнеге қол жеткізуді өзгерту блогы",
+    //Tournament Prize
+    "tournament_prise_lists" => "турнир сыйлықтарының тізімі",
+    "tournament_prize_management" => "турнир жүлделерін басқару",
+    "tournament_prize_create_title" => "турнир сыйлығын жасау",
+    "tournament_prize_edit_title" => "турнирдің жүлдесін өзгерту",
+    "tournament_prize_create_subtitle" => "турнирдің жүлделер блогы",
+    "tournament_prize_edit_subtitle" => "турнир сыйлығын өңдеу блогы",
+    //Tournament Awards
+    "tournament_awards_lists" => "турнир жеңімпаздарының жүлделер тізімі",
+    "tournament_awards_management" => "турнир жеңімпаздарының жүлделерін басқару",
+    "tournament_awards_create_title" => "турнир жеңімпазы сыйлығын жасау",
+    "tournament_awards_edit_title" => "турнир жеңімпазының жүлдесін өзгерту",
+    "tournament_awards_create_subtitle" => "турнир жеңімпаздарының жүлделерін жасау блогы",
+    "tournament_awards_edit_subtitle" => "турнир жеңімпазының жүлдесін редакциялау блогы",
+    //Career Coupons
+    "career_coupons_lists" => "Кәсіптік бағдарлау купондарының тізімі",
+    "career_coupons_management" => "Кәсіптік бағдар бойынша купондарды басқару",
+    "career_coupons_create_title" => "Кәсіптік бағдар бойынша Купон жасау",
+    "career_coupons_create_subtitle" => "Кәсіптік бағдар бойынша Купон жасау",
+    "career_coupons_edit_title" => "Кәсіптік бағдар бойынша купонды өзгерту",
+    "career_coupons_edit_subtitle" => "Кәсіптік бағдар бойынша купон блогы",
 ];

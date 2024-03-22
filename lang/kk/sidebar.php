@@ -36,6 +36,7 @@ return [
     'tests' => 'Тесттер',
     "tournament" => "Турнир",
     "sub-tournament" => "Субтурнир",
+    "career_coupons"=>"Кәсіптік бағдарлау купондары",
     "sub-tournament-participant" => "Субтурнир мүшелері",
     "sub-tournament-winner" => "Субтурнир жеңімпаздары",
     "sub-tournament-rivals" => "Субтурнирдегі қарсыластар",
@@ -75,4 +76,9 @@ return [
     "career_quizzes"=>"Тесттер",
     "career_quiz_questions" =>"Сұрақтар",
     "career_quiz_answers"=>"Тестке жауаптар",
+    "iutube_authors"=>"ролик авторлары",
+    "iutube_access"=>"қол жетімді роликтер",
+    "iutube_videos"=>"бейнелер",
+    "tournament-prize"=>"сыйлықтар",
+    "tournament-award"=>"берілген сыйлықтар",
 ];

@@ -68,6 +68,7 @@ return [
     "tech-support-category"=>"Категория Саппорта",
     "tech-support-ticket"=>"Тикет",
     "career"=>"Профориентация",
+    "career_coupons"=>"Купоны профориентации",
     "career_quiz_groups"=>"Группа тестов",
     "career_quiz_authors"=>"Авторы",
     "career_quiz_features"=>"Характеристики",

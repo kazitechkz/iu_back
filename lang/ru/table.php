@@ -573,4 +573,12 @@ return [
     "tournament_awards_edit_title" => "Изменить приз победителя турнира",
     "tournament_awards_create_subtitle" => "Блок создания призов победителей турнира",
     "tournament_awards_edit_subtitle" => "Блок редактирования приза победителя турниров",
+    //Career Coupons
+    "career_coupons_lists" => "Список Купонов Профориентации",
+    "career_coupons_management" => "Управление Купонами по Профориентации",
+    "career_coupons_create_title" => "Создать Купон по Профориентации",
+    "career_coupons_create_subtitle" => "Создать Купон по Профориентации",
+    "career_coupons_edit_title" => "Изменить Купон по Профориентации",
+    "career_coupons_edit_subtitle" => "Блок Купона по Профориентации",
+    //
 ];
