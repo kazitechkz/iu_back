@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AppealController as AdminAppealController;
 use App\Http\Controllers\Admin\AppealTypeController as AdminAppealTypeController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
+use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\FactController as AdminFactController;
 use App\Http\Controllers\Admin\PromocodePlanController as AdminPromocodePlanController;
 use App\Http\Controllers\Admin\StatisticController as AdminStatisticController;
@@ -85,9 +86,7 @@ use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 |
 */
 if(env("IS_WEB",true)) {
-    Route::get('/', function () {
-        return view('admin.dashboard');
-    })->name("home")->middleware("authenticate");
+    Route::get('/', [AdminDashboardController::class, 'index'])->name("home")->middleware("authenticate");
     Route::get('/home', function () {
         return view('admin.dashboard');
     })->name("home2")->middleware("authenticate");
@@ -215,6 +214,9 @@ if(env("IS_WEB",true)) {
             Route::resource("iutube-author",AdminIUTubeAuthorController::class);
             Route::resource("iutube-access",AdminIUTubeAccessController::class);
             Route::resource("iutube-video",AdminIUTubeVideoController::class);
+
+            //Dashboard
+            Route::post('filter-by-date', [AdminDashboardController::class, 'filterByDate'])->name('admin-dashboard.date-by-filter');
         });
     });
     Route::get('import-db', [Testing::class, 'importDb']);
