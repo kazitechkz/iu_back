@@ -30,6 +30,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $old_price
  * @property int $order
  * @property string $currency
+ * @property string $code
+ * @property boolean $status
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  *
@@ -53,6 +55,7 @@ class CareerQuiz extends Model
 		'price' => 'int',
         'old_price'=>'int',
         'order'=>'int',
+        'status'=>'boolean',
 	];
 
 	protected $fillable = [
@@ -72,6 +75,7 @@ class CareerQuiz extends Model
         'order',
 		'currency',
         "code",
+        "status",
 	];
 
 	public function career_quiz_group()

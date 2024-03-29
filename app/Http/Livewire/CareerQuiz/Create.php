@@ -31,6 +31,7 @@ class Create extends Component
     public $currency;
     public $codes = CareerQuizService::CAREER_QUIZ_CODES;
     public $code;
+    public $status;
 
     public function mount(){
         $this->groups = CareerQuizGroup::all();
@@ -51,6 +52,7 @@ class Create extends Component
         $this->order = old("order");
         $this->currency = old("currency");
         $this->code = old("code");
+        $this->status = old("status");
     }
 
 

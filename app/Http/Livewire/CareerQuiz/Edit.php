@@ -34,6 +34,7 @@ class Edit extends Component
     public $currency;
     public $codes = CareerQuizService::CAREER_QUIZ_CODES;
     public $code;
+    public $status;
     public function mount(CareerQuiz $careerQuiz){
         $this->careerQuiz = $careerQuiz;
         $this->groups = CareerQuizGroup::all();
@@ -54,6 +55,7 @@ class Edit extends Component
         $this->old_price = $this->careerQuiz->old_price;
         $this->order = $this->careerQuiz->order;
         $this->currency = $this->careerQuiz->currency;
+        $this->status = $this->careerQuiz->status;
     }
     protected function rules(){
         return (new CareerQuizEdit())->rules();
