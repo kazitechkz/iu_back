@@ -169,4 +169,14 @@
         />
     </div>
     {{-- currency --}}
+    {{-- Is Active --}}
+    <div class="form-group">
+        <x-checkbox
+            id="status"
+            label="{{__('table.is_active')}}"
+            icon="check"
+            wire:model.defer="status"
+        />
+    </div>
+    {{-- Is Active --}}
 </x-form-component.form-component>

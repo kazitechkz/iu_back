@@ -32,7 +32,7 @@ class CareerController extends Controller
     public function careerQuizzes(Request $request){
         try{
             $user = auth()->guard("api")->user();
-            $quizzes = CareerQuiz::with(["career_quiz_group","career_quiz_creators.career_quiz_author","file"])->withCount(["career_quiz_questions"])->orderBy("order","ASC")->paginate(20);
+            $quizzes = CareerQuiz::with(["career_quiz_group","career_quiz_creators.career_quiz_author","file"])->where(["status" => true])->withCount(["career_quiz_questions"])->orderBy("order","ASC")->paginate(20);
             $purchasedCareerQuiz = CareerCoupon::where(["user_id" => $user->id,"status"=>true,"is_used" => false])->pluck("career_quiz_id")->toArray();
             return response()->json(new ResponseJSON(status: true,data: ["quizzes"=>$quizzes,"purchased"=>$purchasedCareerQuiz]),200);
         }
@@ -44,7 +44,7 @@ class CareerController extends Controller
     public function careerQuizDetail($id){
         try{
             $user = auth()->guard("api")->user();
-            $quiz = CareerQuiz::with(["career_quiz_creators.career_quiz_author.file","career_quiz_group","file"])->find($id);
+            $quiz = CareerQuiz::with(["career_quiz_creators.career_quiz_author.file","career_quiz_group","file"])->where(["status" => true])->find($id);
             if(!$quiz){
                 return ResponseService::NotFound("Не найдена информация по тесту");
             }
@@ -59,7 +59,7 @@ class CareerController extends Controller
     public function passCareerQuiz($id){
         try{
             $user = auth()->guard("api")->user();
-            $quiz = CareerQuiz::with(["career_quiz_questions","career_quiz_answers"])->find($id);
+            $quiz = CareerQuiz::with(["career_quiz_questions","career_quiz_answers"])->where(["status" => true])->find($id);
             if(!$quiz){
                 return ResponseService::NotFound("Не найдена информация по тесту");
             }
@@ -122,7 +122,9 @@ class CareerController extends Controller
     public function careerQuizGroupList(){
         try{
             $user = auth()->guard("api")->user();
-            $careerQuizGroups = CareerQuizGroup::with(["career_quizzes.file","career_quiz_authors.file"])->get();
+            $careerQuizGroups = CareerQuizGroup::with(["career_quiz_authors.file"])->with("career_quizzes",function ($query){
+                $query->where(["status"=>true])->with("file");
+            })->get();
             $purchasedCareerQuiz = CareerCoupon::where(["user_id" => $user->id,"status"=>true,"is_used" => false])->pluck("career_quiz_id")->toArray();
             return response()->json(new ResponseJSON(status: true,data: ["group"=>$careerQuizGroups,"purchased"=>$purchasedCareerQuiz]),200);
         }

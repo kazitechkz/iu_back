@@ -70,4 +70,5 @@ class CareerQuizGroup extends Model
 	{
 		return $this->hasMany(CareerQuiz::class, 'group_id');
 	}
+
 }

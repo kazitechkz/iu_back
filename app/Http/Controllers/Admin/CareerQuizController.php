@@ -34,6 +34,7 @@ class CareerQuizController extends Controller
     {
         try {
             $input = $request->all();
+            $input["status"] = $request->boolean("status");
             $careerQuiz = CareerQuiz::add($input);
             toastr()->success("Создан профориентационный тест");
             if($request->has("authors")){
@@ -87,7 +88,9 @@ class CareerQuizController extends Controller
         try {
             $careerQuiz = CareerQuiz::with(["file"])->find($id);
             if($careerQuiz){
-               $careerQuiz->edit($request->all());
+                $input = $request->all();
+                $input["status"] = $request->boolean("status");
+               $careerQuiz->edit($input);
                toastr()->success("Успешно изменен");
                 if($request->has("authors")){
                     CareerQuizCreator::where(["quiz_id" => $careerQuiz->id])->delete();

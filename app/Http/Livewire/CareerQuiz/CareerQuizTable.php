@@ -7,6 +7,7 @@ use App\Models\File;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Models\CareerQuiz;
+use Rappasoft\LaravelLivewireTables\Views\Columns\BooleanColumn;
 use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 
 class CareerQuizTable extends DataTableComponent
@@ -78,6 +79,8 @@ class CareerQuizTable extends DataTableComponent
             Column::make(__("table.level"), "order")
                 ->sortable(),
             Column::make(__("table.currency"), "currency")
+                ->searchable(),
+            BooleanColumn::make(__("table.is_active"), "status")
                 ->searchable(),
             Column::make(__("table.created_at"), "created_at")
                 ->sortable(),
