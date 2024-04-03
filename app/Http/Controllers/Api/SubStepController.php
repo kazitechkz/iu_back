@@ -23,7 +23,9 @@ class SubStepController extends Controller
     public function getSubStepsByStepId(int $id)
     {
         try {
-            $subSteps = SubStep::with('sub_result', 'own_result', 'step')->where('step_id', $id)->orderBy('level', 'asc')->get();
+            $subSteps = SubStep::with(['sub_result' => function($q) {
+                $q->where('user_id', auth()->guard('api')->id());
+            }, 'own_result', 'step'])->where('step_id', $id)->orderBy('level', 'asc')->get();
             foreach ($subSteps as $key => $subStep) {
                 $accept = $this->stepService->checkStepAccept($subStep->step);
                 if ($accept) {

@@ -25,7 +25,12 @@
         <div class="bg-white rounded shadow">
             {!! $chart->container() !!}
         </div>
+
+        <div class="py-5">
+            <livewire:admin-dashboard.get-subject-stats />
+        </div>
     </div>
+
 
 @endsection
 @push('js')
