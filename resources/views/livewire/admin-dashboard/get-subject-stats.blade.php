@@ -8,7 +8,6 @@
                 <option value="{{$subject->id}}">{{$subject->title_ru}}</option>
             @endforeach
         </select>
-        <button wire:click="searchStats" class="btn bg-primary text-white">Поиск</button>
     </div>
 
     @if($isSearch)
@@ -32,6 +31,37 @@
                         <p class="my-2">Заработок предмета: <b>{{$this->cash}} тг </b></p>
                     </div>
                 </div>
+            </div>
+        </div>
+        <div class="py-2">
+            <table class="min-w-full bg-white shadow-md rounded-xl">
+                <thead>
+                <tr class="bg-blue-gray-100 text-gray-700">
+                    <th class="py-3 px-4 text-left">№</th>
+                    <th class="py-3 px-4 text-left">Имя ученика</th>
+                    <th class="py-3 px-4 text-left">Тариф</th>
+                    <th class="py-3 px-4 text-left">Цена</th>
+                    <th class="py-3 px-4 text-left">Дата покупки</th>
+                </tr>
+                </thead>
+                <tbody class="text-blue-gray-900">
+                    @foreach($orders as $order)
+                        <tr class="border-b border-blue-gray-200">
+                            <td class="py-3 px-4">{{$orders->firstItem() + $loop->index}}</td>
+                            <td class="py-3 px-4">{{$order->user->name}}</td>
+                            <td class="py-3 px-4">{{$this->getPlanTitle($order->plans[0])}}</td>
+                            <td class="py-3 px-4">{{$order->price}} тг</td>
+                            <td class="py-3 px-4">
+                                {{$order->created_at->format('d.m.y')}}<span class="mx-2"><small>({{$order->created_at->diffForHumans()}})</small></span>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+            <div class="py-2 text-end">
+                @if($orders->hasMorePages())
+                    <button class="text-blue-500 cursor-pointer" wire:click.prevent="loadMore">Загрузить еще</button>
+                @endif
             </div>
         </div>
     @endif
