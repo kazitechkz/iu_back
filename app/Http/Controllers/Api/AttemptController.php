@@ -130,9 +130,9 @@ class AttemptController extends Controller
                 $max_points = $this->questionService->get_questions_max_point($questions);
                 $max_time = $this->questionService->get_time_in_ms($attempt_setting->time);
                 $attempt_setting->edit(["point" => $max_points]);
-                $attemptDTO = $this->attemptService->create_attempt($user->id, QuestionService::SETTINGS_TYPE_UNT, $attempt_setting->locale_id, $max_points, $questions, $max_time);
-                AttemptSettingsResultsUnt::add(["attempt_id" => $attemptDTO["attempt_id"], "setting_id" => $attempt_setting->id, "user_id" => $user->id]);
-                $attempt = Attempt::find($attemptDTO["attempt_id"]);
+                $attemptID = $this->attemptService->create_attempt($user->id, QuestionService::SETTINGS_TYPE_UNT, $attempt_setting->locale_id, $max_points, $questions, $max_time);
+                AttemptSettingsResultsUnt::add(["attempt_id" => $attemptID, "setting_id" => $attempt_setting->id, "user_id" => $user->id]);
+                $attempt = Attempt::find($attemptID);
                 return response()->json(new ResponseJSON(status: true, data: $attempt), 200);
             }
             return response()->json(new ResponseJSON(status: true, message: "По промокоду ничего не найдено"), 404);
