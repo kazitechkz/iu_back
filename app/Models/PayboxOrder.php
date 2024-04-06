@@ -36,7 +36,7 @@ class PayboxOrder extends Model
 		'user_id' => 'int',
 		'status' => 'int',
         'plans' => 'json',
-        'subjects' => 'json'
+        'subjects' => 'array'
 	];
 
 	protected $fillable = [

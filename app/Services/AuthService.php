@@ -81,6 +81,14 @@ class AuthService
         } else {
             $user->tokens()->delete();
             $data = AuthService::initialAuthDTO($user, true);
+            $activity = UserActivity::where('user_id', $user->id)->first();
+            if (!$activity) {
+                UserActivity::create([
+                    'user_id' => $user->id,
+                    'last_login' => Carbon::now(),
+                    'last_bonus' => Carbon::now()
+                ]);
+            }
             BonusService::everydayBonus($request);
         }
         return response()->json(new ResponseJSON(status: true, message: "Вы успешно авторизовались", data: $data->data));
@@ -104,6 +112,14 @@ class AuthService
             }
         }
         $data = AuthService::initialAuthDTO($user, true);
+        $activity = UserActivity::where('user_id', $user->id)->first();
+        if (!$activity) {
+            UserActivity::create([
+                'user_id' => $user->id,
+                'last_login' => Carbon::now(),
+                'last_bonus' => Carbon::now()
+            ]);
+        }
         return response()->json(new ResponseJSON(status: true, message: "Вы успешно авторизовались", data: $data->data));
     }
 
