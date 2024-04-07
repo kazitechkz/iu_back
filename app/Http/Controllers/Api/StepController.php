@@ -10,6 +10,7 @@ use App\Models\Subject;
 use App\Models\SubStepContentTest;
 use App\Models\SubStepResult;
 use App\Models\SubStepTest;
+use App\Services\PlanService;
 use App\Services\ResponseService;
 use App\Services\StepService;
 use App\Traits\ResponseJSON;
@@ -20,10 +21,12 @@ use Illuminate\Validation\ValidationException;
 class StepController extends Controller
 {
     private StepService $stepService;
+    private PlanService $planService;
 
-    public function __construct(StepService $stepService)
+    public function __construct(StepService $stepService, PlanService $planService)
     {
         $this->stepService = $stepService;
+        $this->planService = $planService;
     }
 
     public function getSteps($locale_id)
@@ -158,10 +161,12 @@ class StepController extends Controller
                         $this->stepService->check($item['sub_step_test_id'], $item['answer'], auth()->guard('api')->id(), $item['locale_id']);
                     }
                     $result = SubStepResult::where(['sub_step_id' => $subStepContentTest->sub_step_id, 'user_id' => $user->id, 'locale_id' => $request->all()[0]['locale_id']])->first();
-                    if ($result) {
-                        $point = (round($result->user_point))*10;
-                        $user->deposit($point);
-                        event(new WalletEvent($user->balanceInt));
+                    if (PlanService::checkIsExistSubscriptions()) {
+                        if ($result) {
+                            $point = (round($result->user_point)) * 10;
+                            $user->deposit($point);
+                            event(new WalletEvent($user->balanceInt));
+                        }
                     }
                 }
                 return response()->json(new ResponseJSON(

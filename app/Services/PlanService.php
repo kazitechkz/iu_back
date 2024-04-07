@@ -49,4 +49,14 @@ class PlanService
         }
         return $data;
     }
+
+    public static function checkIsExistSubscriptions(): bool
+    {
+        $subs = auth()->guard('api')->user()->activeSubscriptions();
+        if ($subs->count()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

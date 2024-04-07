@@ -404,9 +404,13 @@ class AttemptController extends Controller
                 return response()->json(new ResponseJSON(status: false, message: "Forbidden"), 403);
             }
             $attempt->update(["end_at" => Carbon::now(), 'time_left' => $attempt->time - Carbon::now()->diffInMilliseconds($attempt->start_at)]);
-            $user->deposit(($attempt->points)*10);
-            event(new WalletEvent($user->balanceInt));
-            return response()->json(new ResponseJSON(status: true, data: ['attempt_id' => $attempt_id, 'points' => ($attempt->points)*10]));
+            $points = 0;
+            if (PlanService::checkIsExistSubscriptions()) {
+                $points = ($attempt->points)*10;
+                $user->deposit($points);
+                event(new WalletEvent($user->balanceInt));
+            }
+            return response()->json(new ResponseJSON(status: true, data: ['attempt_id' => $attempt_id, 'points' => $points]));
         } catch (\Exception $exception) {
             return ResponseService::DefineException($exception);
         }

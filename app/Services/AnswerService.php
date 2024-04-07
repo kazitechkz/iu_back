@@ -15,7 +15,7 @@ use Carbon\Carbon;
 
 class AnswerService
 {
-        public function finish_test($user_id,int $attempt_id){
+    public function finish_test($user_id,int $attempt_id){
             try {
                 if($attempt = Attempt::where(["id"=>$attempt_id,"user_id" => $user_id,"end_at" => null])->first()){
                     $attempt->end_at = Carbon::now();
@@ -49,11 +49,15 @@ class AnswerService
                         $result_check = $this->check_attempt($attempt,$user_id);
                         $result_check["is_answered"] = true;
                         $result_check["question_id"] = $question_id;
-                        if ($result_check['is_finished']) {
+                        $points = 0;
+                        if ($result_check['is_finished'] && PlanService::checkIsExistSubscriptions()) {
+                            $points = ($attempt->points)*10;
                             $user = auth()->guard('api')->user();
-                            $result_check['points'] = ($attempt->points)*10;
-                            $user->deposit(($attempt->points)*10);
+                            $result_check['points'] = $points;
+                            $user->deposit($points);
                             event(new WalletEvent($user->balanceInt));
+                        } else {
+                            $result_check['points'] = $points;
                         }
                         $answer_dto = AnswerResultDTO::fromArray($result_check);
                         return $answer_dto->data;
