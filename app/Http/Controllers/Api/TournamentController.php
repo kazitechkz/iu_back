@@ -165,9 +165,9 @@ class TournamentController extends Controller
             }
             $sub_tournament_result = null;
             $my_result = SubTournamentResult::where(["sub_tournament_id" => $sub_tournament->id,"user_id" => $user->id])->with(["user"])->first();
-            if($sub_tournament->is_finished){
+//            if($sub_tournament->is_finished){
                 $sub_tournament_result = SubTournamentResult::where(["sub_tournament_id" => $sub_tournament->id])->orderBy("point","DESC")->orderBy("time","DESC")->with(["user", 'sub_tournament'])->paginate(20);
-            }
+//            }
             $data = ["results"=>$sub_tournament_result,"my_result"=>$my_result];
             return response()->json(new ResponseJSON(status: true,data: $data),200);
         }
