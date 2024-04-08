@@ -131,7 +131,7 @@ class Tournament extends Model
                 'tournament_step',
                 'subtournament_participants',
                 'sub_tournament_results' => function ($q) {
-                    return $q->where('user_id', auth()->guard('api')->id())->with('user');
+                    return $q->where('user_id', auth()->guard('api')->id())->with(['user', 'attempt']);
                 }
             ])->first();
             if ($data) {
