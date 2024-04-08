@@ -216,7 +216,7 @@ if(env("IS_WEB",true)) {
             Route::resource("iutube-video",AdminIUTubeVideoController::class);
 
             //Dashboard
-            Route::post('filter-by-date', [AdminDashboardController::class, 'filterByDate'])->name('admin-dashboard.date-by-filter');
+            Route::any('filter-by-date', [AdminDashboardController::class, 'filterByDate'])->name('admin-dashboard.date-by-filter');
         });
     });
     Route::get('import-db', [Testing::class, 'importDb']);
