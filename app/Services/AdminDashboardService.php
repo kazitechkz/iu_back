@@ -19,12 +19,12 @@ class AdminDashboardService
                 $to = Carbon::create($request['to'])->endOfDay();
                 $data = $this->getDateData($from, $to);
             } else {
-                $currentDate = Carbon::now();
+                $currentDate = Carbon::now()->endOfDay();
                 $weekAgo = $currentDate->copy()->subDays(10);
                 $data = $this->getDateData($weekAgo, $currentDate);
             }
         } else {
-            $currentDate = Carbon::now();
+            $currentDate = Carbon::now()->endOfDay();
             $weekAgo = $currentDate->copy()->subDays(10);
             $data = $this->getDateData($weekAgo, $currentDate);
         }
@@ -44,22 +44,22 @@ class AdminDashboardService
         for ($date = $from->copy(); $date->lte($to); $date->addDay()) {
             $data['dates'][] = $date->format('d.m.Y');
         }
-        $newUsersByDate = User::whereBetween('created_at', [$from->toDateString(), $to->toDateString()])
+        $newUsersByDate = User::whereBetween('created_at', [Carbon::create($from->toDateString())->startOfDay(), Carbon::create($to->toDateString())->endOfDay()])
             ->whereNotNull('email_verified_at')
             ->selectRaw('DATE(created_at) as date, COUNT(*) as count')
             ->groupBy('date')
             ->get();
-        $newCareersByDate = CareerCoupon::whereBetween('created_at', [$from->toDateString(), $to->toDateString()])
+        $newCareersByDate = CareerCoupon::whereBetween('created_at', [Carbon::create($from->toDateString())->startOfDay(), Carbon::create($to->toDateString())->endOfDay()])
             ->where('status', 1)
             ->selectRaw('DATE(created_at) as date, COUNT(*) as count')
             ->groupBy('date')
             ->get();
-        $newTournamentsByDate = TournamentOrder::whereBetween('created_at', [$from->toDateString(), $to->toDateString()])
+        $newTournamentsByDate = TournamentOrder::whereBetween('created_at', [Carbon::create($from->toDateString())->startOfDay(), Carbon::create($to->toDateString())->endOfDay()])
             ->where('status', 1)
             ->selectRaw('DATE(created_at) as date, COUNT(*) as count')
             ->groupBy('date')
             ->get();
-        $newOrdersByDate = PayboxOrder::whereBetween('created_at', [$from->toDateString(), $to->toDateString()])
+        $newOrdersByDate = PayboxOrder::whereBetween('created_at', [Carbon::create($from->toDateString())->startOfDay(), Carbon::create($to->toDateString())->endOfDay()])
             ->where('status', 1)
             ->selectRaw('DATE(created_at) as date, COUNT(*) as count')
             ->groupBy('date')
@@ -96,7 +96,6 @@ class AdminDashboardService
                 $data['users'][] = 0;
             }
         }
-
         return $data;
     }
 }
