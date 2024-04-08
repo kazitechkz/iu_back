@@ -22,7 +22,7 @@ class ResponseService
         if($exception instanceof  BadRequestException){
             return response()->json(new ResponseJSON(status: false,message: $exception->getMessage()),400);
         }
-        //Log::channel('telegram')->error($exception);
+        Log::channel('telegram')->error($exception);
         return response()->json(new ResponseJSON(status: false,message: $exception->getMessage()),500);
     }
 

@@ -98,7 +98,6 @@ class TournamentController extends Controller
             }
             return response()->json(new ResponseJSON(status: false, message: "Tournament Not Found"), 404);
         } catch (\Exception $exception) {
-            dd($exception);
             return ResponseService::DefineException($exception);
         }
     }
