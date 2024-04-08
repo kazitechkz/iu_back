@@ -39,7 +39,7 @@ class TeacherDashboardService
             ->get();
         foreach ($top_single_tests as $top_single_test) {
             $data[$top_single_test->user->name][] = [
-                'percentage' => round(($top_single_test->attempt->points/$top_single_test->attempt->max_points)*100),
+                'percentage' => round(($top_single_test->attempt->points/($top_single_test->attempt->max_points > 0 ? $top_single_test->attempt->max_points : 1))*100),
                 'points' => $top_single_test->attempt->points,
                 'max_points' => $top_single_test->attempt->max_points,
                 'subject' => $top_single_test->attempt_setting->subject->title_kk,
