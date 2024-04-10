@@ -169,7 +169,7 @@ class TournamentController extends Controller
                 $sub_tournament_result = SubTournamentResult::where(["sub_tournament_id" => $sub_tournament->id])->orderBy("point","DESC")->orderBy("time","DESC")->with(["user", 'sub_tournament'])->paginate(20);
 //            }
             $data = ["results"=>$sub_tournament_result,"my_result"=>$my_result];
-            return response()->json(new ResponseJSON(status: true,data: $data),200);
+            return response()->json(new ResponseJSON(status: true,data: $sub_tournament_result),200);
         }
         catch (\Exception $exception) {
             return ResponseService::DefineException($exception);
