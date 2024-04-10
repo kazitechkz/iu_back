@@ -80,4 +80,7 @@ return [
     "iutube_videos"=>"Видеоролики",
     "tournament-prize"=>"Призы",
     "tournament-award"=>"Выданные подарки",
+    "information"=>"Новости главной",
+    "information_author"=>"Авторы новостей",
+    "information_category"=>"Категория новостей",
 ];

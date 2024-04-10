@@ -26,7 +26,7 @@ class AnnouncementGroupCreateRequest extends FormRequest
             'title_kk'=>"required|max:255",
             'title_en'=>"sometimes|nullable|max:255",
             'thumbnail'=>"required",
-            'start_date'=>"sometimes|nullable|date|before:end_date",
+            'start_date'=>"sometimes|nullable|date",
             'end_date'=>"sometimes|nullable|date|after:start_date",
             'order'=>"required|integer|min:0"
         ];

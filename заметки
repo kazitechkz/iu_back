@@ -12,7 +12,7 @@ php artisan code:models --table=lesson_ratings
 php artisan code:models --table=participant_ratings
 php artisan code:models --table=lesson_complaints
 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
-
+supervisorctl restart all
  // Reset cached roles and permissions
 app()['cache']->forget('spatie.permission.cache');
 sudo git pull

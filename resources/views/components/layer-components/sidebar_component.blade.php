@@ -250,6 +250,25 @@
                 @endcan
             </x-shared.sidebar-menu>
         @endcan
+        @can('information management')
+            <x-shared.sidebar-menu :element-id="'information'" :name="__('sidebar.information')" :icon="'fas fa-newspaper'">
+                @can("information index")
+                    <x-shared.sub-sidebar-menu
+                        :icon="'fas fa-users'"
+                        :link="'information-author.index'"
+                        :name="__('sidebar.information_author')"/>
+                    <x-shared.sub-sidebar-menu
+                        :icon="'fas fa-box'"
+                        :link="'information-category.index'"
+                        :name="__('sidebar.information_category')"/>
+                    <x-shared.sub-sidebar-menu
+                        :icon="'fas fa-newspaper'"
+                        :link="'information.index'"
+                        :name="__('sidebar.information')"/>
+                @endcan
+
+            </x-shared.sidebar-menu>
+        @endcan
         @can('announcement management')
             <x-shared.sidebar-menu :element-id="'announcement'" :name="__('sidebar.announcement')"
                                    :icon="'fas fa-bullhorn'">

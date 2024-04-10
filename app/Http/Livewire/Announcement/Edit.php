@@ -24,6 +24,7 @@ class Edit extends Component
     public $time_in_sec;
     public $url_text;
     public $url;
+    public $video_url;
 
     public function mount(Announcement $announcement){
         $this->groups = AnnouncementGroup::all();
@@ -38,6 +39,7 @@ class Edit extends Component
         $this->time_in_sec = $announcement->time_in_sec ?? 0;
         $this->url_text = $announcement->url_text ?? "";
         $this->url = $announcement->url ?? "";
+        $this->video_url = $announcement->video_url ?? "";
     }
     protected function rules(){
         return (new AnnouncementUpdateRequest())->rules();

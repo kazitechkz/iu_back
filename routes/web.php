@@ -70,6 +70,9 @@ use \App\Http\Controllers\Admin\CareerCouponController as AdminCareerCouponContr
 use \App\Http\Controllers\Admin\IUTubeAuthorController as AdminIUTubeAuthorController;
 use \App\Http\Controllers\Admin\IUTubeAccessController as AdminIUTubeAccessController;
 use \App\Http\Controllers\Admin\IUTubeVideoController as AdminIUTubeVideoController;
+use \App\Http\Controllers\Admin\InformationAuthorController as AdminInformationAuthorController;
+use \App\Http\Controllers\Admin\InformationCategoryController as AdminInformationCategoryController;
+use \App\Http\Controllers\Admin\InformationController as AdminInformationController;
 use App\Http\Controllers\Admin\TestController;
 use App\Http\Controllers\TestController as Testing;
 use Illuminate\Support\Facades\Route;
@@ -214,6 +217,10 @@ if(env("IS_WEB",true)) {
             Route::resource("iutube-author",AdminIUTubeAuthorController::class);
             Route::resource("iutube-access",AdminIUTubeAccessController::class);
             Route::resource("iutube-video",AdminIUTubeVideoController::class);
+            //Information Author
+            Route::resource("information-author",AdminInformationAuthorController::class);
+            Route::resource("information-category",AdminInformationCategoryController::class);
+            Route::resource("information",AdminInformationController::class);
 
             //Dashboard
             Route::any('filter-by-date', [AdminDashboardController::class, 'filterByDate'])->name('admin-dashboard.date-by-filter');

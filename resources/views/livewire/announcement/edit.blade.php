@@ -71,6 +71,17 @@
         />
     </div>
     {{--     URL TEXT --}}
+    {{--    VIDEO URL --}}
+    <div class="form-group">
+        <x-input class="my-2"
+                 wire:model="video_url"
+                 label="Ссылка на видео (YouTube)"
+                 placeholder="Введите ссылку ютюб"
+                 icon="pencil"
+                 hint="Только ютюб"
+        />
+    </div>
+    {{--    VIDEO URL --}}
     {{--    URL --}}
     <div class="form-group">
         <x-input class="my-2"

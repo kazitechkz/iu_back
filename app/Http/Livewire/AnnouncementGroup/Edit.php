@@ -27,8 +27,8 @@ class Edit extends Component
         $this->title_en = $announcementGroup->title_en;
         $this->is_active = $announcementGroup->is_active;
         $this->thumbnail = $announcementGroup->thumbnail;
-        $this->start_date = $announcementGroup->start_date ? $announcementGroup->start_date->format("DD-MM-YYYY HH:mm") :'';
-        $this->end_date = $announcementGroup->end_date ? $announcementGroup->end_date->format("DD-MM-YYYY HH:mm") :'';
+        $this->start_date = $announcementGroup->start_date ? $announcementGroup->start_date :'';
+        $this->end_date = $announcementGroup->end_date ? $announcementGroup->end_date :'';
         $this->order = $announcementGroup->order;
 
     }

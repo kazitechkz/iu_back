@@ -23,6 +23,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $time_in_sec
  * @property string|null $url_text
  * @property string|null $url
+ * @property string|null $video_url
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  *
@@ -53,7 +54,8 @@ class Announcement extends Model
 		'description',
 		'time_in_sec',
 		'url_text',
-		'url'
+		'url',
+		'video_url',
 	];
 
 	public function image()
