@@ -572,4 +572,25 @@ return [
     "career_coupons_create_subtitle" => "Кәсіптік бағдар бойынша Купон жасау",
     "career_coupons_edit_title" => "Кәсіптік бағдар бойынша купонды өзгерту",
     "career_coupons_edit_subtitle" => "Кәсіптік бағдар бойынша купон блогы",
+    //Information
+    "information_lists" => "басты Жаңалықтар тізімі",
+    "information_management" => "басты жаңалықтарды басқару",
+    "information_create_title" => "басты жаңалықты жасау",
+    "Information_create_subtitle" => "басты жаңалықты жасау",
+    "information_edit_title" => "басты жаңалықты өзгерту",
+    "Information_edit_subtitle" => "Басты жаңалықтар блогы",
+    //Information Author
+    "information_author_lists" => "Басты жаңалықтар авторларының тізімі",
+    "information_author_management" => "жаңалықтар авторларын басты бетке басқару",
+    "information_author_create_title" => "жаңалықтар авторын жасау",
+    "Information_author_create_subtitle" => "автор құру ЖАҢАЛЫҚТАР Басты",
+    "information_author_edit_title" => "жаңалықтар авторын басты бетке өзгерту",
+    "Information_author_edit_subtitle" => "жаңалықтар авторының блогы",
+    //Information Category
+    "information_category_lists" => "Басты жаңалықтар санаттарының тізімі",
+    "Information_category_management" => "Басты жаңалықтар санаттарын басқару",
+    "Information_category_create_title" => "Басты жаңалықтар санатын құру",
+    "Information_category_create_subtitle" => "Басты жаңалықтар санатын құру",
+    "Information_category_edit_title" => "жаңалықтар санатын басты бетке өзгерту",
+    "Information_category_edit_subtitle" => "жаңалықтар санаттарының блогы",
 ];

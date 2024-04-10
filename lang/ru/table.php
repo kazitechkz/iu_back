@@ -580,5 +580,25 @@ return [
     "career_coupons_create_subtitle" => "Создать Купон по Профориентации",
     "career_coupons_edit_title" => "Изменить Купон по Профориентации",
     "career_coupons_edit_subtitle" => "Блок Купона по Профориентации",
-    //
+    //Information
+    "information_lists" => "Список Новостей Главной",
+    "information_management" => "Управление Новостями на Главной",
+    "information_create_title" => "Создать Новость на Главной",
+    "information_create_subtitle" => "Создать Новость на Главной",
+    "information_edit_title" => "Изменить Новость на Главной",
+    "information_edit_subtitle" => "Блок Новостей на Главной",
+    //Information Author
+    "information_author_lists" => "Список Авторов Новостей Главной",
+    "information_author_management" => "Управление Авторами Новостями на Главной",
+    "information_author_create_title" => "Создать Автора Новости на Главной",
+    "information_author_create_subtitle" => "Создать Автора Новости на Главной",
+    "information_author_edit_title" => "Изменить Автора Новости на Главной",
+    "information_author_edit_subtitle" => "Блок Автора Новостей на Главной",
+    //Information Category
+    "information_category_lists" => "Список Категорий Новостей Главной",
+    "information_category_management" => "Управление Категориями Новостей на Главной",
+    "information_category_create_title" => "Создать Категорию Новости на Главной",
+    "information_category_create_subtitle" => "Создать Категорию Новости на Главной",
+    "information_category_edit_title" => "Изменить Категорию Новости на Главной",
+    "information_category_edit_subtitle" => "Блок Категорий Новостей на Главной",
 ];

@@ -21,6 +21,7 @@ class Create extends Component
     public $time_in_sec;
     public $url_text;
     public $url;
+    public $video_url;
 
     public function mount(){
         $this->groups = AnnouncementGroup::all();
@@ -34,6 +35,7 @@ class Create extends Component
         $this->time_in_sec = old("time_in_sec") ?? 0;
         $this->url_text = old("url_text") ?? "";
         $this->url = old("url") ?? "";
+        $this->video_url = old("video_url") ?? "";
     }
     protected function rules(){
         return (new AnnouncementCreateRequest())->rules();

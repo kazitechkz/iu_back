@@ -81,4 +81,7 @@ return [
     "iutube_videos"=>"бейнелер",
     "tournament-prize"=>"сыйлықтар",
     "tournament-award"=>"берілген сыйлықтар",
+    "information" => "Басты жаңалықтар",
+    "information_author"=>"жаңалықтар авторлары",
+    "information_category"=>"Жаңалықтар санаты",
 ];
