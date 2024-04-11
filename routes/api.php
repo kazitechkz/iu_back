@@ -37,6 +37,7 @@ use App\Http\Controllers\Api\AttemptSettingsController as ApiAttemptSettingsCont
 use App\Http\Controllers\Api\CareerController as ApiCareerController;
 use App\Http\Controllers\Api\IUTubeController as ApiIUTubeController;
 use App\Http\Controllers\Api\OpenAiController as ApiOpenAiController;
+use App\Http\Controllers\Api\InformationController as ApiInformationController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -125,6 +126,7 @@ if(env("IS_API",true)){
             Route::get("/sub-tournament-rivals/{id}",[ApiTournamentController::class,"subTournamentRival"]);
             Route::get("/sub-tournament-detail/{id}",[ApiTournamentController::class,"subTournamentDetail"]);
             Route::post("/participate-tournament",[ApiTournamentController::class,"participate"]);
+
             //Statistics
             Route::get("/statistics/attempt-result/{attempt_id}",[ApiStatisticsController::class,"resultByAttemptId"]);
             Route::get("/statistics/attempt-stats/{attempt_id}",[ApiStatisticsController::class,"statsByAttemptId"]);
@@ -256,7 +258,9 @@ if(env("IS_API",true)){
     Route::post("/pay/tournament-result",[PayboxController::class,"payTournamentResultURL"]);
     Route::post("/pay/tournament-success",[PayboxController::class,"payTournamentSuccessURL"]);
     Route::post("/pay/tournament-failure",[PayboxController::class,"payTournamentFailureURL"]);
-
+    //Information
+    Route::get("/hottest-information",[ApiInformationController::class,"getMainNews"]);
+    Route::get("/information",[ApiInformationController::class,"getMainNews"]);
 }
 else{
     Route::get("/",function (){
