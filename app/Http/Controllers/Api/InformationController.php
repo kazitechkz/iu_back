@@ -47,4 +47,34 @@ class InformationController extends Controller
         }
     }
 
+    public function  getInformationByAlias(string $alias){
+        try {
+            $informations = Information::where("published_at","<=",Carbon::now())
+                ->where(["is_main" => false,"is_active" => true,"alias"=>$alias])
+                ->with(["information_author","information_category","file"])->first();
+            if($informations){
+                return response()->json(new ResponseJSON(status: true, data: $informations), 200);
+            }
+            else{
+                return ResponseService::NotFound("Новость не найдена");
+            }
+        } catch (\Exception $exception) {
+            return ResponseService::DefineException($exception);
+        }
+    }
+
+    public  function  getInformationsByCategoryAlias(string $alias){
+        try {
+            $informations = Information::where("published_at","<=",Carbon::now())
+                ->where(["is_main" => false,"is_active" => true])
+                ->whereHas('information_category', function($query) use ($alias){
+                    $query->where('alias',"==", $alias);
+                })
+                ->with(["information_author","information_category","file"])->paginate(18);
+            return response()->json(new ResponseJSON(status: true, data: $informations), 200);
+        } catch (\Exception $exception) {
+            return ResponseService::DefineException($exception);
+        }
+    }
+
 }

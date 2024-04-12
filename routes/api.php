@@ -260,7 +260,9 @@ if(env("IS_API",true)){
     Route::post("/pay/tournament-failure",[PayboxController::class,"payTournamentFailureURL"]);
     //Information
     Route::get("/hottest-information",[ApiInformationController::class,"getMainNews"]);
-    Route::get("/information",[ApiInformationController::class,"getMainNews"]);
+    Route::get("/all-informations",[ApiInformationController::class,"getInformations"]);
+    Route::get("/information/{alias}",[ApiInformationController::class,"getInformationByAlias"]);
+    Route::get("/information-by-category/{alias}",[ApiInformationController::class,"getInformationsByCategoryAlias"]);
 }
 else{
     Route::get("/",function (){
