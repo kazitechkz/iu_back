@@ -18,6 +18,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Str;
 use Spatie\Permission\Models\Role;
 
 class AuthService
@@ -37,6 +38,7 @@ class AuthService
             'role' => $user->roles->count() ? $user->roles[0]['name'] : '',
             'subscription' => $user->activeSubscriptions()->toArray(),
             'isKundelik' => $user->isKundelik(),
+            'isGoogle' => $user->isGoogle(),
             'parent_phone' => $user->parent_phone,
             'parent_name' => $user->parent_name
         ]);
@@ -110,6 +112,31 @@ class AuthService
             } else {
                 throw new BadRequestException('Error');
             }
+        }
+        $data = AuthService::initialAuthDTO($user, true);
+        $activity = UserActivity::where('user_id', $user->id)->first();
+        if (!$activity) {
+            UserActivity::create([
+                'user_id' => $user->id,
+                'last_login' => Carbon::now(),
+                'last_bonus' => Carbon::now()
+            ]);
+        }
+        return response()->json(new ResponseJSON(status: true, message: "Вы успешно авторизовались", data: $data->data));
+    }
+
+    public function registerFromGoogle($request)
+    {
+        $user = User::where('email', $request['email'])->first();
+        if (!$user) {
+            $user = $this->getInitialDataForGoogle($request);
+            $user->deposit(1000);
+            event(new WalletEvent($user->balanceInt));
+            $user->assignRole('student');
+        }
+        if ($hub = UserHub::firstWhere('user_id', $user->id)) {
+            $hub->hub_id = 3;
+            $hub->save();
         }
         $data = AuthService::initialAuthDTO($user, true);
         $activity = UserActivity::where('user_id', $user->id)->first();
@@ -237,6 +264,21 @@ class AuthService
         UserHub::create([
             'user_id' => $user->id,
             'hub_id' => 1
+        ]);
+        return $user;
+    }
+
+    public function getInitialDataForGoogle($request): User
+    {
+        $userData['name'] = $request['name'];
+        $userData['email'] = $request['email'];
+        $userData['username'] = Str::random(25);
+        $userData['email_verified_at'] = Carbon::now();
+        $userData['password'] = bcrypt('google123');
+        $user = User::add($userData);
+        UserHub::create([
+            'user_id' => $user->id,
+            'hub_id' => 3
         ]);
         return $user;
     }

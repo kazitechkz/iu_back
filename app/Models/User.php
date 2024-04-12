@@ -160,4 +160,12 @@ class User extends Authenticatable implements Searchable,Wallet
             return false;
         }
     }
+    public function isGoogle(): bool
+    {
+        if ($this->hubs()->where('hub_id', 3)->first()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

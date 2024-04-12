@@ -60,6 +60,23 @@ class AuthController extends Controller
             return ResponseService::DefineException($exception);
         }
     }
+
+    public function loginWithGoogle(Request $request)
+    {
+        try {
+            $validateUser = Validator::make($request->all(),
+                [
+                    'name' => 'required',
+                    'email' => 'required'
+                ]);
+            if ($validateUser->fails()) {
+                return response()->json(new ResponseJSON(status: false, message: "Validation Error", errors: $validateUser->errors()), 400);
+            }
+            return $this->authService->registerFromGoogle($request);
+        } catch (\Exception $exception) {
+            return ResponseService::DefineException($exception);
+        }
+    }
     public function register(Request $request)
     {
         try {
@@ -114,5 +131,8 @@ class AuthController extends Controller
         catch (\Exception $exception) {
             return ResponseService::DefineException($exception);
         }
+    }
+    public function logOut() {
+        auth()->guard('api')->user()->tokens()->delete();
     }
 }

@@ -228,12 +228,15 @@ if(env("IS_API",true)){
             });
 
             Route::post('check-promo', [ApiPromoCodeController::class, 'checkPromo']);
+
+            Route::get('auth/logout', [ApiAuthController::class, 'logOut']);
         });
     });
 //Forum
     Route::post("/upload-image",[\App\Http\Controllers\Api\FileUploadController::class,"uploadImage"])->middleware("API");
     Route::post('/auth/login', [ApiAuthController::class, 'loginUser']);
     Route::post('/auth/kundelik', [ApiAuthController::class, 'loginUserFromKundelik']);
+    Route::post('/auth/google', [ApiAuthController::class, 'loginWithGoogle']);
     Route::post("/auth/register",[ApiAuthController::class,"register"]);
     Route::post("/auth/verify-email",[ApiAuthController::class,"verifyEmail"]);
     Route::post("/auth/send-reset-token",[ApiAuthController::class,"sendResetToken"]);
