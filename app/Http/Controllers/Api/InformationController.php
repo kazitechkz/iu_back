@@ -16,13 +16,13 @@ class InformationController extends Controller
     {
         try {
             $main_information = Information::where("published_at","<=",Carbon::now())->where(["is_active" => true,"is_main" => true])
-                ->with(["information_author","information_category","file"])
+                ->with(["information_author.file","information_category","file"])
                 ->orderBy("published_at","DESC")
                 ->first();
             if($main_information != null){
                 $other_information = Information::where("published_at","<=",Carbon::now())
                     ->where("id","!=",$main_information->id)->where(["is_active" => true,"is_main" => true])
-                    ->with(["information_author","information_category","file"])
+                    ->with(["information_author.file","information_category","file"])
                     ->orderBy("published_at","DESC")
                     ->get();
             }
@@ -40,7 +40,7 @@ class InformationController extends Controller
         try {
             $informations = Information::where("published_at","<=",Carbon::now())
                 ->where(["is_main" => false,"is_active" => true])
-                ->with(["information_author","information_category","file"])->paginate(18);
+                ->with(["information_author.file","information_category","file"])->paginate(18);
             return response()->json(new ResponseJSON(status: true, data: $informations), 200);
         } catch (\Exception $exception) {
             return ResponseService::DefineException($exception);
@@ -50,8 +50,9 @@ class InformationController extends Controller
     public function  getInformationByAlias(string $alias){
         try {
             $informations = Information::where("published_at","<=",Carbon::now())
-                ->where(["is_main" => false,"is_active" => true,"alias"=>$alias])
-                ->with(["information_author","information_category","file"])->first();
+                ->where(["is_active" => true])
+                ->where("alias","LIKE","%".$alias."%")
+                ->with(["information_author.file","information_category","file"])->first();
             if($informations){
                 return response()->json(new ResponseJSON(status: true, data: $informations), 200);
             }
@@ -70,7 +71,7 @@ class InformationController extends Controller
                 ->whereHas('information_category', function($query) use ($alias){
                     $query->where('alias',"==", $alias);
                 })
-                ->with(["information_author","information_category","file"])->paginate(18);
+                ->with(["information_author.file","information_category","file"])->paginate(18);
             return response()->json(new ResponseJSON(status: true, data: $informations), 200);
         } catch (\Exception $exception) {
             return ResponseService::DefineException($exception);
