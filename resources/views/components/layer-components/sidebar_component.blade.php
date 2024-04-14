@@ -470,6 +470,10 @@
                     :icon="'fa fa-bar-chart'"
                     :link="'stats-on-types'"
                     :name="__('sidebar.stats-on-types')"/>
+                <x-shared.sub-sidebar-menu
+                    :icon="'fa fa-bar-chart'"
+                    :link="'stats-on-orders'"
+                    :name="__('sidebar.stats-on-orders')"/>
             </x-shared.sidebar-menu>
         @endcan
         @can("fact management")

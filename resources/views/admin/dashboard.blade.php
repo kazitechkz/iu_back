@@ -27,9 +27,6 @@
                 {!! $chart->container() !!}
             </div>
 
-            <div class="py-5">
-                <livewire:admin-dashboard.get-subject-stats />
-            </div>
         </div>
     @endcan
 

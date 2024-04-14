@@ -188,6 +188,7 @@ if(env("IS_WEB",true)) {
             Route::get('stats-on-questions', [AdminStatisticController::class, 'statsOnQuestions'])->name('stats-on-questions');
             Route::get('stats-on-subjects', [AdminStatisticController::class, 'statsOnSubjects'])->name('stats-on-subjects');
             Route::get('stats-on-types', [AdminStatisticController::class, 'statsOnTypes'])->name('stats-on-types');
+            Route::get('stats-on-orders', [AdminStatisticController::class, 'statsOnOrders'])->name('stats-on-orders');
             Route::get('stats-on-user', [AdminStatisticController::class, 'statsOnUser'])->name('stats-on-user');
             Route::get('stats-on-user-contents/{id}', [AdminStatisticController::class, 'statsOnUserContents'])->name('stats-on-user-contents');
             Route::get('stats-on-user-tests/{id}', [AdminStatisticController::class, 'statsOnUserTests'])->name('stats-on-user-tests');

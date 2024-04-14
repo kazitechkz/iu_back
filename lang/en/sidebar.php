@@ -57,6 +57,7 @@ return [
     "stats-on-questions" => "Stats on questions",
     "stats-on-subjects" => "Stats on subjects",
     "stats-on-types" => "Stats on types",
+    "stats-on-orders" => "Stats on orders",
     "stats-on-user-contents" => "Stats on user contents",
 
 

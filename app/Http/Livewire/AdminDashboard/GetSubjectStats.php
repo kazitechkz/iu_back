@@ -14,8 +14,7 @@ class GetSubjectStats extends Component
     use WithPagination;
     public $perPage = 10;
     public bool $isSearch = false;
-    public $from;
-    public $to;
+    public $date;
     public $subjects;
     public $subjectId = 0;
     public $subjectTitle;
@@ -27,10 +26,10 @@ class GetSubjectStats extends Component
     public $cash;
 
 
-    public function mount()
+    public function mount($subjectID, $date)
     {
-        $this->subjects = Subject::all();
-        $this->to = Carbon::today()->endOfDay();
+        $this->subjectId = $subjectID;
+        $this->date = $date;
     }
 
     public function loadMore(): void
@@ -78,34 +77,20 @@ class GetSubjectStats extends Component
             $this->subjectTitle = $subject->title_ru;
             $this->subjectImg = $subject->image->url;
             $this->percentage = $this->getPercentage($this->subjectId);
-            if ($this->from && Carbon::create($this->from) < Carbon::now()) {
-                $orders = PayboxOrder::where('status', 1)
-                    ->whereBetween('created_at', [Carbon::create($this->from)->startOfDay(), Carbon::create($this->to)->endOfDay()])
-                    ->whereJsonContains('subjects', intval($this->subjectId))
-                    ->get();
-            } else {
-                $orders = PayboxOrder::where('status', 1)
-                    ->whereJsonContains('subjects', intval($this->subjectId))
-                    ->get();
-            }
+            $orders = PayboxOrder::where('status', 1)
+                ->whereBetween('created_at', [Carbon::create($this->date)->startOfDay(), Carbon::create($this->date)->endOfDay()])
+                ->whereJsonContains('subjects', intval($this->subjectId))
+                ->get();
             $this->countOrders = $orders->count();
             $this->priceOrders = $orders->sum('price');
             $this->grantPrice = round(0.2 * $this->priceOrders);
             $this->cash = round(($this->grantPrice*$this->percentage)/100);
-            if ($this->from && Carbon::create($this->from) < Carbon::now()) {
-                $orders = PayboxOrder::with('user')
-                    ->where('status', 1)
-                    ->whereBetween('created_at', [Carbon::create($this->from)->startOfDay(), Carbon::create($this->to)->endOfDay()])
-                    ->whereJsonContains('subjects', intval($this->subjectId))
-                    ->latest()
-                    ->paginate($this->perPage);
-            } else {
-                $orders = PayboxOrder::with('user')
-                    ->where('status', 1)
-                    ->whereJsonContains('subjects', intval($this->subjectId))
-                    ->latest()
-                    ->paginate($this->perPage);
-            }
+            $orders = PayboxOrder::with('user')
+                ->where('status', 1)
+                ->whereBetween('created_at', [Carbon::create($this->date)->startOfDay(), Carbon::create($this->date)->endOfDay()])
+                ->whereJsonContains('subjects', intval($this->subjectId))
+                ->latest()
+                ->paginate($this->perPage);
         } else {
             $this->isSearch = false;
         }
