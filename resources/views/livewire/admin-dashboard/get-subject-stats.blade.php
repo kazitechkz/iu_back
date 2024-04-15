@@ -44,7 +44,7 @@
                 </tbody>
             </table>
             <div class="py-2 text-end">
-                @if($orders->hasMorePages())
+                @if($orders->count() > $this->perPage)
                     <button class="text-blue-500 cursor-pointer" wire:click.prevent="loadMore">Загрузить еще</button>
                 @endif
             </div>

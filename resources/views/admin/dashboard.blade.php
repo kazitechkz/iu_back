@@ -8,7 +8,7 @@
 @endpush
 @section('content')
     @can("dashboard management")
-        <div class="container px-4 mx-auto">
+        <div class="container p-2 mx-auto">
             <div class="">
                 <form action="{{route('admin-dashboard.date-by-filter')}}" class="flex py-3" method="post">
                     @csrf
@@ -26,12 +26,18 @@
             <div class="bg-white rounded shadow">
                 {!! $chart->container() !!}
             </div>
-
+        </div>
+        <div class="container p-2 mx-auto">
+            <div class="bg-white rounded shadow">
+                {!! $subjectChart->container() !!}
+            </div>
         </div>
     @endcan
 
 @endsection
 @push('js')
     <script src="{{ $chart->cdn() }}"></script>
+    <script src="{{ $subjectChart->cdn() }}"></script>
     {{ $chart->script() }}
+    {{ $subjectChart->script() }}
 @endpush
