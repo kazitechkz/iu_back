@@ -48,25 +48,25 @@ class PromoService
     {
         $promo = Promocode::where('code', $promoCode)->first();
         if ($promo && Carbon::create($promo->expired_at) > Carbon::now()) {
-            if ($promo->plan_ids == null || in_array(1, $promo->plan_ids)) {
+            if ($promo->plan_ids == null || in_array(2, $promo->plan_ids)) {
                 if ($promo->group_ids == null || !empty(array_intersect($user->hubs()->pluck('hub_id')->toArray(), $promo->group_ids))) {
                     return round($price - ($price * ($promo->percentage/100)));
                 } else {
                     throw new BadRequestException('К сожалению, вы не являетесь участником данного промокода!');
                 }
             } else {
-                throw new BadRequestException('Данный промокод не предназначен для оформления подписки!');
+                throw new BadRequestException('Данный промокод не предназначен для оформления профориентационного теста!');
             }
         } else {
             throw new BadRequestException('Промокод не существует или просрочен!');
         }
     }
-    public function check($code)
+    public function check($code, $type)
     {
         $promo = Promocode::where('code', $code)->first();
         $user = auth()->guard('api')->user();
         if ($promo && Carbon::create($promo->expired_at) > Carbon::now()) {
-            if ($promo->plan_ids == null || in_array(1, $promo->plan_ids)) {
+            if ($promo->plan_ids == null || in_array($type, $promo->plan_ids)) {
                 if ($promo->group_ids == null || !empty(array_intersect($user->hubs()->pluck('hub_id')->toArray(), $promo->group_ids))) {
                     if (PromocodeUser::where(['user_id' => auth()->guard('api')->id(), 'promocode_id' => $promo->id])->first()) {
                         throw new BadRequestException('К сожалению, вы уже использовали этот промокод!');
@@ -77,7 +77,11 @@ class PromoService
                     throw new BadRequestException('К сожалению, вы не являетесь участником данного промокода!');
                 }
             } else {
-                throw new BadRequestException('Данный промокод не предназначен для оформления подписки!');
+                if ($type == 1) {
+                    throw new BadRequestException('Данный промокод не предназначен для оформления подписки!');
+                } else {
+                    throw new BadRequestException('Данный промокод не предназначен для оформления профориентационного теста!');
+                }
             }
         } else {
             throw new BadRequestException('Промокод не существует или просрочен!');

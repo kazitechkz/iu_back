@@ -22,8 +22,8 @@ class PromoCodeController extends Controller
     public function checkPromo(Request $request)
     {
         try {
-            $this->validate($request, ['code' => 'required']);
-            return response()->json(new ResponseJSON(status: true, data: $this->promoService->check($request['code'])));
+            $this->validate($request, ['code' => 'required', 'type' => 'required']);
+            return response()->json(new ResponseJSON(status: true, data: $this->promoService->check($request['code'], $request['type'])));
         } catch (Exception $exception) {
             return ResponseService::DefineException($exception);
         }
