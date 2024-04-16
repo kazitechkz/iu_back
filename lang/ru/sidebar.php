@@ -58,6 +58,7 @@ return [
     "stats-on-subjects" => "Статистика по предметам",
     "stats-on-types" => "Статистика по типам",
     "stats-on-orders" => "Статистика по подпискам",
+    "stats-on-orders-by-subjects" => "Статистика по подпискам в разрезе предметов",
     "stats-on-user-contents" => "Статистика по методистам",
     "announcement-type"=>"Тип статуса",
     "announcement-group"=>"Группа статуса",

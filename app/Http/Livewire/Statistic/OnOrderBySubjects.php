@@ -9,7 +9,7 @@ use Carbon\Carbon;
 use Livewire\Component;
 use Livewire\WithPagination;
 
-class OnOrder extends Component
+class OnOrderBySubjects extends Component
 {
     use WithPagination;
     public $perPage = 20;
@@ -129,6 +129,6 @@ class OnOrder extends Component
 
     public function render()
     {
-        return view('livewire.statistic.on-order');
+        return view('livewire.statistic.on-order-by-subject');
     }
 }

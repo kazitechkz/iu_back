@@ -51,6 +51,17 @@ class StatisticController extends Controller
     {
         try {
             if (auth()->user()->can("stats-by-user index")) {
+                return view('admin.paybox.index');
+            }
+        } catch (\Exception $exception) {
+            toastr()->error($exception->getMessage(), "Error");
+            return redirect()->route("home");
+        }
+    }
+    public function statsOnOrdersBySubjects()
+    {
+        try {
+            if (auth()->user()->can("stats-by-user index")) {
                 return view('admin.statistics.on-orders');
             }
         } catch (\Exception $exception) {

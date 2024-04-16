@@ -52,6 +52,7 @@ class AdminDashboardService
             ->get();
         $newCareersByDate = CareerCoupon::whereBetween('created_at', [Carbon::create($from->toDateString())->startOfDay(), Carbon::create($to->toDateString())->endOfDay()])
             ->where('status', 1)
+            ->where('order_id', '!=', 0)
             ->selectRaw('DATE(created_at) as date, COUNT(*) as count')
             ->groupBy('date')
             ->get();

@@ -474,6 +474,10 @@
                     :icon="'fa fa-bar-chart'"
                     :link="'stats-on-orders'"
                     :name="__('sidebar.stats-on-orders')"/>
+                <x-shared.sub-sidebar-menu
+                    :icon="'fa fa-bar-chart'"
+                    :link="'stats-on-orders-by-subjects'"
+                    :name="__('sidebar.stats-on-orders-by-subjects')"/>
             </x-shared.sidebar-menu>
         @endcan
         @can("fact management")
