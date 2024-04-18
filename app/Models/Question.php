@@ -55,6 +55,7 @@ class Question extends Model implements Searchable
 	protected $casts = [
 		'locale_id' => 'int',
 		'subject_id' => 'int',
+		'group_id' => 'int',
 		'type_id' => 'int'
 	];
 

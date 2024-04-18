@@ -73,10 +73,12 @@ class TranslationController extends Controller
                 ]);
                 $data = QuestionTranslation::searchableData($request, false);
                 if ($request['question'] && $request['type_id'] == 1 || $request['question'] && $request['type_id'] == 3) {
+                    dd(1);
                     TranslateService::saveOneAnswerQuestion($request['question']);
                     return redirect(route('search-translations', $data['params']));
                 }
                 if ($request['question'] && $request['type_id'] == 2) {
+                    dd(2);
                     TranslateService::saveContextQuestion($request['question']);
                     return redirect(route('search-translations', $data['params']));
                 }

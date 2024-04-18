@@ -75,27 +75,28 @@ class QuestionTranslation extends Model
         if ($isIndexPage) {
             $questions = [];
         } else {
+            $query = Question::query();
+            $questions = [];
             if ($request) {
-                $query = Question::where(['subject_id' => $request['subject_id'], 'type_id' => $request['type_id'], 'locale_id' => 1]);
+                $condition = ['subject_id' => $request['subject_id'], 'type_id' => $request['type_id'], 'locale_id' => $request['locale_id']];
                 $params = [
                     "subject_id" => $request['subject_id'],
                     "type_id" => $request['type_id'],
                     "group_id" => $request['group_id'],
                     "page" => $request['page'] ?: $page
                 ];
-            } else {
-                $query = Question::query();
+                if ($request['group_id'] != 0) {
+                    $questions = $query->where($condition)->where('group_id', $request['group_id'])
+                        ->with('translationQuestion')
+                        ->latest()
+                        ->paginate(20);
+                } else {
+                    $questions = $query->with('translationQuestion')
+                        ->latest()
+                        ->paginate(20);
+                }
             }
-            if ($request['group_id'] != 0) {
-                $questions = $query->where('group_id', $request['group_id'])
-                    ->with('translationQuestion')
-                    ->latest()
-                    ->paginate(20);
-            } else {
-                $questions = $query->with('translationQuestion')
-                    ->latest()
-                    ->paginate(20);
-            }
+
         }
         return compact('subjects', 'types', 'groups', 'questions', 'page', 'params');
     }

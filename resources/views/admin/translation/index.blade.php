@@ -68,6 +68,11 @@
                             <option value="{{$group->id}}">{{$group->title}}</option>
                         @endforeach
                     </select>
+                    <select name="locale_id" class="form-control mx-2">
+                        <option selected value="1">Выберите язык</option>
+                        <option value="1">Казахский</option>
+                        <option value="2">Русский</option>
+                    </select>
                     <button class="btn btn-facebook">Поиск</button>
                 </form>
                 <div class="py-4"></div>
