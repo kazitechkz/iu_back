@@ -87,11 +87,11 @@ class QuestionTranslation extends Model
                 ];
                 if ($request['group_id'] != 0) {
                     $questions = $query->where($condition)->where('group_id', $request['group_id'])
-                        ->with('translationQuestion')
+                        ->with(['translationQuestion', 'translationQuestionRU'])
                         ->latest()
                         ->paginate(20);
                 } else {
-                    $questions = $query->with('translationQuestion')
+                    $questions = $query->where($condition)->with(['translationQuestion', 'translationQuestionRU'])
                         ->latest()
                         ->paginate(20);
                 }

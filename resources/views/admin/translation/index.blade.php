@@ -132,6 +132,31 @@
                                         </div>
                                     </div>
                                 @endif
+                                @if($question->translationQuestionRU)
+                                    <div class="flex justify-start">
+                                        <span class="mx-2">({{$question->id}})</span>
+                                        <div class="flex w-full justify-between">
+                                            <span>{{\App\Helpers\StrHelper::getSubStr($question->translationQuestionRU->questionKk->text, 30)}}</span>
+                                            <span class="flex justify-start">
+                                            <livewire:question.preview-question :question="$question->translationQuestionRU->questionKk"/>
+                                            <a href="{{route('questions.edit', $question->translationQuestionRU->questionKk->id)}}" target="_blank"
+                                               class="flex items-center justify-center btn btn-outline-secondary btn-rounded btn-icon mx-1">
+                                                <i class="mdi mdi-pencil"></i>
+                                            </a>
+                                            <form action="{{route('delete-translations')}}" method="post">
+                                                @csrf
+                                                <input type="hidden" name="subject_id" value="{{$question->subject_id}}">
+                                                <input type="hidden" name="type_id" value="{{$question->type_id}}">
+                                                <input type="hidden" name="group_id" value="{{$question->group_id}}">
+                                                <input type="hidden" name="delete_id" value="{{$question->translationQuestionRU->questionKk->id}}">
+                                                <button type="submit" class="flex items-center justify-center btn btn-outline-danger btn-rounded btn-icon mx-1">
+                                                    <i class="mdi mdi-trash-can"></i>
+                                                </button>
+                                            </form>
+                                        </span>
+                                        </div>
+                                    </div>
+                                @endif
                             </li>
                         @endforeach
                     </ul>
