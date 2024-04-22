@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 use App\Exports\UsersExport;
+use App\Models\UserHub;
 use Bpuig\Subby\Models\Plan;
 use Database\Seeders\UserRoleSeeder;
 use Illuminate\Support\Facades\DB;
@@ -50,7 +51,18 @@ class UserTable extends DataTableComponent
                     $user_ids = DB::table("model_has_roles")->where("role_id",$value)->pluck("model_id")->toArray();
                     $builder->whereIn("id",$user_ids);
                 }),
-
+            SelectFilter::make('Группа')
+                ->options([
+                    '' => 'Все',
+                    '1' => 'Kundelik',
+                    '2' => 'Новые',
+                    '3' => 'Google'
+                ])
+                ->filter(function ($builder, string $value){
+                    $builder->whereHas('hubs', function ($q) use ($value)  {
+                        $q->where('hub_id', $value);
+                    });
+                }),
         ];
     }
     public function bulkActions(): array

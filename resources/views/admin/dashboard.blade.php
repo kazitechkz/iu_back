@@ -32,6 +32,10 @@
                 {!! $subjectChart->container() !!}
             </div>
         </div>
+
+        <div class="my-2 p-2 mx-auto">
+            <livewire:admin-dashboard.get-orders-stats />
+        </div>
     @endcan
 
 @endsection
