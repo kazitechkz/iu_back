@@ -231,6 +231,10 @@ if(env("IS_API",true)){
 
             Route::post('check-promo', [ApiPromoCodeController::class, 'checkPromo']);
 
+            //Surveys
+            Route::get('get-surveys', [\App\Http\Controllers\Api\SurveyController::class, 'getSurveys']);
+            Route::post('answer-surveys', [\App\Http\Controllers\Api\SurveyController::class, 'answerSurveys']);
+
             Route::get('auth/logout', [ApiAuthController::class, 'logOut']);
         });
     });

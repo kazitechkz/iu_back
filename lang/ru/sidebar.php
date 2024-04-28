@@ -23,6 +23,7 @@ return [
     'translations_contents' => 'Переводы (конспект)',
     "faq" => "FAQ",
     "fact" => "Факты",
+    "survey" => "Опросники",
     "wallet" => "Кошелек",
     "group" => "Группа вопросов",
     "appeal_type" => "Типы аппеляционных вопросов",

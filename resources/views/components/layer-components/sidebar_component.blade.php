@@ -489,5 +489,14 @@
                     :name="__('sidebar.fact')"/>
             </x-shared.sidebar-menu>
         @endcan
+        @can("survey management")
+            <x-shared.sidebar-menu :element-id="'survey'" :name="__('sidebar.survey')"
+                                   :icon="'fa-regular fa-face-laugh-squint'">
+                <x-shared.sub-sidebar-menu
+                    :icon="'fa-regular fa-face-grin-squint-tears'"
+                    :link="'survey.index'"
+                    :name="__('sidebar.survey')"/>
+            </x-shared.sidebar-menu>
+        @endcan
     </ul>
 </nav>

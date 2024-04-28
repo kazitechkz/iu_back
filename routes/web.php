@@ -24,6 +24,8 @@ use App\Http\Controllers\Admin\SingleSubjectTestController as AdminSingleSubject
 use App\Http\Controllers\Admin\SubjectContextController as AdminSubjectContextController;
 use App\Http\Controllers\Admin\SubjectController as AdminSubjectController;
 use App\Http\Controllers\Admin\SubscriptionController as AdminSubscriptionController;
+use App\Http\Controllers\Admin\SurveyController as AdminSurveyController;
+use App\Http\Controllers\Admin\SurveyQuestionController as AdminSurveyQuestionController;
 use App\Http\Controllers\Admin\TranslationController as AdminTranslationController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Admin\UserHubController as AdminUserHubController;
@@ -227,6 +229,11 @@ if(env("IS_WEB",true)) {
 
             //Dashboard
             Route::any('filter-by-date', [AdminDashboardController::class, 'filterByDate'])->name('admin-dashboard.date-by-filter');
+
+            //Surveys
+            Route::resource('survey', AdminSurveyController::class);
+            Route::resource('survey-question', AdminSurveyQuestionController::class);
+            Route::get('survey-question-filter/{surveyID}/{localeID}', [AdminSurveyQuestionController::class, 'filterByLocale'])->name('survey-question-filter.id.locale-id');
         });
     });
     Route::get('import-db', [Testing::class, 'importDb']);

@@ -23,6 +23,7 @@ return [
     'translations_contents' => 'Content translations',
     "faq" => "FAQ",
     "fact" => "Facts",
+    "survey" => "Surveys",
     "wallet" => "Wallet",
     "group" => "Group of questions",
     "appeal_type" => "Appeal question types",
