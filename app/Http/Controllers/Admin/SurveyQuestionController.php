@@ -47,7 +47,8 @@ class SurveyQuestionController extends Controller
             if (auth()->user()->can("survey edit")) {
                 $this->validate($request, [
                    'text' => 'required',
-                   'locale_id' => 'required'
+                   'locale_id' => 'required',
+                    'order' => 'required'
                 ]);
                 SurveyQuestion::add($request->all());
                 return redirect()->back();
@@ -57,7 +58,7 @@ class SurveyQuestionController extends Controller
             }
         } catch (\Exception $exception) {
             toastr()->error($exception->getMessage(), "Error");
-            return redirect()->route("home");
+            return redirect()->back();
         }
     }
 
@@ -105,8 +106,9 @@ class SurveyQuestionController extends Controller
         try {
             if (auth()->user()->can("survey edit")) {
                 $data = $this->surveyService->getSurveyStats($surveyID, $localeID);
+                $wishes = $this->surveyService->getWishes($surveyID, $localeID);
 //                dd($data);
-                return view('admin.survey-question.edit', compact('data', 'surveyID'));
+                return view('admin.survey-question.edit', compact('data', 'surveyID', 'wishes'));
             } else {
                 toastr()->warning(__("message.not_allowed"));
                 return redirect()->route("home");

@@ -106,6 +106,7 @@ class QuestionTable extends DataTableComponent
     {
         return [
             Column::make("Id", "id")
+                ->searchable()
                 ->sortable(),
 //            Column::make('Категория', 'category.title_ru')
 //                ->format(fn($val) => StrHelper::getSubStr($val, 30))

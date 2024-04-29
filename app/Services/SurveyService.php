@@ -11,13 +11,13 @@ use App\Models\UserSurvey;
 
 class SurveyService
 {
-    public function getActiveSurveys()
+    public function getActiveSurveys($localeID)
     {
         $user = auth()->guard('api')->user();
         if ($user->activeSubscriptions()->count()) {
-            return $this->checkSurvey(true, $user);
+            return $this->checkSurvey(true, $user, $localeID);
         } else {
-            return $this->checkSurvey(false, $user);
+            return $this->checkSurvey(false, $user, $localeID);
         }
     }
     public function postAnswerSurveys($request)
@@ -42,11 +42,11 @@ class SurveyService
         $user->deposit(1000);
         event(new WalletEvent($user->balanceInt));
     }
-    protected function checkSurvey(bool $is_subs, User $user)
+    protected function checkSurvey(bool $is_subs, User $user, int $localeID)
     {
         $query = Survey::query();
-        $survey = $query->where(['status' => 1, 'is_subscription' => $is_subs])->with('survey_questions', function ($q) {
-            $q->orderBy('order', 'asc');
+        $survey = $query->where(['status' => 1, 'is_subscription' => $is_subs])->with('survey_questions', function ($q) use ($localeID) {
+            $q->where('locale_id', $localeID)->orderBy('order', 'asc');
         })->latest()->first();
         if ($survey) {
             if (!UserSurvey::where(['survey_id' => $survey->id, 'user_id' => $user->id])->first()) {
@@ -58,7 +58,7 @@ class SurveyService
             return null;
         }
     }
-    public function getSurveyStats($surveyID, $localeID)
+    public function getSurveyStats($surveyID, $localeID): array
     {
         $data = [];
         $ids = SurveyQuestion::where(['survey_id' => $surveyID, 'locale_id' => $localeID])->pluck('id', 'text');
@@ -69,6 +69,17 @@ class SurveyService
             }
         }
         return $data;
+    }
+
+    public function getWishes($surveyID, $localeID)
+    {
+        return SurveyAnswer::where('survey_id', $surveyID)
+            ->whereNotNull('wishes')
+            ->whereHas('survey_question', function ($q) use ($localeID) {
+                $q->where('locale_id', $localeID);
+            })
+            ->with('user')
+            ->paginate(20);
     }
 
     protected function getQuestionAnswerText($an)

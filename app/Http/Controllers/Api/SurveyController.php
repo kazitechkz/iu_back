@@ -21,10 +21,10 @@ class SurveyController extends Controller
         $this->surveyService = $surveyService;
     }
 
-    public function getSurveys()
+    public function getSurveys($localeID)
     {
         try {
-            $data = $this->surveyService->getActiveSurveys();
+            $data = $this->surveyService->getActiveSurveys($localeID);
             return response()->json(new ResponseJSON(status: true, data: $data));
         } catch (\Exception $exception) {
             return ResponseService::DefineException($exception);
