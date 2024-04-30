@@ -17,14 +17,18 @@ class IndexTable extends DataTableComponent
     {
         $this->setPrimaryKey('id');
         $this->setBulkActions([
-            'deleteSelected' => 'Удалить'
+            'deleteSelected' => 'Удалить',
+            'deActiveStatus' => 'Деактивировать статус',
+            'activeStatus' => 'Активировать статус'
         ]);
     }
 
     public function bulkActions(): array
     {
         return [
-            'deleteSelected' => 'Удалить'
+            'deleteSelected' => 'Удалить',
+            'deActiveStatus' => 'Деактивировать статус',
+            'activeStatus' => 'Активировать статус'
         ];
     }
 
@@ -34,6 +38,25 @@ class IndexTable extends DataTableComponent
         foreach ($surveys as $key => $value) {
             $survey = Survey::find($value);
             $survey?->delete();
+        }
+        $this->clearSelected();
+    }
+
+    public function deActiveStatus(): void {
+        $surveys = $this->getSelected();
+        foreach ($surveys as $val) {
+            $survey = Survey::find($val);
+            $survey->status = false;
+            $survey->save();
+        }
+        $this->clearSelected();
+    }
+    public function activeStatus(): void {
+        $surveys = $this->getSelected();
+        foreach ($surveys as $val) {
+            $survey = Survey::find($val);
+            $survey->status = true;
+            $survey->save();
         }
         $this->clearSelected();
     }
