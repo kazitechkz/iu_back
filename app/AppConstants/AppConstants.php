@@ -112,6 +112,8 @@ class AppConstants
         "iutube index", "iutube create", "iutube edit", "iutube show",
         //Information
         "information index", "information create", "information edit", "information show",
+        //Survey
+        "survey index", "survey create", "survey edit", "survey show",
         //Permission for main menu
         "user management",
         "user-hubs management",
@@ -135,6 +137,7 @@ class AppConstants
         "career management",
         "iutube management",
         "information management",
+        "survey management",
     ];
 
     public const ADMIN_PERMISSIONS = self::all_permissions;

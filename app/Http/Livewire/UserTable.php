@@ -3,9 +3,11 @@
 namespace App\Http\Livewire;
 use App\Exports\UsersExport;
 use App\Models\UserHub;
+use App\Models\UserRefcode;
 use Bpuig\Subby\Models\Plan;
 use Database\Seeders\UserRoleSeeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Maatwebsite\Excel\Facades\Excel;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
@@ -25,7 +27,8 @@ class UserTable extends DataTableComponent
         $this->setBulkActions([
             'import' => 'Import',
             'exportSelected' => 'Export',
-            'deleteSelected' => 'Удалить'
+            'deleteSelected' => 'Удалить',
+            'refCode' => 'Сгенерировать промокод',
         ]);
         $this->setPrimaryKey('id')
             ->setTableRowUrl(function($row) {
@@ -38,6 +41,23 @@ class UserTable extends DataTableComponent
         foreach ($users as $key => $value) {
             $user = User::find($value);
             $user?->delete();
+        }
+        $this->clearSelected();
+    }
+    public function refCode(): void
+    {
+        $users = $this->getSelected();
+        foreach ($users as $key => $value) {
+            $refCode = UserRefcode::where('user_id', $value)->first();
+            if (!$refCode) {
+                $code = strtoupper(Str::random(6));
+                if (!UserRefcode::where('refcode', $code)->first()) {
+                    UserRefcode::create([
+                        'user_id' => $value,
+                        'refcode' => $code
+                    ]);
+                }
+            }
         }
         $this->clearSelected();
     }
@@ -70,7 +90,8 @@ class UserTable extends DataTableComponent
         return [
             'import' => 'Импорт',
             'exportSelected' => 'Экспорт',
-            'deleteSelected' => 'Удалить'
+            'deleteSelected' => 'Удалить',
+            'refCode' => 'Сгенерировать промокод'
         ];
     }
 

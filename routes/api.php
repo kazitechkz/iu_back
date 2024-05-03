@@ -235,6 +235,9 @@ if(env("IS_API",true)){
             Route::get('get-surveys/{localeID}', [\App\Http\Controllers\Api\SurveyController::class, 'getSurveys']);
             Route::post('answer-surveys', [\App\Http\Controllers\Api\SurveyController::class, 'answerSurveys']);
 
+            //Cashes
+            Route::get('my-refs', [\App\Http\Controllers\Api\ReferralController::class, 'getMyReferrals']);
+
             Route::get('auth/logout', [ApiAuthController::class, 'logOut']);
         });
     });

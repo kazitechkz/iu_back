@@ -7,9 +7,11 @@ use App\DTOs\UserDTO;
 use App\Events\WalletEvent;
 use App\Exceptions\BadRequestException;
 use App\Jobs\SendWelcomeMessage;
+use App\Models\Referral;
 use App\Models\User;
 use App\Models\UserActivity;
 use App\Models\UserHub;
+use App\Models\UserRefcode;
 use App\Models\UserResetToken;
 use App\Traits\ResponseJSON;
 use Bavix\Wallet\Internal\Exceptions\ExceptionInterface;
@@ -169,6 +171,17 @@ class AuthService
         $input['email_code'] = $data['code'];
 //        $input['email_code'] = 1111;
         $user = User::add($input);
+        if (isset($input['refcode'])) {
+            $refCode = UserRefcode::firstWhere('refcode', $input['refcode']);
+            if ($refCode) {
+                Referral::create([
+                   'referrer_id' => $refCode->user_id,
+                   'referee_id' => $user->id
+                ]);
+            } else {
+                return response()->json(new ResponseJSON(status: false, message: "Не валидная реферальная ссылка!"), 400);
+            }
+        }
         MailService::sendMail('mails.verify-email', $data, $input['email'], 'Подтверждение электронной почты');
         UserHub::create([
             'user_id' => $user->id,

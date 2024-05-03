@@ -133,6 +133,7 @@ class PayboxService
                 );
             }
             if ($cashback) {
+                PromoService::setBonusForRef($user, $order->price, $order->promo);
                 $user->deposit($cash);
                 event(new WalletEvent($user->balanceInt));
             }
