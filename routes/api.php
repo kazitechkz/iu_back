@@ -237,6 +237,8 @@ if(env("IS_API",true)){
 
             //Cashes
             Route::get('my-refs', [\App\Http\Controllers\Api\ReferralController::class, 'getMyReferrals']);
+            Route::get('cash-histories', [\App\Http\Controllers\Api\CashController::class, 'getHistories']);
+            Route::post('request-withdraw', [\App\Http\Controllers\Api\CashController::class, 'requestWithdraw']);
 
             Route::get('auth/logout', [ApiAuthController::class, 'logOut']);
         });

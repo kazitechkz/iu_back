@@ -35,7 +35,11 @@ class PromoService
             if (Referral::firstWhere('referee_id', auth()->guard('api')->id())) {
                 throw new BadRequestException('К сожалению, вы уже воспользовались реферальным промокодом!');
             }
-            return 20;
+            return match ($time) {
+                3 => round(3990 - (3990*(20/100))),
+                6 => round(6990 - (6990*(20/100))),
+                default => round(1590 - (1590*(20/100))),
+            };
         } else {
             $promo = Promocode::where('code', $promoCode)->first();
             if ($promo && Carbon::create($promo->expired_at) > Carbon::now()) {

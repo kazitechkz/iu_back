@@ -21,6 +21,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  *
  * @property User $user
  * @property User $referral
+ * @property PayboxOrder $orders
  *
  * @package App\Models
  */
@@ -46,5 +47,10 @@ class Referral extends Model
     public function referral(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(User::class, 'referee_id');
+    }
+
+    public function orders(): HasMany
+    {
+        return $this->hasMany(PayboxOrder::class, 'user_id', 'referee_id');
     }
 }

@@ -168,4 +168,14 @@ class User extends Authenticatable implements Searchable,Wallet
             return false;
         }
     }
+
+    public function cash(): BelongsTo
+    {
+        return $this->belongsTo(Cash::class, 'id', 'user_id');
+    }
+
+    public function refCode(): BelongsTo
+    {
+        return $this->belongsTo(UserRefcode::class, 'id', 'user_id');
+    }
 }

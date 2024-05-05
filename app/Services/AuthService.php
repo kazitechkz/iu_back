@@ -7,6 +7,7 @@ use App\DTOs\UserDTO;
 use App\Events\WalletEvent;
 use App\Exceptions\BadRequestException;
 use App\Jobs\SendWelcomeMessage;
+use App\Models\Cash;
 use App\Models\Referral;
 use App\Models\User;
 use App\Models\UserActivity;
@@ -42,7 +43,9 @@ class AuthService
             'isKundelik' => $user->isKundelik(),
             'isGoogle' => $user->isGoogle(),
             'parent_phone' => $user->parent_phone,
-            'parent_name' => $user->parent_name
+            'parent_name' => $user->parent_name,
+            'cash' => $user->cash ? $user->cash->balance : 0,
+            'refcode' => $user->refCode ? $user->refCode->refcode : ''
         ]);
     }
 
@@ -187,6 +190,10 @@ class AuthService
             'user_id' => $user->id,
             'hub_id' => 2
         ]);
+        UserRefcode::create([
+            'user_id' => $user->id,
+            'refcode' => strtoupper(Str::random(6))
+        ]);
         if ($input['role'] == 'student') {
             $user->deposit(1000);
             event(new WalletEvent($user->balanceInt));
@@ -278,6 +285,10 @@ class AuthService
             'user_id' => $user->id,
             'hub_id' => 1
         ]);
+        UserRefcode::create([
+           'user_id' => $user->id,
+           'refcode' => strtoupper(Str::random(6))
+        ]);
         return $user;
     }
 
@@ -292,6 +303,10 @@ class AuthService
         UserHub::create([
             'user_id' => $user->id,
             'hub_id' => 3
+        ]);
+        UserRefcode::create([
+            'user_id' => $user->id,
+            'refcode' => strtoupper(Str::random(6))
         ]);
         return $user;
     }
