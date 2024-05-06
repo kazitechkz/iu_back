@@ -25,6 +25,7 @@ return [
     "fact" => "Facts",
     "survey" => "Surveys",
     "wallet" => "Wallet",
+    "requestWithdraw" => "Request Withdraw",
     "group" => "Group of questions",
     "appeal_type" => "Appeal question types",
     "page" => "Page",

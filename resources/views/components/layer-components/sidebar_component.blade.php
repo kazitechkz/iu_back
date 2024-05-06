@@ -88,6 +88,12 @@
                         :link="'wallet.index'"
                         :name="__('sidebar.wallet')"/>
                 @endcan
+                @can("wallet index")
+                    <x-shared.sub-sidebar-menu
+                        :icon="'fas fa-wallet'"
+                        :link="'request-withdrawals'"
+                        :name="__('sidebar.requestWithdraw')"/>
+                @endcan
                 @can("plan index")
                     <x-shared.sub-sidebar-menu
                         :icon="'fas fa-credit-card'"

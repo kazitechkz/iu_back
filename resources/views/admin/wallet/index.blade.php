@@ -6,15 +6,16 @@
         :breadcrumbs="[__('table.wallet_management')]"
         :routes="['wallet.index']"
     >
-        <a href="{{route("wallet.create")}}" class="btn btn-primary mt-2 mt-xl-0">
-            {{__('table.wallet_create_title')}}
-        </a>
+{{--        <a href="{{route("wallet.create")}}" class="btn btn-primary mt-2 mt-xl-0">--}}
+{{--            {{__('table.wallet_create_title')}}--}}
+{{--        </a>--}}
 
     </x-layer-components.content-navbar>
     <div class="col-lg-12 grid-margin stretch-card">
         <div class="card">
             <div class="card-body">
-                <livewire:wallet.wallet-table theme="tailwind" />
+                <livewire:cash.index-table theme="tailwind" />
+{{--                <livewire:wallet.wallet-table theme="tailwind" />--}}
             </div>
         </div>
     </div>
