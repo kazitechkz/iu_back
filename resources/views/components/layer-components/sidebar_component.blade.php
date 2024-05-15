@@ -136,6 +136,10 @@
                         :icon="'mdi mdi-comment-question-outline'"
                         :link="'appeal.index'"
                         :name="__('sidebar.appeal')"/>
+                    <x-shared.sub-sidebar-menu
+                        :icon="'mdi mdi-comment-question-outline'"
+                        :link="'content-appeals'"
+                        :name="__('sidebar.content_appeals')"/>
                 @endcan
                 @can("appeal-type index")
                     <x-shared.sub-sidebar-menu

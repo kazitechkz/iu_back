@@ -30,6 +30,7 @@ return [
     "appeal_type" => "Appeal question types",
     "page" => "Page",
     "appeal" => "Appeal",
+    "content_appeals" => "Content Appeals",
     "forum" => "Forum",
     'finance' => 'Finance',
     'support' => 'Support',

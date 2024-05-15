@@ -148,6 +148,7 @@ if(env("IS_WEB",true)) {
             Route::resource("appeal-type", AdminAppealTypeController::class);
             Route::resource("appeal", AdminAppealController::class);
             Route::any('search-appeal', [AdminAppealController::class, 'search'])->name('search-appeal');
+            Route::get('content-appeals', [AdminAppealController::class, 'contentAppeals'])->name('content-appeals');
             Route::resource("page", AdminPageController::class);
             Route::resource("forum", AdminForumController::class);
             Route::resource("discuss", AdminDiscussController::class);
