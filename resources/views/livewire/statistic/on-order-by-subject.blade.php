@@ -1,6 +1,6 @@
 <div>
     <input type="date" wire:model="date" class="form-control my-3">
-    <div class="table-responsive" wire:poll>
+    <div class="table-responsive">
         <table class="table table-bordered table-sm">
             <tbody>
             <tr>

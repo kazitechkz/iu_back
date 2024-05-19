@@ -32,7 +32,11 @@ class OnOrderBySubjects extends Component
     public function mount()
     {
         $this->subjects = Subject::all();
-
+        foreach ($this->subjects as $key => $value) {
+            $this->allOrders[$key]['id'] = $value->id;
+            $this->allOrders[$key]['title'] = $value->title_ru;
+            $this->allOrders[$key]['count'] = $this->getOrderCounts($value->id);
+        }
     }
     public function loadMore(): void
     {
@@ -84,31 +88,46 @@ class OnOrderBySubjects extends Component
 
     public function getInfo($subjectID, $date = null)
     {
-        if (!$date) {
-            $date = $this->date;
-        }
         $this->subjectId = $subjectID;
         $this->isInfoShow = true;
         $subject = Subject::with('image')->find($subjectID);
         $this->subjectTitle = $subject->title_ru;
         $this->subjectImg = $subject->image->url;
         $this->percentage = $this->getPercentage($subjectID);
-        $old_orders = PayboxOrder::where('status', 1)
-            ->whereBetween('created_at', [Carbon::create($date)->startOfDay(), Carbon::create($date)->endOfDay()])
-            ->whereJsonContains('subjects', intval($subjectID))
-            ->get();
-        $this->countOrders = $old_orders->count();
-        $this->priceOrders = $old_orders->sum('price');
-        $this->grantPrice = round(0.2 * $this->priceOrders);
-        $this->cash = round(($this->grantPrice*$this->percentage)/100);
-        $orders = PayboxOrder::with('user')
-            ->where('status', 1)
-            ->whereBetween('created_at', [Carbon::create($date)->startOfDay(), Carbon::create($date)->endOfDay()])
-            ->whereJsonContains('subjects', intval($subjectID))
-            ->latest()
-            ->take($this->perPage)
-            ->get();
-        $this->orders = $orders;
+        if ($date) {
+            $date = $this->date;
+            $old_orders = PayboxOrder::where('status', 1)
+                ->whereBetween('created_at', [Carbon::create($date)->startOfDay(), Carbon::create($date)->endOfDay()])
+                ->whereJsonContains('subjects', intval($subjectID))
+                ->get();
+            $this->countOrders = $old_orders->count();
+            $this->priceOrders = $old_orders->sum('price');
+            $this->grantPrice = round(0.2 * $this->priceOrders);
+            $this->cash = round(($this->grantPrice*$this->percentage)/100);
+            $orders = PayboxOrder::with('user')
+                ->where('status', 1)
+                ->whereBetween('created_at', [Carbon::create($date)->startOfDay(), Carbon::create($date)->endOfDay()])
+                ->whereJsonContains('subjects', intval($subjectID))
+                ->latest()
+                ->take($this->perPage)
+                ->get();
+            $this->orders = $orders;
+        } else {
+            $old_orders = PayboxOrder::where('status', 1)
+                ->whereJsonContains('subjects', intval($subjectID))
+                ->get();
+            $this->countOrders = $old_orders->count();
+            $this->priceOrders = $old_orders->sum('price');
+            $this->grantPrice = round(0.2 * $this->priceOrders);
+            $this->cash = round(($this->grantPrice*$this->percentage)/100);
+            $orders = PayboxOrder::with('user')
+                ->where('status', 1)
+                ->whereJsonContains('subjects', intval($subjectID))
+                ->latest()
+                ->take($this->perPage)
+                ->get();
+            $this->orders = $orders;
+        }
     }
 
     public function getOrderCounts($subjectID, $date = null): int
@@ -120,7 +139,6 @@ class OnOrderBySubjects extends Component
                 ->count();
         } else {
             $count = PayboxOrder::where('status', 1)
-                ->whereBetween('created_at', [Carbon::now()->startOfDay(), Carbon::now()->endOfDay()])
                 ->whereJsonContains('subjects', intval($subjectID))
                 ->count();
         }

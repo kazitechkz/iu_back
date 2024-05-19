@@ -101,6 +101,43 @@ class AdminDashboardService
         return $data;
     }
 
+    public function getSubjectsTableByDate(Request $request)
+    {
+        if (isset($request['from']) && isset($request['to'])) {
+            if ($request['from'] !== null && $request['to'] !== null) {
+                $from = Carbon::create($request['from'])->startOfDay();
+                $to = Carbon::create($request['to'])->endOfDay();
+                $data = $this->getSubjectsData($from, $to);
+            } else {
+                $data = $this->getSubjectsData();
+            }
+        } else {
+            $data = $this->getSubjectsData();
+        }
+        return $data;
+    }
+    protected function getSubjectsData($from = null, $to = null)
+    {
+        $data = [];
+        if ($from && $to) {
+            foreach (Subject::all() as $item) {
+                $count = PayboxOrder::whereBetween('created_at', [Carbon::create($from->toDateString())->startOfDay(), Carbon::create($to->toDateString())->endOfDay()])
+                    ->where('status', 1)
+                    ->whereJsonContains('subjects', $item->id)
+                    ->count();
+                $data[$item->title_ru] = $count;
+            }
+            return $data;
+        } else {
+            foreach (Subject::all() as $item) {
+                $count = PayboxOrder::where('status', 1)
+                    ->whereJsonContains('subjects', $item->id)
+                    ->count();
+                $data[$item->title_ru] = $count;
+            }
+        }
+        return $data;
+    }
     public function getOrdersByDate(Request $request): array
     {
         if (isset($request['from']) && isset($request['to'])) {
@@ -120,7 +157,6 @@ class AdminDashboardService
         }
         return $data;
     }
-
     protected function getOrderData($from, $to): array
     {
         $data = [
@@ -150,8 +186,7 @@ class AdminDashboardService
         }
         return $data;
     }
-
-    protected function getSubjectData($data, $id, $from, $to)
+    protected function getSubjectData($data, $id, $from, $to): array
     {
         $newSubject = PayboxOrder::whereBetween('created_at', [Carbon::create($from->toDateString())->startOfDay(), Carbon::create($to->toDateString())->endOfDay()])
             ->where('status', 1)

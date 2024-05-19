@@ -29,7 +29,22 @@
         </div>
         <div class="container p-2 mx-auto">
             <div class="bg-white rounded shadow">
-                {!! $subjectChart->container() !!}
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">Предмет</th>
+                        <th scope="col">Количество покупок</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach($subjectData as $key => $value)
+                        <tr>
+                            <th scope="row">{{$key}}</th>
+                            <td>{{$value}}</td>
+                        </tr>
+                    @endforeach
+                    </tbody>
+                </table>
             </div>
         </div>
 
@@ -41,7 +56,5 @@
 @endsection
 @push('js')
     <script src="{{ $chart->cdn() }}"></script>
-    <script src="{{ $subjectChart->cdn() }}"></script>
     {{ $chart->script() }}
-    {{ $subjectChart->script() }}
 @endpush

@@ -19,17 +19,17 @@ class DashboardController extends Controller
         $this->adminDashboardService = $adminDashboardService;
     }
 
-    public function index(MonthlyUsersChart $chart, MonthlySubjectsChart $subjectsChart, Request $request)
+    public function index(MonthlyUsersChart $chart, Request $request)
     {
         $data = $this->adminDashboardService->getDataByDate($request);
-        $subjectData = $this->adminDashboardService->getOrdersByDate($request);
-        return view('admin.dashboard', ['chart' => $chart->build($data), 'subjectChart' => $subjectsChart->build($subjectData)]);
+        $subjectData = $this->adminDashboardService->getSubjectsTableByDate($request);
+        return view('admin.dashboard', ['chart' => $chart->build($data), 'subjectData' => $subjectData]);
     }
 
-    public function filterByDate(MonthlyUsersChart $chart, MonthlySubjectsChart $subjectsChart, Request $request)
+    public function filterByDate(MonthlyUsersChart $chart, Request $request)
     {
         $data = $this->adminDashboardService->getDataByDate($request);
-        $subjectData = $this->adminDashboardService->getOrdersByDate($request);
-        return view('admin.dashboard', ['chart' => $chart->build($data), 'subjectChart' => $subjectsChart->build($subjectData)]);
+        $subjectData = $this->adminDashboardService->getSubjectsTableByDate($request);
+        return view('admin.dashboard', ['chart' => $chart->build($data), 'subjectData' => $subjectData]);
     }
 }
