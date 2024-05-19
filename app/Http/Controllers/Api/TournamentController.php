@@ -49,10 +49,10 @@ class TournamentController extends Controller
             where(["status"=>1])
 //                ->where("start_at","<",Carbon::now())
 //                ->where("end_at",">",Carbon::now())
-                ->with(["locales","subject","file"])
+                ->with(["locales","subject.image","file"])
                 ->latest()
                 ->get();
-            $participated_tournaments = Tournament::whereIn("id",$tournament_ids)->with(["locales","subject","file"])->get();
+            $participated_tournaments = Tournament::whereIn("id",$tournament_ids)->with(["locales","subject.image","file"])->get();
             return response()->json(new ResponseJSON(status: true,data: ["open"=>$open_tournaments,"participated"=>$participated_tournaments,"tournament_ids"=>$tournament_ids]),200);
         }
         catch (\Exception $exception) {
@@ -67,7 +67,7 @@ class TournamentController extends Controller
             $user = auth()->guard("api")->user();
             $tournament = Tournament::with([
                 "locales",
-                "subject",
+                "subject.image",
                 "file",
                 "sub_tournaments.tournament_step"
             ])->firstWhere(["id" => $id]);
@@ -110,7 +110,7 @@ class TournamentController extends Controller
                 return response()->json(new ResponseJSON(status: false,message: "Этапа не существует"),404);
             }
             $sub_tournament_ids = SubTournamentParticipant::where(["user_id"=>$user->id])->pluck("sub_tournament_id")->toArray();
-            $tournament = Tournament::with(["locales","subject","file"])->firstWhere(["id"=>$sub_tournament->tournament_id]);
+            $tournament = Tournament::with(["locales","subject.image","file"])->firstWhere(["id"=>$sub_tournament->tournament_id]);
             $my_result = SubTournamentResult::where(["sub_tournament_id" => $sub_tournament->id,"user_id" => $user->id])->with(["user"])->first();
             $data = ["tournament"=>$tournament,"sub_tournament_ids"=>$sub_tournament_ids,"sub_tournament"=>$sub_tournament,"my_result"=>$my_result];
             return response()->json(new ResponseJSON(status: true,data: $data),200);
@@ -232,7 +232,7 @@ class TournamentController extends Controller
 
     public function tournamentList(){
         try{
-            $tournaments = Tournament::where(["status"=>1])->with(["locales","subject","file"])->latest()->paginate(12);
+            $tournaments = Tournament::where(["status"=>1])->with(["locales","subject.image","file"])->latest()->paginate(12);
             return response()->json(new ResponseJSON(status: true,data: $tournaments),200);
         }
         catch (\Exception $exception) {
