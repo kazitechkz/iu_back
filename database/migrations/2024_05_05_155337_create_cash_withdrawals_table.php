@@ -15,6 +15,7 @@ return new class extends Migration
             $table->bigIncrements('id');
             $table->foreignId('user_id')->references('id')->on('users')->cascadeOnDelete();
             $table->foreignId('cash_id')->references('id')->on('cashes')->cascadeOnDelete();
+            $table->integer('balance');
             $table->boolean('status')->default(false);
             $table->timestamps();
         });

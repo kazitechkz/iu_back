@@ -44,10 +44,10 @@ class UserController extends Controller
             $user->name = $request['name'];
             $user->phone = $request['phone'];
             if ($request['password']) {
-                $user->password = bcrypt($request['name']);
+                $user->password = bcrypt($request['password']);
             }
             if ($request['date']) {
-                $user->birth_date = Carbon::create($request['date']);
+                $user->birth_date = Carbon::create($request['date'])->endOfDay();
             }
             if ($request['gender']) {
                 $user->gender_id = $request['gender'];

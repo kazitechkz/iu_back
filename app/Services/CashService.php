@@ -27,7 +27,8 @@ class CashService
         CashWithdrawal::create([
             'user_id' => $user->id,
             'cash_id' => $user->cash->id,
-            'status' => false
+            'status' => false,
+            'balance' => $user->cash->balance
         ]);
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\ContentAppeal;
 use App\Models\SubStep;
 use App\Models\SubStepContent;
 use App\Models\SubStepResult;
@@ -37,12 +38,12 @@ class SubStepController extends Controller
                     $resKk = $subStep->own_result->firstWhere('locale_id', 1);
                     $resRu = $subStep->own_result->firstWhere('locale_id', 2);
                     if ($resKk) {
-                        $subSteps[$key]['progress_kk'] = $resKk->user_point;
+                        $subSteps[$key]['progress_kk'] = intval($resKk->user_point);
                     } else {
                         $subSteps[$key]['progress_kk'] = 0;
                     }
                     if ($resRu) {
-                        $subSteps[$key]['progress_ru'] = $resRu->user_point;
+                        $subSteps[$key]['progress_ru'] = intval($resRu->user_point);
                     } else {
                         $subSteps[$key]['progress_ru'] = 0;
                     }
@@ -56,7 +57,6 @@ class SubStepController extends Controller
             return ResponseService::DefineException($exception);
         }
     }
-
     public function getSubStepById($id)
     {
         try {
@@ -94,7 +94,6 @@ class SubStepController extends Controller
             return ResponseService::DefineException($exception);
         }
     }
-
     public function checkSubStepResultByUser(Request $request)
     {
         try {
@@ -112,12 +111,26 @@ class SubStepController extends Controller
             return ResponseService::DefineException($exception);
         }
     }
-
-
-
-
-
-
-
-
+    public function createContentAppeal(Request $request)
+    {
+        try {
+            $this->validate($request, [
+                'content_id' => 'required'
+            ]);
+            $userID = auth()->guard('api')->id();
+            $contentAppeal = ContentAppeal::firstWhere(['content_id' => $request['content_id'], 'user_id' => $userID]);
+            if ($contentAppeal) {
+                return  response()->json(new ResponseJSON(status: false, data: false));
+            } else {
+                ContentAppeal::create([
+                    'content_id' => $request['content_id'],
+                    'user_id' => $userID,
+                    'status' => false
+                ]);
+                return  response()->json(new ResponseJSON(status: true, data: true));
+            }
+        } catch (\Exception $exception) {
+            return ResponseService::DefineException($exception);
+        }
+    }
 }

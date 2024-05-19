@@ -25,7 +25,22 @@ class WalletController extends Controller
             toastr()->error($exception->getMessage(),"Error");
             return redirect()->route("home");
         }
-
+    }
+    public function requestWithdrawals()
+    {
+        try{
+            if(auth()->user()->can("wallet index") ){
+                return view("admin.wallet.withdraw");
+            }
+            else{
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        }
+        catch (\Exception $exception){
+            toastr()->error($exception->getMessage(),"Error");
+            return redirect()->route("home");
+        }
     }
 
     /**

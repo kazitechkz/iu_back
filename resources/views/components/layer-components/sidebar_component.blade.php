@@ -88,6 +88,12 @@
                         :link="'wallet.index'"
                         :name="__('sidebar.wallet')"/>
                 @endcan
+                @can("wallet index")
+                    <x-shared.sub-sidebar-menu
+                        :icon="'fas fa-wallet'"
+                        :link="'request-withdrawals'"
+                        :name="__('sidebar.requestWithdraw')"/>
+                @endcan
                 @can("plan index")
                     <x-shared.sub-sidebar-menu
                         :icon="'fas fa-credit-card'"
@@ -130,6 +136,10 @@
                         :icon="'mdi mdi-comment-question-outline'"
                         :link="'appeal.index'"
                         :name="__('sidebar.appeal')"/>
+                    <x-shared.sub-sidebar-menu
+                        :icon="'mdi mdi-comment-question-outline'"
+                        :link="'content-appeals'"
+                        :name="__('sidebar.content_appeals')"/>
                 @endcan
                 @can("appeal-type index")
                     <x-shared.sub-sidebar-menu

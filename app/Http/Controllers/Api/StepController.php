@@ -64,12 +64,12 @@ class StepController extends Controller
                     $resKk = $step->own_result->firstWhere('locale_id', 1);
                     $resRu = $step->own_result->firstWhere('locale_id', 2);
                     if ($resKk) {
-                        $steps[$key]['progress_kk'] = $resKk->user_point;
+                        $steps[$key]['progress_kk'] = intval($resKk->user_point);
                     } else {
                         $steps[$key]['progress_kk'] = 0;
                     }
                     if ($resRu) {
-                        $steps[$key]['progress_ru'] = $resRu->user_point;
+                        $steps[$key]['progress_ru'] = intval($resRu->user_point);
                     } else {
                         $steps[$key]['progress_ru'] = 0;
                     }

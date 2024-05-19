@@ -35,6 +35,20 @@ class AppealController extends Controller
         }
     }
 
+    public function contentAppeals()
+    {
+        try {
+            if (auth()->user()->can("appeal index")) {
+                return view('admin.appeal.content');
+            } else {
+                toastr()->warning(__("message.not_allowed"));
+                return redirect()->route("home");
+            }
+        } catch (\Exception $exception) {
+            toastr()->error($exception->getMessage(), "Error");
+            return redirect()->route("home");
+        }
+    }
     public function search(Request $request)
     {
         try {

@@ -136,6 +136,7 @@ if(env("IS_WEB",true)) {
             Route::resource("news", AdminNewsController::class);
             Route::resource("fact", AdminFactController::class);
             Route::resource("wallet", AdminWalletController::class);
+            Route::get("request-withdrawals", [AdminWalletController::class, 'requestWithdrawals'])->name('request-withdrawals');
             Route::resource("faq", AdminFaqController::class);
             Route::resource("questions", AdminQuestionController::class);
             Route::get("questions-import", [AdminQuestionController::class, 'importQuestions'])->name('import-questions');
@@ -147,6 +148,7 @@ if(env("IS_WEB",true)) {
             Route::resource("appeal-type", AdminAppealTypeController::class);
             Route::resource("appeal", AdminAppealController::class);
             Route::any('search-appeal', [AdminAppealController::class, 'search'])->name('search-appeal');
+            Route::get('content-appeals', [AdminAppealController::class, 'contentAppeals'])->name('content-appeals');
             Route::resource("page", AdminPageController::class);
             Route::resource("forum", AdminForumController::class);
             Route::resource("discuss", AdminDiscussController::class);
