@@ -314,7 +314,7 @@ class PayboxService
         unset($request[0], $request[1]);
         $curl = curl_init();
         curl_setopt_array($curl, array(
-            CURLOPT_URL => "https://api.freedompay.money/get_status3.php",// your preferred url
+            CURLOPT_URL => "https://api.freedompay.kz/get_status3.php",// your preferred url
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => "",
             CURLOPT_MAXREDIRS => 10,
@@ -381,7 +381,7 @@ class PayboxService
         $request['pg_sig'] = md5(implode(';', $requestForSignature)); // Полученная подпись
         $curl = curl_init();
         curl_setopt_array($curl, array(
-            CURLOPT_URL => "https://api.freedompay.money/init_payment.php",// your preferred url
+            CURLOPT_URL => "https://api.freedompay.kz/init_payment.php",// your preferred url
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => "",
             CURLOPT_MAXREDIRS => 10,
