@@ -41,7 +41,7 @@
     </div>
 
     @if($isInfoShow)
-        <div class="py-5" wire:poll>
+        <div class="py-5">
             <div class="py-3">
                 <div class="w-full lg:flex">
                     <div class="h-48 lg:h-auto lg:w-48 flex-none bg-cover rounded-t lg:rounded-t-none lg:rounded-l text-center overflow-hidden" style="background-image: url('https://iunion.s3.ap-south-1.amazonaws.com/{{$subjectImg}}')" title="Woman holding a mug">

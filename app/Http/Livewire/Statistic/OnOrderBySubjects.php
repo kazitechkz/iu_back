@@ -82,11 +82,11 @@ class OnOrderBySubjects extends Component
         }
         arsort($this->allOrders);
         if ($this->subjectId) {
-            $this->getInfo($this->subjectId, $this->date);
+            $this->getInfo($this->subjectId);
         }
     }
 
-    public function getInfo($subjectID, $date = null)
+    public function getInfo($subjectID)
     {
         $this->subjectId = $subjectID;
         $this->isInfoShow = true;
@@ -94,7 +94,7 @@ class OnOrderBySubjects extends Component
         $this->subjectTitle = $subject->title_ru;
         $this->subjectImg = $subject->image->url;
         $this->percentage = $this->getPercentage($subjectID);
-        if ($date) {
+        if ($this->date) {
             $date = $this->date;
             $old_orders = PayboxOrder::where('status', 1)
                 ->whereBetween('created_at', [Carbon::create($date)->startOfDay(), Carbon::create($date)->endOfDay()])
@@ -111,7 +111,6 @@ class OnOrderBySubjects extends Component
                 ->latest()
                 ->take($this->perPage)
                 ->get();
-            $this->orders = $orders;
         } else {
             $old_orders = PayboxOrder::where('status', 1)
                 ->whereJsonContains('subjects', intval($subjectID))
@@ -126,8 +125,8 @@ class OnOrderBySubjects extends Component
                 ->latest()
                 ->take($this->perPage)
                 ->get();
-            $this->orders = $orders;
         }
+        $this->orders = $orders;
     }
 
     public function getOrderCounts($subjectID, $date = null): int
