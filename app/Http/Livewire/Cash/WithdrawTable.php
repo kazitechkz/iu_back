@@ -52,6 +52,8 @@ class WithdrawTable extends DataTableComponent
                 ->sortable(),
             Column::make("ID пользователя", "user_id")
                 ->sortable()->searchable(),
+            Column::make("Номер", "user.phone")
+                ->sortable()->searchable(),
             Column::make("Имя", "user.name")
                 ->sortable()->searchable(),
             Column::make("Сумма вывода", "balance")->format(
