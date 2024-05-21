@@ -241,6 +241,9 @@ if(env("IS_API",true)){
             Route::get('cash-histories', [\App\Http\Controllers\Api\CashController::class, 'getHistories']);
             Route::post('request-withdraw', [\App\Http\Controllers\Api\CashController::class, 'requestWithdraw']);
 
+            //UTMs
+            Route::post('utm', [\App\Http\Controllers\Api\UtmController::class, 'saveUtm']);
+
             Route::get('auth/logout', [ApiAuthController::class, 'logOut']);
         });
     });

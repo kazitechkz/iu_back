@@ -25,6 +25,8 @@ return [
     "faq" => "FAQ",
     "fact" => "Фактілер",
     "survey" => "Сұрақнама",
+    "url_pages" => "URLs",
+    "utm" => "UTM",
     "wallet" => "Әмиян",
     "requestWithdraw" => "Ақша шығаруға өтінімдер",
     "group" => "Сұрақтар тобы",

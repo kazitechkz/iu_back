@@ -24,6 +24,8 @@ return [
     "faq" => "FAQ",
     "fact" => "Facts",
     "survey" => "Surveys",
+    "url_pages" => "URLs",
+    "utm" => "UTM",
     "wallet" => "Wallet",
     "requestWithdraw" => "Request Withdraw",
     "group" => "Group of questions",

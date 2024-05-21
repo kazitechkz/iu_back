@@ -236,6 +236,12 @@ if(env("IS_WEB",true)) {
             Route::resource('survey', AdminSurveyController::class);
             Route::resource('survey-question', AdminSurveyQuestionController::class);
             Route::get('survey-question-filter/{surveyID}/{localeID}', [AdminSurveyQuestionController::class, 'filterByLocale'])->name('survey-question-filter.id.locale-id');
+
+            //UTMS
+            Route::resource('url-pages', \App\Http\Controllers\Admin\UrlPageController::class);
+            Route::get('url-pages-import', [\App\Http\Controllers\Admin\UrlPageController::class, 'getImport'])->name('url-page.get-import');
+            Route::post('url-pages-import', [\App\Http\Controllers\Admin\UrlPageController::class, 'postImport'])->name('url-page.post-import');
+            Route::resource('utms', \App\Http\Controllers\Admin\UtmController::class);
         });
     });
     Route::get('import-db', [Testing::class, 'importDb']);

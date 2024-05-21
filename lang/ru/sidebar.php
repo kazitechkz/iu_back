@@ -24,6 +24,8 @@ return [
     "faq" => "FAQ",
     "fact" => "Факты",
     "survey" => "Опросники",
+    "url_pages" => "URL адреса",
+    "utm" => "UTM метки",
     "wallet" => "Кошелек",
     "requestWithdraw" => "Заявки на вывод",
     "group" => "Группа вопросов",

@@ -508,5 +508,18 @@
                     :name="__('sidebar.survey')"/>
             </x-shared.sidebar-menu>
         @endcan
+        @can("utm management")
+            <x-shared.sidebar-menu :element-id="'utm'" :name="__('sidebar.utm')"
+                                   :icon="'fa-regular fa-flag'">
+                <x-shared.sub-sidebar-menu
+                    :icon="'fa-regular fa-at'"
+                    :link="'url-pages.index'"
+                    :name="__('sidebar.url_pages')"/>
+                <x-shared.sub-sidebar-menu
+                    :icon="'fa-regular fa-bar-chart'"
+                    :link="'utms.index'"
+                    :name="__('sidebar.statistic')"/>
+            </x-shared.sidebar-menu>
+        @endcan
     </ul>
 </nav>
