@@ -85,6 +85,7 @@ class AuthService
             $data = ['code' => $tokenCode];
             MailService::sendMail('mails.verify-email', $data, $request['email'], 'Подтверждение электронной почты');
             $data = AuthService::initialAuthDTO($user);
+            return response()->json(new ResponseJSON(status: false, message: "Подтвердте почту", data: $data->data));
         } else {
             $user->tokens()->delete();
             $data = AuthService::initialAuthDTO($user, true);
@@ -97,8 +98,8 @@ class AuthService
                 ]);
             }
             BonusService::everydayBonus($request);
+            return response()->json(new ResponseJSON(status: true, message: "Вы успешно авторизовались", data: $data->data));
         }
-        return response()->json(new ResponseJSON(status: true, message: "Вы успешно авторизовались", data: $data->data));
     }
 
     public function registerUserFromKundelik($request)
