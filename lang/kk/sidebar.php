@@ -27,6 +27,7 @@ return [
     "survey" => "Сұрақнама",
     "url_pages" => "URLs",
     "utm" => "UTM",
+    "iucoins" => "iuCoins",
     "wallet" => "Әмиян",
     "requestWithdraw" => "Ақша шығаруға өтінімдер",
     "group" => "Сұрақтар тобы",

@@ -521,5 +521,14 @@
                     :name="__('sidebar.statistic')"/>
             </x-shared.sidebar-menu>
         @endcan
+        @can("iucoins management")
+            <x-shared.sidebar-menu :element-id="'iucoins'" :name="__('sidebar.iucoins')"
+                                   :icon="'fa-regular fa-flag'">
+                <x-shared.sub-sidebar-menu
+                    :icon="'fa-solid fa-coins'"
+                    :link="'get-iu-coins'"
+                    :name="__('sidebar.iucoins')"/>
+            </x-shared.sidebar-menu>
+        @endcan
     </ul>
 </nav>

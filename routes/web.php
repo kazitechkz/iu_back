@@ -136,6 +136,8 @@ if(env("IS_WEB",true)) {
             Route::resource("news", AdminNewsController::class);
             Route::resource("fact", AdminFactController::class);
             Route::resource("wallet", AdminWalletController::class);
+            Route::get("wallet-iu", [AdminWalletController::class, 'getIuCoins'])->name('get-iu-coins');
+            Route::post("wallet-iu", [AdminWalletController::class, 'postIuCoins'])->name('post-iu-coins');
             Route::get("request-withdrawals", [AdminWalletController::class, 'requestWithdrawals'])->name('request-withdrawals');
             Route::resource("faq", AdminFaqController::class);
             Route::resource("questions", AdminQuestionController::class);

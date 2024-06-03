@@ -8,6 +8,7 @@ use App\Models\User;
 use Bavix\Wallet\Models\Wallet;
 use Maatwebsite\Excel\Facades\Excel;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
+use Rappasoft\LaravelLivewireTables\Exceptions\DataTableConfigurationException;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use Zorb\Promocodes\Models\Promocode;
 
@@ -15,59 +16,36 @@ class WalletTable extends DataTableComponent
 {
     protected $model = Wallet::class;
 
+    /**
+     * @throws DataTableConfigurationException
+     */
     public function configure(): void
     {
+        $this->setDefaultSort('balance', 'desc');
         $this->setPrimaryKey('id');
         $this->setPerPageAccepted([20,50,100]);
         $this->setPerPage(20);
-        $this->setBulkActions([
-            'exportSelected' => 'Export',
-            'deleteSelected' => 'Удалить'
-        ]);
         $this->setPrimaryKey('id')
             ->setTableRowUrl(function($row) {
                 return route('wallet.edit', $row);
             });
     }
-
-    public function bulkActions(): array
-    {
-        return [
-            'exportSelected' => 'Export',
-            'deleteSelected' => 'Удалить'
-        ];
-    }
-
-    public function deleteSelected()
-    {
-        $model = $this->getSelected();
-        foreach ($model as $key => $value) {
-            $entity = Wallet::find($value);
-            $entity?->delete();
-        }
-        $this->clearSelected();
-    }
-
-    public function exportSelected(): \Symfony\Component\HttpFoundation\BinaryFileResponse
-    {
-        $model = $this->getSelected();
-        $this->clearSelected();
-        return Excel::download(new WalletExport($model), 'wallets.xlsx');
-    }
     public function columns(): array
     {
         return [
             Column::make("Id", "id")
-                ->sortable(),
+                ->sortable()->searchable(),
+            Column::make("Имя")
+                ->label(fn($v) => $this->getUserName($v['id']))
+                ->sortable()->searchable(),
             Column::make("Balance")
                 ->label(fn($v) => $this->getUserBalance($v['id']))
-                ->sortable(),
+                ->sortable()->searchable(),
             Column::make("Email")
                 ->label(fn($v) => $this->getUserEmail($v['id']))
                 ->searchable(),
         ];
     }
-
     public function getUserBalance($walletID) {
         $wallet = Wallet::with('holder')->find($walletID);
         return $wallet->holder ? $wallet->holder->balanceInt : '';
@@ -75,6 +53,10 @@ class WalletTable extends DataTableComponent
     public function getUserEmail($walletID) {
         $wallet = Wallet::with('holder')->find($walletID);
         return $wallet->holder ? $wallet->holder->email : '';
+    }
+    public function getUserName($walletID) {
+        $wallet = Wallet::with('holder')->find($walletID);
+        return $wallet->holder ? $wallet->holder->name : '';
     }
     protected function results(): array
     {

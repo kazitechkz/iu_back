@@ -26,6 +26,7 @@ return [
     "survey" => "Surveys",
     "url_pages" => "URLs",
     "utm" => "UTM",
+    "iucoins" => "iuCoins",
     "wallet" => "Wallet",
     "requestWithdraw" => "Request Withdraw",
     "group" => "Group of questions",

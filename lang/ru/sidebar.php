@@ -26,6 +26,7 @@ return [
     "survey" => "Опросники",
     "url_pages" => "URL адреса",
     "utm" => "UTM метки",
+    "iucoins" => "iuCoins",
     "wallet" => "Кошелек",
     "requestWithdraw" => "Заявки на вывод",
     "group" => "Группа вопросов",
