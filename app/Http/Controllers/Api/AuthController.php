@@ -53,6 +53,7 @@ class AuthController extends Controller
             }
             $user = Http::withoutVerifying()
                 ->withHeader('Access-token', $request['token'])
+                ->timeout(120)
                 ->get('https://api.kundelik.kz/v2/users/me');
             $body = json_decode($user->body(),1);
             return $this->authService->registerUserFromKundelik($body);
