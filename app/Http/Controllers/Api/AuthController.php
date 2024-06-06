@@ -55,7 +55,17 @@ class AuthController extends Controller
                 ->withHeader('Access-token', $request['token'])
                 ->timeout(120)
                 ->get('https://api.kundelik.kz/v2/users/me');
-            $body = json_decode($user->body(),1);
+
+            if ($user->failed()) {
+                return response()->json(['error' => 'Failed to connect to Kundelik API'], 500);
+            }
+
+            $body = json_decode($user->body(), true);
+
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                return response()->json(['error' => 'Failed to decode JSON response'], 500);
+            }
+
             return $this->authService->registerUserFromKundelik($body);
         } catch (\Exception $exception) {
             return ResponseService::DefineException($exception);
