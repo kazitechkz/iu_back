@@ -48,6 +48,14 @@ class Subject extends Model
     {
         return $this->questions()->where('locale_id', 1);
     }
+    public function questions_kk_sorted()
+    {
+        return $this->questions()->where('locale_id', 1)->whereNotNull('sub_category_id');
+    }
+    public function questions_ru_sorted()
+    {
+        return $this->questions()->where('locale_id', 2)->whereNotNull('sub_category_id');
+    }
     public function questions_ru()
     {
         return $this->questions()->where('locale_id', 2);

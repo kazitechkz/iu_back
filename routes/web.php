@@ -191,6 +191,7 @@ if(env("IS_WEB",true)) {
             //Notification
             Route::resource("notification", AdminNotificationController::class);
             //Statistics
+            Route::get('stats-on-tests', [AdminStatisticController::class, 'statsOnTests'])->name('stats-on-tests');
             Route::get('stats-on-questions', [AdminStatisticController::class, 'statsOnQuestions'])->name('stats-on-questions');
             Route::get('stats-on-subjects', [AdminStatisticController::class, 'statsOnSubjects'])->name('stats-on-subjects');
             Route::get('stats-on-types', [AdminStatisticController::class, 'statsOnTypes'])->name('stats-on-types');

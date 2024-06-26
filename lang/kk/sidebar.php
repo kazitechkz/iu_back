@@ -63,6 +63,7 @@ return [
     "participant-rating" => "Оқушы рейтингі",
     "lesson-complaint" => "Шағымдар",
     "stats-on-questions" => "Сұрақтар бойынша",
+    "stats-on-tests" => "Тесттер бойынша",
     "stats-on-subjects" => "Пәндер бойынша",
     "stats-on-types" => "Типтер бойынша",
     "stats-on-orders" => "Жазылымдар бойынша статистика",

@@ -61,6 +61,7 @@ return [
     "participant-rating" => "Рейтинг ученика",
     "lesson-complaint" => "Жалобы",
     "stats-on-questions" => "Статистика по вопросам",
+    "stats-on-tests" => "Статистика по тестам",
     "stats-on-subjects" => "Статистика по предметам",
     "stats-on-types" => "Статистика по типам",
     "stats-on-orders" => "Статистика по подпискам",

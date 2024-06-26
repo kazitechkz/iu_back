@@ -14,6 +14,17 @@ use Illuminate\Support\Facades\DB;
 
 class StatisticController extends Controller
 {
+    public function statsOnTests()
+    {
+        try {
+            if (auth()->user()->can("stats-by-user index")) {
+                return view('admin.statistics.on-tests');
+            }
+        } catch (\Exception $exception) {
+            toastr()->error($exception->getMessage(), "Error");
+            return redirect()->route("home");
+        }
+    }
     public function statsOnQuestions()
     {
         try {
