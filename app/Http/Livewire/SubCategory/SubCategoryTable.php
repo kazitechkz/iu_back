@@ -2,9 +2,11 @@
 
 namespace App\Http\Livewire\SubCategory;
 
+use App\Exports\SubCategoriesExport;
 use App\Helpers\StrHelper;
 use App\Models\File;
 use App\Models\Subject;
+use Maatwebsite\Excel\Facades\Excel;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Exceptions\DataTableConfigurationException;
 use Rappasoft\LaravelLivewireTables\Views\Column;
@@ -24,7 +26,8 @@ class SubCategoryTable extends DataTableComponent
         $this->setPerPageAccepted([20,50,100]);
         $this->setPerPage(20);
         $this->setBulkActions([
-            'deleteSelected' => 'Удалить'
+            'deleteSelected' => 'Удалить',
+            'exportSelected' => 'Export'
         ]);
         $this->setPrimaryKey('id')
             ->setTableRowUrl(function($row) {
@@ -35,7 +38,8 @@ class SubCategoryTable extends DataTableComponent
     public function bulkActions(): array
     {
         return [
-            'deleteSelected' => 'Удалить'
+            'deleteSelected' => 'Удалить',
+            'exportSelected' => 'Export'
         ];
     }
 
@@ -60,6 +64,13 @@ class SubCategoryTable extends DataTableComponent
             $cat?->delete();
         }
         $this->clearSelected();
+    }
+
+    public function exportSelected(): \Symfony\Component\HttpFoundation\BinaryFileResponse
+    {
+        $subCategories = $this->getSelected();
+        $this->clearSelected();
+        return Excel::download(new SubCategoriesExport($subCategories), 'subCategories.xlsx');
     }
 
     public function columns(): array

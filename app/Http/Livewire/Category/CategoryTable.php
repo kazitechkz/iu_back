@@ -2,8 +2,10 @@
 
 namespace App\Http\Livewire\Category;
 
+use App\Exports\CategoriesExport;
 use App\Helpers\StrHelper;
 use App\Models\Subject;
+use Maatwebsite\Excel\Facades\Excel;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Exceptions\DataTableConfigurationException;
 use Rappasoft\LaravelLivewireTables\Views\Column;
@@ -23,7 +25,8 @@ class CategoryTable extends DataTableComponent
         $this->setPerPageAccepted([20,50,100]);
         $this->setPerPage(20);
         $this->setBulkActions([
-            'deleteSelected' => 'Удалить'
+            'deleteSelected' => 'Удалить',
+            'exportSelected' => 'Export',
         ]);
         $this->setPrimaryKey('id')
             ->setTableRowUrl(function($row) {
@@ -45,11 +48,12 @@ class CategoryTable extends DataTableComponent
     public function bulkActions(): array
     {
         return [
-            'deleteSelected' => 'Удалить'
+            'deleteSelected' => 'Удалить',
+            'exportSelected' => 'Export'
         ];
     }
 
-    public function deleteSelected()
+    public function deleteSelected(): void
     {
         $cats = $this->getSelected();
         foreach ($cats as $key => $value) {
@@ -60,6 +64,13 @@ class CategoryTable extends DataTableComponent
             $cat?->delete();
         }
         $this->clearSelected();
+    }
+
+    public function exportSelected(): \Symfony\Component\HttpFoundation\BinaryFileResponse
+    {
+        $categories = $this->getSelected();
+        $this->clearSelected();
+        return Excel::download(new CategoriesExport($categories), 'categories.xlsx');
     }
 
     public function columns(): array
