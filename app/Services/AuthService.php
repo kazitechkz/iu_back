@@ -166,6 +166,9 @@ class AuthService
         $input["password"] = bcrypt($input["password"]);
         $input["email"] = strtolower($input["email"]);
         $input['username'] = $input['email'];
+        if(!isset($input["role"])){
+            $input["role"] = "student";
+        }
         if ($input['role'] == 'teacher') {
             $input['role'] = 'teacher';
         } else {
@@ -186,7 +189,7 @@ class AuthService
                 return response()->json(new ResponseJSON(status: false, message: "Не валидная реферальная ссылка!"), 400);
             }
         }
-        MailService::sendMail('mails.verify-email', $data, $input['email'], 'Подтверждение электронной почты');
+        //MailService::sendMail('mails.verify-email', $data, $input['email'], 'Подтверждение электронной почты');
         UserHub::create([
             'user_id' => $user->id,
             'hub_id' => 2
@@ -214,7 +217,7 @@ class AuthService
         if ($user->email_code == $request['code']) {
             $user->email_verified_at = Carbon::now();
             $user->save();
-            SendWelcomeMessage::dispatch($user->phone);
+//            SendWelcomeMessage::dispatch($user->phone);
             return true;
         } else {
             return false;
@@ -229,7 +232,7 @@ class AuthService
         }
         $token = random_int(100000, 999999);
         $data = ['data' => ['name' => $user->name, 'code' => $token]];
-        MailService::sendMail('mails.reset-password', $data, $request['email'], 'Восстановление пароля');
+        //MailService::sendMail('mails.reset-password', $data, $request['email'], 'Восстановление пароля');
         $userToken = UserResetToken::where(["user_id" => $user->id])->first();
         if ($userToken) {
             $userToken->is_used = false;

@@ -75,7 +75,7 @@ class CareerQuizService
             $results[$question->feature_id] += $givenAnswers[$question->id];
         }
         foreach ($featureGroups as $key => $value) {
-            $percentages[$key] = round($results[$key] / ($featureGroups[$key] * $max_point) * 100, 2);
+            $percentages[$key] = round($results[$key] / (array_sum($results)) * 100, 2);
         }
         $attempt_raw = [
             "user_id" => $user->id,
@@ -108,6 +108,7 @@ class CareerQuizService
                 $results[$careerQuizAnswers[$answerId]] += $rating;
             }
         }
+        $max_point = array_sum($results);
         $attempt_raw = [
             "user_id" => $user->id,
             "quiz_id" => $input["quiz_id"],
@@ -132,10 +133,10 @@ class CareerQuizService
         $max_point_result = [];
         foreach ($max_point_raw as $answer_point){
             if(isset($max_point_result[$answer_point->feature_id])){
-                $max_point_result[$answer_point->feature_id] += 1;
+                $max_point_result[$answer_point->feature_id] += $answer_point->value;
             }
             else{
-                $max_point_result[$answer_point->feature_id] = 1;
+                $max_point_result[$answer_point->feature_id] = $answer_point->value;
             }
         }
         $sum = array_sum($max_point_result);

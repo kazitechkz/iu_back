@@ -282,7 +282,8 @@ class AttemptController extends Controller
             }
             $this->answerService->check_attempt($attempt, $user->id);
             $data = $this->attemptService->get_attempt_by_id($id);
-            return response()->json(new ResponseJSON(status: true, data: $data), 200);
+            return response()->json(new ResponseJSON(status: true, data: $data), 200,['Content-Type' => 'application/json;charset=UTF-8', 'Charset' => 'utf-8'],
+                JSON_UNESCAPED_UNICODE);
         } catch (\Exception $exception) {
             return ResponseService::DefineException($exception);
         }

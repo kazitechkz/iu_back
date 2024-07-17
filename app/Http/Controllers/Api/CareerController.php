@@ -136,7 +136,7 @@ class CareerController extends Controller
     public function myCareerAttempts(){
         try{
             $user = auth()->guard("api")->user();
-            $attempts = CareerQuizAttempt::with(["user","career_quiz.career_quiz_group","career_quiz.file"])->where(["user_id" => $user->id])->paginate(15);
+            $attempts = CareerQuizAttempt::with(["user","career_quiz.career_quiz_group","career_quiz.file"])->whereHas('career_quiz')->where(["user_id" => $user->id])->paginate(15);
             return response()->json(new ResponseJSON(status: true,data: $attempts),200);
         }
         catch (\Exception $exception) {
